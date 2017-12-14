@@ -52,6 +52,7 @@ split:x:/../*/folder?value
  */
 .read-only:bool:false
 .allow-empty:bool:true
+.allow-child:bool:true
 switch:x:/../*/folder?value
   case:/
   case:/bin/
@@ -137,6 +138,16 @@ switch:x:/../*/folder?value
       set:x:/@.allow-empty?value
         src:bool:false
 
+/*
+ * Making sure user is not allowed to create children in any of the system user folders.
+ */
+if:x:/@split/0?name
+  =:users
+  and:x:/@split/*?count
+    =:int:1
+  set:x:/@.allow-child?value
+    src:bool:false
+
 
 
 
@@ -151,7 +162,12 @@ if:x:/@.read-only?value
       disabled
 if:x:/@.allow-empty?value
   =:bool:false
-  add:x:/../*/create-widget/*/*/*/*(/input/=hyper-ide-folder-name|/button/=hyper-ide-empty-folder)
+  add:x:/../*/create-widget/*/*/*/*/button/=hyper-ide-empty-folder
+    src
+      disabled
+if:x:/@.allow-child?value
+  =:bool:false
+  add:x:/../*/create-widget/*/*/*/*/button/=hyper-ide-child-folder
     src
       disabled
 
@@ -331,4 +347,13 @@ create-widget:hyper-ide-active-object
                                * Simply deleting modal widget.
                                */
                               delete-widget:hyper-ide-confirm-empty-folder
+
+        button:hyper-ide-child-folder
+          innerValue:@"<span class=""icon-plus""></span>"
+          title:Creates a child folder
+          onclick
+
+            /*
+             * Creating child folder.
+             */
 
