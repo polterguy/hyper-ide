@@ -120,6 +120,12 @@ create-widget:hyper-ide-main-container
                  * files on his server.
                  */
                 micro.widgets.tree:hyper-ide-folder-tree-browser
+                  oninit
+
+                    /*
+                     * Expanding root item.
+                     */
+
                   items
                     /:/
 
