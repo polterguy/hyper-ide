@@ -48,16 +48,21 @@ split:x:/../*/folder?value
 
 
 /*
- * Making sure we user is not allowed to rename or modify "protected" folders.
+ * Making sure user is not allowed to rename or modify "protected" folders.
  */
 .read-only:bool:false
+.allow-empty:bool:true
 switch:x:/../*/folder?value
   case:/
   case:/bin/
   case:/common/
   case:/db/
-  case:/modules/
   case:/users/
+    set:x:/@.read-only?value
+      src:bool:true
+    set:x:/@.allow-empty?value
+      src:bool:false
+  case:/modules/
     set:x:/@.read-only?value
       src:bool:true
   default
@@ -106,6 +111,32 @@ switch:x:/../*/folder?value
       set:x:/@.read-only?value
         src:bool:true
 
+    /*
+     * Making sure user is not allowed to empty any of the system user folders.
+     */
+    if:x:/@split/0?name
+      =:users
+      and:x:/@split/*?count
+        =:int:2
+      or:x:/@split/*?count
+        =:int:3
+        and:x:/@split/2?name
+          =:documents
+      set:x:/@.allow-empty?value
+        src:bool:false
+
+    /*
+     * Making sure user is not allowed to empty any of the system common folders.
+     */
+    else-if:x:/@split/0?name
+      =:common
+      and:x:/@split/*?count
+        =:int:2
+        and:x:/@split/1?name
+          =:documents
+      set:x:/@.allow-empty?value
+        src:bool:false
+
 
 
 
@@ -115,7 +146,12 @@ switch:x:/../*/folder?value
  */
 if:x:/@.read-only?value
   =:bool:true
-  add:x:/../*/create-widget/*/*/*/*(/input/=hyper-ide-folder-name|/button(/=hyper-ide-rename-folder|/=hyper-ide-delete-folder|/=hyper-ide-empty-folder))
+  add:x:/../*/create-widget/*/*/*/*(/input/=hyper-ide-folder-name|/button(/=hyper-ide-rename-folder|/=hyper-ide-delete-folder))
+    src
+      disabled
+if:x:/@.allow-empty?value
+  =:bool:false
+  add:x:/../*/create-widget/*/*/*/*(/input/=hyper-ide-folder-name|/button/=hyper-ide-empty-folder)
     src
       disabled
 
