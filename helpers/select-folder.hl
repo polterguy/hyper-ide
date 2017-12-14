@@ -65,24 +65,46 @@ switch:x:/../*/folder?value
     /*
      * Making sure user is not allowed to edit any of the system user folders.
      */
-    if
-      starts-with:x:/../*/folder?value
-        src:/users/
-      if:x:/@split/*?count
-        <:int:5
-        set:x:/@.read-only?value
-          src:bool:true
+    if:x:/@split/0?name
+      =:users
+      and:x:/@split/*?count
+        =:int:2
+      or:x:/@split/*?count
+        =:int:3
+        and:x:/@split/2?name
+          =:documents
+          or:x:/@split/2?name
+            =:temp
+      or:x:/@split/*?count
+        =:int:4
+        and:x:/@split/2?name
+          =:documents
+          and:x:/@split/3?name
+            =:private
+            or:x:/@split/3?name
+              =:public
+      set:x:/@.read-only?value
+        src:bool:true
 
     /*
      * Making sure user is not allowed to edit any of the system common folders.
      */
-    if
-      starts-with:x:/../*/folder?value
-        src:/common/
-      if:x:/@split/*?count
-        <:int:4
-        set:x:/@.read-only?value
-          src:bool:true
+    else-if:x:/@split/0?name
+      =:common
+      and:x:/@split/*?count
+        =:int:2
+        and:x:/@split/1?name
+          =:documents
+          or:x:/@split/1?name
+            =:temp
+      or:x:/@split/*?count
+        =:int:3
+        and:x:/@split/2?name
+          =:private
+          or:x:/@split/2?name
+            =:public
+      set:x:/@.read-only?value
+        src:bool:true
 
 
 
