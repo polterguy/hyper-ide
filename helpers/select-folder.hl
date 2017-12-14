@@ -1,6 +1,6 @@
 ﻿
 /*
- * invoked when a folder is selected.
+ * Invoked when a folder is selected.
  */
 
 
@@ -165,17 +165,17 @@ if:x:/@split/0?name
  */
 if:x:/@.read-only?value
   =:bool:true
-  add:x:/../*/create-widget/*/*/*/*/button(/=hyper-ide-rename-folder|/=hyper-ide-delete-folder)
+  add:x:/../*/create-widget/*/*/*/*/*/*/button(/=hyper-ide-rename-folder|/=hyper-ide-delete-folder)
     src
       disabled
 if:x:/@.allow-empty?value
   =:bool:false
-  add:x:/../*/create-widget/*/*/*/*/button/=hyper-ide-empty-folder
+  add:x:/../*/create-widget/*/*/*/*/*/*/button/=hyper-ide-empty-folder
     src
       disabled
 if:x:/@.allow-child?value
   =:bool:false
-  add:x:/../*/create-widget/*/*/*/*/button/=hyper-ide-child-folder
+  add:x:/../*/create-widget/*/*/*/*/*/*/button/=hyper-ide-child-folder
     src
       disabled
 
@@ -201,6 +201,105 @@ create-widget:hyper-ide-active-object
           class:strip
           style:"display:inline-block;"
           widgets
+
+            button:hyper-ide-child-file
+              innerValue:@"<span class=""icon-file-empty""></span>"
+              title:Create a new file
+              style:"margin-bottom:0;padding-left:35px;padding-right:35px;"
+              onclick
+
+                /*
+                 * Creating new file, asking user for name for his new file.
+                 */
+                create-widgets
+                  micro.widgets.modal:hyper-ide-create-new-file-modal
+                    widgets
+                      h3
+                        innerValue:Please name your new file
+                      micro.widgets.wizard-form:hyper-ide-create-new-file-form
+                        text:hyper-ide-new-file-name
+                          info:Name
+                          .data-field:name
+                          placeholder:Name for your new file ...
+                          onkeydown:@"if (event.keyCode == 13) {p5.$('hyper-ide-new-file-btn').raise('onclick');return false;}"
+                          oninit
+
+                            /*
+                             * Setting initial focus to "Yes" button.
+                             */
+                            micro.page.set-focus:x:/../*/_event?value
+
+                      div
+                        class:right
+                        widgets
+                          div
+                            class:strip
+                            style:"display:inline-block;"
+                            widgets
+                              button:hyper-ide-new-file-btn
+                                innerValue:OK
+                                style:"margin-bottom:0;"
+                                onclick
+
+                                  /*
+                                   * Serializing form data and sanity checking name of new file.
+                                   *
+                                   * Notice, we only accept a-z, 0-9, ., _ and - characters, and no capital letters.
+                                   */
+                                  micro.widgets.wizard-form.value:hyper-ide-create-new-file-form
+                                  match:x:/@micro.widgets.wizard-form.value/*/name?value
+                                    src:regex:/^[-_a-z0-9]+\.{1}[-_a-z0-9\.]+$/
+                                  if:x:/@match/*?count
+                                    =:int:0
+                                    or:x:/@match/0?name
+                                      =:
+
+                                    /*
+                                     * Not a legal name for a file.
+                                     */
+                                    micro.css.add:hyper-ide-new-file-name
+                                      class:error
+                                    micro.windows.info:Only use a-z, ., _, - and 0-9 in your name
+                                      class:micro-windows-info warning
+                                    micro.page.set-focus:hyper-ide-new-file-name
+                                    return
+
+                                  /*
+                                   * Creating our new file as a sub file of currently selected folder.
+                                   */
+                                  get-widget-property:hyper-ide-active-object
+                                    .folder
+                                  save-file:{0}{1}
+                                    :x:/@get-widget-property/*/*?value
+                                    :x:/@micro.widgets.wizard-form.value/*/name?value
+                                    src:
+
+                                  /*
+                                   * Making sure we refresh our tree view.
+                                   */
+                                  add:x:/../*/micro.widgets.tree.refresh-items/*/items
+                                    src:x:/@get-widget-property/*/*?value
+                                  micro.widgets.tree.refresh-items:hyper-ide-folder-tree-browser
+                                    force-expand:true
+                                    items
+
+                                  /*
+                                   * Deleting modal widget, and giving user some feedback.
+                                   */
+                                  delete-widget:hyper-ide-create-new-file-modal
+                                  micro.windows.info:File was successfully created
+                                    class:micro-windows-info success
+
+                              button
+                                innerValue:Cancel
+                                style:"margin-bottom:0;"
+                                onclick
+
+                                  /*
+                                   * Simply deleting modal widget
+                                   */
+                                  delete-widget:hyper-ide-create-new-file-modal
+
             button:hyper-ide-rename-folder
               innerValue:@"<span class=""icon-pencil""></span>"
               style:"margin-bottom:0;"
@@ -219,7 +318,7 @@ create-widget:hyper-ide-active-object
                         text:hyper-ide-new-folder-name
                           info:Name
                           .data-field:name
-                          placeholder:Name for your new folder ...
+                          placeholder:New name for your folder ...
                           onkeydown:@"if (event.keyCode == 13) {p5.$('hyper-ide-rename-folder-btn').raise('onclick');return false;}"
                           oninit
 
@@ -561,14 +660,3 @@ create-widget:hyper-ide-active-object
                                    * Simply deleting modal widget
                                    */
                                   delete-widget:hyper-ide-create-new-folder-modal
-
-            button:hyper-ide-child-file
-              innerValue:@"<span class=""icon-file-empty""></span>"
-              title:Create a new file
-              style:"margin-bottom:0;"
-              onclick
-
-                /*
-                 * Creating new file.
-                 */
-
