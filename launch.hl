@@ -106,7 +106,7 @@ create-widget:hyper-ide-main-container
                         micro.css.toggle:x:/../*/_event?value
                           class:toggled
                         micro.css.toggle:hyper-ide-file-editor
-                          class:col-70 col
+                          class:col-60 col
                         micro.css.toggle:hyper-ide-object-details
                           class:hide
 
@@ -144,7 +144,7 @@ create-widget:hyper-ide-main-container
          * Wrapper for our file browser.
          */
         div:hyper-ide-file-browser-wrapper
-          class:col-30
+          class:col-40
           widgets
             container
               class:bg air-inner shaded rounded hyper-ide-folder-browser
@@ -230,4 +230,4 @@ create-widget:hyper-ide-main-container
          * Wrapper for our file editor.
          */
         container:hyper-ide-file-editor
-          class:col-70
+          class:col-60
