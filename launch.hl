@@ -119,7 +119,7 @@ create-widget:hyper-ide-main-container
                  * Our TreeView that actually allows the user to browse 
                  * files on his server.
                  */
-                micro.widgets.tree
+                micro.widgets.tree:hyper-ide-folder-tree-browser
                   items
                     /:/
 

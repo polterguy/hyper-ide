@@ -27,6 +27,17 @@ clear-widget:hyper-ide-active-object-wrapper
 
 
 /*
+ * Checking if this is a protected folder.
+ */
+if:x:/../*/folder?value
+  =:/db/
+  return
+
+
+
+
+
+/*
  * Getting folder's name.
  */
 split:x:/../*/folder?value
@@ -42,13 +53,10 @@ split:x:/../*/folder?value
 .read-only:bool:false
 switch:x:/../*/folder?value
   case:/
-  case:/Properties/
   case:/bin/
-  case:/code/
   case:/common/
   case:/db/
   case:/modules/
-  case:/obj/
   case:/users/
     set:x:/@.read-only?value
       src:bool:true
@@ -85,7 +93,7 @@ switch:x:/../*/folder?value
  */
 if:x:/@.read-only?value
   =:bool:true
-  add:x:/../*/create-widget/*/widgets/*/div/*/widgets/*(/input/=hyper-ide-folder-name|/button/=hyper-ide-rename-folder|/button/=hyper-ide-delete-folder)
+  add:x:/../*/create-widget/*/*/*/*(/input/=hyper-ide-folder-name|/button(/=hyper-ide-rename-folder|/=hyper-ide-delete-folder|/=hyper-ide-empty-folder))
     src
       disabled
 
@@ -118,7 +126,7 @@ create-widget:hyper-ide-active-object
             micro.page.set-focus:x:/../*/_event?value
 
         button:hyper-ide-rename-folder
-          innerValue:@"<span class=""icon-floppy-disk""></span>"
+          innerValue:@"<span class=""icon-pencil""></span>"
           title:Renames your folder
           onclick
 
@@ -128,6 +136,141 @@ create-widget:hyper-ide-active-object
 
         button:hyper-ide-delete-folder
           innerValue:@"<span class=""icon-bin""></span>"
-          title:Renames your folder
+          title:Deletes your folder
           onclick
-            micro.windows.info:Foo
+
+            /*
+             * Deleting folder, asking user to confirm the action.
+             */
+            create-widgets
+              micro.widgets.modal:hyper-ide-confirm-delete-folder
+                widgets
+                  h3
+                    innerValue:Confirm action
+                  p
+                    innerValue:Are you sure you want to delete this folder? This action is permanent!
+                  div
+                    class:right
+                    widgets
+                      div
+                        class:strip
+                        style:"display:inline-block;"
+                        widgets
+                          button
+                            innerValue:Yes
+                            style:"margin-bottom:0;"
+                            oninit
+
+                              /*
+                               * Setting initial focus to "Yes" button.
+                               */
+                              micro.page.set-focus:x:/../*/_event?value
+
+                            onclick
+
+                              /*
+                               * Deleting folder, updating treeview, and closing modal window.
+                               */
+                              get-widget-property:hyper-ide-active-object
+                                .folder
+                              delete-folder:x:/-/*/*?value
+                              micro.widgets.tree.delete-selected-items:hyper-ide-folder-tree-browser
+                              delete-widget:hyper-ide-confirm-delete-folder
+
+                              /*
+                               * Giving user some feedback.
+                               */
+                              micro.windows.info:Folder was successfully deleted
+                                class:micro-windows-info success
+
+                              /*
+                               * Making sure we empty "Active object" widget, since active object
+                               * is now (obviously) deleted.
+                               */
+                              clear-widget:hyper-ide-active-object-wrapper
+
+                          button
+                            innerValue:No
+                            style:"margin-bottom:0;"
+                            onclick
+
+                              /*
+                               * Simply deleting modal widget.
+                               */
+                              delete-widget:hyper-ide-confirm-delete-folder
+
+
+        button:hyper-ide-empty-folder
+          innerValue:@"<span class=""icon-cross""></span>"
+          title:Empties your folder
+          onclick
+
+            /*
+             * Emptying folder, which implies deleting all files and folders inside of it.
+             */
+            create-widgets
+              micro.widgets.modal:hyper-ide-confirm-empty-folder
+                widgets
+                  h3
+                    innerValue:Confirm action
+                  p
+                    innerValue:Are you sure you want to empty this folder? This action is permanent!
+                  div
+                    class:right
+                    widgets
+                      div
+                        class:strip
+                        style:"display:inline-block;"
+                        widgets
+                          button
+                            innerValue:Yes
+                            style:"margin-bottom:0;"
+                            oninit
+
+                              /*
+                               * Setting initial focus to "Yes" button.
+                               */
+                              micro.page.set-focus:x:/../*/_event?value
+
+                            onclick
+
+                              /*
+                               * Emptying folder, updating treeview, and closing modal window.
+                               */
+                              get-widget-property:hyper-ide-active-object
+                                .folder
+
+                              /*
+                               * Deleting folders inside of folder.
+                               */
+                              list-folders:x:/@get-widget-property/*/*?value
+                              delete-folder:x:/-/*?name
+
+                              /*
+                               * Deleting files inside of folder.
+                               */
+                              list-files:x:/@get-widget-property/*/*?value
+                              delete-file:x:/-/*?name
+
+                              /*
+                               * Deleting children of selected tree items.
+                               */
+                              micro.widgets.tree.delete-selected-items-children:hyper-ide-folder-tree-browser
+                              delete-widget:hyper-ide-confirm-empty-folder
+
+                              /*
+                               * Giving user some feedback.
+                               */
+                              micro.windows.info:Folder was successfully emptied
+                                class:micro-windows-info success
+
+                          button
+                            innerValue:No
+                            style:"margin-bottom:0;"
+                            onclick
+
+                              /*
+                               * Simply deleting modal widget.
+                               */
+                              delete-widget:hyper-ide-confirm-empty-folder
+
