@@ -18,6 +18,24 @@ micro.lambda.contract.min:x:/..
 
 
 /*
+ * Checking if user is trying to open up "illegal folders".
+ */
+if:x:/../*/folder?value
+  =:/db/
+
+  /*
+   * User trying to access a "protected folder".
+   * Notifying user, and returning early.
+   */
+  micro.windows.info:That folder is protected
+    class:micro-windows-info warning
+  return
+
+
+
+
+
+/*
  * Lists all folders beneath specified [folder], and iterates through them,
  * making sure we return one item for each.
  */
@@ -35,8 +53,17 @@ for-each:x:/@list-folders/*?name
       :x:/@_dp?value
 
   /*
+   * Skipping "/db/" folder, since it's illegal to browse.
+   */
+  if:x:/@_dp?value
+    =:/db/
+    continue
+
+  /*
    * Checking if currently iterated folder is a "leaf folder", meaning having no
    * children folders of its own.
+   *
+   * This is important since it modifies the CSS class of the item in our TreeView.
    */
   list-folders:x:/@_dp?value
   if:x:/@list-folders/*
@@ -44,6 +71,34 @@ for-each:x:/@list-folders/*?name
     add:x:/../*/return/0/-
       src
         class:tree-leaf
+
+
+
+
+
+/*
+ * Then listing all files beneath currently iterated folder, and making sure
+ * we return one item for each file.
+ */
+list-files:x:/../*/folder?value
+for-each:x:/@list-files/*?name
+
+  /*
+   * Figuring out name of file, and making sure we create one return value for it.
+   */
+  split:x:/@_dp?value
+    =:/
+  add:x:/../*/return
+    src:@"{0}:{1}"
+      :x:/@split/0/-?name
+      :x:/@_dp?value
+
+  /*
+   * Making sure we return file as a file, and not a folder.
+   */
+  add:x:/../*/return/0/-
+    src
+      class:file tree-leaf
 
 
 

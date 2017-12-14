@@ -110,20 +110,31 @@ create-widget:hyper-ide-main-container
                  */
                 micro.widgets.tree
                   items
-                    root:/modules/
+                    root:/
+
+                  /*
+                   * Callback invoked when TreeView wants more items.
+                   */
                   .on-get-items
 
                     /*
-                     * Invoking file responsible for actually retrieving files
-                     * and folders structure.
+                     * Checking if this is a request for a folder.
                      */
-                    eval-x:x:/+/*
-                    micro.evaluate.file:@IDE/helpers/get-files.hl
-                      folder:x:/../*/_item-id?value
-                    add:x:/../*/return/*/items
-                      src:x:/@micro.evaluate.file/*
-                    return
-                      items
+                    if
+                      ends-with:x:/../*/_item-id?value
+                        src:/
+
+                      /*
+                       * Invoking file responsible for actually retrieving files
+                       * and folders structure, and returning items to caller.
+                       */
+                      eval-x:x:/+/*
+                      micro.evaluate.file:@IDE/helpers/get-files.hl
+                        folder:x:/../*/_item-id?value
+                      add:x:/..if/*/return/*/items
+                        src:x:/@micro.evaluate.file/*
+                      return
+                        items
 
         /*
          * Wrapper for our file editor.
