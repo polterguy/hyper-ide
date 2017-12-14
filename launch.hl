@@ -16,6 +16,7 @@ p5.web.include-css-file
   @MICRO/media/main.css
   @MICRO/media/skins/serious.css
   @MICRO/media/fonts.css
+  @IDE/media/main.css
 
 
 
@@ -112,7 +113,7 @@ create-widget:hyper-ide-main-container
           class:col-40
           widgets
             container
-              class:bg air-inner shaded rounded
+              class:bg air-inner shaded rounded hyper-ide-folder-browser
               widgets
 
                 /*
@@ -120,14 +121,20 @@ create-widget:hyper-ide-main-container
                  * files on his server.
                  */
                 micro.widgets.tree:hyper-ide-folder-tree-browser
+                  items
+                    /:/
+
                   oninit
 
                     /*
                      * Expanding root item.
                      */
-
-                  items
-                    /:/
+                    micro.widgets.tree.toggle-items:hyper-ide-folder-tree-browser
+                      items
+                        /
+                    micro.widgets.tree.select-items:hyper-ide-folder-tree-browser
+                      items
+                        /
 
                   /*
                    * Callback invoked when TreeView wants more items.
@@ -195,6 +202,4 @@ create-widget:hyper-ide-main-container
               class:bg air-inner shaded rounded
               style:"overflow:auto;"
               widgets
-                h3
-                  innerValue:Active object
                 container:hyper-ide-active-object-wrapper

@@ -243,17 +243,24 @@ create-widget:hyper-ide-active-object
                             onclick
 
                               /*
-                               * Deleting folder, updating treeview, and closing modal window.
+                               * Deleting folder.
                                */
                               get-widget-property:hyper-ide-active-object
                                 .folder
                               delete-folder:x:/-/*/*?value
-                              micro.widgets.tree.delete-selected-items:hyper-ide-folder-tree-browser
-                              delete-widget:hyper-ide-confirm-delete-folder
 
                               /*
-                               * Giving user some feedback.
+                               * Deleting selected item from tree.
                                */
+                              micro.widgets.tree.get-selected-items:hyper-ide-folder-tree-browser
+                              add:x:/../*/micro.widgets.tree.delete-items
+                                src:x:/@micro.widgets.tree.get-selected-items/*
+                              micro.widgets.tree.delete-items:hyper-ide-folder-tree-browser
+
+                              /*
+                               * Deleting modal window, and giving user some feedback.
+                               */
+                              delete-widget:hyper-ide-confirm-delete-folder
                               micro.windows.info:Folder was successfully deleted
                                 class:micro-windows-info success
 
@@ -315,13 +322,13 @@ create-widget:hyper-ide-active-object
                                 .folder
 
                               /*
-                               * Deleting folders inside of folder.
+                               * Deleting folders inside of selected folder.
                                */
                               list-folders:x:/@get-widget-property/*/*?value
                               delete-folder:x:/-/*?name
 
                               /*
-                               * Deleting files inside of folder.
+                               * Deleting files inside of selected folder.
                                */
                               list-files:x:/@get-widget-property/*/*?value
                               delete-file:x:/-/*?name
@@ -329,12 +336,15 @@ create-widget:hyper-ide-active-object
                               /*
                                * Deleting children of selected tree items.
                                */
-                              micro.widgets.tree.delete-selected-items-children:hyper-ide-folder-tree-browser
-                              delete-widget:hyper-ide-confirm-empty-folder
+                              micro.widgets.tree.get-selected-items:hyper-ide-folder-tree-browser
+                              add:x:/../*/micro.widgets.tree.delete-children
+                                src:x:/@micro.widgets.tree.get-selected-items/*
+                              micro.widgets.tree.delete-children:hyper-ide-folder-tree-browser
 
                               /*
-                               * Giving user some feedback.
+                               * Deleting modal widget, and giving user some feedback.
                                */
+                              delete-widget:hyper-ide-confirm-empty-folder
                               micro.windows.info:Folder was successfully emptied
                                 class:micro-windows-info success
 
@@ -349,11 +359,107 @@ create-widget:hyper-ide-active-object
                               delete-widget:hyper-ide-confirm-empty-folder
 
         button:hyper-ide-child-folder
-          innerValue:@"<span class=""icon-plus""></span>"
-          title:Creates a child folder
+          innerValue:@"<span class=""icon-folder""></span>"
+          title:Create a new folder
           onclick
 
             /*
-             * Creating child folder.
+             * Creating new folder, asking user for name for his new folder.
+             */
+            create-widgets
+              micro.widgets.modal:hyper-ide-create-new-folder-modal
+                widgets
+                  h3
+                    innerValue:Please name your new folder
+                  micro.widgets.wizard-form:hyper-ide-create-new-folder-form
+                    text:hyper-ide-new-folder-name
+                      info:Name
+                      .data-field:name
+                      placeholder:Name for your new folder ...
+                      onkeydown:@"if (event.keyCode == 13) {p5.$('hyper-ide-new-folder-btn').raise('onclick');return false;}"
+                      oninit
+
+                        /*
+                         * Setting initial focus to "Yes" button.
+                         */
+                        micro.page.set-focus:x:/../*/_event?value
+
+                  div
+                    class:right
+                    widgets
+                      div
+                        class:strip
+                        style:"display:inline-block;"
+                        widgets
+                          button:hyper-ide-new-folder-btn
+                            innerValue:OK
+                            style:"margin-bottom:0;"
+                            onclick
+
+                              /*
+                               * Serializing form data and sanity checking name of new folder.
+                               *
+                               * Notice, we only accept a-z, 0-9, _ and - characters, and no capital letters.
+                               */
+                              micro.widgets.wizard-form.value:hyper-ide-create-new-folder-form
+                              match:x:/@micro.widgets.wizard-form.value/*/name?value
+                                src:regex:/^[-_a-z0-9]+$/
+                              if:x:/@match/*?count
+                                =:int:0
+                                or:x:/@match/0?name
+                                  =:
+
+                                /*
+                                 * Not a legal name for a folder.
+                                 */
+                                micro.css.add:hyper-ide-new-folder-name
+                                  class:error
+                                micro.windows.info:Only use a-z, _, - and 0-9 in your name
+                                  class:micro-windows-info warning
+                                micro.page.set-focus:hyper-ide-new-folder-name
+                                return
+
+                              /*
+                               * Creating our new folder as a sub folder of currently selected folder.
+                               */
+                              get-widget-property:hyper-ide-active-object
+                                .folder
+                              create-folder:{0}{1}/
+                                :x:/@get-widget-property/*/*?value
+                                :x:/@micro.widgets.wizard-form.value/*/name?value
+
+                              /*
+                               * Making sure we refresh our tree view.
+                               */
+                              add:x:/../*/micro.widgets.tree.refresh-items/*/items
+                                src:x:/@get-widget-property/*/*?value
+                              micro.widgets.tree.refresh-items:hyper-ide-folder-tree-browser
+                                force-expand:true
+                                items
+
+                              /*
+                               * Deleting modal widget, and giving user some feedback.
+                               */
+                              delete-widget:hyper-ide-create-new-folder-modal
+                              micro.windows.info:Folder was successfully created
+                                class:micro-windows-info success
+
+                          button
+                            innerValue:Cancel
+                            style:"margin-bottom:0;"
+                            onclick
+
+                              /*
+                               * Simply deleting modal widget
+                               */
+                              delete-widget:hyper-ide-create-new-folder-modal
+
+        button:hyper-ide-child-file
+          innerValue:@"<span class=""icon-file-empty""></span>"
+          title:Create a new file
+          onclick
+
+            /*
+             * Creating new file.
              */
 
