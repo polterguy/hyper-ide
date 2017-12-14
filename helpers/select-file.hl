@@ -1,0 +1,22 @@
+﻿
+/*
+ * invoked when a file is selected.
+ */
+
+
+
+
+
+/*
+ * Sanity checking arguments.
+ */
+micro.lambda.contract.min:x:/..
+  file:string
+
+
+
+
+
+/*
+ * Checking if user is trying to open up "illegal folders".
+ */

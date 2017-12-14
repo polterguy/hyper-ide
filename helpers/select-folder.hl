@@ -1,0 +1,133 @@
+﻿
+/*
+ * invoked when a folder is selected.
+ */
+
+
+
+
+
+/*
+ * Sanity checking arguments.
+ */
+micro.lambda.contract.min:x:/..
+  folder:string
+
+
+
+
+
+/*
+ * Clearing out any previously Active Object widgets.
+ */
+clear-widget:hyper-ide-active-object-wrapper
+
+
+
+
+
+/*
+ * Getting folder's name.
+ */
+split:x:/../*/folder?value
+  =:/
+
+
+
+
+
+/*
+ * Making sure we user is not allowed to rename or modify "protected" folders.
+ */
+.read-only:bool:false
+switch:x:/../*/folder?value
+  case:/
+  case:/Properties/
+  case:/bin/
+  case:/code/
+  case:/common/
+  case:/db/
+  case:/modules/
+  case:/obj/
+  case:/users/
+    set:x:/@.read-only?value
+      src:bool:true
+  default
+
+    /*
+     * Making sure user is not allowed to edit any of the system user folders.
+     */
+    if
+      starts-with:x:/../*/folder?value
+        src:/users/
+      if:x:/@split/*?count
+        <:int:5
+        set:x:/@.read-only?value
+          src:bool:true
+
+    /*
+     * Making sure user is not allowed to edit any of the system common folders.
+     */
+    if
+      starts-with:x:/../*/folder?value
+        src:/common/
+      if:x:/@split/*?count
+        <:int:4
+        set:x:/@.read-only?value
+          src:bool:true
+
+
+
+
+
+/*
+ * Checking if above logic made folder read-only.
+ */
+if:x:/@.read-only?value
+  =:bool:true
+  add:x:/../*/create-widget/*/widgets/*/div/*/widgets/*(/input/=hyper-ide-folder-name|/button/=hyper-ide-rename-folder|/button/=hyper-ide-delete-folder)
+    src
+      disabled
+
+
+
+
+
+/*
+ * Making sure we create our "Active Object" widget.
+ */
+create-widget:hyper-ide-active-object
+  parent:hyper-ide-active-object-wrapper
+  .folder:x:/../*/folder?value
+  widgets
+    div
+      class:strip fill
+      widgets
+        label
+          innerValue:Name
+        input:hyper-ide-folder-name
+          type:text
+          placeholder:Name ...
+          value:x:/@split/0/-?name
+          onkeydown:@"if (event.keyCode == 13) {p5.$('hyper-ide-rename-folder').raise('onclick');return false;}"
+          oninit
+
+            /*
+             * Setting initial focus to name widget.
+             */
+            micro.page.set-focus:x:/../*/_event?value
+
+        button:hyper-ide-rename-folder
+          innerValue:@"<span class=""icon-floppy-disk""></span>"
+          title:Renames your folder
+          onclick
+
+            /*
+             * Renaming folder.
+             */
+
+        button:hyper-ide-delete-folder
+          innerValue:@"<span class=""icon-bin""></span>"
+          title:Renames your folder
+          onclick
+            micro.windows.info:Foo

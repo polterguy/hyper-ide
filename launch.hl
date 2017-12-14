@@ -72,9 +72,20 @@ create-widget:hyper-ide-main-container
                   style:"display:inline-block;"
                   widgets
                     button
-                      innerValue:@"<span class=""icon-cog""></span>"
-                      title:Settings
+                      innerValue:@"<span class=""icon-eye""></span>"
+                      title:Toggles visibility of file browser
+                      class:toggled
                       onclick
+
+                        /*
+                         * Checking if we should hide or display file browser.
+                         */
+                        get-widget-property:hyper-ide-file-browser-wrapper
+                          visible
+                        micro.css.toggle:hyper-ide-file-browser-wrapper
+                          class:hide
+                        micro.css.toggle:x:/../*/_event?value
+                          class:toggled
 
                     button
                       innerValue:@"<span class=""icon-home3""></span>"
@@ -97,8 +108,8 @@ create-widget:hyper-ide-main-container
         /*
          * Wrapper for our file browser.
          */
-        div
-          class:col-30
+        div:hyper-ide-file-browser-wrapper
+          class:col-40
           widgets
             container
               class:bg air-inner shaded rounded
@@ -110,12 +121,12 @@ create-widget:hyper-ide-main-container
                  */
                 micro.widgets.tree
                   items
-                    root:/
+                    /:/
 
                   /*
                    * Callback invoked when TreeView wants more items.
                    */
-                  .on-get-items
+                  .onexpand
 
                     /*
                      * Checking if this is a request for a folder.
@@ -136,11 +147,48 @@ create-widget:hyper-ide-main-container
                       return
                         items
 
+                  /*
+                   * Callback invoked when an item ise selected.
+                   */
+                  .onselect
+
+                    /*
+                     * Checking if this is a request for a folder or a file.
+                     */
+                    if
+                      ends-with:x:/../*/items/0?name
+                        src:/
+
+                      /*
+                       * Request for folder.
+                       *
+                       * Invoking file responsible for selecting the folder.
+                       */
+                      eval-x:x:/+/*
+                      micro.evaluate.file:@IDE/helpers/select-folder.hl
+                        folder:x:/../*/items/0?name
+
+                    else
+
+                      /*
+                       * Request for file.
+                       *
+                       * Invoking file responsible for selecting the folder.
+                       */
+                      eval-x:x:/+/*
+                      micro.evaluate.file:@IDE/helpers/select-file.hl
+                        file:x:/../*/items/0?name
+
         /*
          * Wrapper for our file editor.
          */
         div
-          class:col-70
+          class:col
           widgets
             container:hyper-ide-editor
               class:bg air-inner shaded rounded
+              style:"overflow:auto;"
+              widgets
+                h3
+                  innerValue:Active object
+                container:hyper-ide-active-object-wrapper
