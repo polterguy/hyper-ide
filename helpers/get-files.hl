@@ -1,0 +1,55 @@
+﻿
+/*
+ * Retrieves all files and folders beneath the specified [folder].
+ */
+
+
+
+
+
+/*
+ * Sanity checking arguments.
+ */
+micro.lambda.contract.min:x:/..
+  folder:string
+
+
+
+
+
+/*
+ * Lists all folders beneath specified [folder], and iterates through them,
+ * making sure we return one item for each.
+ */
+list-folders:x:/../*/folder?value
+for-each:x:/@list-folders/*?name
+
+  /*
+   * Figuring out name of folder, and making sure we create one return value for it.
+   */
+  split:x:/@_dp?value
+    =:/
+  add:x:/../*/return
+    src:@"{0}:{1}"
+      :x:/@split/0/-?name
+      :x:/@_dp?value
+
+  /*
+   * Checking if currently iterated folder is a "leaf folder", meaning having no
+   * children folders of its own.
+   */
+  list-folders:x:/@_dp?value
+  if:x:/@list-folders/*
+    not
+    add:x:/../*/return/0/-
+      src
+        class:tree-leaf
+
+
+
+
+
+/*
+ * Returning items to caller.
+ */
+return

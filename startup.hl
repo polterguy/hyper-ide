@@ -1,0 +1,51 @@
+
+/*
+ * File responsible for initializing module.
+ */
+
+
+/*
+ * Creates the "path" Active Event that points to our module's folder.
+ *
+ * This is done in such a way that we can install module in any folder we wish inside of 
+ * the "/modules/" folder.
+ */
+split:x:/..?name
+  =:/
+set:x:/@split/0/-
+join:x:/@split/*?name
+  sep:/
+eval-x:x:/+/*
+create-event:p5.io.unroll-path.@IDE
+  return:/{0}
+    :x:/@join?value
+
+
+
+
+
+/*
+ * Evaluating all other startup files.
+ */
+micro.evaluate.folder:@IDE/startup/
+
+
+
+
+
+/*
+ * Deleting our JSON AutoCompleter cache folder, if it exists.
+ *
+ * This is done, to avoid having the server fill up with old AutoCompleter cache
+ * files, for vocabularies no longer relevant, due to new programs and modules, 
+ * with new Active Events having been installed.
+ */
+if
+  fetch:x:/0/0?value
+    folder-exists:/common/documents/public/hypereval-cache/
+
+  /*
+   * Deleting autocompleter cache folder.
+   */
+  delete-folder:/common/documents/public/hypereval-cache/
+

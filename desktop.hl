@@ -1,0 +1,33 @@
+
+/*
+ * Desktop widget.
+ */
+container
+  element:a
+  class:desktop-app shaded rounded air-inner
+  href:/hyper-ide
+  title:Hyper IDE, a web based IDE
+  oninit
+
+    /*
+     * Verifying user is logged in, and if not, deleting widget altogether, and returning early.
+     */
+    whoami
+    if:x:/@whoami/*/role?value
+      !=:root
+
+      /*
+       * User is not logged in, simply deleting entire icon.
+       */
+      delete-widget:x:/../*/_event?value
+
+  widgets
+    span
+      class:desktop-app-name
+      widgets
+        literal
+          element:span
+          class:icon-rocket desktop-app-icon
+        span
+          style:"position:absolute;top:5px;right:5px;font-size:.7rem;"
+          innerValue:Hyper IDE

@@ -1,0 +1,15 @@
+
+/*
+ * Uninstall file.
+ */
+
+
+
+
+
+/*
+ * Deleting all relevant Active Events, and that's it.
+ */
+delete-event:p5.io.unroll-path.@IDE
+vocabulary:~hypereval.
+delete-event:x:/-/*?name
