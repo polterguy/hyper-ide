@@ -65,17 +65,35 @@ create-widget:hyper-ide-main-container
             h3
               innerValue:Hyper IDE
               style:"float:left;"
+              events
+
+                /*
+                 * Event responsible for setting header of module.
+                 */
+                hyper-ide.set-header
+                  if:x:/../*/_arg?value
+                    not
+                    or:x:/../*/_arg?value
+                      =:
+                    set-widget-property:x:/../*/_event?value
+                      innerValue:Hyper IDE
+                  else
+                    set-widget-property:x:/../*/_event?value
+                      innerValue:Hyper IDE <small>{{{0}}}</small>
+                        :x:/../*/_arg?value
+
             div
               class:right
               widgets
-                div
+                div:hyper-ide-main-toolbar
                   class:strip toolbar
-                  style:"display:inline-block;"
+                  style:"display:inline-block;margin-left:1rem;"
                   widgets
                     button
                       innerValue:@"<span class=""icon-eye""></span>"
                       title:Toggles visibility of file browser
                       class:toggled
+                      style:"margin-bottom:0;"
                       onclick
 
                         /*
@@ -87,10 +105,15 @@ create-widget:hyper-ide-main-container
                           class:hide
                         micro.css.toggle:x:/../*/_event?value
                           class:toggled
+                        micro.css.toggle:hyper-ide-file-editor
+                          class:col-70 col
+                        micro.css.toggle:hyper-ide-object-details
+                          class:hide
 
                     button
                       innerValue:@"<span class=""icon-home3""></span>"
                       title:Close Hypereval
+                      style:"margin-bottom:0;"
                       onclick
 
                         /*
@@ -107,10 +130,21 @@ create-widget:hyper-ide-main-container
       widgets
 
         /*
+         * Wrapper for our object editor.
+         */
+        div:hyper-ide-object-details
+          class:col-100
+          widgets
+            container:hyper-ide-editor
+              style:"overflow:auto;"
+              widgets
+                container:hyper-ide-active-object-wrapper
+
+        /*
          * Wrapper for our file browser.
          */
         div:hyper-ide-file-browser-wrapper
-          class:col-40
+          class:col-30
           widgets
             container
               class:bg air-inner shaded rounded hyper-ide-folder-browser
@@ -193,19 +227,7 @@ create-widget:hyper-ide-main-container
                         file:x:/../*/items/0?name
 
         /*
-         * Wrapper for our object editor.
-         */
-        div
-          class:col
-          widgets
-            container:hyper-ide-editor
-              class:bg air-inner shaded rounded
-              style:"overflow:auto;"
-              widgets
-                container:hyper-ide-active-object-wrapper
-
-        /*
          * Wrapper for our file editor.
          */
         container:hyper-ide-file-editor
-          class:col-100
+          class:col-70

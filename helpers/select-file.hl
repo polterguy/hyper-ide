@@ -18,9 +18,12 @@ micro.lambda.contract.min:x:/..
 
 
 /*
- * Clearing out any previously Active Object widgets.
+ * Deleting any previously Active Object widgets.
  */
-clear-widget:hyper-ide-active-object-wrapper
+if
+  fetch:x:/0/0?value
+    widget-exists:hyper-ide-active-object
+  delete-widget:hyper-ide-active-object
 
 
 
@@ -39,224 +42,225 @@ eval-x:x:/-
 
 
 /*
+ * Invoking event responsible for changing header.
+ */
+hyper-ide.set-header:x:/../*/file?value
+
+
+
+
+
+/*
  * Making sure we create our "Active Object" widget.
  */
 eval-x:x:/+/**(/.value|/.file-name)
 create-widget:hyper-ide-active-object
-  parent:hyper-ide-active-object-wrapper
+  before:hyper-ide-main-toolbar
   .file:x:/../*/file?value
+  class:strip
+  style:"display:inline-block;"
   widgets
-    h3
-      innerValue:File {{{0}}}
-        :x:/@.file-name?value
-    div
-      class:right
-      widgets
-        div
-          class:strip
-          style:"display:inline-block;"
-          widgets
 
-            button:hyper-ide-edit-file
-              innerValue:@"<span class=""icon-eye""></span>"
-              style:"margin-bottom:0;padding-left:35px;padding-right:35px;"
-              title:Edits your file
-              onclick
+    button:hyper-ide-edit-file
+      innerValue:@"<span class=""icon-eye""></span>"
+      style:"margin-bottom:0;padding-left:35px;padding-right:35px;"
+      title:Edits your file
+      onclick
 
-                /*
-                 * Passing in filename to file responsible for creating our editor.
-                 *
-                 * The next line is forward evaluated above.
-                 */
-                .value:x:/../*/file?value
-                eval-x:x:/+/*
-                micro.evaluate.file:@IDE/helpers/edit-file.hl
-                  file:x:/@.value?value
+        /*
+         * Passing in filename to file responsible for creating our editor.
+         *
+         * The next line is forward evaluated above.
+         */
+        .value:x:/../*/file?value
+        eval-x:x:/+/*
+        micro.evaluate.file:@IDE/helpers/edit-file.hl
+          file:x:/@.value?value
 
-            button:hyper-ide-rename-file
-              innerValue:@"<span class=""icon-pencil""></span>"
-              style:"margin-bottom:0;"
-              title:Renames your file
-              onclick
+    button:hyper-ide-rename-file
+      innerValue:@"<span class=""icon-pencil""></span>"
+      style:"margin-bottom:0;"
+      title:Renames your file
+      onclick
 
-                /*
-                 * Renaming file.
-                 */
-                create-widgets
-                  micro.widgets.modal:hyper-ide-confirm-rename-file
+        /*
+         * Renaming file.
+         */
+        create-widgets
+          micro.widgets.modal:hyper-ide-confirm-rename-file
+            widgets
+              h3
+                innerValue:New name
+              micro.widgets.wizard-form:hyper-ide-rename-file-form
+                text:hyper-ide-new-file-name
+                  info:Name
+                  .data-field:name
+                  placeholder:New name for your file ...
+                  onkeydown:@"if (event.keyCode == 13) {p5.$('hyper-ide-rename-file-btn').raise('onclick');return false;}"
+                  oninit
+
+                    /*
+                     * Forward evaluated above.
+                     */
+                    .file-name:x:/../*/.file-name?value
+
+                    /*
+                     * Setting initial focus to "Yes" button, and setting 
+                     * initial value to old name.
+                     */
+                    set-widget-property:x:/../*/_event?value
+                      value:x:/@.file-name?value
+                    micro.page.set-focus:x:/../*/_event?value
+
+              div
+                class:right
+                widgets
+                  div
+                    class:strip
+                    style:"display:inline-block;"
                     widgets
-                      h3
-                        innerValue:New name
-                      micro.widgets.wizard-form:hyper-ide-rename-file-form
-                        text:hyper-ide-new-file-name
-                          info:Name
-                          .data-field:name
-                          placeholder:New name for your file ...
-                          onkeydown:@"if (event.keyCode == 13) {p5.$('hyper-ide-rename-file-btn').raise('onclick');return false;}"
-                          oninit
+                      button:hyper-ide-rename-file-btn
+                        innerValue:OK
+                        style:"margin-bottom:0;"
+                        onclick
 
-                            /*
-                             * Forward evaluated above.
-                             */
-                            .file-name:x:/../*/.file-name?value
+                          /*
+                           * Forward evaluated above.
+                           */
+                          .value:x:/../*/file?value
 
-                            /*
-                             * Setting initial focus to "Yes" button, and setting 
-                             * initial value to old name.
-                             */
-                            set-widget-property:x:/../*/_event?value
-                              value:x:/@.file-name?value
-                            micro.page.set-focus:x:/../*/_event?value
+                          /*
+                           * Serializing form, figuring out new name for file,
+                           * and changing its name.
+                           */
+                          micro.widgets.wizard-form.value:hyper-ide-rename-file-form
+                          split:x:/@.value?value
+                            =:/
+                          set:x:/@split/0/-
+                          join:x:/@split/*?name
+                            sep:/
+                          set:x:/@join?value
+                            src:/{0}/{1}
+                              :x:/@join?value
+                              :x:/@micro.widgets.wizard-form.value/*/name?value
+                          trim-left:x:/@join?value
+                            chars:/
+                          move-file:x:/@.value?value
+                            dest:/{0}
+                              :x:/@trim-left?value
 
-                      div
-                        class:right
-                        widgets
-                          div
-                            class:strip
-                            style:"display:inline-block;"
-                            widgets
-                              button:hyper-ide-rename-file-btn
-                                innerValue:OK
-                                style:"margin-bottom:0;"
-                                onclick
+                          /*
+                           * Refreshing tree, and de-selecting file.
+                           */
+                          split:x:/@.value?value
+                            =:/
+                          set:x:/@split/0/-
+                          join:x:/@split/*?name
+                            sep:/
+                          set:x:/@join?value
+                            src:/{0}
+                              :x:/@join?value
+                          trim-left:x:/@join?value
+                            chars:/
+                          add:x:/../*/micro.widgets.tree.refresh-items/*/items
+                            src:/{0}/
+                              :x:/@trim-left?value
+                          micro.widgets.tree.refresh-items:hyper-ide-folder-tree-browser
+                            force-expand:bool:true
+                            items
+                          add:x:/../*/micro.widgets.tree.select-items/*/items
+                            src:/{0}
+                              :x:/@trim-left?value
+                          micro.widgets.tree.select-items:hyper-ide-folder-tree-browser
+                            items
 
-                                  /*
-                                   * Forward evaluated above.
-                                   */
-                                  .value:x:/../*/file?value
+                          /*
+                           * Deleting modal widget, and giving user some feedback.
+                           */
+                          delete-widget:hyper-ide-confirm-rename-file
+                          micro.windows.info:File was successfully renamed
+                            class:micro-windows-info success
 
-                                  /*
-                                   * Serializing form, figuring out new name for file,
-                                   * and changing its name.
-                                   */
-                                  micro.widgets.wizard-form.value:hyper-ide-rename-file-form
-                                  split:x:/@.value?value
-                                    =:/
-                                  set:x:/@split/0/-
-                                  join:x:/@split/*?name
-                                    sep:/
-                                  set:x:/@join?value
-                                    src:/{0}/{1}
-                                      :x:/@join?value
-                                      :x:/@micro.widgets.wizard-form.value/*/name?value
-                                  trim-left:x:/@join?value
-                                    chars:/
-                                  move-file:x:/@.value?value
-                                    dest:/{0}
-                                      :x:/@trim-left?value
+                      button
+                        innerValue:Cancel
+                        style:"margin-bottom:0;"
+                        onclick
 
-                                  /*
-                                   * Refreshing tree, and de-selecting file.
-                                   */
-                                  split:x:/@.value?value
-                                    =:/
-                                  set:x:/@split/0/-
-                                  join:x:/@split/*?name
-                                    sep:/
-                                  set:x:/@join?value
-                                    src:/{0}
-                                      :x:/@join?value
-                                  trim-left:x:/@join?value
-                                    chars:/
-                                  add:x:/../*/micro.widgets.tree.refresh-items/*/items
-                                    src:/{0}/
-                                      :x:/@trim-left?value
-                                  micro.widgets.tree.refresh-items:hyper-ide-folder-tree-browser
-                                    force-expand:bool:true
-                                    items
-                                  add:x:/../*/micro.widgets.tree.select-items/*/items
-                                    src:/{0}
-                                      :x:/@trim-left?value
-                                  micro.widgets.tree.select-items:hyper-ide-folder-tree-browser
-                                    items
+                          /*
+                           * Simply deleting modal widget.
+                           */
+                          delete-widget:hyper-ide-confirm-rename-file
 
-                                  /*
-                                   * Deleting modal widget, and giving user some feedback.
-                                   */
-                                  delete-widget:hyper-ide-confirm-rename-file
-                                  micro.windows.info:File was successfully renamed
-                                    class:micro-windows-info success
+    button:hyper-ide-delete-file
+      innerValue:@"<span class=""icon-bin""></span>"
+      title:Deletes your file
+      style:"margin-bottom:0;"
+      onclick
 
-                              button
-                                innerValue:Cancel
-                                style:"margin-bottom:0;"
-                                onclick
-
-                                  /*
-                                   * Simply deleting modal widget.
-                                   */
-                                  delete-widget:hyper-ide-confirm-rename-file
-
-            button:hyper-ide-delete-file
-              innerValue:@"<span class=""icon-bin""></span>"
-              title:Deletes your file
-              style:"margin-bottom:0;"
-              onclick
-
-                /*
-                 * Deleting file, asking user to confirm the action.
-                 */
-                create-widgets
-                  micro.widgets.modal:hyper-ide-confirm-delete-file
+        /*
+         * Deleting file, asking user to confirm the action.
+         */
+        create-widgets
+          micro.widgets.modal:hyper-ide-confirm-delete-file
+            widgets
+              h3
+                innerValue:Confirm action
+              p
+                innerValue:Are you sure you want to delete this file? This action is permanent!
+              div
+                class:right
+                widgets
+                  div
+                    class:strip
+                    style:"display:inline-block;"
                     widgets
-                      h3
-                        innerValue:Confirm action
-                      p
-                        innerValue:Are you sure you want to delete this file? This action is permanent!
-                      div
-                        class:right
-                        widgets
-                          div
-                            class:strip
-                            style:"display:inline-block;"
-                            widgets
-                              button
-                                innerValue:Yes
-                                style:"margin-bottom:0;"
-                                oninit
+                      button
+                        innerValue:Yes
+                        style:"margin-bottom:0;"
+                        oninit
 
-                                  /*
-                                   * Setting initial focus to "Yes" button.
-                                   */
-                                  micro.page.set-focus:x:/../*/_event?value
+                          /*
+                           * Setting initial focus to "Yes" button.
+                           */
+                          micro.page.set-focus:x:/../*/_event?value
 
-                                onclick
+                        onclick
 
-                                  /*
-                                   * Deleting file.
-                                   */
-                                  get-widget-property:hyper-ide-active-object
-                                    .file
-                                  delete-file:x:/-/*/*?value
+                          /*
+                           * Deleting file.
+                           */
+                          get-widget-property:hyper-ide-active-object
+                            .file
+                          delete-file:x:/-/*/*?value
 
-                                  /*
-                                   * Deleting selected item from tree.
-                                   */
-                                  micro.widgets.tree.get-selected-items:hyper-ide-folder-tree-browser
-                                  add:x:/../*/micro.widgets.tree.delete-items
-                                    src:x:/@micro.widgets.tree.get-selected-items/*
-                                  micro.widgets.tree.delete-items:hyper-ide-folder-tree-browser
+                          /*
+                           * Deleting selected item from tree.
+                           */
+                          micro.widgets.tree.get-selected-items:hyper-ide-folder-tree-browser
+                          add:x:/../*/micro.widgets.tree.delete-items
+                            src:x:/@micro.widgets.tree.get-selected-items/*
+                          micro.widgets.tree.delete-items:hyper-ide-folder-tree-browser
 
-                                  /*
-                                   * Deleting modal window, and giving user some feedback.
-                                   */
-                                  delete-widget:hyper-ide-confirm-delete-file
-                                  micro.windows.info:File was successfully deleted
-                                    class:micro-windows-info success
+                          /*
+                           * Deleting modal window, and giving user some feedback.
+                           */
+                          delete-widget:hyper-ide-confirm-delete-file
+                          micro.windows.info:File was successfully deleted
+                            class:micro-windows-info success
 
-                                  /*
-                                   * Making sure we select root "/" tree item.
-                                   */
-                                  micro.widgets.tree.select-items:hyper-ide-folder-tree-browser
-                                    items
-                                      /
+                          /*
+                           * Making sure we select root "/" tree item.
+                           */
+                          micro.widgets.tree.select-items:hyper-ide-folder-tree-browser
+                            items
+                              /
 
-                              button
-                                innerValue:No
-                                style:"margin-bottom:0;"
-                                onclick
+                      button
+                        innerValue:No
+                        style:"margin-bottom:0;"
+                        onclick
 
-                                  /*
-                                   * Simply deleting modal widget.
-                                   */
-                                  delete-widget:hyper-ide-confirm-delete-file
+                          /*
+                           * Simply deleting modal widget.
+                           */
+                          delete-widget:hyper-ide-confirm-delete-file
