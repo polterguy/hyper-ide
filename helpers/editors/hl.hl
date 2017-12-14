@@ -20,7 +20,8 @@ micro.lambda.contract.min:x:/..
 /*
  * Returning Hyperlambda editor.
  */
-eval-x:x:/+/*/*
+eval-x:x:/+/*/*/value
 return
   hypereval.widgets.hyperlambda-textarea
     value:x:/../*/content?value
+    height:600px
