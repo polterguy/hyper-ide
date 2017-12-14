@@ -63,6 +63,16 @@ create-widget:hyper-ide-active-object
               title:Edits your file
               onclick
 
+                /*
+                 * Passing in filename to file responsible for creating our editor.
+                 *
+                 * The next line is forward evaluated above.
+                 */
+                .value:x:/../*/file?value
+                eval-x:x:/+/*
+                micro.evaluate.file:@IDE/helpers/edit-file.hl
+                  file:x:/@.value?value
+
             button:hyper-ide-rename-file
               innerValue:@"<span class=""icon-pencil""></span>"
               style:"margin-bottom:0;"

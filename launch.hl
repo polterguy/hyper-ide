@@ -193,7 +193,7 @@ create-widget:hyper-ide-main-container
                         file:x:/../*/items/0?name
 
         /*
-         * Wrapper for our file editor.
+         * Wrapper for our object editor.
          */
         div
           class:col
@@ -203,3 +203,9 @@ create-widget:hyper-ide-main-container
               style:"overflow:auto;"
               widgets
                 container:hyper-ide-active-object-wrapper
+
+        /*
+         * Wrapper for our file editor.
+         */
+        container:hyper-ide-file-editor
+          class:col-100

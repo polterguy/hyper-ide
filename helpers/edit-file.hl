@@ -1,0 +1,88 @@
+﻿
+/*
+ * Edits the specified [file], using some sort of CodeMirror editor, or whatever
+ * is available.
+ */
+
+
+
+
+
+/*
+ * Sanity checking arguments.
+ */
+micro.lambda.contract.min:x:/..
+  file:string
+
+
+
+
+
+/*
+ * Loading file, getting ready to launch editor.
+ */
+load-file:x:/../*/file?value
+  convert:false
+
+
+
+
+
+/*
+ * Retrieving editor for file, according to file's extension, making sure we
+ * pass in file's content.
+ */
+split:x:/../*/file?value
+  =:.
+eval-x:x:/+/*/content
+micro.evaluate.file:@IDE/helpers/editors/{0}.hl
+  :x:/@split/0/-?name
+  content:x:/@load-file/*?value
+
+
+
+
+
+/*
+ * Making sure we pass in special editor retrieved above.
+ */
+insert-after:x:/../*/create-widget/*/widgets/*/label/[0,1]
+  src:x:/@micro.evaluate.file/*
+
+
+
+
+
+/*
+ * Creating editor.
+ */
+create-widget
+  parent:hyper-ide-file-editor
+  class:bg air-inner shaded rounded
+  style:"overflow:visible;"
+  .editor:x:/../*/file?value
+  widgets
+    label
+      innerValue:x:/../*/file?value
+      style:"margin-bottom:0;"
+    div
+      class:right air-top
+      widgets
+        div
+          class:strip
+          style:"display:inline-block;"
+          widgets
+            button
+              style:"padding-left:35px;padding-right:35px;margin-bottom:0;"
+              innerValue:@"<span class=""icon-floppy-disk""></span>"
+            button
+              innerValue:@"<span class=""icon-cross""></span>"
+              style:"margin-bottom:0;"
+              onclick
+
+                /*
+                 * Closing editor.
+                 */
+                p5.web.widgets.find-first-ancestor:x:/../*/_event?value
+                  .editor
+                delete-widget:x:/-/*/*?value

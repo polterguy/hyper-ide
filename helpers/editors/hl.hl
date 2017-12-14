@@ -1,0 +1,26 @@
+﻿
+/*
+ * Edits the specified Hyperlambda [content] using our Hyperlambda CodeMirror editor.
+ */
+
+
+
+
+
+/*
+ * Sanity checking arguments.
+ */
+micro.lambda.contract.min:x:/..
+  content:string
+
+
+
+
+
+/*
+ * Returning Hyperlambda editor.
+ */
+eval-x:x:/+/*/*
+return
+  hypereval.widgets.hyperlambda-textarea
+    value:x:/../*/content?value
