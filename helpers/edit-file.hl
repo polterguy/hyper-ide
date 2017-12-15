@@ -22,15 +22,51 @@ micro.lambda.contract.min:x:/..
  * Checking if file is already being edited.
  */
 p5.web.widgets.find
-  .editor:x:/../*/file?value
+  .activate-btn:x:/../*/file?value
 if:x:/-/*/*?value
 
   /*
-   * file is already being edited, warning user, and returning early.
+   * file is already being edited, warning user and returning early.
    */
   micro.windows.info:File is already open in another editor
     class:micro-windows-info warning
   return
+
+
+
+
+
+/*
+ * Retrieving file extension of file.
+ */
+split:x:/../*/file?value
+  =:.
+
+
+
+
+
+/*
+ * Sanity checking for most common types of binary files, which we obviously 
+ * don't allow to be edited.
+ */
+switch:x:/@split/0/-?name
+  case:dll
+  case:pdb
+  case:exe
+  case:mdb
+  case:png
+  case:jpg
+  case:jpeg
+  case:gif
+  case:bmp
+
+    /*
+     * Warning user and returning early.
+     */
+    micro.windows.info:That file cannot be edited
+      class:micro-windows-info warning
+    return
 
 
 
@@ -49,13 +85,38 @@ load-file:x:/../*/file?value
 /*
  * Retrieving editor for file, according to file's extension, making sure we
  * pass in file's content.
+ *
+ * First checking if a specialised editor exists.
  */
-split:x:/../*/file?value
-  =:.
-eval-x:x:/+/*/content
-micro.evaluate.file:@IDE/helpers/editors/{0}.hl
-  :x:/@split/0/-?name
-  content:x:/@load-file/*?value
+.editor-instance
+if
+  fetch:x:/0/0?value
+    file-exists:@IDE/helpers/editors/{0}.hl
+      :x:/@split/0/-?name
+
+  /*
+   * Specialised editor exists.
+   */
+  eval-x:x:/+/*/content
+  micro.evaluate.file:@IDE/helpers/editors/{0}.hl
+    :x:/@split/0/-?name
+    content:x:/@load-file/*?value
+  add:x:/@.editor-instance
+    src:x:/@micro.evaluate.file/*
+
+else
+
+  /*
+   * Trying to use one of the standard CodeMirror editors.
+   */
+
+
+
+
+
+/*
+ * Then figuring out the file's name, without its extension.
+ */
 split:x:/../*/file?value
   =:/
 
@@ -64,10 +125,10 @@ split:x:/../*/file?value
 
 
 /*
- * Making sure we pass in special editor retrieved above.
+ * Making sure we pass in editor instantiated above into our [create-widget] invocation.
  */
 insert-before:x:/../*/create-widgets/*/div/*/widgets/0
-  src:x:/@micro.evaluate.file/*
+  src:x:/@.editor-instance/*
 
 
 
@@ -83,48 +144,56 @@ hyper-ide.set-header:x:/../*/file?value
 
 
 /*
- * Creating editor, first making sure we have our main wrapper for all editors.
+ * Figuring out how to position our editor.
+ *
+ * This varies according to whether or not another editor has been previously 
+ * created or not, since we want to make sure all of our editors appears like
+ * tab controls, and their activate buttons are positioned differently, than
+ * their actual editor content.
  */
-.extra
+.position-arg
 if
   fetch:x:/0/0?value
     widget-exists:hyper-ide-editors-wrapper
   not
 
   /*
-   * Need to create main editors wrapper.
+   * We need to create main editors wrapper.
+   *
+   * We also position our editor inside of the main editor wrapper widget.
    */
   create-container-widget:hyper-ide-editors-wrapper
     parent:hyper-ide-file-editor
     style:"overflow:visible;"
-  add:x:/@.extra
+  add:x:/@.position-arg
     src
       parent:hyper-ide-editors-wrapper
 
 else
 
   /*
-   * If wrapper is already visible, we need to hide all existing editors.
+   * A wrapper already exists, hence we hide all of the existing editors.
    */
   p5.web.widgets.find
-    class:hyper-ide-editor-wrapper
+    .editor
   micro.css.add:x:/-/*/*?value
     class:hide
 
   /*
    * In addition we need to delete the toggled CSS class for all editor selectors.
+   *
+   * These are the buttons that activate an editor instance.
    */
   p5.web.widgets.find
-    .editor-selector
+    .activate-btn
   micro.css.delete:x:/-/*/*?value
     class:toggled
 
   /*
-   * Finding last editor selector button.
+   * Making sure we position our activate button after the last existing activate 
+   * button.
    */
-  p5.web.widgets.find
-    .editor-selector
-  add:x:/@.extra
+  add:x:/@.position-arg
     src:"after:{0}"
       :x:/@p5.web.widgets.find/*/0/-?value
 
@@ -134,17 +203,23 @@ else
 
 /*
  * The creating editor for currently edited file.
+ *
+ * This will create both the activate button, and the actual editor itself.
+ * First making sure we pass in our activate button positioning argument.
  */
 add:x:/+/*/button
-  src:x:/@.extra/*
+  src:x:/@.position-arg/*
 create-widgets
+
+  /*
+   * First our activate button.
+   */
   button
     innerValue:x:/@split/0/-?name
     style:"margin-bottom:0;"
     title:x:/../*/file?value
     class:hyper-ide-editor-selector toggled
-    .file:x:/../*/file?value
-    .editor-selector
+    .activate-btn:x:/../*/file?value
     onclick
 
       /*
@@ -156,29 +231,30 @@ create-widgets
         class:hide
 
       /*
-       * Then finding editor belonging to currently clicked button.
+       * Then finding editor belonging to currently clicked button, and making 
+       * sure we make it visible.
        */
       get-widget-property:x:/../*/_event?value
-        .file
+        .activate-btn
       p5.web.widgets.find
         .editor:x:/@get-widget-property/*/*?value
       micro.css.delete:x:/-/*/*?value
         class:hide
 
       /*
-       * The removing toggled class for all editor selector buttons, before we
-       * add the toggled class for currently clicked button.
+       * Then removing toggled class for all editor selector buttons, before we
+       * add the toggled class for only the currently clicked button.
        */
       p5.web.widgets.find
-        .editor-selector
+        .activate-btn
       micro.css.delete:x:/-/*/*?value
         class:toggled
       micro.css.add:x:/../*/_event?value
         class:toggled
 
       /*
-       * Then setting header to filename, to make sure becomes conscious 
-       * about which file he is editing.
+       * Then setting header to filename being currently edited, to make sure the
+       * user has visual clues about which file is actually edited.
        */
       get-widget-property:x:/../*/_event?value
         title
@@ -192,11 +268,18 @@ create-widgets
       micro.widgets.tree.select-items:hyper-ide-folder-tree-browser
         items
 
+  /*
+   * Then the wrapper for our editor's actual content.
+   */
   div
     parent:hyper-ide-editors-wrapper
     class:hyper-ide-editor-wrapper
     .editor:x:/../*/file?value
     widgets
+
+      /*
+       * Toolbar buttons for editor instance.
+       */
       div
         class:right air-top
         widgets
@@ -204,17 +287,67 @@ create-widgets
             class:strip
             style:"display:inline-block;"
             widgets
+
+              /*
+               * Save button.
+               */
               button
                 style:"padding-left:35px;padding-right:35px;margin-bottom:0;"
                 innerValue:@"<span class=""icon-floppy-disk""></span>"
+
+              /*
+               * Close editor button.
+               */
               button
                 innerValue:@"<span class=""icon-cross""></span>"
                 style:"margin-bottom:0;"
                 onclick
 
                   /*
-                   * Closing editor.
+                   * Deleting actual editor widget.
                    */
                   p5.web.widgets.find-first-ancestor:x:/../*/_event?value
                     .editor
-                  delete-widget:x:/-/*/*?value
+
+                  /*
+                   * We need to figure the filename for currently closed instance,
+                   * such that we can later also find its activate button, and 
+                   * delete it.
+                   */
+                  get-widget-property:x:/@p5.web.widgets.find-first-ancestor/*/*?value
+                    .editor
+
+                  /*
+                   * Then we can delete actual editor instance.
+                   */
+                  delete-widget:x:/@p5.web.widgets.find-first-ancestor/*/*?value
+
+                  /*
+                   * Then deleting its activate button.
+                   */
+                  p5.web.widgets.find
+                    .activate-btn:x:/@get-widget-property/*/*?value
+                  delete-widget:x:/@p5.web.widgets.find/*/*?value
+
+                  /*
+                   * Checking if this is our last open editor, at which point we
+                   * delete the editor wrapper entirely.
+                   */
+                  p5.web.widgets.find
+                    .activate-btn
+                  if:x:/@p5.web.widgets.find/*/*?count
+                    =:int:0
+
+                    /*
+                     * Deleting editors wrapper.
+                     */
+                    delete-widget:hyper-ide-editors-wrapper
+
+                  else
+
+                    /*
+                     * Clicking the first activate button in above list, to
+                     * make sure we activate the first editor.
+                     */
+                    p5.web.widgets.ajax-events.raise:x:/@p5.web.widgets.find/*/0?value
+                      onclick
