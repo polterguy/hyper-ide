@@ -14,6 +14,12 @@ It should work in all browsers, including most mobile browsers, allowing you to 
 if you wish. Hyper IDE is a web based IDE, so unless you intend to run it through Visual Studio, or 
 something similar, through localhost, it probably performs best through some sort of web/intranet server.
 
+Hyper IDE is actually extremely small in size. At the time of this writing, probably less than 2,000
+lines of code, although (obviously) that number will increase in the future. This is only possible due
+to the extreme modularised nature of Hyperlambda, which it is built in, which facilitates for extreme
+reuse, allowing me to exclusively build it, from pre-built components, such as the TreeView in Micro,
+CodeMirror, etc.
+
 ## Performance
 
 One of my primary reasons for creating Hyper IDE, was actually due to that Visual Studio on my Mac 
