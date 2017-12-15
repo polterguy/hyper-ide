@@ -8,17 +8,28 @@ create-event:hyper-ide.plugins.js.minify
       innerValue:@"<span class=""icon-file-zip""></span>"
       title:Minifies your JavaScript
       onclick
-
         /*
          * Retrieves code for currently visible editor, minifies it, and updates 
          * value of editor.
+         *
+         * Notice, we also calculate length of both original version and minified version,
+         * to give user some feedback about how many percent of the code was eliminated.
          */
         hyper-ide.get-code
-        p5.web.javascript.minify:x:/-?value
-        hyper-ide.set-code:x:/-?value
+        length:x:/@hyper-ide.get-code?value
+        p5.web.javascript.minify:x:/@hyper-ide.get-code?value
+        length:x:/@p5.web.javascript.minify?value
+        hyper-ide.set-code:x:/@p5.web.javascript.minify?value
 
         /*
-         * Notifying user.
+         * Notifying user, making sure we inform him of how many percent of the code was removed.
          */
-        micro.windows.info:JavaScript was successfully minified
+        /:x:/../*/length/[1,2]?value.decimal
+          _:x:/../*/length/[0,1]?value.decimal
+        -:decimal:1
+          _:x:/./-?value
+        *:x:/-?value
+          _:100
+        micro.windows.info:"JavaScript was successfully minified, we saved {0}%"
+          :x:/@*?value.int
           class:micro-windows-info success
