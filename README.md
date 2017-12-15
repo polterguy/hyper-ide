@@ -65,6 +65,21 @@ Some features which are high up on my TODO are as follows.
 
 However, in general, it is already a very feature rich IDE.
 
+## Installation
+
+If you want to use it locally, you'll need some sort of .Net/Mono runtime, e.g. Visual Studiom MonoDevelop,
+or Xamarin (now Visual Studio for Mac), in addition to the following.
+
+* MySQL (Hypereval depends upon it)
+* GnuPG (the Bazar depends upon it)
+* [Phosphorus Five](https://github.com/polterguy/phosphorusfive)
+* [Micro](https://github.com/polterguy/micro)
+
+The easiest way to install Hyper IDE though, is to [install Phosphorus Five](https://github.com/polterguy/phosphorusfive),
+for then to afterwards simply visit _"The Bazar"_ and download it. If you want a more manual process,
+you'll need to unzip Hyper IDE's download into your _"modules"_ folder, which you can find inside of
+your main Phosphorus Five download folder's _"core/p5.webapp"_ folder.
+
 ## Usage
 
 Although Hyper IDE can be used for any of the programming languages it supports, I suspect it will be
