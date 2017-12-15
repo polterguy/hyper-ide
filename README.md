@@ -53,6 +53,7 @@ previewer, are plugins, and not a part of the core IDE itself. Below is a non-ex
 * Intelligent indentation while editing
 * Automatically closing brackets
 * Error feedback, when a syntax error is in your code
+* Tracking of active item in _"file explorer"_ (think _"solution explorer"_ if you come from a Visual Studio background)
 
 Some features which are high up on my TODO are as follows.
 
