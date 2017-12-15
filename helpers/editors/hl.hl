@@ -24,4 +24,4 @@ eval-x:x:/+/*/*/value
 return
   hypereval.widgets.hyperlambda-textarea
     value:x:/../*/content?value
-    height:600px
+    height:635px

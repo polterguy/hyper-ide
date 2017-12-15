@@ -10,11 +10,16 @@
     float: left;
 }
 .hyper-ide-folder-browser {
+    height:670px;
+    overflow:scroll;
 }
 .hyper-ide-editor-selector {
     border-bottom-left-radius:0;
     border-bottom-right-radius:0;
     border-bottom:none;
+    max-width:120px;
+    overflow:hidden;
+    text-overflow:ellipsis;
 }
 .hyper-ide-editor-selector {
     margin-left:.5rem;

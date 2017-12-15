@@ -108,8 +108,8 @@ else
    */
   p5.web.widgets.find
     class:hyper-ide-editor-wrapper
-  set-widget-property:x:/-/*/*?value
-    visible:false
+  micro.css.add:x:/-/*/*?value
+    class:hide
 
   /*
    * In addition we need to delete the toggled CSS class for all editor selectors.
@@ -152,8 +152,8 @@ create-widgets
        */
       p5.web.widgets.find
         .editor
-      set-widget-property:x:/-/*/*?value
-        visible:false
+      micro.css.add:x:/-/*/*?value
+        class:hide
 
       /*
        * Then finding editor belonging to currently clicked button.
@@ -162,8 +162,8 @@ create-widgets
         .file
       p5.web.widgets.find
         .editor:x:/@get-widget-property/*/*?value
-      set-widget-property:x:/-/*/*?value
-        visible:true
+      micro.css.delete:x:/-/*/*?value
+        class:hide
 
       /*
        * The removing toggled class for all editor selector buttons, before we
