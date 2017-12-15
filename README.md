@@ -89,6 +89,11 @@ sluggish, I have now almost completely replaced Visual Studio myself with Hyper 
 things such as C# component development, where Visual Studio still is superior, due to superior 
 autocompletion, and features such as refactoring, etc.
 
+Hyper IDE was in fact for the most parts built with Hyper IDE. For instance, below you can see a 
+screenshot of me editing this file, at the exact point in time I wrote the text.
+
+![screenshot](media/screenshots/screenshot-3.png)
+
 ## Keyboard shortcuts
 
 Hyper IDE features tons of keyboard shortcuts. The most useful ones are as follows.
