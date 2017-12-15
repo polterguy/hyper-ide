@@ -33,6 +33,38 @@ how it can look with a different theme than the one that is used by default out 
 
 ![screenshot](media/screenshots/screenshot-2.png)
 
+## Features
+
+In addition to autocomplete, syntax highlighting, error feedback and such. Hyper IDE also features a
+rich plugin architecture, allowing you to easily create your own plugins (in Hyperlambda) if you wish.
+In fact, the minifier that is natively distributed as an integral part of Hyper IDE, and the Markdown
+previewer, are plugins, and not a part of the core IDE itself. Below is a non-exhautsive list of features.
+
+* Minify JavaScript and CSS files
+* Beautify CSS files (more beautifiers will come later)
+* Preview Markdown files
+* Maximise code editor (fills entire browser window if you want it to, Alt+M)
+* Browsing and editing all your files on your server's htmldoc folder
+* Downloading files to your local computer
+* Deleting, creating, editing any text file, e.g. PHP, JavaScript, CSS, Python files, etc
+* Creating new folders and modifying existing folders. Basically complete _'folder explorer'_ support
+* More than 100 languages supported out of the box (Markdown, HTML, JavaScript, CSS, Python, XML, PHP, Ruby, Go, C#, Hyperlambda, etc)
+* Multiple open files at the same time (in different tabs)
+* Intelligent indentation while editing
+* Automatically closing brackets
+* Error feedback, when a syntax error is in your code
+
+Some features which are high up on my TODO are as follows.
+
+* Ability to execute shell scripts on server, to integrate things such as GIT, compilation, etc.
+* More configuration options (today you'll have to choose theme through _'Hypereval'_ for instance)
+* Uploading of files
+* Backup of folders (downloading as ZIP files)
+* Uploading of files (both binary and text-based files)
+* Template support (choosing from a pre-defined set of templates when creating new files, according to file type)
+
+However, in general, it is already a very feature rich IDE.
+
 ## Usage
 
 Although Hyper IDE can be used for any of the programming languages it supports, I suspect it will be
