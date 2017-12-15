@@ -20,6 +20,7 @@
     max-width:120px;
     overflow:hidden;
     text-overflow:ellipsis;
+    white-space:nowrap;
 }
 .hyper-ide-editor-selector {
     margin-left:.5rem;
