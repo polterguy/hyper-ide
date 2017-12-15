@@ -107,6 +107,8 @@ Hyper IDE features tons of keyboard shortcuts. The most useful ones are as follo
 * Shift+Tab - De-indent selected code one tab level
 * Ctrl+Space - Shows autocompletion window (only for languages that supports this, such as HTML, JavaScript, XML, CSS etc)
 
+Hint, to open a file for editing, simply double click it in the _"solution explorer"_ (your file browser).
+
 ## License options
 
 Hyper IDE is a part of the GaiaSoul suite, and hence licensed as GPL version 3, but a proprietary license,
