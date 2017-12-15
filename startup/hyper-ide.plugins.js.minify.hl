@@ -5,8 +5,8 @@
 create-event:hyper-ide.plugins.js.minify
   return
     button
-      innerValue:@"<span class=""icon-shrink2""></span>"
-      title:Minifies your JavaScript, and updates the value of your editor
+      innerValue:@"<span class=""icon-file-zip""></span>"
+      title:Minifies your JavaScript
       onclick
 
         /*
