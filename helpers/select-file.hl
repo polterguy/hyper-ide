@@ -47,26 +47,10 @@ eval-x:x:/-
 eval-x:x:/+/**(/.value|/.file-name)
 create-widget:hyper-ide-active-object
   before:hyper-ide-main-toolbar
-  .file:x:/../*/file?value
+  .hyper-ide-file:x:/../*/file?value
   class:strip
   style:"display:inline-block;"
   widgets
-
-    button:hyper-ide-edit-file
-      innerValue:@"<span class=""icon-eye""></span>"
-      style:"margin-bottom:0;padding-left:35px;padding-right:35px;"
-      title:Edits your file
-      onclick
-
-        /*
-         * Passing in filename to file responsible for creating our editor.
-         *
-         * The next line is forward evaluated above.
-         */
-        .value:x:/../*/file?value
-        eval-x:x:/+/*
-        micro.evaluate.file:@IDE/helpers/edit-file.hl
-          file:x:/@.value?value
 
     button:hyper-ide-rename-file
       innerValue:@"<span class=""icon-pencil""></span>"
@@ -221,7 +205,7 @@ create-widget:hyper-ide-active-object
                            * Deleting file.
                            */
                           get-widget-property:hyper-ide-active-object
-                            .file
+                            .hyper-ide-file
                           delete-file:x:/-/*/*?value
 
                           /*

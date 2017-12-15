@@ -22,7 +22,7 @@ micro.lambda.contract.min:x:/..
  * Checking if file is already being edited.
  */
 p5.web.widgets.find
-  .activate-btn:x:/../*/file?value
+  .hyper-ide-activate-btn:x:/../*/file?value
 if:x:/-/*/*?value
 
   /*
@@ -95,7 +95,8 @@ if
       :x:/@split/0/-?name
 
   /*
-   * Specialised editor exists.
+   * Specialised editor exists, loading it by evaluating its file, and adding
+   * the returned arguments into above [.editor-instance] lambda.
    */
   eval-x:x:/+/*/content
   micro.evaluate.file:@IDE/helpers/editors/{0}.hl
@@ -151,7 +152,7 @@ hyper-ide.set-header:x:/../*/file?value
  * tab controls, and their activate buttons are positioned differently, than
  * their actual editor content.
  */
-.position-arg
+.activate-btn-position-arg
 if
   fetch:x:/0/0?value
     widget-exists:hyper-ide-editors-wrapper
@@ -165,7 +166,7 @@ if
   create-container-widget:hyper-ide-editors-wrapper
     parent:hyper-ide-file-editor
     style:"overflow:visible;"
-  add:x:/@.position-arg
+  add:x:/@.activate-btn-position-arg
     src
       parent:hyper-ide-editors-wrapper
 
@@ -175,7 +176,7 @@ else
    * A wrapper already exists, hence we hide all of the existing editors.
    */
   p5.web.widgets.find
-    .editor
+    .hyper-ide-editor
   micro.css.add:x:/-/*/*?value
     class:hide
 
@@ -185,7 +186,7 @@ else
    * These are the buttons that activate an editor instance.
    */
   p5.web.widgets.find
-    .activate-btn
+    .hyper-ide-activate-btn
   micro.css.delete:x:/-/*/*?value
     class:toggled
 
@@ -193,7 +194,7 @@ else
    * Making sure we position our activate button after the last existing activate 
    * button.
    */
-  add:x:/@.position-arg
+  add:x:/@.activate-btn-position-arg
     src:"after:{0}"
       :x:/@p5.web.widgets.find/*/0/-?value
 
@@ -208,7 +209,7 @@ else
  * First making sure we pass in our activate button positioning argument.
  */
 add:x:/+/*/button
-  src:x:/@.position-arg/*
+  src:x:/@.activate-btn-position-arg/*
 create-widgets
 
   /*
@@ -219,14 +220,14 @@ create-widgets
     style:"margin-bottom:0;"
     title:x:/../*/file?value
     class:hyper-ide-editor-selector toggled
-    .activate-btn:x:/../*/file?value
+    .hyper-ide-activate-btn:x:/../*/file?value
     onclick
 
       /*
        * First hiding all editors.
        */
       p5.web.widgets.find
-        .editor
+        .hyper-ide-editor
       micro.css.add:x:/-/*/*?value
         class:hide
 
@@ -235,9 +236,9 @@ create-widgets
        * sure we make it visible.
        */
       get-widget-property:x:/../*/_event?value
-        .activate-btn
+        .hyper-ide-activate-btn
       p5.web.widgets.find
-        .editor:x:/@get-widget-property/*/*?value
+        .hyper-ide-editor:x:/@get-widget-property/*/*?value
       micro.css.delete:x:/-/*/*?value
         class:hide
 
@@ -246,7 +247,7 @@ create-widgets
        * add the toggled class for only the currently clicked button.
        */
       p5.web.widgets.find
-        .activate-btn
+        .hyper-ide-activate-btn
       micro.css.delete:x:/-/*/*?value
         class:toggled
       micro.css.add:x:/../*/_event?value
@@ -274,7 +275,7 @@ create-widgets
   div
     parent:hyper-ide-editors-wrapper
     class:hyper-ide-editor-wrapper
-    .editor:x:/../*/file?value
+    .hyper-ide-editor:x:/../*/file?value
     widgets
 
       /*
@@ -296,6 +297,29 @@ create-widgets
                 innerValue:@"<span class=""icon-floppy-disk""></span>"
 
               /*
+               * "Maximise" button.
+               */
+              button
+                innerValue:@"<span class=""icon-enlarge2""></span>"
+                title:Toggles visibility of file browser
+                style:"margin-bottom:0;"
+                onclick
+
+                  /*
+                   * Checking if we should hide or display file browser.
+                   */
+                  get-widget-property:hyper-ide-file-browser-wrapper
+                    visible
+                  micro.css.toggle:hyper-ide-file-browser-wrapper
+                    class:hide
+                  micro.css.toggle:x:/../*/_event?value
+                    class:toggled
+                  micro.css.toggle:hyper-ide-file-editor
+                    class:col-60 col
+                  micro.css.toggle:hyper-ide-object-details
+                    class:hide
+
+              /*
                * Close editor button.
                */
               button
@@ -307,7 +331,7 @@ create-widgets
                    * Deleting actual editor widget.
                    */
                   p5.web.widgets.find-first-ancestor:x:/../*/_event?value
-                    .editor
+                    .hyper-ide-editor
 
                   /*
                    * We need to figure the filename for currently closed instance,
@@ -315,7 +339,7 @@ create-widgets
                    * delete it.
                    */
                   get-widget-property:x:/@p5.web.widgets.find-first-ancestor/*/*?value
-                    .editor
+                    .hyper-ide-editor
 
                   /*
                    * Then we can delete actual editor instance.
@@ -326,7 +350,7 @@ create-widgets
                    * Then deleting its activate button.
                    */
                   p5.web.widgets.find
-                    .activate-btn:x:/@get-widget-property/*/*?value
+                    .hyper-ide-activate-btn:x:/@get-widget-property/*/*?value
                   delete-widget:x:/@p5.web.widgets.find/*/*?value
 
                   /*
@@ -334,7 +358,7 @@ create-widgets
                    * delete the editor wrapper entirely.
                    */
                   p5.web.widgets.find
-                    .activate-btn
+                    .hyper-ide-activate-btn
                   if:x:/@p5.web.widgets.find/*/*?count
                     =:int:0
 
@@ -342,6 +366,11 @@ create-widgets
                      * Deleting editors wrapper.
                      */
                     delete-widget:hyper-ide-editors-wrapper
+
+                    /*
+                     * Since there are no open files anymore, we reset the header of app.
+                     */
+                    hyper-ide.set-header:Hyper IDE
 
                   else
 
@@ -351,3 +380,4 @@ create-widgets
                      */
                     p5.web.widgets.ajax-events.raise:x:/@p5.web.widgets.find/*/0?value
                       onclick
+

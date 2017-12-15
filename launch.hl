@@ -81,26 +81,6 @@ create-widget:hyper-ide-main-container
                   class:strip toolbar
                   style:"display:inline-block;margin-left:1rem;"
                   widgets
-                    button
-                      innerValue:@"<span class=""icon-eye""></span>"
-                      title:Toggles visibility of file browser
-                      class:toggled
-                      style:"margin-bottom:0;"
-                      onclick
-
-                        /*
-                         * Checking if we should hide or display file browser.
-                         */
-                        get-widget-property:hyper-ide-file-browser-wrapper
-                          visible
-                        micro.css.toggle:hyper-ide-file-browser-wrapper
-                          class:hide
-                        micro.css.toggle:x:/../*/_event?value
-                          class:toggled
-                        micro.css.toggle:hyper-ide-file-editor
-                          class:col-60 col
-                        micro.css.toggle:hyper-ide-object-details
-                          class:hide
 
                     button
                       innerValue:@"<span class=""icon-home3""></span>"
@@ -212,11 +192,26 @@ create-widget:hyper-ide-main-container
                       /*
                        * Request for file.
                        *
-                       * Invoking file responsible for selecting the folder.
+                       * Invoking file responsible for selecting the file.
                        */
                       eval-x:x:/+/*
                       micro.evaluate.file:@IDE/helpers/select-file.hl
                         file:x:/../*/items/0?name
+
+                      /*
+                       * Checking if this was the file that was previously selected,
+                       * which implies that user clicked the same file twice, at
+                       * which point we start editing it.
+                       */
+                      if:x:/../*/double-clicked?value
+                        =:bool:true
+
+                        /*
+                         * Since file was "double clicked", we instantiate its editor.
+                         */
+                        eval-x:x:/+/*
+                        micro.evaluate.file:@IDE/helpers/edit-file.hl
+                          file:x:/../*/items/0?name
 
         /*
          * Wrapper for our file editor.
