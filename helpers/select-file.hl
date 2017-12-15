@@ -42,6 +42,19 @@ eval-x:x:/-
 
 
 /*
+ * Making sure user can't download protected files.
+ */
+switch:x:/../*/file?value
+  case:/auth.hl
+    add:x:/../*/create-widget/**/button/=hyper-ide-download-file
+      src
+        disabled
+
+
+
+
+
+/*
  * Making sure we create our "Active Object" widget.
  */
 eval-x:x:/+/**(/.value|/.file-name)
@@ -52,6 +65,9 @@ create-widget:hyper-ide-active-object
   style:"display:inline-block;"
   widgets
 
+    /*
+     * Renames file.
+     */
     button:hyper-ide-rename-file
       innerValue:@"<span class=""icon-pencil""></span>"
       style:"margin-bottom:0;"
@@ -166,6 +182,25 @@ create-widget:hyper-ide-active-object
                            */
                           delete-widget:hyper-ide-confirm-rename-file
 
+    /*
+     * Downloads file.
+     */
+    button:hyper-ide-download-file
+      innerValue:@"<span class=""icon-download2""></span>"
+      title:Download file
+      style:"margin-bottom:0;"
+      onclick
+
+        /*
+         * Using Micro to download file.
+         */
+        get-widget-property:hyper-ide-active-object
+          .hyper-ide-file
+        micro.download.file:x:/-/*/*?value
+
+    /*
+     * Deletes file.
+     */
     button:hyper-ide-delete-file
       innerValue:@"<span class=""icon-bin""></span>"
       title:Deletes your file
