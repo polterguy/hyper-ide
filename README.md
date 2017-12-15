@@ -164,9 +164,34 @@ It consumes ridiculously small amounts of bandwidth, if you consider what it act
 up Hyper IDE, and start editing a handful of code files, seldom downloads more than  ~0.5MB of data
 from my server. Of course depending upon how large your code files are. Notice though, if you have many
 large code files open at the same time, performance starts dropping, and you will experience lag in your
-HTTP requests. I suggest not having more than 5 files open at the same time.
+HTTP requests. I suggest not having more than 5 files open at the same time. Below is a screenshot of
+how it can look with a different theme than the one that is used by default out of the box.
 
+![screenshot](media/screenshots/screenshot-2.png)
 
+## Usage
 
+Although Hyper IDE can be used for any of the programming languages it supports, I suspect it will be
+most useful for things such as HTML, JavaScript, CSS, Python, PHP and Hyperlambda - Languages which
+somehow creates websites, without compilation occurring. However, as Visual Studio becomes increasingly
+sluggish, I have now almost completely replaced Visual Studio myself with Hyper IDE, for anything besides 
+things such as C# component development, where Visual Studio still is superior, due to superior 
+autocompletion, and features such as refactoring, etc.
 
+## Keyboard shortcuts
+
+Hyper IDE features tons of keyboard shortcuts. The most useful ones are as follows.
+
+* Cmd+F, Alt+F - Find (supports regular expressions)
+* Cmd+Alt+F, Ctrl+Alt+F - Replace (supports _'replace all'_)
+* Alt+M - Maximise code editor
+* Alt+G - Go to line
+* Tab - Indent selected code one additional tab level
+* Shift+Tab - De-indent selected code one tab level
+* Ctrl+Space - Shows autocompletion window (only for languages that supports this, such as HTML, JavaScript, XML, CSS etc)
+
+## License options
+
+Hyper IDE is a part of the GaiaSoul suite, and hence licensed as GPL version 3, but a proprietary license,
+with professional support can be purchased. Check out [my website for details](https://gaiasoul.com/license).
 
