@@ -13,6 +13,7 @@ Hyper IDE is built on top of CodeMirror and Phosphorus Five, and in its entirety
 It should work in all browsers, including most mobile browsers, allowing you to code from your iPhone
 if you wish. Hyper IDE is a web based IDE, so unless you intend to run it through Visual Studio, or 
 something similar, through localhost, it probably performs best through some sort of web/intranet server.
+The underlaying technology is ASP.NET/Mono and WebForms.
 
 Hyper IDE is actually extremely small in size. At the time of this writing, it is 2176 lines of code,
 although (obviously) that number will increase in the future. This is only possible due to the extreme 
