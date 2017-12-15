@@ -1,0 +1,52 @@
+/*
+ * Create our Markdown preview plugin button for editor.
+ */
+create-event:hyper-ide.plugins.md.preview
+  return
+    button
+      innerValue:@"<span class=""icon-eye""></span>"
+      title:Preview your Markdown
+      onclick
+
+        /*
+         * Retrieves code.
+         */
+        hyper-ide.get-code
+
+        /*
+         * Transforming content to Markdown.
+         */
+        markdown2html:x:/@hyper-ide.get-code?value
+
+        /*
+         * Opens a modal window, displaying the Markdown as HTML.
+         */
+        eval-x:x:/+/*/*/*/div/*/innerHtml
+        create-widgets
+          micro.widgets.modal:hyper-ide-markdown-preview-modal
+            widgets
+              div
+                innerValue:x:/@markdown2html?value
+              div
+                class:right
+                widgets
+                  div
+                    class:strip
+                    style:"display:inline-block;"
+                    widgets
+                      button
+                        innerValue:Close
+                        style:"margin-bottom:0;"
+                        oninit
+
+                          /*
+                           * Setting initial focus to close button.
+                           */
+                          micro.page.set-focus:x:/../*/_event?value
+
+                        onclick
+
+                          /*
+                           * Deleting modal widget.
+                           */
+                          delete-widget:hyper-ide-markdown-preview-modal
