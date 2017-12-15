@@ -9,14 +9,34 @@ create-event:hyper-ide.plugins.md.preview
       onclick
 
         /*
-         * Retrieves code.
+         * Retrieves code and filename.
+         *
+         * The latter is necessary to figure out relative URL to use
+         * for fetching relative images, etc.
          */
         hyper-ide.get-code
+        hyper-ide.get-filename
+
+        /*
+         * Figuring out root URL for document.
+         */
+        split:x:/@hyper-ide.get-filename?value
+          =:/
+        set:x:/@split/0/-
+        join:x:/@split/*?name
+          sep:/
+        set:x:/@join?value
+          src:/{0}/
+            :x:/@join?value
+        trim:x:/@join?value
+          chars://
 
         /*
          * Transforming content to Markdown.
          */
         markdown2html:x:/@hyper-ide.get-code?value
+          root-url:{0}
+            :x:/@join?value
 
         /*
          * Opens a modal window, displaying the Markdown as HTML.
@@ -25,6 +45,7 @@ create-event:hyper-ide.plugins.md.preview
         create-widgets
           micro.widgets.modal:hyper-ide-markdown-preview-modal
             widgets
+              text:@"<style>img{max-width:100%;}</style>"
               div
                 innerValue:x:/@markdown2html?value
               div
