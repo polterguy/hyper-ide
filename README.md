@@ -14,11 +14,16 @@ It should work in all browsers, including most mobile browsers, allowing you to 
 if you wish. Hyper IDE is a web based IDE, so unless you intend to run it through Visual Studio, or 
 something similar, through localhost, it probably performs best through some sort of web/intranet server.
 
-Hyper IDE is actually extremely small in size. At the time of this writing, probably less than 2,000
-lines of code, although (obviously) that number will increase in the future. This is only possible due
-to the extreme modularised nature of Hyperlambda, which it is built in, which facilitates for extreme
-reuse, allowing me to exclusively build it, from pre-built components, such as the TreeView in Micro,
-CodeMirror, etc.
+Hyper IDE is actually extremely small in size. At the time of this writing, it is 2176 lines of code,
+although (obviously) that number will increase in the future. This is only possible due to the extreme 
+modularised nature of Hyperlambda, which it is built in, which facilitates for extreme reuse, allowing 
+me to exclusively build it, from pre-built components, such as the TreeView in Micro, CodeMirror, etc.
+Most of the code is also comments. I suspect there is no more than 800 lines of code in Hyper IDE, if
+you remove the comments.
+
+However, 2,000 lines of code in total as of today. To put that number into perspectives, realise that
+the Bootstrap CSS DateTimePicker is 5,000 lines of code. It picks dates, Hyper IDE is a complete 
+integrated development environment, with support for more than 100 languages!
 
 ## Performance
 
