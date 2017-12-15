@@ -62,25 +62,17 @@ create-widget:hyper-ide-main-container
         div
           class:col-100
           widgets
-            h3
+            h4
+              class:hyper-ide-header
               innerValue:Hyper IDE
-              style:"float:left;"
               events
 
                 /*
                  * Event responsible for setting header of module.
                  */
                 hyper-ide.set-header
-                  if:x:/../*/_arg?value
-                    not
-                    or:x:/../*/_arg?value
-                      =:
-                    set-widget-property:x:/../*/_event?value
-                      innerValue:Hyper IDE
-                  else
-                    set-widget-property:x:/../*/_event?value
-                      innerValue:Hyper IDE <small>{{{0}}}</small>
-                        :x:/../*/_arg?value
+                  set-widget-property:x:/../*/_event?value
+                    innerValue:x:/../*/_arg?value
 
             div
               class:right

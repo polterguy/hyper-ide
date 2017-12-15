@@ -5,5 +5,20 @@
 .container {
     margin-bottom:150px;
 }
+.hyper-ide-header {
+    color: #c0c0c0;
+    float: left;
+}
 .hyper-ide-folder-browser {
+}
+.hyper-ide-editor-selector {
+    border-bottom-left-radius:0;
+    border-bottom-right-radius:0;
+    border-bottom:none;
+}
+.hyper-ide-editor-selector {
+    margin-left:.5rem;
+}
+.hyper-ide-editor-selector:nth-child(1) {
+    margin-left:.2rem;
 }

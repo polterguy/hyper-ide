@@ -187,15 +187,6 @@ if:x:/@.allow-child?value
 
 
 /*
- * Invoking event responsible for changing header.
- */
-hyper-ide.set-header:x:/../*/folder?value
-
-
-
-
-
-/*
  * Making sure we create our "Active Object" widget.
  */
 eval-x:x:/+/**(/.value|/.folder-name)

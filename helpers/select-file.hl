@@ -42,15 +42,6 @@ eval-x:x:/-
 
 
 /*
- * Invoking event responsible for changing header.
- */
-hyper-ide.set-header:x:/../*/file?value
-
-
-
-
-
-/*
  * Making sure we create our "Active Object" widget.
  */
 eval-x:x:/+/**(/.value|/.file-name)

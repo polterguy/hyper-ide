@@ -19,6 +19,24 @@ micro.lambda.contract.min:x:/..
 
 
 /*
+ * Checking if file is already being edited.
+ */
+p5.web.widgets.find
+  .editor:x:/../*/file?value
+if:x:/-/*/*?value
+
+  /*
+   * file is already being edited, warning user, and returning early.
+   */
+  micro.windows.info:File is already open in another editor
+    class:micro-windows-info warning
+  return
+
+
+
+
+
+/*
  * Loading file, getting ready to launch editor.
  */
 load-file:x:/../*/file?value
@@ -38,6 +56,8 @@ eval-x:x:/+/*/content
 micro.evaluate.file:@IDE/helpers/editors/{0}.hl
   :x:/@split/0/-?name
   content:x:/@load-file/*?value
+split:x:/../*/file?value
+  =:/
 
 
 
@@ -46,7 +66,7 @@ micro.evaluate.file:@IDE/helpers/editors/{0}.hl
 /*
  * Making sure we pass in special editor retrieved above.
  */
-insert-after:x:/../*/create-widget/*/widgets/*/label/[0,1]
+insert-before:x:/../*/create-widgets/*/div/*/widgets/0
   src:x:/@micro.evaluate.file/*
 
 
@@ -54,35 +74,147 @@ insert-after:x:/../*/create-widget/*/widgets/*/label/[0,1]
 
 
 /*
- * Creating editor.
+ * Setting header to file being edited.
  */
-create-widget
-  parent:hyper-ide-file-editor
-  class:bg air-inner shaded rounded
-  style:"overflow:visible;"
-  .editor:x:/../*/file?value
-  widgets
-    label
-      innerValue:x:/../*/file?value
-      style:"margin-bottom:0;"
-    div
-      class:right air-top
-      widgets
-        div
-          class:strip
-          style:"display:inline-block;"
-          widgets
-            button
-              style:"padding-left:35px;padding-right:35px;margin-bottom:0;"
-              innerValue:@"<span class=""icon-floppy-disk""></span>"
-            button
-              innerValue:@"<span class=""icon-cross""></span>"
-              style:"margin-bottom:0;"
-              onclick
+hyper-ide.set-header:x:/../*/file?value
 
-                /*
-                 * Closing editor.
-                 */
-                p5.web.widgets.find-first-ancestor:x:/../*/_event?value
-                  .editor
-                delete-widget:x:/-/*/*?value
+
+
+
+
+/*
+ * Creating editor, first making sure we have our main wrapper for all editors.
+ */
+.extra
+if
+  fetch:x:/0/0?value
+    widget-exists:hyper-ide-editors-wrapper
+  not
+
+  /*
+   * Need to create main editors wrapper.
+   */
+  create-container-widget:hyper-ide-editors-wrapper
+    parent:hyper-ide-file-editor
+    style:"overflow:visible;"
+  add:x:/@.extra
+    src
+      parent:hyper-ide-editors-wrapper
+
+else
+
+  /*
+   * If wrapper is already visible, we need to hide all existing editors.
+   */
+  p5.web.widgets.find
+    class:hyper-ide-editor-wrapper
+  set-widget-property:x:/-/*/*?value
+    visible:false
+
+  /*
+   * In addition we need to delete the toggled CSS class for all editor selectors.
+   */
+  p5.web.widgets.find
+    .editor-selector
+  micro.css.delete:x:/-/*/*?value
+    class:toggled
+
+  /*
+   * Finding last editor selector button.
+   */
+  p5.web.widgets.find
+    .editor-selector
+  add:x:/@.extra
+    src:"after:{0}"
+      :x:/@p5.web.widgets.find/*/0/-?value
+
+
+
+
+
+/*
+ * The creating editor for currently edited file.
+ */
+add:x:/+/*/button
+  src:x:/@.extra/*
+create-widgets
+  button
+    innerValue:x:/@split/0/-?name
+    style:"margin-bottom:0;"
+    title:x:/../*/file?value
+    class:hyper-ide-editor-selector toggled
+    .file:x:/../*/file?value
+    .editor-selector
+    onclick
+
+      /*
+       * First hiding all editors.
+       */
+      p5.web.widgets.find
+        .editor
+      set-widget-property:x:/-/*/*?value
+        visible:false
+
+      /*
+       * Then finding editor belonging to currently clicked button.
+       */
+      get-widget-property:x:/../*/_event?value
+        .file
+      p5.web.widgets.find
+        .editor:x:/@get-widget-property/*/*?value
+      set-widget-property:x:/-/*/*?value
+        visible:true
+
+      /*
+       * The removing toggled class for all editor selector buttons, before we
+       * add the toggled class for currently clicked button.
+       */
+      p5.web.widgets.find
+        .editor-selector
+      micro.css.delete:x:/-/*/*?value
+        class:toggled
+      micro.css.add:x:/../*/_event?value
+        class:toggled
+
+      /*
+       * Then setting header to filename, to make sure becomes conscious 
+       * about which file he is editing.
+       */
+      get-widget-property:x:/../*/_event?value
+        title
+      hyper-ide.set-header:x:/@get-widget-property/*/*?value
+
+      /*
+       * Then making sure we track our active item in our TreeView.
+       */
+      add:x:/../*/micro.widgets.tree.select-items/*/items
+        src:x:/@get-widget-property/*/*?value
+      micro.widgets.tree.select-items:hyper-ide-folder-tree-browser
+        items
+
+  div
+    parent:hyper-ide-editors-wrapper
+    class:hyper-ide-editor-wrapper
+    .editor:x:/../*/file?value
+    widgets
+      div
+        class:right air-top
+        widgets
+          div
+            class:strip
+            style:"display:inline-block;"
+            widgets
+              button
+                style:"padding-left:35px;padding-right:35px;margin-bottom:0;"
+                innerValue:@"<span class=""icon-floppy-disk""></span>"
+              button
+                innerValue:@"<span class=""icon-cross""></span>"
+                style:"margin-bottom:0;"
+                onclick
+
+                  /*
+                   * Closing editor.
+                   */
+                  p5.web.widgets.find-first-ancestor:x:/../*/_event?value
+                    .editor
+                  delete-widget:x:/-/*/*?value
