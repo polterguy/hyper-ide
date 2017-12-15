@@ -1,0 +1,24 @@
+
+/*
+ * Create our minify CSS plugin for editor.
+ */
+create-event:hyper-ide.plugins.css.minify
+  return
+    button
+      innerValue:@"<span class=""icon-shrink2""></span>"
+      title:Minifies your JavaScript, and updates the value of your editor
+      onclick
+
+        /*
+         * Retrieves code for currently visible editor, minifies it, and updates 
+         * value of editor.
+         */
+        hyper-ide.get-code
+        p5.web.css.minify:x:/-?value
+        hyper-ide.set-code:x:/-?value
+
+        /*
+         * Notifying user.
+         */
+        micro.windows.info:CSS was successfully minified
+          class:micro-windows-info success
