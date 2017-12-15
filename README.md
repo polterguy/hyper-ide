@@ -23,7 +23,9 @@ you remove the comments.
 
 However, 2,000 lines of code in total as of today. To put that number into perspectives, realise that
 the Bootstrap CSS DateTimePicker is 5,000 lines of code. It picks dates, Hyper IDE is a complete 
-integrated development environment, with support for more than 100 languages!
+integrated development environment, with support for more than 100 languages! The Bootstrap DateTimePicker
+is consuming more bandwidth for the record. But so is Google.com, Twitter.com and GMail.com. Hyper IDE
+consumes ridiculous small amounts of bandwidth, due to its underlaying technology.
 
 ## Performance
 
