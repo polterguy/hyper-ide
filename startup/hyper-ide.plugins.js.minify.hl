@@ -19,6 +19,24 @@ create-event:hyper-ide.plugins.js.minify
         length:x:/@hyper-ide.get-code?value
         p5.web.javascript.minify:x:/@hyper-ide.get-code?value
         length:x:/@p5.web.javascript.minify?value
+
+        /*
+         * Unless we could remove something during minification, we inform user,
+         * and return early.
+         */
+        if:x:/../*/length/[0,1]?value.decimal
+          =:x:/../*/length/[1,2]?value.decimal
+
+          /*
+           * No further minification is possible.
+           */
+          micro.windows.info:No further minification is possible
+            class:micro-windows-info warning
+          return
+
+        /*
+         * Updating code.
+         */
         hyper-ide.set-code:x:/@p5.web.javascript.minify?value
 
         /*
