@@ -55,6 +55,14 @@ switch:x:/@split/0/-?name
   case:pdb
   case:exe
   case:mdb
+
+    /*
+     * Warning user and returning early.
+     */
+    micro.windows.info:File cannot be edited in Hyper IDE
+      class:micro-windows-info warning
+    return
+
   case:png
   case:jpg
   case:jpeg
@@ -62,10 +70,11 @@ switch:x:/@split/0/-?name
   case:bmp
 
     /*
-     * Warning user and returning early.
+     * Warning user, downloading file, and returning early.
      */
-    micro.windows.info:That file cannot be edited
+    micro.windows.info:File cannot be edited in Hyper IDE
       class:micro-windows-info warning
+    micro.download.file:x:/../*/file?value
     return
 
 
@@ -163,6 +172,7 @@ if:x:/@.editor-instance/*
    */
   micro.windows.info:We have no editor for these types of files
     class:micro-windows-info warning
+  micro.download.file:x:/../*/file?value
   return
 
 
