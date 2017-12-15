@@ -423,6 +423,13 @@ create-widgets
         class:toggled
 
       /*
+       * Setting focus automatically to active CM editor instance.
+       */
+      hyper-ide.get-code-editor
+      p5.web.send-javascript:@"p5['{0}'].focus();"
+        :x:/@hyper-ide.get-code-editor?value
+
+      /*
        * Then setting header to filename being currently edited, to make sure the
        * user has visual clues about which file is actually edited.
        */
