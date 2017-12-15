@@ -1,4 +1,3 @@
-
 /*
  * Maps file extensions to CodeMirror modes.
  */
@@ -55,6 +54,9 @@ mathml:xml
 config:xml
 plist:xml
 xaml:xml
+csproj:xml
+vbproj:xml
+sln:xml
 php:php
 php3:php
 php4:php
