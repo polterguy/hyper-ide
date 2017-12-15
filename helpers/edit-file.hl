@@ -307,6 +307,26 @@ if
           element:textarea
         return:x:/@p5.web.widgets.find/*/*?value
 
+      /*
+       * Returns filename for currently active editor.
+       */
+      hyper-ide.get-filename
+
+        /*
+         * First finding active editor.
+         */
+        p5.web.widgets.find
+          .hyper-ide-editor
+        get-widget-property:x:/@p5.web.widgets.find/*/*?value
+          class
+
+        /*
+         * Then retrieving its filename.
+         */
+        get-widget-property:x:/@get-widget-property/*/*(!/=~hide)/.?name
+          .hyper-ide-editor
+        return:x:/@get-widget-property/*/*?value
+
   add:x:/@.activate-btn-position-arg
     src
       parent:hyper-ide-editors-wrapper
