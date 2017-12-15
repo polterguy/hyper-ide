@@ -1,0 +1,21 @@
+
+/*
+ * Create our beautify CSS plugin for editor.
+ */
+create-event:hyper-ide.plugins.css.beautify
+  return
+    button
+      innerValue:@"<span class=""icon-leaf""></span>"
+      title:Beautifies your CSS
+      onclick
+
+        /*
+         * Sends JavaScript necessary to beautify CSS to client.
+         */
+        hyper-ide.get-code-editor
+        p5.web.include-javascript-file:@IDE/media/cssbeautify.js
+        p5.web.send-javascript:@"var css = p5.$('{0}').el.value;
+var res = cssbeautify(css);
+p5['{0}'].getDoc().setValue(res);
+"
+          :x:/@hyper-ide.get-code-editor?value
