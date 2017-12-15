@@ -198,7 +198,7 @@ create-widget:hyper-ide-active-object
   widgets
 
     button:hyper-ide-child-file
-      innerValue:@"<span class=""icon-file-empty""></span>"
+      innerValue:@"<span class=""icon-plus""></span>"
       title:Create a new file
       style:"margin-bottom:0;padding-left:35px;padding-right:35px;"
       onclick
