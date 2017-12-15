@@ -54,6 +54,7 @@ previewer, are plugins, and not a part of the core IDE itself. Below is a non-ex
 * Automatically closing brackets
 * Error feedback, when a syntax error is in your code
 * Tracking of active item in _"file explorer"_ (think _"solution explorer"_ if you come from a Visual Studio background)
+* Plugin support to create your own plugins, according to file extsnsions
 
 Some features which are high up on my TODO are as follows.
 
@@ -63,8 +64,11 @@ Some features which are high up on my TODO are as follows.
 * Backup of folders (downloading as ZIP files)
 * Uploading of files (both binary and text-based files)
 * Template support (choosing from a pre-defined set of templates when creating new files, according to file type)
+* Better plugin support, even though today's plugin support is actually fairly good
 
-However, in general, it is already a very feature rich IDE.
+However, in general, it is already a highly feature rich IDE, supporting most of the tasks you'd probably 
+like for your IDE to accomplish, paradoxically much faster and responsive than most other IDEs out there.
+At least the ones I have seen.
 
 ## Installation
 
