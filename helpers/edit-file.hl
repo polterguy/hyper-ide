@@ -89,10 +89,12 @@ load-file:x:/../*/file?value
  * First checking if a specialised editor exists.
  */
 .editor-instance
-if
-  fetch:x:/0/0?value
-    file-exists:@IDE/helpers/editors/{0}.hl
-      :x:/@split/0/-?name
+if:x:/@split/*?count
+  >:int:1
+  and
+    fetch:x:/0/0?value
+      file-exists:@IDE/helpers/editors/{0}.hl
+        :x:/@split/0/-?name
 
   /*
    * Specialised editor exists, loading it by evaluating its file, and adding
@@ -109,7 +111,59 @@ else
 
   /*
    * Trying to use one of the standard CodeMirror editors.
+   *
+   * First loading file extension to CM mode file, to create our mapping.
    */
+  load-file:@IDE/configuration/extension2cm-instance.hl
+
+  /*
+   * Checking if specified mode exists.
+   */
+  if:x:/@load-file/*/*/{0}
+    :x:/@split/0/-?name
+
+    /*
+     * Extension to mode exists.
+     */
+    eval-x:x:/+/*/*/*
+    add:x:/@.editor-instance
+      src
+        hypereval.widgets.hyperlambda-textarea
+          mode:x:/@load-file/*/*/{0}?value
+            :x:/@split/0/-?name
+          value:x:/../*/load-file/*?value
+          height:635px
+
+  else
+
+    /*
+     * Defaulting mode to Markdown.
+     */
+    eval-x:x:/+/*/*/*
+    add:x:/@.editor-instance
+      src
+        hypereval.widgets.hyperlambda-textarea
+          mode:markdown
+          value:x:/../*/load-file/*?value
+          height:635px
+
+
+
+
+
+/*
+ * Figuring out if above logic was able to retrieve an editor at all, and if not,
+ * returning early, warning user first.
+ */
+if:x:/@.editor-instance/*
+  not
+
+  /*
+   * Warning user and returning early.
+   */
+  micro.windows.info:We have no editor for these types of files
+    class:micro-windows-info warning
+  return
 
 
 
@@ -166,6 +220,63 @@ if
   create-container-widget:hyper-ide-editors-wrapper
     parent:hyper-ide-file-editor
     style:"overflow:visible;"
+    events
+
+      /*
+       * Returns code for currently active editor.
+       */
+      hyper-ide.get-code
+
+        /*
+         * First finding active editor.
+         */
+        p5.web.widgets.find
+          .hyper-ide-editor
+        get-widget-property:x:/@p5.web.widgets.find/*/*?value
+          class
+
+        /*
+         * Then retrieving its textarea's innerValue, and returning it to caller.
+         */
+        p5.web.widgets.find:x:/@get-widget-property/*/*(!/=~hide)/.?name
+          element:textarea
+        get-widget-property:x:/@p5.web.widgets.find/*/*?value
+          value
+        return:x:/@get-widget-property/*/*?value
+
+      /*
+       * Sets code for currently active editor.
+       */
+      hyper-ide.set-code
+
+        /*
+         * First finding active editor.
+         */
+        p5.web.widgets.find
+          .hyper-ide-editor
+        get-widget-property:x:/@p5.web.widgets.find/*/*?value
+          class
+
+        /*
+         * Then retrieving its textarea.
+         */
+        p5.web.widgets.find:x:/@get-widget-property/*/*(!/=~hide)/.?name
+          element:textarea
+
+        /*
+         * Escaping any back-ticks in code.
+         */
+        replace:x:/../*/_arg?value
+          src:`
+          dest:\`
+
+        /*
+         * Updating value of CodeMirror instance on client side.
+         */
+        p5.web.send-javascript:@"p5['{0}'].getDoc().setValue(`{1}`);"
+          :x:/@p5.web.widgets.find/*/*?value
+          :x:/@replace?value
+
   add:x:/@.activate-btn-position-arg
     src
       parent:hyper-ide-editors-wrapper
@@ -203,6 +314,23 @@ else
 
 
 /*
+ * Retrieving plugin toolbar buttons, first for file type.
+ */
+vocabulary:~hyper-ide.plugins.{0}
+  :x:/../*/split/[0,1]/0/-?name
+.plugins
+  return:x:/../*/*
+insert-before:x:/@.plugins/0
+  src:x:/@vocabulary/*?value
+eval:x:/@.plugins
+insert-before:x:/../*/create-widgets/**/widgets/=toolbar-buttons/0/-2
+  src:x:/@eval/*
+
+
+
+
+
+/*
  * The creating editor for currently edited file.
  *
  * This will create both the activate button, and the actual editor itself.
@@ -224,7 +352,17 @@ create-widgets
     onclick
 
       /*
-       * First hiding all editors.
+       * Checking if this is our currently active editor, at which point we return
+       * early.
+       */
+      get-widget-property:x:/../*/_event?value
+        class:
+      if:x:/@get-widget-property/*/*?value
+        ~:toggled
+        return
+
+      /*
+       * Hiding all editors.
        */
       p5.web.widgets.find
         .hyper-ide-editor
@@ -287,7 +425,7 @@ create-widgets
           div
             class:strip
             style:"display:inline-block;"
-            widgets
+            widgets:toolbar-buttons
 
               /*
                * Save button.
@@ -312,10 +450,12 @@ create-widgets
                     visible
                   micro.css.toggle:hyper-ide-file-browser-wrapper
                     class:hide
-                  micro.css.toggle:x:/../*/_event?value
+                  p5.web.widgets.find:hyper-ide-editors-wrapper
+                    innerValue:@"<span class=""icon-enlarge2""></span>"
+                  micro.css.toggle:x:/-/*/*?value
                     class:toggled
                   micro.css.toggle:hyper-ide-file-editor
-                    class:col-60 col
+                    class:col-70 col
                   micro.css.toggle:hyper-ide-object-details
                     class:hide
 
