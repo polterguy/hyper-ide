@@ -277,6 +277,26 @@ if
           :x:/@p5.web.widgets.find/*/*?value
           :x:/@replace?value
 
+      /*
+       * Sets code for currently active editor.
+       */
+      hyper-ide.get-code-editor
+
+        /*
+         * First finding active editor.
+         */
+        p5.web.widgets.find
+          .hyper-ide-editor
+        get-widget-property:x:/@p5.web.widgets.find/*/*?value
+          class
+
+        /*
+         * Then retrieving its textarea, and returning the ID of it to caller.
+         */
+        p5.web.widgets.find:x:/@get-widget-property/*/*(!/=~hide)/.?name
+          element:textarea
+        return:x:/@p5.web.widgets.find/*/*?value
+
   add:x:/@.activate-btn-position-arg
     src
       parent:hyper-ide-editors-wrapper
@@ -320,8 +340,9 @@ vocabulary:~hyper-ide.plugins.{0}
   :x:/../*/split/[0,1]/0/-?name
 .plugins
   return:x:/../*/*
-insert-before:x:/@.plugins/0
-  src:x:/@vocabulary/*?value
+for-each:x:/@vocabulary/*?value
+  insert-before:x:/@.plugins/0/-
+    src:x:/@_dp?value
 eval:x:/@.plugins
 insert-before:x:/../*/create-widgets/**/widgets/=toolbar-buttons/0/-2
   src:x:/@eval/*
