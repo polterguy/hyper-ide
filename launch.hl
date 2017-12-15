@@ -116,7 +116,7 @@ create-widget:hyper-ide-main-container
          * Wrapper for our file browser.
          */
         div:hyper-ide-file-browser-wrapper
-          class:col-40
+          class:col-30
           widgets
             container
               class:bg air-inner shaded rounded hyper-ide-folder-browser
@@ -217,4 +217,4 @@ create-widget:hyper-ide-main-container
          * Wrapper for our file editor.
          */
         container:hyper-ide-file-editor
-          class:col-60
+          class:col-70
