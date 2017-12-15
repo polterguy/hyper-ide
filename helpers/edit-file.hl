@@ -464,6 +464,25 @@ create-widgets
               button
                 style:"padding-left:35px;padding-right:35px;margin-bottom:0;"
                 innerValue:@"<span class=""icon-floppy-disk""></span>"
+                onclick
+
+                  /*
+                   * Retriving filename.
+                   */
+                  p5.web.widgets.find-first-ancestor:x:/../*/_event?value
+                    .hyper-ide-editor
+                  get-widget-property:x:/@p5.web.widgets.find-first-ancestor/*/*?value
+                    .hyper-ide-editor
+
+                  /*
+                   * Retrieving editor's content, saving file, and providing some 
+                   * feedback to user.
+                   */
+                  hyper-ide.get-code
+                  save-file:x:/@get-widget-property/*/*?value
+                    src:x:/@hyper-ide.get-code?value
+                  micro.windows.info:File was successfully saved
+                    class:micro-windows-info success
 
               /*
                * "Maximise" button.
