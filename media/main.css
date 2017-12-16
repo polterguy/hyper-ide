@@ -24,6 +24,17 @@
     overflow:hidden;
     text-overflow:ellipsis;
     white-space:nowrap;
+    position:relative;
+    color:#c0c0c0;
+    font-style:italic;
+}
+#hyper-ide-editors-wrapper .toggled {
+    background:none;
+    background-color:#fefefe;
+    z-index:1;
+    font-weight:bold;
+    font-style:normal;
+    color:#a0a0a0;
 }
 .hyper-ide-editor-selector {
     margin-left:.5rem;
