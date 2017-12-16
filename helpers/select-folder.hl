@@ -187,6 +187,15 @@ if:x:/@.allow-child?value
 
 
 /*
+ * Setting header to active folder.
+ */
+hyper-ide.set-header:x:/../*/folder?value
+
+
+
+
+
+/*
  * Making sure we create our "Active Object" widget.
  */
 eval-x:x:/+/**(/.value|/.folder-name)
