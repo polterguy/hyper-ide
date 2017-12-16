@@ -142,8 +142,10 @@ else
             :x:/@split/0/-?name
           value:x:/../*/load-file/*?value
           height:635px
+          auto-focus:true
           .keys
             Alt-S:@"p5.$('hyper-ide-editors-wrapper').raise('.onsave');"
+            Alt-X:@"p5.$('hyper-ide-editors-wrapper').raise('.onclose');"
 
   else
 
@@ -157,8 +159,10 @@ else
           mode:markdown
           value:x:/../*/load-file/*?value
           height:635px
+          auto-focus:true
           .keys
             Alt-S:@"p5.$('hyper-ide-editors-wrapper').raise('.onsave');"
+            Alt-X:@"p5.$('hyper-ide-editors-wrapper').raise('.onclose');"
 
 
 
@@ -240,6 +244,13 @@ if
        * Saves active file.
        */
       hyper-ide.save-file
+
+    .onclose
+
+      /*
+       * Close active file editor.
+       */
+      hyper-ide.close
 
     events
 
@@ -357,6 +368,24 @@ if
           class
         p5.web.widgets.find-first:x:/@get-widget-property/*/*(!/=~hide)/.?name
           .save-button
+        p5.web.widgets.ajax-events.raise:x:/-/*/*?value
+          onclick
+
+
+      /*
+       * Close active file editor.
+       */
+      hyper-ide.close
+
+        /*
+         * First finding active editor.
+         */
+        p5.web.widgets.find
+          .hyper-ide-editor
+        get-widget-property:x:/@p5.web.widgets.find/*/*?value
+          class
+        p5.web.widgets.find-first:x:/@get-widget-property/*/*(!/=~hide)/.?name
+          .close-button
         p5.web.widgets.ajax-events.raise:x:/-/*/*?value
           onclick
 
@@ -577,6 +606,7 @@ create-widgets
               button
                 innerValue:@"<span class=""icon-cross""></span>"
                 style:"margin-bottom:0;"
+                .close-button
                 onclick
 
                   /*
@@ -618,11 +648,6 @@ create-widgets
                      * Deleting editors wrapper.
                      */
                     delete-widget:hyper-ide-editors-wrapper
-
-                    /*
-                     * Since there are no open files anymore, we reset the header of app.
-                     */
-                    hyper-ide.set-header:Hyper IDE
 
                   else
 

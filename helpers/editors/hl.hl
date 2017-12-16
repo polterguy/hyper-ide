@@ -25,5 +25,7 @@ return
   hypereval.widgets.hyperlambda-textarea
     value:x:/../*/content?value
     height:635px
+    auto-focus:true
     .keys
       Alt-S:@"p5.$('hyper-ide-editors-wrapper').raise('.onsave');"
+      Alt-X:@"p5.$('hyper-ide-editors-wrapper').raise('.onclose');"
