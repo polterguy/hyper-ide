@@ -69,11 +69,11 @@ previewer, are plugins, and not a part of the core IDE itself. Below is a non-ex
 * Automatically closing brackets
 * Error feedback, when a syntax error is in your code
 * Tracking of active item in _"file explorer"_ (think _"solution explorer"_ if you come from a Visual Studio background)
-* Plugin support to create your own plugins, according to file extsnsions
+* Plugin support to create your own plugins, according to file extensions
 
 Some features which are high up on my TODO are as follows.
 
-* Ability to execute shell scripts on server, to integrate things such as GIT, compilation, etc.
+* Ability to execute shell scripts on server, to integrate things such as GIT integration through shell scripts, compilation, etc.
 * More configuration options (today you'll have to choose theme through _'Hypereval'_ for instance)
 * Uploading of files
 * Backup of folders (downloading as ZIP files)
@@ -118,6 +118,7 @@ screenshot of me editing this file, at the exact point in time I wrote the text.
 
 Hyper IDE features tons of keyboard shortcuts. The most useful ones are as follows.
 
+* Alt+S - Saves active file
 * Cmd+F, Alt+F - Find (supports regular expressions)
 * Cmd+Alt+F, Ctrl+Alt+F - Replace (supports _'replace all'_)
 * Alt+M - Maximise code editor
