@@ -65,7 +65,7 @@ create-widget:hyper-ide-main-container
   events
 
     /*
-     * Piongback event, invoked every n'th minute, to avoid being thrown out of session.
+     * Pingback event, invoked every n'th minute, to avoid being thrown out of session.
      *
      * This is done to avoid having user thrown out of his session, while editing files,
      * without raising an Ajax request for 20 minutes or more.
