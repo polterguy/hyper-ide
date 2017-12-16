@@ -1,4 +1,4 @@
-/*
+﻿/*
  * File responsible for starting app.
  *
  * This file is evaluated when the user clicks the desktop icon.
@@ -130,7 +130,7 @@ create-widget:hyper-ide-main-container
                         /*
                          * Showing settings for CM to user.
                          */
-                        hypereval.codemirror.settings
+                        micro.codemirror.settings
 
 
                     button
