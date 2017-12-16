@@ -19,6 +19,18 @@ micro.lambda.contract.min:x:/..
 
 
 /*
+ * Checking if splash screen is open, and closing it if it is.
+ */
+if
+  fetch:x:/0/0?value
+    widget-exists:hyper-ide-splash
+  delete-widget:hyper-ide-splash
+
+
+
+
+
+/*
  * Checking if file is already being edited.
  */
 p5.web.widgets.find
@@ -26,10 +38,20 @@ p5.web.widgets.find
 if:x:/@p5.web.widgets.find/*/*?value
 
   /*
-   * file is already being edited, activating file, and returning early.
+   * File is already being edited, activating file, and returning early, making
+   * sure we update the header before we return.
    */
   p5.web.widgets.ajax-events.raise:x:/@p5.web.widgets.find/*/*?value
     onclick
+
+  /*
+   * Setting header to file being edited.
+   */
+  hyper-ide.set-header:x:/../*/file?value
+
+  /*
+   * Returning early.
+   */
   return
 
 
@@ -725,9 +747,10 @@ create-widgets
                     =:int:0
 
                     /*
-                     * Deleting editors wrapper.
+                     * Deleting editors wrapper, and loading "splash screen".
                      */
                     delete-widget:hyper-ide-editors-wrapper
+                    hyper-ide.load-splash
 
                   else
 

@@ -132,7 +132,6 @@ create-widget:hyper-ide-main-container
                          */
                         micro.codemirror.settings
 
-
                     button
                       innerValue:@"<span class=""icon-home3""></span>"
                       title:Close Hypereval
@@ -149,7 +148,7 @@ create-widget:hyper-ide-main-container
      * Wrapper for actual content.
      */
     div
-      class:row
+      class:row air-top
       widgets
 
         /*
@@ -254,3 +253,29 @@ create-widget:hyper-ide-main-container
          */
         container:hyper-ide-file-editor
           class:col-70
+          events
+
+
+            /*
+             * Loads up "splash screen".
+             */
+            hyper-ide.load-splash
+
+              /*
+               * Creating our initial "splash" screen.
+               */
+              load-file:@IDE/helpers/splash.hl
+              add:x:/@load-file/*/*
+                src
+                  parent:hyper-ide-file-editor
+              add:x:/../*/create-widgets
+                src:x:/@load-file/*/*
+              create-widgets
+
+
+          oninit
+
+            /*
+             * Creating initial "splash" screen.
+             */
+            hyper-ide.load-splash

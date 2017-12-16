@@ -1,0 +1,45 @@
+﻿
+/*
+ * Initial "splash" screen.
+ */
+container:hyper-ide-splash
+  class:air-inner shaded rounded
+  style:"min-height:670px; position:relative;"
+  widgets
+    h3
+      innerValue:Hyper IDE
+    p
+      widgets
+        span
+          innerValue:@"A web based integrated development environment with support for ~100 programming languages."
+        literal
+          element:span
+          oninit
+
+            /*
+             * Checking if user has a valid license, and if not, displaying licensing information.
+             */
+            if
+              license.is-valid
+              not
+              set-widget-property:x:/../*/_event?value
+                innerValue:@"You don't seem to have a valid proprietary license. If you want to create closed 
+source apps with Hyper IDE, you might want to <a href=""/bazar?app=license"">obtain a proprietary license</a>."
+            else
+              delete-widget:x:/../*/_event?value
+
+        div
+          style:"padding-left:15%; padding-right:15%;margin-top:4rem;"
+          widgets
+            div
+              style:"position:relative; padding-bottom:56.25%; padding-top:25px; height:0; margin-top:1rem; overflow:hidden;"
+              widgets
+                literal
+                  element:iframe
+                  allowfullscreen
+                  style:"border:none; position:absolute; top:0; left:0; width:100%; height:100%;"
+                  src:@"https://www.youtube.com/embed/kO_YYAeS0Xk?modestbranding=1&autohide=1&showinfo=0"
+    p
+      style:"position:absolute; bottom:0; right:1rem; color:#b0b0b0; font-style:italic; font-size:.7rem;"
+      innerValue:@"Copyright (c) Thomas Hansen, thomas@gaiasoul.com, license GPLv3"
+
