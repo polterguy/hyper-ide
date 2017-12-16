@@ -13,10 +13,9 @@ Or install it on a web server, having easily access to your code, from anywhere 
 * Beautify CSS files
 * Preview Markdown files
 * Maximise code editor (fills entire browser window if you want it to, Alt+M)
-* Browsing, editing, deleting and creating any files in your server's htmldoc folder
+* Browsing, editing, deleting and creating files and folders in your server's htmldoc folder
 * Downloading files to your local computer
 * Deleting, creating, editing any text file, e.g. PHP, JavaScript, CSS, Python files, etc
-* Creating new folders and modifying existing folders
 * More than 100 languages supported out of the box
 * Multiple open files at the same time
 * Intelligent indentation while editing
@@ -35,7 +34,7 @@ server. The underlaying technology is ASP.NET/Mono and WebForms. However, being 
 these parts are barely visible, and completely abstracted away. The ViewState doesn't exist for one, and
 the markup it renders is 100% HTML5 conforming.
 
-Hyper IDE is extremely small in size. At the time of this writing, it is ~2200 lines of code,
+Hyper IDE is extremely small in size. At the time of this writing, it is ~2000 lines of code,
 although (obviously) that number will increase in the future. This is only possible due to the extreme 
 modularised nature of Hyperlambda and Phosphorus Five, which it is built on top of - Facilitating for 
 extreme reuse, allowing me to exclusively build it, from pre-built components, such as the TreeView 
