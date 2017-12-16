@@ -249,21 +249,6 @@ create-widget:hyper-ide-main-container
                       micro.evaluate.file:@IDE/helpers/select-file.hl
                         file:x:/../*/items/0?name
 
-                      /*
-                       * Checking if this was the file that was previously selected,
-                       * which implies that user clicked the same file twice, at
-                       * which point we start editing it.
-                       */
-                      if:x:/../*/double-clicked?value
-                        =:bool:true
-
-                        /*
-                         * Since file was "double clicked", we instantiate its editor.
-                         */
-                        eval-x:x:/+/*
-                        micro.evaluate.file:@IDE/helpers/edit-file.hl
-                          file:x:/../*/items/0?name
-
         /*
          * Wrapper for our file editor.
          */

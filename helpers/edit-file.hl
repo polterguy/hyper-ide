@@ -23,13 +23,13 @@ micro.lambda.contract.min:x:/..
  */
 p5.web.widgets.find
   .hyper-ide-activate-btn:x:/../*/file?value
-if:x:/-/*/*?value
+if:x:/@p5.web.widgets.find/*/*?value
 
   /*
-   * file is already being edited, warning user and returning early.
+   * file is already being edited, activating file, and returning early.
    */
-  micro.windows.info:File is already open in another editor
-    class:micro-windows-info warning
+  p5.web.widgets.ajax-events.raise:x:/@p5.web.widgets.find/*/*?value
+    onclick
   return
 
 
