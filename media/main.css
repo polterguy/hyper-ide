@@ -5,6 +5,9 @@
 .container {
     margin-bottom:150px;
 }
+.strip > label:first-child {
+    min-width: 100px;
+}
 .hyper-ide-header {
     color: #c0c0c0;
     float: left;
