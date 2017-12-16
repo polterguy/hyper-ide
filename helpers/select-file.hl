@@ -185,46 +185,6 @@ create-widget:hyper-ide-active-object
                           delete-widget:hyper-ide-confirm-rename-file
 
     /*
-     * Toggling visibility of "solution explorer".
-     */
-    button
-      innerValue:@"<span class=""icon-eye""></span>"
-      title:Toggle visibility of solution explorer
-      style:"margin-bottom:0;"
-      oninit
-
-        /*
-         * Checking of "solution explorer" is visible, and if it is, toggling
-         * the button
-         */
-        get-widget-property:hyper-ide-object-details
-          class
-        if:x:/-/*/*/=~hide
-          not
-
-          /*
-           * Solution explorer is visible.
-           */
-          micro.css.add:x:/../*/_event?value
-            class:toggled
-
-      onclick
-
-        /*
-         * Checking if we should hide or display file browser.
-         */
-        get-widget-property:hyper-ide-file-browser-wrapper
-          visible
-        micro.css.toggle:hyper-ide-file-browser-wrapper
-          class:hide
-        micro.css.toggle:x:/../*/_event?value
-          class:toggled
-        micro.css.toggle:hyper-ide-file-editor
-          class:col-70 col
-        micro.css.toggle:hyper-ide-object-details
-          class:hide
-
-    /*
      * Downloads file.
      */
     button:hyper-ide-download-file
