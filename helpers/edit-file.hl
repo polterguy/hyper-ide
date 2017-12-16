@@ -146,6 +146,8 @@ else
           .keys
             Alt-S:@"p5.$('hyper-ide-editors-wrapper').raise('.onsave');"
             Alt-X:@"p5.$('hyper-ide-editors-wrapper').raise('.onclose');"
+            Alt-N:@"p5.$('hyper-ide-editors-wrapper').raise('.onnext');"
+            Alt-P:@"p5.$('hyper-ide-editors-wrapper').raise('.onprevious');"
 
   else
 
@@ -163,6 +165,8 @@ else
           .keys
             Alt-S:@"p5.$('hyper-ide-editors-wrapper').raise('.onsave');"
             Alt-X:@"p5.$('hyper-ide-editors-wrapper').raise('.onclose');"
+            Alt-N:@"p5.$('hyper-ide-editors-wrapper').raise('.onnext');"
+            Alt-P:@"p5.$('hyper-ide-editors-wrapper').raise('.onprevious');"
 
 
 
@@ -251,6 +255,20 @@ if
        * Close active file editor.
        */
       hyper-ide.close
+
+    .onprevious
+
+      /*
+       * Shows the next available editor
+       */
+      hyper-ide.previous
+
+    .onnext
+
+      /*
+       * Shows the next available editor
+       */
+      hyper-ide.next
 
     events
 
@@ -386,6 +404,46 @@ if
           class
         p5.web.widgets.find-first:x:/@get-widget-property/*/*(!/=~hide)/.?name
           .close-button
+        p5.web.widgets.ajax-events.raise:x:/-/*/*?value
+          onclick
+
+
+      /*
+       * Shows the previous available editor.
+       */
+      hyper-ide.previous
+
+        /*
+         * First finding active editor.
+         */
+        p5.web.widgets.find
+          .hyper-ide-editor
+        get-widget-property:x:/@p5.web.widgets.find/*/*?value
+          class
+        get-widget-property:x:/@get-widget-property/*/*(!/=~hide)/./-?name
+          .hyper-ide-editor
+        p5.web.widgets.find
+          .hyper-ide-activate-btn:x:/@get-widget-property/*/*?value
+        p5.web.widgets.ajax-events.raise:x:/-/*/*?value
+          onclick
+
+
+      /*
+       * Shows the next available editor.
+       */
+      hyper-ide.next
+
+        /*
+         * First finding active editor.
+         */
+        p5.web.widgets.find
+          .hyper-ide-editor
+        get-widget-property:x:/@p5.web.widgets.find/*/*?value
+          class
+        get-widget-property:x:/@get-widget-property/*/*(!/=~hide)/./+?name
+          .hyper-ide-editor
+        p5.web.widgets.find
+          .hyper-ide-activate-btn:x:/@get-widget-property/*/*?value
         p5.web.widgets.ajax-events.raise:x:/-/*/*?value
           onclick
 
@@ -574,31 +632,6 @@ create-widgets
                     src:x:/@hyper-ide.get-code?value
                   micro.windows.info:File was successfully saved
                     class:micro-windows-info success
-
-              /*
-               * "Maximise" button.
-               */
-              button
-                innerValue:@"<span class=""icon-enlarge2""></span>"
-                title:Make editor surface larger
-                style:"margin-bottom:0;"
-                onclick
-
-                  /*
-                   * Checking if we should hide or display file browser.
-                   */
-                  get-widget-property:hyper-ide-file-browser-wrapper
-                    visible
-                  micro.css.toggle:hyper-ide-file-browser-wrapper
-                    class:hide
-                  p5.web.widgets.find:hyper-ide-editors-wrapper
-                    innerValue:@"<span class=""icon-enlarge2""></span>"
-                  micro.css.toggle:x:/-/*/*?value
-                    class:toggled
-                  micro.css.toggle:hyper-ide-file-editor
-                    class:col-70 col
-                  micro.css.toggle:hyper-ide-object-details
-                    class:hide
 
               /*
                * Close editor button.

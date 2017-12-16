@@ -29,3 +29,5 @@ return
     .keys
       Alt-S:@"p5.$('hyper-ide-editors-wrapper').raise('.onsave');"
       Alt-X:@"p5.$('hyper-ide-editors-wrapper').raise('.onclose');"
+      Alt-N:@"p5.$('hyper-ide-editors-wrapper').raise('.onnext');"
+      Alt-P:@"p5.$('hyper-ide-editors-wrapper').raise('.onprevious');"

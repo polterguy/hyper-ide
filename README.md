@@ -120,8 +120,11 @@ Hyper IDE features tons of keyboard shortcuts. The most useful ones are as follo
 
 * Alt+S - Saves active file
 * Alt+X - Close active editor
-* Cmd+F, Alt+F - Find (supports regular expressions)
-* Cmd+Alt+F, Ctrl+Alt+F - Replace (supports _'replace all'_)
+* Alt+N - Open next code window
+* Alt+P - Open previous code window
+* Cmd+F, Ctrl+F - Find (supports regular expressions)
+* Alt+F - Find (persistent)
+* Cmd+Alt+F, Ctrl+Alt+F - Replace (supports _'replace all'_ and regex)
 * Alt+M - Maximise code editor
 * Alt+G - Go to line
 * Tab - Indent selected code one additional tab level
