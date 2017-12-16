@@ -568,7 +568,18 @@ create-widget:hyper-ide-active-object
                            */
                           get-widget-property:hyper-ide-active-object
                             .folder
-                          delete-folder:x:/-/*/*?value
+                          delete-folder:x:/@get-widget-property/*/*?value
+
+                          /*
+                           * Making sure we close all editors that are editing files beneath
+                           * currently deleted folder.
+                           */
+                          p5.web.widgets.find-like
+                            .hyper-ide-editor:x:/@get-widget-property/*/*?value
+                          p5.web.widgets.find:x:/-/*/*?value
+                            .close-button
+                          p5.web.widgets.ajax-events.raise:x:/-/*/*?value
+                            onclick
 
                           /*
                            * Deleting selected item from tree.
@@ -584,13 +595,6 @@ create-widget:hyper-ide-active-object
                           delete-widget:hyper-ide-confirm-delete-folder
                           micro.windows.info:Folder was successfully deleted
                             class:micro-windows-info success
-
-                          /*
-                           * Making sure we select root "/" tree item.
-                           */
-                          micro.widgets.tree.select-items:hyper-ide-folder-tree-browser
-                            items
-                              /
 
                       button
                         innerValue:No
