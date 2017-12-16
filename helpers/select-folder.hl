@@ -281,6 +281,8 @@ create-widget:hyper-ide-active-object
                           /*
                            * Making sure we select our newly created file, and open
                            * it for editing.
+                           *
+                           * Notice, this is done by selecting the same tree node twice.
                            */
                           add:x:/../*/micro.widgets.tree.select-items/*/items
                             src:{0}{1}
@@ -650,6 +652,16 @@ create-widget:hyper-ide-active-object
                             src:x:/@get-widget-property/*/*?value
                           micro.widgets.tree.refresh-items:hyper-ide-folder-tree-browser
                             force-expand:true
+                            items
+
+                          /*
+                           * Making sure we select our newly created folder
+                           */
+                          add:x:/../*/micro.widgets.tree.select-items/*/items
+                            src:{0}{1}/
+                              :x:/@get-widget-property/*/*?value
+                              :x:/@micro.widgets.wizard-form.value/*/name?value
+                          micro.widgets.tree.select-items:hyper-ide-folder-tree-browser
                             items
 
                           /*
