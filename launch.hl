@@ -95,7 +95,7 @@ create-widget:hyper-ide-main-container
     /*
      * Wrapper for our top toolbar.
      */
-    div
+    div:hyper-ide-toolbar-wrapper
       class:row
       widgets
         div
@@ -170,7 +170,7 @@ create-widget:hyper-ide-main-container
           class:col-30
           widgets
             container
-              class:bg air-inner shaded rounded hyper-ide-folder-browser
+              class:air-inner shaded rounded hyper-ide-folder-browser
               widgets
 
                 /*
