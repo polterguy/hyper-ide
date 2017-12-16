@@ -142,6 +142,8 @@ else
             :x:/@split/0/-?name
           value:x:/../*/load-file/*?value
           height:635px
+          .keys
+            Alt-S:@"p5.$('hyper-ide-editors-wrapper').raise('.onsave');"
 
   else
 
@@ -155,6 +157,8 @@ else
           mode:markdown
           value:x:/../*/load-file/*?value
           height:635px
+          .keys
+            Alt-S:@"p5.$('hyper-ide-editors-wrapper').raise('.onsave');"
 
 
 
@@ -230,7 +234,15 @@ if
   create-container-widget:hyper-ide-editors-wrapper
     parent:hyper-ide-file-editor
     style:"overflow:visible;"
+    .onsave
+
+      /*
+       * Saves active file.
+       */
+      hyper-ide.save-file
+
     events
+
 
       /*
        * Returns code for currently active editor.
@@ -253,6 +265,7 @@ if
         get-widget-property:x:/@p5.web.widgets.find/*/*?value
           value
         return:x:/@get-widget-property/*/*?value
+
 
       /*
        * Sets code for currently active editor.
@@ -287,6 +300,7 @@ if
           :x:/@p5.web.widgets.find/*/*?value
           :x:/@replace?value
 
+
       /*
        * Sets code for currently active editor.
        */
@@ -307,6 +321,7 @@ if
           element:textarea
         return:x:/@p5.web.widgets.find/*/*?value
 
+
       /*
        * Returns filename for currently active editor.
        */
@@ -321,11 +336,30 @@ if
           class
 
         /*
-         * Then retrieving its filename.
+         * Then retrieving its filename, and returning it to caller.
          */
         get-widget-property:x:/@get-widget-property/*/*(!/=~hide)/.?name
           .hyper-ide-editor
         return:x:/@get-widget-property/*/*?value
+
+
+      /*
+       * Saves active file.
+       */
+      hyper-ide.save-file
+
+        /*
+         * First finding active editor.
+         */
+        p5.web.widgets.find
+          .hyper-ide-editor
+        get-widget-property:x:/@p5.web.widgets.find/*/*?value
+          class
+        p5.web.widgets.find-first:x:/@get-widget-property/*/*(!/=~hide)/.?name
+          .save-button
+        p5.web.widgets.ajax-events.raise:x:/-/*/*?value
+          onclick
+
 
   add:x:/@.activate-btn-position-arg
     src
@@ -491,6 +525,7 @@ create-widgets
               button
                 style:"padding-left:35px;padding-right:35px;margin-bottom:0;"
                 innerValue:@"<span class=""icon-floppy-disk""></span>"
+                .save-button
                 onclick
 
                   /*
