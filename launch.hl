@@ -83,6 +83,18 @@ create-widget:hyper-ide-main-container
                   widgets
 
                     button
+                      innerValue:@"<span class=""icon-cog""></span>"
+                      title:Settings
+                      style:"margin-bottom:0;"
+                      onclick
+
+                        /*
+                         * Showing settings for CM to user.
+                         */
+                        hypereval.codemirror.settings
+
+
+                    button
                       innerValue:@"<span class=""icon-home3""></span>"
                       title:Close Hypereval
                       style:"margin-bottom:0;"
