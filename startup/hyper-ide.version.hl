@@ -1,0 +1,7 @@
+
+/*
+ * Creates version Active Event.
+ */
+create-event:hyper-ide.version
+
+  return:decimal:1.0
