@@ -119,6 +119,7 @@ screenshot of me editing this file, at the exact point in time I wrote the text.
 Hyper IDE features tons of keyboard shortcuts. The most useful ones are as follows.
 
 * Alt+S - Saves active file
+* Alt+X - Close active editor
 * Cmd+F, Alt+F - Find (supports regular expressions)
 * Cmd+Alt+F, Ctrl+Alt+F - Replace (supports _'replace all'_)
 * Alt+M - Maximise code editor
