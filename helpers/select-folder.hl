@@ -279,6 +279,19 @@ create-widget:hyper-ide-active-object
                             items
 
                           /*
+                           * Making sure we select our newly created file, and open
+                           * it for editing.
+                           */
+                          add:x:/../*/micro.widgets.tree.select-items/*/items
+                            src:{0}{1}
+                              :x:/@get-widget-property/*/*?value
+                              :x:/@micro.widgets.wizard-form.value/*/name?value
+                          micro.widgets.tree.select-items:hyper-ide-folder-tree-browser
+                            items
+                          micro.widgets.tree.select-items:hyper-ide-folder-tree-browser
+                            items
+
+                          /*
                            * Deleting modal widget, and giving user some feedback.
                            */
                           delete-widget:hyper-ide-create-new-file-modal
