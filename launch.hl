@@ -62,9 +62,9 @@ create-widget:hyper-ide-main-container
         div
           class:col-100
           widgets
-            h4
+            literal
+              element:h4
               class:hyper-ide-header
-              innerValue:Hyper IDE
               events
 
                 /*
