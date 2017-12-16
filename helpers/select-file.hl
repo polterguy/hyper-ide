@@ -252,18 +252,35 @@ create-widget:hyper-ide-active-object
                           micro.widgets.tree.delete-items:hyper-ide-folder-tree-browser
 
                           /*
+                           * Closing editor for file, if it is open.
+                           */
+                          p5.web.widgets.find-first
+                            .hyper-ide-editor:x:/@get-widget-property/*/*?value
+                          if:x:/@p5.web.widgets.find-first/*/*?value
+
+                            /*
+                             * Deleted file is open in an editor, making sure we close it.
+                             */
+                            p5.web.widgets.find-first:x:/@p5.web.widgets.find-first/*/*?value
+                              .close-button
+                            p5.web.widgets.ajax-events.raise:x:/-/*/*?value
+                              onclick
+
+                          else
+
+                            /*
+                             * Making sure we select root "/" tree item.
+                             */
+                            micro.widgets.tree.select-items:hyper-ide-folder-tree-browser
+                              items
+                                /
+
+                          /*
                            * Deleting modal window, and giving user some feedback.
                            */
                           delete-widget:hyper-ide-confirm-delete-file
                           micro.windows.info:File was successfully deleted
                             class:micro-windows-info success
-
-                          /*
-                           * Making sure we select root "/" tree item.
-                           */
-                          micro.widgets.tree.select-items:hyper-ide-folder-tree-browser
-                            items
-                              /
 
                       button
                         innerValue:No
