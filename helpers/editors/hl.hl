@@ -22,7 +22,7 @@ micro.lambda.contract.min:x:/..
  */
 eval-x:x:/+/*/*/value
 return
-  hypereval.widgets.hyperlambda-textarea
+  hypereval.widgets.codemirror
     value:x:/../*/content?value
     height:635px
     auto-focus:true

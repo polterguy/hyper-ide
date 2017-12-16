@@ -137,7 +137,7 @@ else
     eval-x:x:/+/*/*/*
     add:x:/@.editor-instance
       src
-        hypereval.widgets.hyperlambda-textarea
+        hypereval.widgets.codemirror
           mode:x:/@load-file/*/*/{0}?value
             :x:/@split/0/-?name
           value:x:/../*/load-file/*?value
@@ -155,7 +155,7 @@ else
     eval-x:x:/+/*/*/*
     add:x:/@.editor-instance
       src
-        hypereval.widgets.hyperlambda-textarea
+        hypereval.widgets.codemirror
           mode:markdown
           value:x:/../*/load-file/*?value
           height:635px
