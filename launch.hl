@@ -1,4 +1,3 @@
-﻿
 /*
  * File responsible for starting app.
  *
@@ -51,6 +50,34 @@ if:x:/@whoami/*/role?value
 p5.web.page.set-title:Hyper IDE
 create-widget:hyper-ide-main-container
   class:container-fullscreen
+  events
+
+    /*
+     * Piongback event, invoked every n'th minute, to avoid being thrown out of session.
+     *
+     * This is done to avoid having user thrown out of his session, while editing files,
+     * without raising an Ajax request for 20 minutes or more.
+     *
+     * Basically, it creates an "empty" Ajax request, every 10 minutes, to touch the session,
+     * to avoid having automatic destruction of session occur.
+     */
+    hyper-ide.pingback
+
+      /*
+       * Pingbacking server 10 minutes from now.
+       */
+      micro.lambda.create-timeout
+        milliseconds:600000
+        onfinish
+          hyper-ide.pingback
+
+  oninit
+
+    /*
+     * Starting "pingback loop", to make sure we stay inside of session.
+     */
+    hyper-ide.pingback
+
   widgets
 
     /*
