@@ -9,13 +9,25 @@
 
 
 /*
- * Including Micro, its "serious" skin, font CSS file, and main CSS file for Hypereval.
+ * Figuring out skin to use, and other settings.
+ */
+.defaults
+  skin:serious
+select-data:x:/*/*/hypereval.settings
+
+
+
+
+
+/*
+ * Including Micro, selected skin, font CSS file, and main CSS file for Hypereval.
  */
 p5.web.include-css-file
   @MICRO/media/main.css
-  @MICRO/media/skins/serious.css
   @MICRO/media/fonts.css
-  @IDE/media/main.css
+p5.web.include-css-file:@MICRO/media/skins/{0}.css
+  :x:(/@select-data/*/*/skin|/../*/.defaults/*/skin)/$?value
+p5.web.include-css-file:@IDE/media/main.css
 
 
 
