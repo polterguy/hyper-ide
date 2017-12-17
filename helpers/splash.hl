@@ -147,8 +147,8 @@ also exists <a href=""/bazar?app=license"">proprietary licensing options</a>, ma
       style:"position:absolute; bottom:0; right:1rem; color:#b0b0b0; font-style:italic; font-size:.7rem;"
       innerValue:@"Copyright (c) <a target=""_blank"" href=""https://gaiasoul.com"">Thomas Hansen</a>, thomas@gaiasoul.com, license GPLv3"
     img
-      src:"https://phosphorusfive.files.wordpress.com/2017/12/ufo.jpg"
-      style:"margin-left:auto;margin-right:auto;display:block;max-width:50%;"
+      src:"https://phosphorusfive.files.wordpress.com/2017/12/ufo.png"
+      class:hyper-ide-ufo
       title:@"That feeling Hyper IDE gives you ... ;)"
       alt:UFO
 

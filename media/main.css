@@ -90,3 +90,22 @@
     color: #c0c0c0;
     font-style: italic
 }
+@keyframes hyper-ide-ufo {
+    0% {
+        transform:rotate(-90deg) scale(0.1);
+        margin-top:-500px;
+    }
+    100% {
+        transform:rotate(0deg) scale(1);
+        margin-top:0;
+    }
+}
+.hyper-ide-ufo {
+    margin-left:auto;
+    margin-right:auto;
+    display:block;
+    max-width:50%;
+    animation-name:hyper-ide-ufo;
+    animation-duration:.5s;
+    animation-fill-mode:forwards;
+}
