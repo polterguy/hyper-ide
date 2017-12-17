@@ -299,7 +299,7 @@ create-widget:hyper-ide-active-object
 
 
 /*
- * Starts editing file afterwards.
+ * Starts editing file immediately after we have selected it.
  */
 eval-x:x:/+/*
 micro.evaluate.file:@IDE/helpers/edit-file.hl

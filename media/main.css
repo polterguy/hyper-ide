@@ -33,17 +33,14 @@
 .hyper-ide-editors-wrapper {
     height:100%;
 }
-.hyper-ide-editor-wrapper {
-    height:calc(100% - 40px);
-}
 .micro-codemirror-wrapper {
-    height:calc(100% - 32px);
+    height:100%;
 }
 .hyper-ide-editor-tab {
     height:100%;
 }
 .hyper-ide-editors {
-    height:100%;
+    height:calc(100% - 34px);
 }
 .hyper-ide-activate-tab-button {
     border-bottom-left-radius: 0;

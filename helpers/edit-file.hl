@@ -180,7 +180,7 @@ if
       container:hyper-ide-editor-tab-buttons
         class:hyper-ide-editor-tab-button-wrapper
       container:hyper-ide-editor-tab-editors
-        class:hyper-ide-editors
+        class:hyper-ide-editors shaded rounded
 
 
 
@@ -324,7 +324,7 @@ create-widgets
        * Toggling visibility of "solution explorer".
        */
       button
-        innerValue:@"<span class=""icon-enlarge""></span>"
+        innerValue:@"<span class=""icon-tree""></span>"
         title:Toggle visibility of solution explorer
         style:"margin-bottom:0;"
         oninit

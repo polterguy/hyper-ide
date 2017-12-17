@@ -59,13 +59,6 @@ create-event:hyper-ide.plugins.md.preview
                       button
                         innerValue:Close
                         style:"margin-bottom:0;"
-                        oninit
-
-                          /*
-                           * Setting initial focus to close button.
-                           */
-                          micro.page.set-focus:x:/../*/_event?value
-
                         onclick
 
                           /*
