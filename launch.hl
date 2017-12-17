@@ -101,6 +101,13 @@ create-widget:hyper-ide-main-container
         div
           class:col-100
           widgets
+
+            /*
+             * Our header.
+             *
+             * Responsible for displaying information about currently edited object.
+             * Mostly displays the path to the file or folder.
+             */
             literal
               element:h4
               class:hyper-ide-header
@@ -113,6 +120,11 @@ create-widget:hyper-ide-main-container
                   set-widget-property:x:/../*/_event?value
                     innerValue:x:/../*/_arg?value
 
+            /*
+             * Our primary toolbar.
+             *
+             * Contains settings and home button.
+             */
             div
               class:right
               widgets
@@ -146,24 +158,15 @@ create-widget:hyper-ide-main-container
 
     /*
      * Wrapper for actual content.
+     *
+     * This is where our editors are put, and our "solution explorer", among other things.
      */
-    div
-      class:row air-top
+    div:hyper-ide-content-wrapper
+      class:row air-top hyper-ide-content-wrapper
       widgets
 
         /*
-         * Wrapper for our object editor.
-         */
-        div:hyper-ide-object-details
-          class:col-100
-          widgets
-            container:hyper-ide-editor
-              style:"overflow:auto;"
-              widgets
-                container:hyper-ide-active-object-wrapper
-
-        /*
-         * Wrapper for our file browser.
+         * Wrapper for our file browser, or our "solution explorer" if you wish.
          */
         div:hyper-ide-file-browser-wrapper
           class:col-30
@@ -250,6 +253,9 @@ create-widget:hyper-ide-main-container
 
         /*
          * Wrapper for our file editor.
+         *
+         * This is where our actual CodeMirror file editors' ends up.
+         * In addition to our "splash screen".
          */
         container:hyper-ide-file-editor
           class:col-70

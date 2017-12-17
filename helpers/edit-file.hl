@@ -163,7 +163,6 @@ else
           mode:x:/@load-file/*/*/{0}?value
             :x:/@split/0/-?name
           value:x:/../*/load-file/*?value
-          height:635px
           auto-focus:true
           .keys
             Alt-S:@"p5.$('hyper-ide-editors-wrapper').raise('.onsave');"
@@ -182,7 +181,6 @@ else
         micro.widgets.codemirror
           mode:markdown
           value:x:/../*/load-file/*?value
-          height:635px
           auto-focus:true
           .keys
             Alt-S:@"p5.$('hyper-ide-editors-wrapper').raise('.onsave');"
@@ -670,7 +668,7 @@ create-widgets
                    * Checking of "solution explorer" is visible, and if it is, toggling
                    * the button
                    */
-                  get-widget-property:hyper-ide-object-details
+                  get-widget-property:hyper-ide-file-browser-wrapper
                     class
                   if:x:/-/*/*/=~hide
 
@@ -697,7 +695,7 @@ create-widgets
                     class:toggled
                   micro.css.toggle:hyper-ide-file-editor
                     class:col-70 col
-                  micro.css.toggle:hyper-ide-object-details
+                  micro.css.toggle:hyper-ide-file-browser-wrapper
                     class:hide
                   micro.css.toggle:hyper-ide-toolbar-wrapper
                     class:hide

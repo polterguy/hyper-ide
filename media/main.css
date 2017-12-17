@@ -2,8 +2,7 @@
 /*
  * Main CSS file.
  */
-.container {
-    margin-bottom:150px;
+.container-fullscreen {
 }
 .strip > label:first-child {
     min-width: 100px;
@@ -12,9 +11,20 @@
     color: #c0c0c0;
     float: left;
 }
+.hyper-ide-content-wrapper {
+    height:calc(100vh - 88px);
+}
+#hyper-ide-file-browser-wrapper {
+    height:100%;
+}
 .hyper-ide-folder-browser {
-    height:670px;
+    height:100%;
+}
+#hyper-ide-folder-tree-browser {
     overflow:scroll;
+    height:100%;
+    margin-right:-16px;
+    padding-right:16px;
 }
 .hyper-ide-editor-selector {
     border-bottom-left-radius:0;
@@ -41,4 +51,21 @@
 }
 .hyper-ide-editor-selector:nth-child(1) {
     margin-left:.2rem;
+}
+.hyper-ide-splash {
+    position:relative;
+    height:100%;
+}
+#hyper-ide-editors-wrapper {
+    height:100%;
+}
+.hyper-ide-editor-wrapper {
+    height:calc(100% - 40px);
+}
+.micro-codemirror-wrapper {
+    height:calc(100% - 40px);
+}
+.CodeMirror {
+    height:100% !important;
+    min-height:100%;
 }

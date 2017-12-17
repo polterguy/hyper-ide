@@ -3,8 +3,7 @@
  * Initial "splash" screen.
  */
 container:hyper-ide-splash
-  class:air-inner shaded rounded
-  style:"min-height:670px; position:relative;"
+  class:air-inner shaded rounded hyper-ide-splash
   widgets
     h3
       innerValue:Hyper IDE

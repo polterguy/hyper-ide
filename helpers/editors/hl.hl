@@ -24,7 +24,6 @@ eval-x:x:/+/*/*/value
 return
   micro.widgets.codemirror
     value:x:/../*/content?value
-    height:635px
     auto-focus:true
     .keys
       Alt-S:@"p5.$('hyper-ide-editors-wrapper').raise('.onsave');"
