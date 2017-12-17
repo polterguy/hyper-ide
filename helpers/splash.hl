@@ -149,4 +149,6 @@ also exists <a href=""/bazar?app=license"">proprietary licensing options</a>, ma
     img
       src:"https://phosphorusfive.files.wordpress.com/2017/12/ufo.jpg"
       style:"margin-left:auto;margin-right:auto;display:block;max-width:50%;"
+      title:@"That feeling Hyper IDE gives you ... ;)"
+      alt:UFO
 
