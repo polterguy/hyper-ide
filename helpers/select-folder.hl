@@ -608,7 +608,31 @@ create-widget:hyper-ide-active-object
                             filter:x:/@get-widget-property/*/*?value
 
                           /*
-                           * Deleting modal window, and giving user some feedback.
+                           * Checking if there are no selected tree view items,
+                           * at which point we reset header, and delete the object file
+                           * editor toolbar.
+                           */
+                          micro.widgets.tree.get-selected-items:hyper-ide-folder-tree-browser
+                          if:x:/@micro.widgets.tree.get-selected-items/*/*?count
+                            =:int:0
+
+                            /*
+                             * No tree view item is currently selected.
+                             * Checking if object toolbar exists, and deleting it if
+                             * it does.
+                             */
+                            if
+                              fetch:x:/0/0?value
+                                widget-exists:hyper-ide-active-object
+                              delete-widget:hyper-ide-active-object
+
+                            /*
+                             * Setting header to empty string.
+                             */
+                            hyper-ide.set-header:
+
+                          /*
+                           * Deleting modal window.
                            */
                           delete-widget:hyper-ide-confirm-delete-folder
 
@@ -636,7 +660,7 @@ create-widget:hyper-ide-active-object
           micro.widgets.modal:hyper-ide-confirm-empty-folder
             widgets
               h3
-                innerValue:Confirm action
+                innerValue:Confirm deletion
               p
                 innerValue:Are you sure you want to empty this folder? This action is permanent!
               div

@@ -186,69 +186,67 @@ if
 
           /*
            * Close all editors.
+           */
+          hyper-ide.close-all-editors
+
+            /*
+             * Closing all editors, launching splash screen, resetting header,
+             * and de-selecting all tree view items, before we return early.
+             */
+            delete-widget:hyper-ide-editor-tab
+
+            /*
+             * Checking if toolbar exists, before we try to delete it.
+             */
+            if
+              fetch:x:/0/0?value
+                widget-exists:hyper-ide-editor-toolbar
+
+              /*
+               * Toolbar exists, deleting it.
+               */
+              delete-widget:hyper-ide-editor-toolbar
+
+            /*
+             * De-selecting all tree view items.
+             */
+            micro.widgets.tree.select-items:hyper-ide-folder-tree-browser
+
+            /*
+             * Setting header to empty string.
+             */
+            hyper-ide.set-header:
+
+            /*
+             * Deleting active object wrapper, and setting header
+             * to "empty string", since there is no actively edited item
+             * now.
+             */
+            delete-widget:hyper-ide-active-object
+            hyper-ide.set-header:
+
+            /*
+             * Loading splash screen and returning early.
+             */
+            hyper-ide.load-splash
+
+
+          /*
+           * Close editors.
            *
-           * Optionally pass in [filter] which becomes a filter of editors starting
-           * with the given folder path being [filter].
+           * Will close all editors that have filenames starting with the specified
+           * [filter] path. If [exact] is boolean "true", it will only delete the
+           * editor with the exact name of [filter].
            */
           hyper-ide.close-editors
 
             /*
              * Sanity checking arguments.
              */
-            micro.lambda.contract.optional:x:/..
+            micro.lambda.contract.min:x:/..
               filter:string
-
-            /*
-             * Checking if a [filter] was supplied, and if not, simply closing all
-             * editors.
-             */
-            if:x:/../*/filter?value
-              not
-
-              /*
-               * Closing all editors, launching splash screen, resetting header,
-               * and de-selecting all tree view items, before we return early.
-               */
-              delete-widget:hyper-ide-editor-tab
-
-              /*
-               * Checking if toolbar exists, before we try to delete it.
-               *
-               * Notice, toolbar will only exist if current active tree view item
-               * is a "folder" type of item.
-               */
-              if
-                fetch:x:/0/0?value
-                  widget-exists:hyper-ide-editor-toolbar
-
-                /*
-                 * Toolbar exists, deleting it.
-                 */
-                delete-widget:hyper-ide-editor-toolbar
-
-              /*
-               * De-selecting all tree view items.
-               */
-              micro.widgets.tree.select-items:hyper-ide-folder-tree-browser
-
-              /*
-               * Setting header to empty string.
-               */
-              hyper-ide.set-header:
-
-              /*
-               * Deleting active object wrapper, and setting header
-               * to "empty string", since there is no actively edited item
-               * now.
-               */
-              delete-widget:hyper-ide-active-object
-              hyper-ide.set-header:
-
-              /*
-               * Loading splash screen and returning early.
-               */
-              hyper-ide.load-splash
-              return
+            micro.lambda.contract.optional:x:/..
+              exact:bool
 
             /*
              * Fetching currently edited filename, for later use.
@@ -256,8 +254,6 @@ if
             hyper-ide.get-filename
 
             /*
-             * If we come here, then a [filter] condition was supplied.
-             *
              * Finding all "activate" buttons for all editors, and getting their filenames,
              * such that we can check if they are starting with the specified [filter] path.
              */
@@ -282,23 +278,41 @@ if
                   src:x:/../*/filter?value
 
                 /*
-                 * Currently iterated activate button is beneath folder we 
-                 * just deleted, hance we deleted the activate button.
+                 * Checking if [exact] was true, at which point the filename must
+                 * be an exact match.
+                 */
+                if:x:/../*/exact?value
+                  and:x:/@_dp/#?value
+                    !=:x:/../*/filter?value
+
+                  /*
+                   * Not an exact match.
+                   */
+                  continue
+
+                /*
+                 * Deleting activate button.
                  */
                 delete-widget:x:/@_dp/#/.?name
 
             /*
-             * Now checking if currently edited file was beneath folder we just deleted,
+             * Now checking if currently edited file was a match,
              * at which point we'll either have to activate another editor, or load
-             * our splash screen, if there are no more editors.
+             * our splash screen, if there are no more open editors.
              */
             if
               starts-with:x:/@hyper-ide.get-filename?value
                 src:x:/../*/filter?value
+              and:x:/../*/exact?value
+                =:bool:false
+                or:x:/../*/exact?value
+                  not
+                  or:x:/@hyper-ide.get-filename?value
+                    =:x:/../*/filter?value
 
               /*
-               * Currently edited file is beneath deleted folder.
-               * Hence, deleting editor wrapper.
+               * Currently edited file is a match, hence we need to
+               * delete the active editor too.
                */
               delete-widget:hyper-ide-editor-wrapper
 
@@ -317,7 +331,7 @@ if
                  * the item associated with the last available "activate" widget
                  * in out treeview.
                  */
-                get-widget-property:x:/@p5.web.widgets.find/0/-/*?value
+                get-widget-property:x:/@p5.web.widgets.find/*/0/-?value
                   .activate
                 add:x:/./*/micro.widgets.tree.select-items/*
                   src:x:/@get-widget-property/*/*?value
@@ -327,12 +341,14 @@ if
               else-if:x:/../*/p5.web.widgets.find/[0,1]/*/*
 
                 /*
-                 * No more available files, but there were available file during initial
-                 * invocation of event, hence deleting all editor objects,
+                 * No more available files, but there were available editors during 
+                 * initial invocation of our event, hence deleting all editor objects,
                  * and launching "splash" screen.
                  */
                 delete-widget:hyper-ide-editor-tab
                 hyper-ide.load-splash
+                micro.widgets.tree.select-items:hyper-ide-folder-tree-browser
+                  items
 
                 /*
                  * Deleting active object wrapper, and setting header
@@ -346,7 +362,8 @@ if
 
               /*
                * Currently edited file was not closed, making sure we select it
-               * in our tree view.
+               * in our tree view, which will automatically take care of loading 
+               * it up as the active editor, among other things.
                */
               add:x:/./*/micro.widgets.tree.select-items/*
                 src:x:/@hyper-ide.get-filename?value
@@ -469,27 +486,9 @@ create-widgets
         onclick
 
           /*
-           * Retriving filename.
+           * Invoking event responsible for saving file.
            */
-          p5.web.widgets.find-first-ancestor:x:/../*/_event?value
-            .toolbar
-          get-widget-property:x:/@p5.web.widgets.find-first-ancestor/*/*?value
-            .toolbar
-
-          /*
-           * Retrieving editor's content.
-           */
-          p5.web.widgets.find-first
-            .editor:x:/@get-widget-property/*/*?value
-          micro.form.serialize:x:/@p5.web.widgets.find-first/*/*?value
-
-          /*
-           * Saving file and providing some feedback to user.
-           */
-          save-file:x:/@get-widget-property/*/*?value
-            src:x:/@micro.form.serialize/*/content?value
-          micro.windows.info:File was successfully saved
-            class:micro-windows-info success
+          hyper-ide.save-file
 
       /*
        * Toggling visibility of "solution explorer".
@@ -539,67 +538,9 @@ create-widgets
         onclick
 
           /*
-           * Retriving filename, such that we can know which editor to close.
+           * Closing active editor
            */
-          p5.web.widgets.find-first-ancestor:x:/../*/_event?value
-            .toolbar
-          get-widget-property:x:/@p5.web.widgets.find-first-ancestor/*/*?value
-            .toolbar
-
-          /*
-           * Finding editor, and deleting it.
-           */
-          p5.web.widgets.find-first
-            .editor:x:/@get-widget-property/*/*?value
-          delete-widget:x:/@p5.web.widgets.find-first/*/*?value
-
-          /*
-           * Finding "tab button" and deleting it.
-           */
-          p5.web.widgets.find-first
-            .activate:x:/@get-widget-property/*/*?value
-          delete-widget:x:/@p5.web.widgets.find-first/*/*?value
-
-          /*
-           * Finding toolbar for file and deleting it.
-           */
-          p5.web.widgets.find-first
-            .toolbar:x:/@get-widget-property/*/*?value
-          delete-widget:x:/@p5.web.widgets.find-first/*/*?value
-
-          /*
-           * Checking if this is our last open editor, at which point we
-           * delete the editor wrapper entirely, and re-load splash screen.
-           */
-          p5.web.widgets.find
-            .activate
-          if:x:/@p5.web.widgets.find/*/*?count
-            =:int:0
-
-            /*
-             * Deleting editors wrapper, and loading "splash screen".
-             */
-            delete-widget:hyper-ide-editor-tab
-            hyper-ide.load-splash
-
-            /*
-             * Making sure our file explorer is visible, in case it was hidden.
-             */
-            micro.css.delete:hyper-ide-file-browser-wrapper
-              class:hide
-            micro.css.add:hyper-ide-file-editor
-              class:col-70
-            micro.css.delete:hyper-ide-file-editor
-              class:col
-
-          else
-
-            /*
-             * Clicking the first activate button in above list, to
-             * make sure we activate the first editor.
-             */
-            p5.web.widgets.ajax-events.raise:x:/@p5.web.widgets.find/*/0?value
-              onclick
+          hyper-ide.close
 
   /*
    * Activate tab/editor button.
@@ -661,44 +602,6 @@ create-widgets
 
 
       /*
-       * Returns code for currently active editor.
-       */
-      hyper-ide.get-code
-
-        /*
-         * Serializing form and returning content to caller.
-         */
-        micro.form.serialize:x:/../*/_event?value
-        return:x:/@micro.form.serialize/*/content?value
-
-
-      /*
-       * Sets code for currently active editor.
-       */
-      hyper-ide.set-code
-
-        /*
-         * First finding active editor's textarea.
-         */
-        p5.web.widgets.find-first:x:/../*/_event?value
-          element:textarea
-
-        /*
-         * Escaping any back-ticks in code.
-         */
-        replace:x:/../*/_arg?value
-          src:`
-          dest:\`
-
-        /*
-         * Updating value of CodeMirror instance on client side.
-         */
-        p5.web.send-javascript:@"p5['{0}'].getDoc().setValue(`{1}`);"
-          :x:/@p5.web.widgets.find-first/*/*?value
-          :x:/@replace?value
-
-
-      /*
        * Returns ID of active code editor.
        */
       hyper-ide.get-code-editor
@@ -709,6 +612,40 @@ create-widgets
         p5.web.widgets.find-first:x:/../*/_event?value
           element:textarea
         return:x:/@p5.web.widgets.find-first/*/*?value
+
+
+      /*
+       * Returns code for currently active editor.
+       */
+      hyper-ide.get-code
+
+        /*
+         * Finding textarea and returning its innerValue.
+         */
+        hyper-ide.get-code-editor
+        get-widget-property:x:/-?value
+          innerValue
+        return:x:/@get-widget-property/*/*?value
+
+
+      /*
+       * Sets code for currently active editor.
+       */
+      hyper-ide.set-code
+
+        /*
+         * First finding active editor's textarea, and updating it, in case
+         * other parts of our code tries to retrieve it during the current request.
+         */
+        hyper-ide.get-code-editor
+        set-widget-property:x:/-?value
+          innerValue:x:/../*/_arg?value
+
+        /*
+         * Updating value of CodeMirror instance on client side.
+         */
+        p5.web.send-javascript:@"p5['{0}'].getDoc().setValue(p5.$('{0}').el.value);"
+          :x:/@hyper-ide.get-code-editor?value
 
 
       /*
@@ -730,10 +667,22 @@ create-widgets
       hyper-ide.save-file
 
         /*
-         * Clicking save button.
+         * Retriving filename.
          */
-        p5.web.widgets.ajax-events.raise:hyper-ide-save-button
-          onclick
+        hyper-ide.get-filename
+
+        /*
+         * Retrieving editor's content.
+         */
+        hyper-ide.get-code
+
+        /*
+         * Saving file and providing some feedback to user.
+         */
+        save-file:x:/@hyper-ide.get-filename?value
+          src:x:/@hyper-ide.get-code?value
+        micro.windows.info:File was successfully saved
+          class:micro-windows-info success
 
 
       /*
@@ -742,10 +691,14 @@ create-widgets
       hyper-ide.close
 
         /*
-         * Clocking close button.
+         * Closing editor.
          */
-        p5.web.widgets.ajax-events.raise:hyper-ide-close-button
-          onclick
+        get-widget-property:x:/../*/_event?value
+          .editor
+        eval-x:x:/+/*
+        hyper-ide.close-editors
+          filter:x:/@get-widget-property/*/*?value
+          exact:bool:true
 
 
       /*
@@ -758,6 +711,14 @@ create-widgets
          */
         p5.web.widgets.find
           .activate
+
+        /*
+         * Checking if there's only one button, at which point we return immediately,
+         * since switching editor instance, by the very definition becomes impossible.
+         */
+        if:x:/@p5.web.widgets.find/*/*?count
+          <:int:2
+          return
 
         /*
          * Retrieving class names for all "activate buttons".
@@ -782,6 +743,14 @@ create-widgets
          */
         p5.web.widgets.find
           .activate
+
+        /*
+         * Checking if there's only one button, at which point we return immediately,
+         * since switching editor instance, by the very definition becomes impossible.
+         */
+        if:x:/@p5.web.widgets.find/*/*?count
+          <:int:2
+          return
 
         /*
          * Retrieving class names for all "activate buttons".
