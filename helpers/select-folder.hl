@@ -311,8 +311,6 @@ create-widget:hyper-ide-active-object
                               :x:/@micro.widgets.wizard-form.value/*/name?value
                           micro.widgets.tree.select-items:hyper-ide-folder-tree-browser
                             items
-                          micro.widgets.tree.select-items:hyper-ide-folder-tree-browser
-                            items
 
                           /*
                            * Deleting modal widget, and giving user some feedback.
@@ -585,30 +583,53 @@ create-widget:hyper-ide-active-object
                         onclick
 
                           /*
-                           * Deleting folder.
+                           * Figuring out which folder user is trying to delete.
                            */
                           get-widget-property:hyper-ide-active-object
                             .folder
+
+                          /*
+                           * Deleting selected item from tree.
+                           *
+                           * Notice, selected tree view item will always be the folder 
+                           * user is trying to delete, since selecting a tree node, 
+                           * changes the active file object edited.
+                           */
+                          micro.widgets.tree.get-selected-items:hyper-ide-folder-tree-browser
+                          add:x:/../*/micro.widgets.tree.delete-items
+                            src:x:/@micro.widgets.tree.get-selected-items/*
+                          micro.widgets.tree.delete-items:hyper-ide-folder-tree-browser
+
+                          /*
+                           * Deleting actual folder.
+                           */
                           delete-folder:x:/@get-widget-property/*/*?value
 
                           /*
                            * Making sure we close all editors that are editing files beneath
                            * currently deleted folder.
                            */
-                          p5.web.widgets.find-like
-                            .hyper-ide-editor:x:/@get-widget-property/*/*?value
-                          p5.web.widgets.find:x:/-/*/*?value
-                            .close-button
-                          p5.web.widgets.ajax-events.raise:x:/-/*/*?value
-                            onclick
+                          eval-x:x:/+/*
+                          hyper-ide.close-editors
+                            filter:x:/@get-widget-property/*/*?value
 
                           /*
-                           * Deleting selected item from tree.
+                           * Deleting edit folder toolbar, but only if tree view does
+                           * not have an active item, since if there is an active item
+                           * in tree view now, it is because we are now (for some reasons)
+                           * editing a file, due to possibly that some other file was activated.
                            */
                           micro.widgets.tree.get-selected-items:hyper-ide-folder-tree-browser
-                          add:x:/../*/micro.widgets.tree.delete-items
-                            src:x:/@micro.widgets.tree.get-selected-items/*
-                          micro.widgets.tree.delete-items:hyper-ide-folder-tree-browser
+                          if:x:/-/*/*?count
+                            =:int:0
+
+                            /*
+                             * Deleting active object wrapper, and setting header
+                             * to "empty string", since there is no actively edited item
+                             * now.
+                             */
+                            delete-widget:hyper-ide-active-object
+                            hyper-ide.set-header:
 
                           /*
                            * Deleting modal window, and giving user some feedback.
@@ -664,37 +685,22 @@ create-widget:hyper-ide-active-object
                         onclick
 
                           /*
-                           * Emptying folder, updating treeview, and closing modal window.
+                           * Emptying folder.
                            */
                           get-widget-property:hyper-ide-active-object
                             .folder
-
-                          /*
-                           * Deleting folders inside of selected folder.
-                           */
                           list-folders:x:/@get-widget-property/*/*?value
-                          delete-folder:x:/-/*?name
-
-                          /*
-                           * Deleting files inside of selected folder.
-                           */
+                          delete-folder:x:/@list-folders/*?name
                           list-files:x:/@get-widget-property/*/*?value
-                          delete-file:x:/-/*?name
+                          delete-file:x:/@list-files/*?name
 
                           /*
-                           * Deleting children of selected tree items.
+                           * Making sure we close all editors that are editing files beneath
+                           * currently emptied folder.
                            */
-                          micro.widgets.tree.get-selected-items:hyper-ide-folder-tree-browser
-                          add:x:/../*/micro.widgets.tree.delete-children
-                            src:x:/@micro.widgets.tree.get-selected-items/*
-                          micro.widgets.tree.delete-children:hyper-ide-folder-tree-browser
-
-                          /*
-                           * Deleting modal widget, and giving user some feedback.
-                           */
-                          delete-widget:hyper-ide-confirm-empty-folder
-                          micro.windows.info:Folder was successfully emptied
-                            class:micro-windows-info success
+                          eval-x:x:/+/*
+                          hyper-ide.close-editors
+                            filter:x:/@get-widget-property/*/*?value
 
                       button
                         innerValue:No

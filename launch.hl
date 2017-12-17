@@ -206,13 +206,6 @@ create-widget:hyper-ide-main-container
                       items
                         /
 
-                    /*
-                     * Selecting root item.
-                     */
-                    micro.widgets.tree.select-items:hyper-ide-folder-tree-browser
-                      items
-                        /
-
                   /*
                    * Callback invoked when TreeView wants more items.
                    */
@@ -241,6 +234,17 @@ create-widget:hyper-ide-main-container
                    * Callback invoked when an item ise selected.
                    */
                   .onselect
+
+                    /*
+                     * Checking if this is a de-select invocation.
+                     */
+                    if:x:/../*/items/*?count
+                      =:int:0
+
+                      /*
+                       * De-select invocation.
+                       */
+                      return
 
                     /*
                      * Checking if this is a request for a folder or a file.

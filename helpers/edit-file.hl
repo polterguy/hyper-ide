@@ -181,6 +181,161 @@ if
         class:hyper-ide-editor-tab-button-wrapper
       container:hyper-ide-editor-tab-editors
         class:hyper-ide-editors shaded rounded
+        events
+
+
+          /*
+           * Close all editors.
+           *
+           * Optionally pass in [filter] which becomes a filter of editors starting
+           * with the given folder path being [filter].
+           */
+          hyper-ide.close-editors
+
+            /*
+             * Sanity checking arguments.
+             */
+            micro.lambda.contract.optional:x:/..
+              filter:string
+
+            /*
+             * Checking if a [filter] was supplied, and if not, simply closing all
+             * editors.
+             */
+            if:x:/../*/filter?value
+              not
+
+              /*
+               * Closing all editors, launching splash screen, resetting header,
+               * and de-selecting all tree view items, before we return early.
+               */
+              delete-widget:hyper-ide-editor-tab
+
+              /*
+               * Checking if toolbar exists, before we try to delete it.
+               *
+               * Notice, toolbar will only exist if current active tree view item
+               * is a "folder" type of item.
+               */
+              if
+                fetch:x:/0/0?value
+                  widget-exists:hyper-ide-editor-toolbar
+
+                /*
+                 * Toolbar exists, deleting it.
+                 */
+                delete-widget:hyper-ide-editor-toolbar
+
+              /*
+               * De-selecting all tree view items.
+               */
+              micro.widgets.tree.select-items:hyper-ide-folder-tree-browser
+
+              /*
+               * Setting header to empty string.
+               */
+              hyper-ide.set-header:
+
+              /*
+               * Loading splash screen and returning early.
+               */
+              hyper-ide.load-splash
+              return
+
+            /*
+             * Fetching currently edited filename, for later use.
+             */
+            hyper-ide.get-filename
+
+            /*
+             * If we come here, then a [filter] condition was supplied.
+             *
+             * Finding all "activate" buttons for all editors, and getting their filenames,
+             * such that we can check if they are starting with the specified [filter] path.
+             */
+            p5.web.widgets.find
+              .activate
+            get-widget-property:x:/@p5.web.widgets.find/*/*?value
+              .activate
+
+            /*
+             * Looping through all activate buttons, checking if their
+             * associated files are beneath the folder we just deleted.
+             * And if so, making sure we delete the activate button.
+             */
+            for-each:x:/@get-widget-property/*/*
+
+              /*
+               * Checking if currently iterated "activate" button's file
+               * is beneath the folder we just deleted.
+               */
+              if
+                starts-with:x:/@_dp/#?value
+                  src:x:/../*/filter?value
+
+                /*
+                 * Currently iterated activate button is beneath folder we 
+                 * just deleted, hance we deleted the activate button.
+                 */
+                delete-widget:x:/@_dp/#/.?name
+
+            /*
+             * Now checking if currently edited file was beneath folder we just deleted,
+             * at which point we'll either have to activate another editor, or load
+             * our splash screen, if there are no more editors.
+             */
+            if
+              starts-with:x:/@hyper-ide.get-filename?value
+                src:x:/../*/filter?value
+
+              /*
+               * Currently edited file is beneath deleted folder.
+               * Hence, deleting editor wrapper.
+               */
+              delete-widget:hyper-ide-editor-wrapper
+
+              /*
+               * Then checking if there are anymore files open at all after deletion,
+               * and if so, making sure we simply open the last available file
+               * for editing, otherwise deleting entire editor wrapper, and re-launching
+               * splash screen.
+               */
+              p5.web.widgets.find
+                .activate
+              if:x:/@p5.web.widgets.find/*/*?value
+
+                /*
+                 * Open last available file for editing, by making sure we activate
+                 * the item associated with the last available "activate" widget
+                 * in out treeview.
+                 */
+                get-widget-property:x:/@p5.web.widgets.find/0/-/*?value
+                  .activate
+                add:x:/./*/micro.widgets.tree.select-items/*
+                  src:x:/@get-widget-property/*/*?value
+                micro.widgets.tree.select-items:hyper-ide-folder-tree-browser
+                  items
+
+              else-if:x:/../*/p5.web.widgets.find/[0,1]/*/*
+
+                /*
+                 * No more available files, but there were available file during initial
+                 * invocation of event, hence deleting all editor objects,
+                 * and launching "splash" screen.
+                 */
+                delete-widget:hyper-ide-editor-tab
+                hyper-ide.load-splash
+
+            else
+
+              /*
+               * Currently edited file was not closed, making sure we select it
+               * in our tree view.
+               */
+              add:x:/./*/micro.widgets.tree.select-items/*
+                src:x:/@hyper-ide.get-filename?value
+              micro.widgets.tree.select-items:hyper-ide-folder-tree-browser
+                items
 
 
 
