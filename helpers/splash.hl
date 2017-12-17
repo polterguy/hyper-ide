@@ -1,103 +1,147 @@
 ﻿
 /*
  * Initial "splash" screen.
+ *
+ * Welcomes user, and gives him some general feedback.
  */
 container:hyper-ide-splash
   class:air-inner shaded rounded hyper-ide-splash
+  oninit
+
+    /*
+     * Checking if user has a valid license.
+     */
+    if
+      license.is-valid
+      not
+
+      /*
+       * User does not have a valid license.
+       *
+       * Checking if "trial period" have been spent.
+       * Notice, we don't bother the user for his first 7 days.
+       */
+      select-data:x:/*/*/hyper-ide.trial-date
+      if:x:/@select-data/*/*?value
+        not
+
+        /*
+         * Trial date has not been set, inserting it into p5.data.
+         */
+        p5.types.date.now
+        eval-x:x:/+/*/*
+        insert-data
+          hyper-ide.trial-date
+            date:x:/@p5.types.date.now?value
+
+        /*
+         * Returning early, to avoid displaying license info, since obviousy
+         * trial period has not been exceeded, since there was no "trial-date"
+         * in our p5.data database.
+         */
+        return
+
+      else
+
+        /*
+         * Checking if "trial date" has expired.
+         */
+        p5.types.date.now
+        -:x:/@p5.types.date.now?value
+          _:x:/@select-data/*/*/date?value
+        if:x:/@-?value
+          <:time:"7.00:00:00.0000000"
+
+          /*
+           * Trial period has not yet ended.
+           */
+          return
+
+      /*
+       * If we came this far, then user does not have a valid license, and his
+       * trial period has ended.
+       *
+       * Creating a modal window explaining the situation to the user, but making
+       * sure we only do it once each session, since we don't want to bug user too
+       * much, since he might just simply be creating Open Source software.
+       */
+      p5.web.session.get:hyper-ide.show-license-info
+      if:x:/-/*?value
+
+        /*
+         * User has been warned earlier during his session.
+         */
+        return
+
+      /*
+       * OK, finally we can warn user about his licensing issues.
+       */
+      create-widgets
+        micro.widgets.modal:hyper-ide-license-modal-window
+          widgets
+            h3
+              innerValue:Get licensed
+            img
+              src:"https://phosphorusfive.files.wordpress.com/2017/09/license.jpg"
+              style:"max-width:150px;float:left;box-shadow:3px 3px 5px rgba(0,0,0,.1);margin-right:1rem;border-radius:1rem;"
+            p
+              innerValue:@"We couldn't find a valid proprietary license in your installation. If you wish to create close source applications,
+you'll probably need a valid proprietary license. Click the <em>'Get licensed'</em> button below to obtain one."
+            p
+              innerValue:@"A valid proprietary license will give you many benefits, such as getting rid of this warning, removing the promolink on your apps,
+and give you access to professional support and additional learning material. In addition to that it allows you to create closed source applications using Phosphorus Five.
+A license also makes you eligible for priority support."
+            p
+              innerValue:@"<strong>Warning</strong> - Without a proprietary license, you are not allowed to create closed source apps using Phosphorus Five, 
+since Phosphorus Five is licensed as GPLv3."
+            div
+              class:right
+              style:"clear:both;"
+              widgets
+                div
+                  class:strip
+                  style:"display:inline-block;"
+                  widgets
+                    button
+                      innerValue:Get licensed
+                      style:"margin-bottom:0;"
+                      oninit
+
+                        /*
+                         * Setting initial focus to "Yes" button.
+                         */
+                        micro.page.set-focus:x:/../*/_event?value
+
+                      onclick
+
+                        /*
+                         * Re-directing to "Bazar" to obtain a license.
+                         */
+                        p5.web.set-location:"/bazar?app=license"
+
+                    button
+                      innerValue:Nope
+                      style:"margin-bottom:0;"
+                      onclick
+
+                        /*
+                         * Simply deleting the modal window.
+                         */
+                        delete-widget:hyper-ide-license-modal-window
+
+                        /*
+                         * Making sure we don't ask the user again, during the current session.
+                         */
+                        p5.web.session.set:hyper-ide.show-license-info
+                          src:bool:true
   widgets
     h3
       innerValue:Hyper IDE
     p
-      innerValue:@"A web based integrated development environment with support for 100+ programming languages."
-      oninit
+      innerValue:@"An ultra slick, responsive, and modularised web based Integrated Development Environment, supporting 100+ programming languages out of the box. Allowing
+you to code from your phone if you wish. By combining Hyper IDE with the <a href=""/bazar?app=magic-menu"">Magic Menu</a>, you can even create apps using your while voice speaking natural English, if you wish."
 
-        /*
-         * Checking if user has a valid license, and if not, displaying license information.
-         */
-        if
-          license.is-valid
-          not
-
-          /*
-           * User does not have a valid license.
-           *
-           * Showing a modal window, explaining benefits, in addition to injecting a link on main page.
-           * To avoid bugging user too much, we only ask him once for each session.
-           */
-          p5.web.session.get:hyper-ide.show-license-info
-          if:x:/-/*?value
-            return
-          create-widgets
-            micro.widgets.modal:hyper-ide-license-modal-window
-              widgets
-                h3
-                  innerValue:Get licensed
-                img
-                  src:"https://phosphorusfive.files.wordpress.com/2017/09/license.jpg"
-                  style:"max-width:150px;float:left;box-shadow:3px 3px 5px rgba(0,0,0,.1);margin-right:1rem;border-radius:1rem;"
-                p
-                  innerValue:@"We couldn't find a valid proprietary license in your installation. If you wish to create close source applications,
-you'll probably need a valid proprietary license. Click the <em>'Get licensed'</em> button below to obtain one."
-                p
-                  innerValue:@"A valid proprietary license will give you many benefits, such as getting rid of this warning, removing the promolink on your apps,
-and give you access to professional support and additional learning material. In addition to that it allows you to create closed source applications using Phosphorus Five.
-A license also makes you eligible for priority support."
-                p
-                  innerValue:@"<strong>Warning</strong> - Without a proprietary license, you are not allowed to create closed source apps using Phosphorus Five, 
-since Phosphorus Five is licensed as GPLv3."
-                div
-                  class:right
-                  style:"clear:both;"
-                  widgets
-                    div
-                      class:strip
-                      style:"display:inline-block;"
-                      widgets
-                        button
-                          innerValue:Get licensed
-                          style:"margin-bottom:0;"
-                          oninit
-
-                            /*
-                             * Setting initial focus to "Yes" button.
-                             */
-                            micro.page.set-focus:x:/../*/_event?value
-
-                          onclick
-
-                            /*
-                             * Re-directing to "Bazar" to obtain a license.
-                             */
-                            p5.web.set-location:"/bazar?app=license"
-
-                        button
-                          innerValue:Nope
-                          style:"margin-bottom:0;"
-                          onclick
-
-                            /*
-                             * Simply deleting the modal window.
-                             */
-                            delete-widget:hyper-ide-license-modal-window
-
-                            /*
-                             * Making sure we don't ask the user again, during the current session.
-                             */
-                            p5.web.session.set:hyper-ide.show-license-info
-                              src:bool:true
-
-    div
-      style:"padding-left:15%; padding-right:15%;margin-top:4rem;"
-      widgets
-        div
-          style:"position:relative; padding-bottom:56.25%; padding-top:25px; height:0; margin-top:1rem; overflow:hidden;"
-          widgets
-            literal
-              element:iframe
-              allowfullscreen
-              style:"border:none; position:absolute; top:0; left:0; width:100%; height:100%;"
-              src:@"https://www.youtube.com/embed/kO_YYAeS0Xk?modestbranding=1&autohide=1&showinfo=0"
     p
       style:"position:absolute; bottom:0; right:1rem; color:#b0b0b0; font-style:italic; font-size:.7rem;"
-      innerValue:@"Copyright (c) Thomas Hansen, thomas@gaiasoul.com, license GPLv3"
+      innerValue:@"Copyright (c) <a target=""_blank"" href=""https://gaiasoul.com"">Thomas Hansen</a>, thomas@gaiasoul.com, license GPLv3"
 
