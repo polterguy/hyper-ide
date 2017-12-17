@@ -171,8 +171,6 @@ create-widget:hyper-ide-active-object
                            * Deleting modal widget, and giving user some feedback.
                            */
                           delete-widget:hyper-ide-confirm-rename-file
-                          micro.windows.info:File was successfully renamed
-                            class:micro-windows-info success
 
                       button
                         innerValue:Cancel
@@ -281,8 +279,6 @@ create-widget:hyper-ide-active-object
                            * Deleting modal window, and giving user some feedback.
                            */
                           delete-widget:hyper-ide-confirm-delete-file
-                          micro.windows.info:File was successfully deleted
-                            class:micro-windows-info success
 
                       button
                         innerValue:No

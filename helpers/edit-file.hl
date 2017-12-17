@@ -237,6 +237,14 @@ if
               hyper-ide.set-header:
 
               /*
+               * Deleting active object wrapper, and setting header
+               * to "empty string", since there is no actively edited item
+               * now.
+               */
+              delete-widget:hyper-ide-active-object
+              hyper-ide.set-header:
+
+              /*
                * Loading splash screen and returning early.
                */
               hyper-ide.load-splash
@@ -325,6 +333,14 @@ if
                  */
                 delete-widget:hyper-ide-editor-tab
                 hyper-ide.load-splash
+
+                /*
+                 * Deleting active object wrapper, and setting header
+                 * to "empty string", since there is no actively edited item
+                 * now.
+                 */
+                delete-widget:hyper-ide-active-object
+                hyper-ide.set-header:
 
             else
 
