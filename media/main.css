@@ -29,6 +29,7 @@
 .hyper-ide-splash {
     position:relative;
     height:100%;
+    background-color:#ffffff;
 }
 .hyper-ide-editors-wrapper {
     height:100%;
