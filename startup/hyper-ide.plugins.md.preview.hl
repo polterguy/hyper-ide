@@ -5,6 +5,7 @@ create-event:hyper-ide.plugins.md.preview
   return
     button
       innerValue:@"<span class=""icon-eye""></span>"
+      style:"margin-bottom:0;"
       title:Preview your Markdown
       onclick
 

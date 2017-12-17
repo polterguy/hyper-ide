@@ -2,7 +2,7 @@
 /*
  * Main CSS file.
  */
-.container-fullscreen {
+.hyper-ide-container {
 }
 .strip > label:first-child {
     min-width: 100px;
@@ -14,7 +14,7 @@
 .hyper-ide-content-wrapper {
     height:calc(100vh - 88px);
 }
-#hyper-ide-file-browser-wrapper {
+.hyper-ide-file-browser-wrapper {
     height:100%;
 }
 .hyper-ide-folder-browser {
@@ -26,46 +26,69 @@
     margin-right:-16px;
     padding-right:16px;
 }
-.hyper-ide-editor-selector {
-    border-bottom-left-radius:0;
-    border-bottom-right-radius:0;
-    border-bottom:none;
-    max-width:120px;
-    overflow:hidden;
-    text-overflow:ellipsis;
-    white-space:nowrap;
-    position:relative;
-    color:#c0c0c0;
-    font-style:italic;
-}
-#hyper-ide-editors-wrapper>.toggled {
-    background:none;
-    background-color:#fefefe;
-    z-index:1;
-    font-weight:bold;
-    font-style:normal;
-    color:#a0a0a0;
-}
-.hyper-ide-editor-selector {
-    margin-left:.5rem;
-}
-.hyper-ide-editor-selector:nth-child(1) {
-    margin-left:.2rem;
-}
 .hyper-ide-splash {
     position:relative;
     height:100%;
 }
-#hyper-ide-editors-wrapper {
+.hyper-ide-editors-wrapper {
     height:100%;
 }
 .hyper-ide-editor-wrapper {
     height:calc(100% - 40px);
 }
 .micro-codemirror-wrapper {
-    height:calc(100% - 40px);
+    height:calc(100% - 32px);
+}
+.hyper-ide-editor-tab {
+    height:100%;
+}
+.hyper-ide-editors {
+    height:100%;
+}
+.hyper-ide-activate-tab-button {
+    border-bottom-left-radius: 0;
+    border-bottom-right-radius: 0;
+    border-bottom: none;
+    max-width: 120px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    position: relative;
+    color: #c0c0c0;
+    font-style: italic;
+    margin-left:.2rem;
+    margin-bottom:0;
+    background:none;
+    background-color: #fafafa;
+    font-size:.7rem;
+}
+.hyper-ide-editor-tab-button-wrapper > .toggled {
+    background:none;
+    background-color: #fefefe;
+    z-index: 1;
+    font-weight: bold;
+    font-style: normal;
+    color: #a0a0a0
+
+}
+.hyper-ide-editor-wrapper {
+    height:100%;
 }
 .CodeMirror {
     height:100% !important;
     min-height:100%;
+}
+
+
+.hyper-ide-editor-selector {
+    border-bottom-left-radius: 0;
+    border-bottom-right-radius: 0;
+    border-bottom: none;
+    max-width: 120px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    position: relative;
+    color: #c0c0c0;
+    font-style: italic
 }

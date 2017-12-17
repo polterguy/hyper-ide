@@ -20,7 +20,7 @@ select-data:x:/*/*/hypereval.settings
 
 
 /*
- * Including Micro, selected skin, font CSS file, and main CSS file for Hypereval.
+ * Including Micro, active skin, font CSS file, and main CSS file for Hyper IDE.
  */
 p5.web.include-css-file
   @MICRO/media/main.css
@@ -57,11 +57,19 @@ if:x:/@whoami/*/role?value
 
 
 /*
- * Creating main container, making sure we set the title of our page.
+ * Setting title of our page.
  */
 p5.web.page.set-title:Hyper IDE
+
+
+
+
+
+/*
+ * Creating main container.
+ */
 create-widget:hyper-ide-main-container
-  class:container-fullscreen
+  class:container-fullscreen hyper-ide-container
   events
 
     /*
@@ -93,7 +101,7 @@ create-widget:hyper-ide-main-container
   widgets
 
     /*
-     * Wrapper for our top toolbar.
+     * Wrapper for our top toolbar and our "header" (which contains the file/folder-path).
      */
     div:hyper-ide-toolbar-wrapper
       class:row
@@ -133,6 +141,9 @@ create-widget:hyper-ide-main-container
                   style:"display:inline-block;margin-left:1rem;"
                   widgets
 
+                    /*
+                     * Settings button.
+                     */
                     button
                       innerValue:@"<span class=""icon-cog""></span>"
                       title:Settings
@@ -144,6 +155,9 @@ create-widget:hyper-ide-main-container
                          */
                         micro.codemirror.settings
 
+                    /*
+                     * Home button, launches desktop (or default app).
+                     */
                     button
                       innerValue:@"<span class=""icon-home3""></span>"
                       title:Close Hypereval
@@ -169,7 +183,7 @@ create-widget:hyper-ide-main-container
          * Wrapper for our file browser, or our "solution explorer" if you wish.
          */
         div:hyper-ide-file-browser-wrapper
-          class:col-30
+          class:col-30 hyper-ide-file-browser-wrapper
           widgets
             container
               class:air-inner shaded rounded hyper-ide-folder-browser
@@ -191,6 +205,10 @@ create-widget:hyper-ide-main-container
                     micro.widgets.tree.toggle-items:hyper-ide-folder-tree-browser
                       items
                         /
+
+                    /*
+                     * Selecting root item.
+                     */
                     micro.widgets.tree.select-items:hyper-ide-folder-tree-browser
                       items
                         /
@@ -212,7 +230,7 @@ create-widget:hyper-ide-main-container
                        * and folders structure, and returning items to caller.
                        */
                       eval-x:x:/+/*
-                      micro.evaluate.file:@IDE/helpers/get-files.hl
+                      micro.evaluate.file:@IDE/helpers/get-file-objects.hl
                         folder:x:/../*/_item-id?value
                       add:x:/..if/*/return/*/items
                         src:x:/@micro.evaluate.file/*

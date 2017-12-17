@@ -19,49 +19,11 @@ micro.lambda.contract.min:x:/..
 
 
 /*
- * Checking if splash screen is open, and closing it if it is.
- */
-if
-  fetch:x:/0/0?value
-    widget-exists:hyper-ide-splash
-  delete-widget:hyper-ide-splash
-
-
-
-
-
-/*
- * Checking if file is already being edited.
- */
-p5.web.widgets.find
-  .hyper-ide-activate-btn:x:/../*/file?value
-if:x:/@p5.web.widgets.find/*/*?value
-
-  /*
-   * File is already being edited, activating file, and returning early, making
-   * sure we update the header before we return.
-   */
-  p5.web.widgets.ajax-events.raise:x:/@p5.web.widgets.find/*/*?value
-    onclick
-
-  /*
-   * Setting header to file being edited.
-   */
-  hyper-ide.set-header:x:/../*/file?value
-
-  /*
-   * Returning early.
-   */
-  return
-
-
-
-
-
-/*
  * Retrieving file extension of file.
  */
 split:x:/../*/file?value
+  =:/
+split:x:/-/0/-?name
   =:.
 
 
@@ -77,14 +39,6 @@ switch:x:/@split/0/-?name
   case:pdb
   case:exe
   case:mdb
-
-    /*
-     * Warning user and returning early.
-     */
-    micro.windows.info:File cannot be edited in Hyper IDE
-      class:micro-windows-info warning
-    return
-
   case:png
   case:jpg
   case:jpeg
@@ -92,11 +46,10 @@ switch:x:/@split/0/-?name
   case:bmp
 
     /*
-     * Warning user, downloading file, and returning early.
+     * Warning user and returning early.
      */
     micro.windows.info:File cannot be edited in Hyper IDE
       class:micro-windows-info warning
-    micro.download.file:x:/../*/file?value
     return
 
 
@@ -135,6 +88,10 @@ if:x:/@split/*?count
   micro.evaluate.file:@IDE/helpers/editors/{0}.hl
     :x:/@split/0/-?name
     content:x:/@load-file/*?value
+
+  /*
+   * Adding editor widget into above [.editor-instance].
+   */
   add:x:/@.editor-instance
     src:x:/@micro.evaluate.file/*
 
@@ -143,7 +100,7 @@ else
   /*
    * Trying to use one of the standard CodeMirror editors.
    *
-   * First loading file extension to CM mode file, to create our mapping.
+   * First loading file extension to CM mode mapping file.
    */
   load-file:@IDE/configuration/extension2cm-instance.hl
 
@@ -160,72 +117,25 @@ else
     add:x:/@.editor-instance
       src
         micro.widgets.codemirror
+          .data-field:content
           mode:x:/@load-file/*/*/{0}?value
             :x:/@split/0/-?name
           value:x:/../*/load-file/*?value
           auto-focus:true
           .keys
-            Alt-S:@"p5.$('hyper-ide-editors-wrapper').raise('.onsave');"
-            Alt-X:@"p5.$('hyper-ide-editors-wrapper').raise('.onclose');"
-            Alt-N:@"p5.$('hyper-ide-editors-wrapper').raise('.onnext');"
-            Alt-P:@"p5.$('hyper-ide-editors-wrapper').raise('.onprevious');"
+            Alt-S:@"p5.$('hyper-ide-editor-wrapper').raise('.onsave');"
+            Alt-X:@"p5.$('hyper-ide-editor-wrapper').raise('.onclose');"
+            Alt-N:@"p5.$('hyper-ide-editor-wrapper').raise('.onnext');"
+            Alt-P:@"p5.$('hyper-ide-editor-wrapper').raise('.onprevious');"
 
   else
 
     /*
-     * Defaulting mode to Markdown.
+     * No editor exists, returning early, warning user first
      */
-    eval-x:x:/+/*/*/*
-    add:x:/@.editor-instance
-      src
-        micro.widgets.codemirror
-          mode:markdown
-          value:x:/../*/load-file/*?value
-          auto-focus:true
-          .keys
-            Alt-S:@"p5.$('hyper-ide-editors-wrapper').raise('.onsave');"
-            Alt-X:@"p5.$('hyper-ide-editors-wrapper').raise('.onclose');"
-            Alt-N:@"p5.$('hyper-ide-editors-wrapper').raise('.onnext');"
-            Alt-P:@"p5.$('hyper-ide-editors-wrapper').raise('.onprevious');"
-
-
-
-
-
-/*
- * Figuring out if above logic was able to retrieve an editor at all, and if not,
- * returning early, warning user first.
- */
-if:x:/@.editor-instance/*
-  not
-
-  /*
-   * Warning user and returning early.
-   */
-  micro.windows.info:We have no editor for these types of files
-    class:micro-windows-info warning
-  micro.download.file:x:/../*/file?value
-  return
-
-
-
-
-
-/*
- * Then figuring out the file's name, without its extension.
- */
-split:x:/../*/file?value
-  =:/
-
-
-
-
-
-/*
- * Making sure we pass in editor instantiated above into our [create-widget] invocation.
- */
-insert-before:x:/../*/create-widgets/*/div/*/widgets/0
-  src:x:/@.editor-instance/*
+    micro.windows.info:No editor for that file type
+      class:micro-windows-info warning
+    return
 
 
 
@@ -241,53 +151,339 @@ hyper-ide.set-header:x:/../*/file?value
 
 
 /*
- * Figuring out how to position our editor.
- *
- * This varies according to whether or not another editor has been previously 
- * created or not, since we want to make sure all of our editors appears like
- * tab controls, and their activate buttons are positioned differently, than
- * their actual editor content.
+ * Checking if splash screen is open, and closing it if it is.
  */
-.activate-btn-position-arg
 if
   fetch:x:/0/0?value
-    widget-exists:hyper-ide-editors-wrapper
+    widget-exists:hyper-ide-splash
+  delete-widget:hyper-ide-splash
+
+
+
+
+
+/*
+ * Making sure our "tab control" exists.
+ */
+if
+  fetch:x:/0/0?value
+    widget-exists:hyper-ide-editor-tab
   not
 
   /*
-   * We need to create main editors wrapper.
-   *
-   * We also position our editor inside of the main editor wrapper widget.
+   * Creating our "tab control" wrapper.
    */
-  create-container-widget:hyper-ide-editors-wrapper
+  create-widget:hyper-ide-editor-tab
     parent:hyper-ide-file-editor
-    style:"overflow:visible;"
-    .onsave
+    class:hyper-ide-editor-tab
+    widgets
+      container:hyper-ide-editor-tab-buttons
+        class:hyper-ide-editor-tab-button-wrapper
+      container:hyper-ide-editor-tab-editors
+        class:hyper-ide-editors
+
+
+
+
+
+/*
+ * Making sure we delete any previously created file object toolbars.
+ */
+if
+  fetch:x:/0/0?value
+    widget-exists:hyper-ide-editor-toolbar
+  delete-widget:hyper-ide-editor-toolbar
+
+
+
+
+
+/*
+ * Making sure we delete any previously created editors.
+ */
+p5.web.widgets.find
+  .editor
+delete-widget:x:/-/*/*?value
+
+
+
+
+
+/*
+ * Adding actual editor to [create-widgets] invocation below.
+ */
+add:x:/../*/create-widgets/*/div/*/widgets/=editor
+  src:x:/@.editor-instance/*
+
+
+
+
+
+/*
+ * "Un-toggling" all previously created tab buttons.
+ */
+p5.web.widgets.find
+  .activate
+micro.css.delete:x:/-/*/*?value
+  class:toggled
+
+
+
+
+
+/*
+ * Checking if editor for file has previously been opened (meaning there exists a tab button for it).
+ *
+ * If the file has already been opened, we don't create our "tab control button", but
+ * rather "toggle" it.
+ */
+p5.web.widgets.find
+  .activate:x:/../*/file?value
+if:x:/@p5.web.widgets.find/*/*?value
+
+  /*
+   * Making sure we don't create our "tab button", but rather "toggle" it.
+   */
+  set:x:/../*/create-widgets/*/button/*/.activate/.
+  micro.css.add:x:/@p5.web.widgets.find/*/*?value
+    class:toggled
+
+
+
+
+
+/*
+ * Retrieving plugin toolbar buttons.
+ */
+vocabulary:~hyper-ide.plugins.{0}.
+  :x:/../*/split/[1,2]/0/-?name
+.plugins
+  return:x:/../*/*
+for-each:x:/@vocabulary/*?value
+  insert-before:x:/@.plugins/0/-
+    src:x:/@_dp?value
+eval:x:/@.plugins
+insert-after:x:/../*/create-widgets/*/div/=hyper-ide-editor-toolbar/*/widgets/0
+  src:x:/@eval/*
+
+
+
+
+
+/*
+ * Creating our widgets.
+ *
+ * We create one "tab control button", we add one editor into "tab control editors",
+ * and we create one toolbar for saving file etc.
+ */
+create-widgets
+
+  /*
+   * Toolbar for saving editor's content, closing it, etc.
+   */
+  div:hyper-ide-editor-toolbar
+    before:hyper-ide-active-object
+    class:strip
+    style:"display:inline-block;"
+    .toolbar:x:/../*/file?value
+    widgets
 
       /*
-       * Saves active file.
+       * Save button.
        */
+      button:hyper-ide-save-button
+        style:"padding-left:35px;padding-right:35px;margin-bottom:0;"
+        innerValue:@"<span class=""icon-floppy-disk""></span>"
+        title:Saves your file, keyboard shortcut Alt+S
+        onclick
+
+          /*
+           * Retriving filename.
+           */
+          p5.web.widgets.find-first-ancestor:x:/../*/_event?value
+            .toolbar
+          get-widget-property:x:/@p5.web.widgets.find-first-ancestor/*/*?value
+            .toolbar
+
+          /*
+           * Retrieving editor's content.
+           */
+          p5.web.widgets.find-first
+            .editor:x:/@get-widget-property/*/*?value
+          micro.form.serialize:x:/@p5.web.widgets.find-first/*/*?value
+
+          /*
+           * Saving file and providing some feedback to user.
+           */
+          save-file:x:/@get-widget-property/*/*?value
+            src:x:/@micro.form.serialize/*/content?value
+          micro.windows.info:File was successfully saved
+            class:micro-windows-info success
+
+      /*
+       * Toggling visibility of "solution explorer".
+       */
+      button
+        innerValue:@"<span class=""icon-enlarge""></span>"
+        title:Toggle visibility of solution explorer
+        style:"margin-bottom:0;"
+        oninit
+
+          /*
+           * Checking of "solution explorer" is visible, and if it is, making
+           * sure button is initially created with the "toggled" class.
+           */
+          get-widget-property:hyper-ide-file-browser-wrapper
+            class
+          if:x:/@get-widget-property/*/*/=~hide
+            not
+
+            /*
+             * Solution explorer is visible.
+             */
+            micro.css.add:x:/../*/_event?value
+              class:toggled
+
+        onclick
+
+          /*
+           * Toggling "hide" class for solution explorer, and "toggled" class
+           * for the currently clicked button.
+           *
+           * In addition, we toggle "col-70" and "col" for our editor wrapper.
+           */
+          micro.css.toggle:hyper-ide-file-browser-wrapper
+            class:hide
+          micro.css.toggle:x:/../*/_event?value
+            class:toggled
+          micro.css.toggle:hyper-ide-file-editor
+            class:col-70 col
+
+      /*
+       * Close editor button.
+       */
+      button:hyper-ide-close-button
+        innerValue:@"<span class=""icon-cross""></span>"
+        style:"margin-bottom:0;"
+        onclick
+
+          /*
+           * Retriving filename, such that we can know which editor to close.
+           */
+          p5.web.widgets.find-first-ancestor:x:/../*/_event?value
+            .toolbar
+          get-widget-property:x:/@p5.web.widgets.find-first-ancestor/*/*?value
+            .toolbar
+
+          /*
+           * Finding editor, and deleting it.
+           */
+          p5.web.widgets.find-first
+            .editor:x:/@get-widget-property/*/*?value
+          delete-widget:x:/@p5.web.widgets.find-first/*/*?value
+
+          /*
+           * Finding "tab button" and deleting it.
+           */
+          p5.web.widgets.find-first
+            .activate:x:/@get-widget-property/*/*?value
+          delete-widget:x:/@p5.web.widgets.find-first/*/*?value
+
+          /*
+           * Finding toolbar for file and deleting it.
+           */
+          p5.web.widgets.find-first
+            .toolbar:x:/@get-widget-property/*/*?value
+          delete-widget:x:/@p5.web.widgets.find-first/*/*?value
+
+          /*
+           * Checking if this is our last open editor, at which point we
+           * delete the editor wrapper entirely, and re-load splash screen.
+           */
+          p5.web.widgets.find
+            .activate
+          if:x:/@p5.web.widgets.find/*/*?count
+            =:int:0
+
+            /*
+             * Deleting editors wrapper, and loading "splash screen".
+             */
+            delete-widget:hyper-ide-editor-tab
+            hyper-ide.load-splash
+
+            /*
+             * Making sure our file explorer is visible, in case it was hidden.
+             */
+            micro.css.delete:hyper-ide-file-browser-wrapper
+              class:hide
+            micro.css.add:hyper-ide-file-editor
+              class:col-70
+            micro.css.delete:hyper-ide-file-editor
+              class:col
+
+          else
+
+            /*
+             * Clicking the first activate button in above list, to
+             * make sure we activate the first editor.
+             */
+            p5.web.widgets.ajax-events.raise:x:/@p5.web.widgets.find/*/0?value
+              onclick
+
+  /*
+   * Activate tab/editor button.
+   */
+  button
+    parent:hyper-ide-editor-tab-buttons
+    class:hyper-ide-activate-tab-button toggled
+    .activate:x:/../*/file?value
+    innerValue:x:/../*/split/[0,1]/0/-?name
+    onclick
+
+      /*
+       * Checking if this editor is already the active one, at which point we
+       * return early, to avoid invoking logic below.
+       */
+      get-widget-property:x:/../*/_event?value
+        class
+      if:x:/-/*/*/=~toggled
+        return
+
+      /*
+       * For simplicity reasons, we simply find the file that was clicked,
+       * and selects its associated tree item, since this will do everything 
+       * for us automatically, such as (re)-loading the editor, etc.
+       */
+      get-widget-property:x:/../*/_event?value
+        .activate
+      add:x:/../*/micro.widgets.tree.select-items/*/items
+        src:x:/@get-widget-property/*/*?value
+      micro.widgets.tree.select-items:hyper-ide-folder-tree-browser
+        items
+
+  /*
+   * Actual editor for file.
+   *
+   * Dynamically created above according to file extension.
+   */
+  div:hyper-ide-editor-wrapper
+    parent:hyper-ide-editor-tab-editors
+    class:hyper-ide-editor-wrapper
+    .editor:x:/../*/file?value
+
+    /*
+     * Helper Ajax events, necessary to map up keyboard shortcuts.
+     */
+    .onsave
       hyper-ide.save-file
 
     .onclose
-
-      /*
-       * Close active file editor.
-       */
       hyper-ide.close
 
     .onprevious
-
-      /*
-       * Shows the next available editor
-       */
       hyper-ide.previous
 
     .onnext
-
-      /*
-       * Shows the next available editor
-       */
       hyper-ide.next
 
     events
@@ -299,21 +495,10 @@ if
       hyper-ide.get-code
 
         /*
-         * First finding active editor.
+         * Serializing form and returning content to caller.
          */
-        p5.web.widgets.find
-          .hyper-ide-editor
-        get-widget-property:x:/@p5.web.widgets.find/*/*?value
-          class
-
-        /*
-         * Then retrieving its textarea's innerValue, and returning it to caller.
-         */
-        p5.web.widgets.find:x:/@get-widget-property/*/*(!/=~hide)/.?name
-          element:textarea
-        get-widget-property:x:/@p5.web.widgets.find/*/*?value
-          value
-        return:x:/@get-widget-property/*/*?value
+        micro.form.serialize:x:/../*/_event?value
+        return:x:/@micro.form.serialize/*/content?value
 
 
       /*
@@ -322,17 +507,9 @@ if
       hyper-ide.set-code
 
         /*
-         * First finding active editor.
+         * First finding active editor's textarea.
          */
-        p5.web.widgets.find
-          .hyper-ide-editor
-        get-widget-property:x:/@p5.web.widgets.find/*/*?value
-          class
-
-        /*
-         * Then retrieving its textarea.
-         */
-        p5.web.widgets.find:x:/@get-widget-property/*/*(!/=~hide)/.?name
+        p5.web.widgets.find-first:x:/../*/_event?value
           element:textarea
 
         /*
@@ -346,29 +523,21 @@ if
          * Updating value of CodeMirror instance on client side.
          */
         p5.web.send-javascript:@"p5['{0}'].getDoc().setValue(`{1}`);"
-          :x:/@p5.web.widgets.find/*/*?value
+          :x:/@p5.web.widgets.find-first/*/*?value
           :x:/@replace?value
 
 
       /*
-       * Sets code for currently active editor.
+       * Returns ID of active code editor.
        */
       hyper-ide.get-code-editor
 
         /*
-         * First finding active editor.
+         * Finding active editor's textarea, and returning its ID.
          */
-        p5.web.widgets.find
-          .hyper-ide-editor
-        get-widget-property:x:/@p5.web.widgets.find/*/*?value
-          class
-
-        /*
-         * Then retrieving its textarea, and returning the ID of it to caller.
-         */
-        p5.web.widgets.find:x:/@get-widget-property/*/*(!/=~hide)/.?name
+        p5.web.widgets.find-first:x:/../*/_event?value
           element:textarea
-        return:x:/@p5.web.widgets.find/*/*?value
+        return:x:/@p5.web.widgets.find-first/*/*?value
 
 
       /*
@@ -377,18 +546,10 @@ if
       hyper-ide.get-filename
 
         /*
-         * First finding active editor.
+         * Returning filename to caller.
          */
-        p5.web.widgets.find
-          .hyper-ide-editor
-        get-widget-property:x:/@p5.web.widgets.find/*/*?value
-          class
-
-        /*
-         * Then retrieving its filename, and returning it to caller.
-         */
-        get-widget-property:x:/@get-widget-property/*/*(!/=~hide)/.?name
-          .hyper-ide-editor
+        get-widget-property:x:/../*/_event?value
+          .editor
         return:x:/@get-widget-property/*/*?value
 
 
@@ -398,15 +559,9 @@ if
       hyper-ide.save-file
 
         /*
-         * First finding active editor.
+         * Clicking save button.
          */
-        p5.web.widgets.find
-          .hyper-ide-editor
-        get-widget-property:x:/@p5.web.widgets.find/*/*?value
-          class
-        p5.web.widgets.find-first:x:/@get-widget-property/*/*(!/=~hide)/.?name
-          .save-button
-        p5.web.widgets.ajax-events.raise:x:/-/*/*?value
+        p5.web.widgets.ajax-events.raise:hyper-ide-save-button
           onclick
 
 
@@ -416,15 +571,9 @@ if
       hyper-ide.close
 
         /*
-         * First finding active editor.
+         * Clocking close button.
          */
-        p5.web.widgets.find
-          .hyper-ide-editor
-        get-widget-property:x:/@p5.web.widgets.find/*/*?value
-          class
-        p5.web.widgets.find-first:x:/@get-widget-property/*/*(!/=~hide)/.?name
-          .close-button
-        p5.web.widgets.ajax-events.raise:x:/-/*/*?value
+        p5.web.widgets.ajax-events.raise:hyper-ide-close-button
           onclick
 
 
@@ -434,17 +583,21 @@ if
       hyper-ide.previous
 
         /*
-         * First finding active editor.
+         * Finding all "activate buttons".
          */
         p5.web.widgets.find
-          .hyper-ide-editor
+          .activate
+
+        /*
+         * Retrieving class names for all "activate buttons".
+         */
         get-widget-property:x:/@p5.web.widgets.find/*/*?value
           class
-        get-widget-property:x:/@get-widget-property/*/*(!/=~hide)/./-?name
-          .hyper-ide-editor
-        p5.web.widgets.find
-          .hyper-ide-activate-btn:x:/@get-widget-property/*/*?value
-        p5.web.widgets.ajax-events.raise:x:/-/*/*?value
+
+        /*
+         * Raising the "onclick" event for the activate button that is before the currently active one.
+         */
+        p5.web.widgets.ajax-events.raise:x:/@get-widget-property/*/*(/=~toggled)/./-?name
           onclick
 
 
@@ -454,308 +607,21 @@ if
       hyper-ide.next
 
         /*
-         * First finding active editor.
+         * Finding all "activate buttons".
          */
         p5.web.widgets.find
-          .hyper-ide-editor
+          .activate
+
+        /*
+         * Retrieving class names for all "activate buttons".
+         */
         get-widget-property:x:/@p5.web.widgets.find/*/*?value
           class
-        get-widget-property:x:/@get-widget-property/*/*(!/=~hide)/./+?name
-          .hyper-ide-editor
-        p5.web.widgets.find
-          .hyper-ide-activate-btn:x:/@get-widget-property/*/*?value
-        p5.web.widgets.ajax-events.raise:x:/-/*/*?value
+
+        /*
+         * Raising the "onclick" event for the activate button that is after the currently active one.
+         */
+        p5.web.widgets.ajax-events.raise:x:/@get-widget-property/*/*(/=~toggled)/./+?name
           onclick
 
-
-  add:x:/@.activate-btn-position-arg
-    src
-      parent:hyper-ide-editors-wrapper
-
-else
-
-  /*
-   * A wrapper already exists, hence we hide all of the existing editors.
-   */
-  p5.web.widgets.find
-    .hyper-ide-editor
-  micro.css.add:x:/-/*/*?value
-    class:hide
-
-  /*
-   * In addition we need to delete the toggled CSS class for all editor selectors.
-   *
-   * These are the buttons that activate an editor instance.
-   */
-  p5.web.widgets.find
-    .hyper-ide-activate-btn
-  micro.css.delete:x:/-/*/*?value
-    class:toggled
-
-  /*
-   * Making sure we position our activate button after the last existing activate 
-   * button.
-   */
-  add:x:/@.activate-btn-position-arg
-    src:"after:{0}"
-      :x:/@p5.web.widgets.find/*/0/-?value
-
-
-
-
-
-/*
- * Retrieving plugin toolbar buttons, first for file type.
- */
-vocabulary:~hyper-ide.plugins.{0}
-  :x:/../*/split/[0,1]/0/-?name
-.plugins
-  return:x:/../*/*
-for-each:x:/@vocabulary/*?value
-  insert-before:x:/@.plugins/0/-
-    src:x:/@_dp?value
-eval:x:/@.plugins
-insert-before:x:/../*/create-widgets/**/widgets/=toolbar-buttons/0/-2
-  src:x:/@eval/*
-
-
-
-
-
-/*
- * The creating editor for currently edited file.
- *
- * This will create both the activate button, and the actual editor itself.
- * First making sure we pass in our activate button positioning argument.
- */
-add:x:/+/*/button
-  src:x:/@.activate-btn-position-arg/*
-create-widgets
-
-  /*
-   * First our activate button.
-   */
-  button
-    innerValue:x:/@split/0/-?name
-    style:"margin-bottom:0;"
-    title:x:/../*/file?value
-    class:hyper-ide-editor-selector toggled
-    .hyper-ide-activate-btn:x:/../*/file?value
-    onclick
-
-      /*
-       * Checking if this is our currently active editor, at which point we return
-       * early.
-       */
-      get-widget-property:x:/../*/_event?value
-        class:
-      if:x:/@get-widget-property/*/*?value
-        ~:toggled
-        return
-
-      /*
-       * Hiding all editors.
-       */
-      p5.web.widgets.find
-        .hyper-ide-editor
-      micro.css.add:x:/-/*/*?value
-        class:hide
-
-      /*
-       * Then finding editor belonging to currently clicked button, and making 
-       * sure we make it visible.
-       */
-      get-widget-property:x:/../*/_event?value
-        .hyper-ide-activate-btn
-      p5.web.widgets.find
-        .hyper-ide-editor:x:/@get-widget-property/*/*?value
-      micro.css.delete:x:/-/*/*?value
-        class:hide
-
-      /*
-       * Then removing toggled class for all editor selector buttons, before we
-       * add the toggled class for only the currently clicked button.
-       */
-      p5.web.widgets.find
-        .hyper-ide-activate-btn
-      micro.css.delete:x:/-/*/*?value
-        class:toggled
-      micro.css.add:x:/../*/_event?value
-        class:toggled
-
-      /*
-       * Setting focus automatically to active CM editor instance.
-       */
-      hyper-ide.get-code-editor
-      p5.web.send-javascript:@"p5['{0}'].focus();"
-        :x:/@hyper-ide.get-code-editor?value
-
-      /*
-       * Then setting header to filename being currently edited, to make sure the
-       * user has visual clues about which file is actually edited.
-       */
-      get-widget-property:x:/../*/_event?value
-        title
-      hyper-ide.set-header:x:/@get-widget-property/*/*?value
-
-      /*
-       * Then making sure we track our active item in our TreeView.
-       */
-      add:x:/../*/micro.widgets.tree.select-items/*/items
-        src:x:/@get-widget-property/*/*?value
-      micro.widgets.tree.select-items:hyper-ide-folder-tree-browser
-        items
-
-  /*
-   * Then the wrapper for our editor's actual content.
-   */
-  div
-    parent:hyper-ide-editors-wrapper
-    class:hyper-ide-editor-wrapper
-    .hyper-ide-editor:x:/../*/file?value
-    widgets
-
-      /*
-       * Toolbar buttons for editor instance.
-       */
-      div
-        class:right air-top
-        widgets
-          div
-            class:strip
-            style:"display:inline-block;"
-            widgets:toolbar-buttons
-
-              /*
-               * Save button.
-               */
-              button
-                style:"padding-left:35px;padding-right:35px;margin-bottom:0;"
-                innerValue:@"<span class=""icon-floppy-disk""></span>"
-                title:Saves your file, keyboard shortcut S
-                .save-button
-                onclick
-
-                  /*
-                   * Retriving filename.
-                   */
-                  p5.web.widgets.find-first-ancestor:x:/../*/_event?value
-                    .hyper-ide-editor
-                  get-widget-property:x:/@p5.web.widgets.find-first-ancestor/*/*?value
-                    .hyper-ide-editor
-
-                  /*
-                   * Retrieving editor's content, saving file, and providing some 
-                   * feedback to user.
-                   */
-                  hyper-ide.get-code
-                  save-file:x:/@get-widget-property/*/*?value
-                    src:x:/@hyper-ide.get-code?value
-                  micro.windows.info:File was successfully saved
-                    class:micro-windows-info success
-
-              /*
-               * Toggling visibility of "solution explorer".
-               */
-              button
-                innerValue:@"<span class=""icon-enlarge""></span>"
-                title:Toggle visibility of solution explorer and object editor
-                style:"margin-bottom:0;"
-                .toggle-solution-explorer
-                oninit
-
-                  /*
-                   * Checking of "solution explorer" is visible, and if it is, toggling
-                   * the button
-                   */
-                  get-widget-property:hyper-ide-file-browser-wrapper
-                    class
-                  if:x:/-/*/*/=~hide
-
-                    /*
-                     * Solution explorer is visible.
-                     */
-                    p5.web.widgets.find
-                      .toggle-solution-explorer
-                    micro.css.add:x:/-/*/*?value
-                      class:toggled
-
-                onclick
-
-                  /*
-                   * Checking if we should hide or display file browser.
-                   */
-                  get-widget-property:hyper-ide-file-browser-wrapper
-                    visible
-                  micro.css.toggle:hyper-ide-file-browser-wrapper
-                    class:hide
-                  p5.web.widgets.find
-                    .toggle-solution-explorer
-                  micro.css.toggle:x:/-/*/*?value
-                    class:toggled
-                  micro.css.toggle:hyper-ide-file-editor
-                    class:col-70 col
-                  micro.css.toggle:hyper-ide-file-browser-wrapper
-                    class:hide
-                  micro.css.toggle:hyper-ide-toolbar-wrapper
-                    class:hide
-
-              /*
-               * Close editor button.
-               */
-              button
-                innerValue:@"<span class=""icon-cross""></span>"
-                style:"margin-bottom:0;"
-                .close-button
-                onclick
-
-                  /*
-                   * Deleting actual editor widget.
-                   */
-                  p5.web.widgets.find-first-ancestor:x:/../*/_event?value
-                    .hyper-ide-editor
-
-                  /*
-                   * We need to figure the filename for currently closed instance,
-                   * such that we can later also find its activate button, and 
-                   * delete it.
-                   */
-                  get-widget-property:x:/@p5.web.widgets.find-first-ancestor/*/*?value
-                    .hyper-ide-editor
-
-                  /*
-                   * Then we can delete actual editor instance.
-                   */
-                  delete-widget:x:/@p5.web.widgets.find-first-ancestor/*/*?value
-
-                  /*
-                   * Then deleting its activate button.
-                   */
-                  p5.web.widgets.find
-                    .hyper-ide-activate-btn:x:/@get-widget-property/*/*?value
-                  delete-widget:x:/@p5.web.widgets.find/*/*?value
-
-                  /*
-                   * Checking if this is our last open editor, at which point we
-                   * delete the editor wrapper entirely.
-                   */
-                  p5.web.widgets.find
-                    .hyper-ide-activate-btn
-                  if:x:/@p5.web.widgets.find/*/*?count
-                    =:int:0
-
-                    /*
-                     * Deleting editors wrapper, and loading "splash screen".
-                     */
-                    delete-widget:hyper-ide-editors-wrapper
-                    hyper-ide.load-splash
-
-                  else
-
-                    /*
-                     * Clicking the first activate button in above list, to
-                     * make sure we activate the first editor.
-                     */
-                    p5.web.widgets.ajax-events.raise:x:/@p5.web.widgets.find/*/0?value
-                      onclick
-
+    widgets:editor

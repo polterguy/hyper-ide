@@ -64,7 +64,7 @@ create-widget:hyper-ide-active-object
   before:hyper-ide-main-toolbar
   .hyper-ide-file:x:/../*/file?value
   class:strip
-  style:"display:inline-block;"
+  style:"display:inline-block;margin-left:1rem;"
   widgets
 
     /*
@@ -72,7 +72,7 @@ create-widget:hyper-ide-active-object
      */
     button:hyper-ide-rename-file
       innerValue:@"<span class=""icon-pencil""></span>"
-      style:"margin-bottom:0;padding-left:35px;padding-right:35px;"
+      style:"margin-bottom:0;"
       title:Renames your file
       onclick
 

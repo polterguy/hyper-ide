@@ -196,6 +196,18 @@ hyper-ide.set-header:x:/../*/folder?value
 
 
 /*
+ * Making sure we delete any previously created editor toolbars.
+ */
+if
+  fetch:x:/0/0?value
+    widget-exists:hyper-ide-editor-toolbar
+  delete-widget:hyper-ide-editor-toolbar
+
+
+
+
+
+/*
  * Making sure we create our "Active Object" widget.
  */
 eval-x:x:/+/**(/.value|/.folder-name)

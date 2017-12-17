@@ -23,10 +23,11 @@ micro.lambda.contract.min:x:/..
 eval-x:x:/+/*/*/value
 return
   micro.widgets.codemirror
+    .data-field:content
     value:x:/../*/content?value
     auto-focus:true
     .keys
-      Alt-S:@"p5.$('hyper-ide-editors-wrapper').raise('.onsave');"
-      Alt-X:@"p5.$('hyper-ide-editors-wrapper').raise('.onclose');"
-      Alt-N:@"p5.$('hyper-ide-editors-wrapper').raise('.onnext');"
-      Alt-P:@"p5.$('hyper-ide-editors-wrapper').raise('.onprevious');"
+      Alt-S:@"p5.$('hyper-ide-editor-wrapper').raise('.onsave');"
+      Alt-X:@"p5.$('hyper-ide-editor-wrapper').raise('.onclose');"
+      Alt-N:@"p5.$('hyper-ide-editor-wrapper').raise('.onnext');"
+      Alt-P:@"p5.$('hyper-ide-editor-wrapper').raise('.onprevious');"
