@@ -5,8 +5,7 @@
 container
   element:a
   class:desktop-app shaded rounded air-inner
-  href:/hyper-ide
-  title:Hyper IDE, a web based IDE
+  title:Hyper IDE
   oninit
 
     /*
@@ -20,6 +19,18 @@ container
        * User is not logged in, simply deleting entire icon.
        */
       delete-widget:x:/../*/_event?value
+
+    else
+
+      /*
+       * Setting href attribute for bugger.
+       */
+      p5.io.unroll-path:@IDE/
+      split:x:/-?value
+        =:/
+      set-widget-property:x:/../*/_event?value
+        href:/{0}
+          :x:/@split/0/-?name
 
   widgets
     span
