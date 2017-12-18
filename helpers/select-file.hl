@@ -24,8 +24,8 @@ micro.lambda.contract.min:x:/..
  */
 if
   fetch:x:/0/0?value
-    widget-exists:hyper-ide-active-object
-  delete-widget:hyper-ide-active-object
+    widget-exists:hyper-ide-active-folder-toolbar
+  delete-widget:hyper-ide-active-folder-toolbar
 
 
 
@@ -44,23 +44,10 @@ eval-x:x:/-
 
 
 /*
- * Making sure user can't download protected files.
- */
-switch:x:/../*/file?value
-  case:/auth.hl
-    add:x:/../*/create-widget/**/button/=hyper-ide-download-file
-      src
-        disabled
-
-
-
-
-
-/*
  * Making sure we create our "Active Object" widget.
  */
 eval-x:x:/+/**(/.value|/.file-name)
-create-widget:hyper-ide-active-object
+create-widget:hyper-ide-active-folder-toolbar
   before:hyper-ide-main-toolbar
   .file:x:/../*/file?value
   class:strip hyper-ide-toolbar
@@ -193,7 +180,7 @@ create-widget:hyper-ide-active-object
         /*
          * Using Micro to download file.
          */
-        get-widget-property:hyper-ide-active-object
+        get-widget-property:hyper-ide-active-folder-toolbar
           .file
         micro.download.file:x:/-/*/*?value
 
@@ -238,7 +225,7 @@ create-widget:hyper-ide-active-object
                           /*
                            * Figuring out which file user is trying to delete.
                            */
-                          get-widget-property:hyper-ide-active-object
+                          get-widget-property:hyper-ide-active-folder-toolbar
                             .file
 
                           /*
@@ -288,6 +275,9 @@ create-widget:hyper-ide-active-object
 /*
  * Starts editing file immediately after we have selected it.
  */
+eval-x:x:/+/*
+micro.evaluate.file:@IDE/helpers/edit-file.hl
+  file:x:/../*/file?value
 eval-x:x:/+/*
 micro.evaluate.file:@IDE/helpers/edit-file.hl
   file:x:/../*/file?value

@@ -4,14 +4,6 @@
     min-width:100px;
 }
 
-/* File path "header" */
-.hyper-ide-file-path {
-    color:#c0c0c0;
-    float:left;
-    margin-bottom:0;
-    margin-top:1rem;
-}
-
 /* All Hyper IDE toolbars */
 .hyper-ide-toolbar {
     display:inline-block;

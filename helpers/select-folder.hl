@@ -1,6 +1,8 @@
 ﻿
 /*
  * Invoked when a folder is selected.
+ *
+ * Expects [folder] being path to the selected folder.
  */
 
 
@@ -18,23 +20,24 @@ micro.lambda.contract.min:x:/..
 
 
 /*
- * Deleting out any previously Active Object widgets.
+ * Deleting out any previously edit folder toolbars.
  */
 if
   fetch:x:/0/0?value
-    widget-exists:hyper-ide-active-object
-  delete-widget:hyper-ide-active-object
+    widget-exists:hyper-ide-active-folder-toolbar
+  delete-widget:hyper-ide-active-folder-toolbar
 
 
 
 
 
 /*
- * Checking if this is a protected folder.
+ * Hiding any previously shown edit file toolbars.
  */
-if:x:/../*/folder?value
-  =:/db/
-  return
+p5.web.widgets.find
+  .toolbar
+set-widget-property:x:/-/*/*?value
+  visible:false
 
 
 
@@ -48,9 +51,18 @@ split:x:/../*/folder?value
 .folder-name
 if:x:/../*/folder?value
   =:/
+
+  /*
+   * Root folder selected.
+   */
   set:x:/@.folder-name?value
     src:/
+
 else
+
+  /*
+   * Anything but root folder selected.
+   */
   set:x:/@.folder-name?value
     src:x:/@split/0/-?name
 
@@ -59,151 +71,18 @@ else
 
 
 /*
- * Making sure user is not allowed to rename or modify "protected" folders.
- */
-.read-only:bool:false
-.allow-child:bool:true
-switch:x:/../*/folder?value
-  case:/
-  case:/bin/
-  case:/common/
-  case:/db/
-  case:/users/
-    set:x:/@.read-only?value
-      src:bool:true
-  case:/modules/
-    set:x:/@.read-only?value
-      src:bool:true
-  default
-
-    /*
-     * Making sure user is not allowed to edit any of the system user folders.
-     */
-    if:x:/@split/0?name
-      =:users
-      and:x:/@split/*?count
-        =:int:2
-      or:x:/@split/*?count
-        =:int:3
-        and:x:/@split/2?name
-          =:documents
-          or:x:/@split/2?name
-            =:temp
-      or:x:/@split/*?count
-        =:int:4
-        and:x:/@split/2?name
-          =:documents
-          and:x:/@split/3?name
-            =:private
-            or:x:/@split/3?name
-              =:public
-      set:x:/@.read-only?value
-        src:bool:true
-
-    /*
-     * Making sure user is not allowed to edit any of the system common folders.
-     */
-    else-if:x:/@split/0?name
-      =:common
-      and:x:/@split/*?count
-        =:int:2
-        and:x:/@split/1?name
-          =:documents
-          or:x:/@split/1?name
-            =:temp
-      or:x:/@split/*?count
-        =:int:3
-        and:x:/@split/2?name
-          =:private
-          or:x:/@split/2?name
-            =:public
-      set:x:/@.read-only?value
-        src:bool:true
-
-    /*
-     * Making sure user is not allowed to empty any of the system user folders.
-     */
-    if:x:/@split/0?name
-      =:users
-      and:x:/@split/*?count
-        =:int:2
-      or:x:/@split/*?count
-        =:int:3
-        and:x:/@split/2?name
-          =:documents
-
-    /*
-     * Making sure user is not allowed to empty any of the system common folders.
-     */
-    else-if:x:/@split/0?name
-      =:common
-      and:x:/@split/*?count
-        =:int:2
-        and:x:/@split/1?name
-          =:documents
-
-/*
- * Making sure user is not allowed to create children in any of the system user folders.
- */
-if:x:/@split/0?name
-  =:users
-  and:x:/@split/*?count
-    =:int:1
-  set:x:/@.allow-child?value
-    src:bool:false
-
-
-
-
-
-/*
- * Checking if above logic made folder read-only.
- */
-if:x:/@.read-only?value
-  =:bool:true
-  add:x:/../*/create-widget/*/*/button(/=hyper-ide-rename-folder|/=hyper-ide-delete-folder)
-    src
-      disabled
-if:x:/@.allow-child?value
-  =:bool:false
-  add:x:/../*/create-widget/*/*/button/=hyper-ide-child-folder
-    src
-      disabled
-
-
-
-
-
-/*
- * Setting header to active folder.
- */
-hyper-ide.set-header:x:/../*/folder?value
-
-
-
-
-
-/*
- * Making sure we delete any previously created editor toolbars.
- */
-if
-  fetch:x:/0/0?value
-    widget-exists:hyper-ide-editor-toolbar
-  delete-widget:hyper-ide-editor-toolbar
-
-
-
-
-
-/*
  * Making sure we create our "Active Object" widget.
  */
-eval-x:x:/+/**(/.value|/.folder-name)
-create-widget:hyper-ide-active-object
+eval-x:x:/+/**(/.value|/.folder-name)|/+/*/*/label/*/innerValue
+create-widget:hyper-ide-active-folder-toolbar
   before:hyper-ide-main-toolbar
   .folder:x:/../*/folder?value
   class:strip hyper-ide-toolbar
   widgets
+
+    label
+      style:"margin-bottom:0;"
+      innerValue:x:/@.folder-name?value
 
     button:hyper-ide-child-file
       innerValue:@"<span class=""icon-file-empty""></span>"
@@ -218,7 +97,7 @@ create-widget:hyper-ide-active-object
           micro.widgets.modal:hyper-ide-create-new-file-modal
             widgets
               h3
-                innerValue:Please name your new file
+                innerValue:Name of new file
               micro.widgets.wizard-form:hyper-ide-create-new-file-form
                 text:hyper-ide-new-file-name
                   info:Name
@@ -270,7 +149,7 @@ create-widget:hyper-ide-active-object
                           /*
                            * Creating our new file as a sub file of currently selected folder.
                            */
-                          get-widget-property:hyper-ide-active-object
+                          get-widget-property:hyper-ide-active-folder-toolbar
                             .folder
                           save-file:{0}{1}
                             :x:/@get-widget-property/*/*?value
@@ -327,7 +206,7 @@ create-widget:hyper-ide-active-object
           micro.widgets.modal:hyper-ide-create-new-folder-modal
             widgets
               h3
-                innerValue:Please name your new folder
+                innerValue:Name of new folder
               micro.widgets.wizard-form:hyper-ide-create-new-folder-form
                 text:hyper-ide-new-folder-name
                   info:Name
@@ -381,7 +260,7 @@ create-widget:hyper-ide-active-object
                           /*
                            * Creating our new folder as a sub folder of currently selected folder.
                            */
-                          get-widget-property:hyper-ide-active-object
+                          get-widget-property:hyper-ide-active-folder-toolbar
                             .folder
                           create-folder:{0}{1}/
                             :x:/@get-widget-property/*/*?value
@@ -569,7 +448,7 @@ are editing files inside of the deleted folder, and the <strong>action is perman
                           /*
                            * Figuring out which folder user is trying to delete.
                            */
-                          get-widget-property:hyper-ide-active-object
+                          get-widget-property:hyper-ide-active-folder-toolbar
                             .folder
 
                           /*

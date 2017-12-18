@@ -19,6 +19,47 @@ micro.lambda.contract.min:x:/..
 
 
 /*
+ * Checking if file is already open, at which point we reuse existing editor, to
+ * avoid reloading file, and loosing any potential changes.
+ */
+p5.web.widgets.find
+  .activate:x:/../*/file?value
+if:x:/@p5.web.widgets.find/*/*?value
+
+  /*
+   * File is already open, activating editor, and returning early.
+   *
+   * First making sure correct tab control button becomes toggled.
+   */
+  p5.web.widgets.find
+    .activate
+  micro.css.delete:x:/@p5.web.widgets.find/*/*?value
+    class:toggled
+  micro.css.add:x:/../*/p5.web.widgets.find/[0,1]/*/*?value
+    class:toggled
+
+  /*
+   * Then making sure correct editor becomes toggled.
+   */
+  p5.web.widgets.find
+    .editor
+  set-widget-property:x:/@p5.web.widgets.find/*/*?value
+    visible:false
+  p5.web.widgets.find
+    .editor:x:/../*/file?value
+  set-widget-property:x:/@p5.web.widgets.find/*/*?value
+    visible:true
+
+  /*
+   * Returning early to abort evaluation of the rest of our lambda (file).
+   */
+  return
+
+
+
+
+
+/*
  * Retrieving file extension of file.
  */
 split:x:/../*/file?value
@@ -116,15 +157,6 @@ else
 
 
 /*
- * Setting header to file being edited.
- */
-hyper-ide.set-header:x:/../*/file?value
-
-
-
-
-
-/*
  * Checking if splash screen is open, and closing it if it is.
  */
 if
@@ -161,23 +193,24 @@ if
 
 
 /*
- * Making sure we delete any previously created file object toolbars.
+ * Making sure we hide any previously created file toolbars.
  */
-if
-  fetch:x:/0/0?value
-    widget-exists:hyper-ide-editor-toolbar
-  delete-widget:hyper-ide-editor-toolbar
+p5.web.widgets.find
+  .toolbar
+set-widget-property:x:/-/*/*?value
+  visible:false
 
 
 
 
 
 /*
- * Making sure we delete any previously created editors.
+ * Making sure we hide any previously created editors.
  */
 p5.web.widgets.find
   .editor
-delete-widget:x:/-/*/*?value
+set-widget-property:x:/-/*/*?value
+  visible:false
 
 
 
@@ -206,27 +239,6 @@ micro.css.delete:x:/-/*/*?value
 
 
 /*
- * Checking if editor for file has previously been opened (meaning there exists a tab button for it).
- *
- * If the file has already been opened, we don't create our "tab control button", but
- * rather "toggle" it.
- */
-p5.web.widgets.find
-  .activate:x:/../*/file?value
-if:x:/@p5.web.widgets.find/*/*?value
-
-  /*
-   * Making sure we don't create our "tab button", but rather "toggle" it.
-   */
-  set:x:/../*/create-widgets/*/button/*/.activate/.
-  micro.css.add:x:/@p5.web.widgets.find/*/*?value
-    class:toggled
-
-
-
-
-
-/*
  * Retrieving plugin toolbar buttons.
  */
 vocabulary:~hyper-ide.plugins.{0}.
@@ -237,7 +249,7 @@ for-each:x:/@vocabulary/*?value
   insert-before:x:/@.plugins/0/-
     src:x:/@_dp?value
 eval:x:/@.plugins
-insert-after:x:/../*/create-widgets/*/div/=hyper-ide-editor-toolbar/*/widgets/0
+insert-after:x:/../*/create-widgets/*/div/[0,1]/*/widgets/0
   src:x:/@eval/*
 
 
@@ -255,8 +267,8 @@ create-widgets
   /*
    * Toolbar for saving editor's content, closing it, etc.
    */
-  div:hyper-ide-editor-toolbar
-    before:hyper-ide-active-object
+  div
+    before:hyper-ide-active-folder-toolbar
     class:strip
     style:"display:inline-block;"
     .toolbar:x:/../*/file?value
@@ -265,7 +277,7 @@ create-widgets
       /*
        * Save button.
        */
-      button:hyper-ide-save-button
+      button
         style:"padding-left:35px;padding-right:35px;margin-bottom:0;"
         innerValue:@"<span class=""icon-floppy-disk""></span>"
         title:Saves your file, keyboard shortcut Alt+S
@@ -318,7 +330,7 @@ create-widgets
       /*
        * Close editor button.
        */
-      button:hyper-ide-close-button
+      button
         innerValue:@"<span class=""icon-cross""></span>"
         style:"margin-bottom:0;"
         title:Close editor, keyboard shortcut Alt+X
@@ -374,7 +386,7 @@ create-widgets
    *
    * Dynamically created above according to file extension.
    */
-  div:hyper-ide-editor-wrapper
+  div
     parent:hyper-ide-editor-tab-editors
     class:hyper-ide-codemirror-wrapper
     .editor:x:/../*/file?value
@@ -435,7 +447,7 @@ create-widgets
          */
         hyper-ide.get-code-editor
         set-widget-property:x:/-?value
-          innerValue:x:/../*/_arg?value
+          value:x:/../*/_arg?value
 
         /*
          * Updating value of CodeMirror instance on client side.
