@@ -1,49 +1,65 @@
 
-/*
- * Main CSS file.
- */
-.hyper-ide-container {
-}
+/* Making sure strip labels have uniform width */
 .strip > label:first-child {
-    min-width: 100px;
+    min-width:100px;
 }
-.hyper-ide-header {
-    color: #c0c0c0;
-    float: left;
+
+/* File path "header" */
+.hyper-ide-file-path {
+    color:#c0c0c0;
+    float:left;
+    margin-bottom:0;
+    margin-top:1rem;
 }
-.hyper-ide-content-wrapper {
-    height:calc(100vh - 88px);
+
+/* All Hyper IDE toolbars */
+.hyper-ide-toolbar {
+    display:inline-block;
+    margin-left:1rem;
 }
-.hyper-ide-file-browser-wrapper {
+
+/* Main content, minus toolbars that is */
+.hyper-ide-content {
+    height:calc(100vh - 5rem);
+}
+
+/* TreeView wrapper for browsing files (column wrapper) */
+.hyper-ide-solution-explorer-col {
     height:100%;
 }
-.hyper-ide-folder-browser {
+
+/* TreeView wrapper for browsing files (inside of column) */
+.hyper-ide-solution-explorer {
     height:100%;
 }
-#hyper-ide-folder-tree-browser {
+
+/* Actual TreeView (solution explorer) CSS class */
+.hyper-ide-tree-view {
     overflow:scroll;
     height:100%;
-    margin-right:-16px;
-    padding-right:16px;
+    margin-right:-1rem;
+    padding-right:1rem;
 }
+
+/* Wrapper column around editors (and splash screen) */
+.hyper-ide-editor-col {
+    height:100%;
+}
+
+/* Hyper IDE splash screen, which you see when you initially start Hyper IDE */
 .hyper-ide-splash {
     position:relative;
     height:100%;
     background-color:#ffffff;
 }
-.hyper-ide-editors-wrapper {
-    height:100%;
-}
-.micro-codemirror-wrapper {
-    height:100%;
-}
+
+/* "Tab control" wrapping editor (both tab buttons, and editor surface) */
 .hyper-ide-editor-tab {
     height:100%;
 }
-.hyper-ide-editors {
-    height:calc(100% - 34px);
-}
-.hyper-ide-activate-tab-button {
+
+/* "Tab control buttons", inside of editor "tab control" */
+.hyper-ide-editor-tab-buttons > button {
     border-bottom-left-radius: 0;
     border-bottom-right-radius: 0;
     border-bottom: none;
@@ -57,39 +73,53 @@
     margin-left:.2rem;
     margin-bottom:0;
     background:none;
-    background-color: #fafafa;
+    background-color: #fefefe;
     font-size:.7rem;
 }
-.hyper-ide-editor-tab-button-wrapper > .toggled {
+.hyper-ide-editor-tab-buttons > .toggled {
     background:none;
-    background-color: #ffffff;
-    z-index: 1;
-    font-weight: bold;
-    font-style: normal;
-    color: #a0a0a0
-
+    background-color:#ffffff;
+    z-index:1;
+    font-weight:bold;
+    font-style:normal;
+    color:#a0a0a0;
 }
-.hyper-ide-editor-wrapper {
+.hyper-ide-editor-tab-buttons > button:hover,
+.hyper-ide-editor-tab-buttons > button:active,
+.hyper-ide-editor-tab-buttons > button:focus {
+    background:none;
+    background-color:#f5f5f5;
+}
+.hyper-ide-editor-tab-buttons > button.toggled:hover,
+.hyper-ide-editor-tab-buttons > button.toggled:active,
+.hyper-ide-editor-tab-buttons > button.toggled:focus {
+    background:none;
+    background-color:#ffffff;
+}
+
+/* "Tab control" content wrapper  */
+.hyper-ide-editor-tab-content {
+    /* Set to "auto" to remove scrollbars from CodeMirror instance */
+    height:calc(100% - 34px);
+}
+
+/* Making sure we modify main CodeMirror (Micro) wrapper class */
+.micro-codemirror-wrapper {
     height:100%;
 }
-.CodeMirror {
+
+/* Wraps CodeMirror instance(s) */
+.hyper-ide-codemirror-wrapper {
+    height:100%;
+}
+
+/* CodeMirror instance, inside of editors */
+.hyper-ide-codemirror-wrapper .CodeMirror {
     height:100% !important;
     min-height:100%;
 }
 
-
-.hyper-ide-editor-selector {
-    border-bottom-left-radius: 0;
-    border-bottom-right-radius: 0;
-    border-bottom: none;
-    max-width: 120px;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-    position: relative;
-    color: #c0c0c0;
-    font-style: italic
-}
+/* Our animation for our UFO on our splash screen */
 @keyframes hyper-ide-ufo {
     0% {
         transform:rotate(-90deg) scale(0.1);
@@ -100,6 +130,7 @@
         margin-top:0;
     }
 }
+/* UFO styles (image on splash screen) */
 .hyper-ide-ufo {
     margin-left:auto;
     margin-right:auto;

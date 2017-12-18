@@ -63,8 +63,7 @@ eval-x:x:/+/**(/.value|/.file-name)
 create-widget:hyper-ide-active-object
   before:hyper-ide-main-toolbar
   .file:x:/../*/file?value
-  class:strip
-  style:"display:inline-block;margin-left:1rem;"
+  class:strip hyper-ide-toolbar
   widgets
 
     /*

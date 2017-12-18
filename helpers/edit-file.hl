@@ -31,32 +31,6 @@ split:x:/-/0/-?name
 
 
 /*
- * Sanity checking for most common types of binary files, which we obviously 
- * don't allow to be edited.
- */
-switch:x:/@split/0/-?name
-  case:dll
-  case:pdb
-  case:exe
-  case:mdb
-  case:png
-  case:jpg
-  case:jpeg
-  case:gif
-  case:bmp
-
-    /*
-     * Warning user and returning early.
-     */
-    micro.windows.info:File cannot be edited in Hyper IDE
-      class:micro-windows-info warning
-    return
-
-
-
-
-
-/*
  * Loading file, getting ready to launch editor.
  */
 load-file:x:/../*/file?value
@@ -178,9 +152,9 @@ if
     class:hyper-ide-editor-tab
     widgets
       container:hyper-ide-editor-tab-buttons
-        class:hyper-ide-editor-tab-button-wrapper
+        class:hyper-ide-editor-tab-buttons
       container:hyper-ide-editor-tab-editors
-        class:hyper-ide-editors shaded rounded
+        class:hyper-ide-editor-tab-content shaded rounded
 
 
 
@@ -363,6 +337,7 @@ create-widgets
     class:hyper-ide-activate-tab-button toggled
     .activate:x:/../*/file?value
     innerValue:x:/../*/split/[0,1]/0/-?name
+    title:x:/../*/split/[0,1]/0/-?name
     onclick
 
       /*
@@ -393,7 +368,7 @@ create-widgets
    */
   div:hyper-ide-editor-wrapper
     parent:hyper-ide-editor-tab-editors
-    class:hyper-ide-editor-wrapper
+    class:hyper-ide-codemirror-wrapper
     .editor:x:/../*/file?value
 
     /*

@@ -202,8 +202,7 @@ eval-x:x:/+/**(/.value|/.folder-name)
 create-widget:hyper-ide-active-object
   before:hyper-ide-main-toolbar
   .folder:x:/../*/folder?value
-  class:strip
-  style:"display:inline-block;"
+  class:strip hyper-ide-toolbar
   widgets
 
     button:hyper-ide-child-file
@@ -357,7 +356,9 @@ create-widget:hyper-ide-active-object
                           /*
                            * Serializing form data and sanity checking name of new folder.
                            *
-                           * Notice, we only accept a-z, 0-9, _ and - characters, and no capital letters.
+                           * Notice, we only accept a-z, 0-9, _, . and - characters, and no capital letters.
+                           *
+                           * We don't accept capital letters to avoid windows/xNix confusion in paths.
                            */
                           micro.widgets.wizard-form.value:hyper-ide-create-new-folder-form
                           match:x:/@micro.widgets.wizard-form.value/*/name?value
