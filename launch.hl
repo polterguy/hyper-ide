@@ -157,18 +157,6 @@ create-widget:hyper-ide-main-container
         exact:bool
 
       /*
-       * Deleting selected item from tree.
-       *
-       * Notice, selected tree view item will always be the file or folder 
-       * user is trying to delete, since selecting a tree node, 
-       * changes the active file object edited.
-       */
-      micro.widgets.tree.get-selected-items:hyper-ide-folder-tree-browser
-      add:x:/../*/micro.widgets.tree.delete-items
-        src:x:/@micro.widgets.tree.get-selected-items/*
-      micro.widgets.tree.delete-items:hyper-ide-folder-tree-browser
-
-      /*
        * Fetching currently edited filename, for later use.
        */
       hyper-ide.get-filename
