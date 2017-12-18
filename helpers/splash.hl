@@ -136,7 +136,7 @@ since Phosphorus Five is licensed as GPLv3."
                           src:bool:true
   widgets
     h3
-      innerValue:Hyper IDE
+      innerValue:Hyper IDE <small>{Develop everything from everywhere}</small>
     p
       innerValue:@"An ultra slick, responsive, and modularised web based Integrated Development Environment, supporting 100+ programming languages out of the box, allowing
 you to code from your phone if you wish. By combining Hyper IDE with the <a href=""/bazar?app=magic-menu"">Magic Menu</a>, you can even create apps using your voice, while 
