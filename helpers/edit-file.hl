@@ -361,6 +361,14 @@ create-widgets
       micro.widgets.tree.select-items:hyper-ide-folder-tree-browser
         items
 
+      /*
+       * Making sure we scroll item into view.
+       */
+      p5.web.widgets.find-first-like:hyper-ide-folder-tree-browser
+        class:tree-selected
+      p5.web.send-javascript:@"p5.$('{0}').el.scrollIntoView();"
+        :x:/@p5.web.widgets.find-first-like/*/*?value
+
   /*
    * Actual editor for file.
    *

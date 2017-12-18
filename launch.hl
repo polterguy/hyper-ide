@@ -472,18 +472,6 @@ create-widget:hyper-ide-main-container
                       micro.evaluate.file:@IDE/helpers/select-file.hl
                         file:x:/../*/items/0?name
 
-                      /*
-                       * Making sure we scroll item into view.
-                       *
-                       * Notice, we only do this for files, and not for folders,
-                       * since during opening folders, we don't want to throw
-                       * the UX too much around, to confuse user.
-                       */
-                      p5.web.widgets.find-first-like:hyper-ide-folder-tree-browser
-                        class:tree-selected
-                      p5.web.send-javascript:@"p5.$('{0}').el.scrollIntoView();"
-                        :x:/@p5.web.widgets.find-first-like/*/*?value
-
         /*
          * Wrapper for our file editor.
          *
