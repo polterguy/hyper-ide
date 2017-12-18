@@ -264,6 +264,7 @@ create-widget:hyper-ide-main-container
            * now.
            */
           delete-widget:hyper-ide-active-object
+          delete-widget:hyper-ide-editor-toolbar
           hyper-ide.set-header:
 
       else-if:x:/@hyper-ide.get-filename?value
