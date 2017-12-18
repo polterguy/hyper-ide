@@ -58,6 +58,12 @@
     height:100%;
 }
 
+/* "Tab control buttons" wrapper */
+.hyper-ide-editor-tab-buttons {
+    overflow:auto;
+    white-space:nowrap;
+}
+
 /* "Tab control buttons", inside of editor "tab control" */
 .hyper-ide-editor-tab-buttons > button {
     border-bottom-left-radius: 0;
