@@ -361,7 +361,7 @@ create-widget:hyper-ide-active-object
                            */
                           micro.widgets.wizard-form.value:hyper-ide-create-new-folder-form
                           match:x:/@micro.widgets.wizard-form.value/*/name?value
-                            src:regex:/^[-_a-z0-9]+$/
+                            src:regex:/^[-_a-z0-9\.]+$/
                           if:x:/@match/*?count
                             =:int:0
                             or:x:/@match/0?name
