@@ -259,13 +259,23 @@ create-widget:hyper-ide-main-container
             items
 
           /*
-           * Deleting active object wrapper, and setting header
+           * Deleting active object wrapper and object toolbar, and setting header
            * to "empty string", since there is no actively edited item
            * now.
            */
           delete-widget:hyper-ide-active-object
           delete-widget:hyper-ide-editor-toolbar
           hyper-ide.set-header:
+
+          /*
+           * Making sure we display solution explorer, in case user made it invisible.
+           */
+          micro.css.delete:hyper-ide-file-browser-wrapper
+            class:hide
+          micro.css.delete:hyper-ide-file-editor
+            class:col
+          micro.css.add:hyper-ide-file-editor
+            class:col-70
 
       else-if:x:/@hyper-ide.get-filename?value
         and:x:/@hyper-ide.get-filename?value
