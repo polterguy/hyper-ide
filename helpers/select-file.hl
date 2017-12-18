@@ -62,7 +62,7 @@ switch:x:/../*/file?value
 eval-x:x:/+/**(/.value|/.file-name)
 create-widget:hyper-ide-active-object
   before:hyper-ide-main-toolbar
-  .hyper-ide-file:x:/../*/file?value
+  .file:x:/../*/file?value
   class:strip
   style:"display:inline-block;margin-left:1rem;"
   widgets
@@ -195,7 +195,7 @@ create-widget:hyper-ide-active-object
          * Using Micro to download file.
          */
         get-widget-property:hyper-ide-active-object
-          .hyper-ide-file
+          .file
         micro.download.file:x:/-/*/*?value
 
     /*
@@ -237,46 +237,26 @@ create-widget:hyper-ide-active-object
                         onclick
 
                           /*
-                           * Deleting file.
+                           * Figuring out which file user is trying to delete.
                            */
                           get-widget-property:hyper-ide-active-object
-                            .hyper-ide-file
-                          delete-file:x:/-/*/*?value
+                            .file
 
                           /*
-                           * Deleting selected item from tree.
+                           * Deleting actual file.
                            */
-                          micro.widgets.tree.get-selected-items:hyper-ide-folder-tree-browser
-                          add:x:/../*/micro.widgets.tree.delete-items
-                            src:x:/@micro.widgets.tree.get-selected-items/*
-                          micro.widgets.tree.delete-items:hyper-ide-folder-tree-browser
+                          delete-file:x:/@get-widget-property/*/*?value
 
                           /*
-                           * Closing editor for file, if it is open.
+                           * Making sure we close all editor for file.
                            */
-                          p5.web.widgets.find-first
-                            .hyper-ide-editor:x:/@get-widget-property/*/*?value
-                          if:x:/@p5.web.widgets.find-first/*/*?value
-
-                            /*
-                             * Deleted file is open in an editor, making sure we close it.
-                             */
-                            p5.web.widgets.find-first:x:/@p5.web.widgets.find-first/*/*?value
-                              .close-button
-                            p5.web.widgets.ajax-events.raise:x:/-/*/*?value
-                              onclick
-
-                          else
-
-                            /*
-                             * Making sure we select root "/" tree item.
-                             */
-                            micro.widgets.tree.select-items:hyper-ide-folder-tree-browser
-                              items
-                                /
+                          eval-x:x:/+/*
+                          hyper-ide.close-editors
+                            filter:x:/@get-widget-property/*/*?value
+                            exact:bool:true
 
                           /*
-                           * Deleting modal window, and giving user some feedback.
+                           * Deleting modal window.
                            */
                           delete-widget:hyper-ide-confirm-delete-file
 
