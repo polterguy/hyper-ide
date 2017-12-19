@@ -29,5 +29,5 @@ return
     .keys
       Alt-S:@"p5.$('hyper-ide-main-container').raise('.onsave');"
       Alt-X:@"p5.$('hyper-ide-main-container').raise('.onclose');"
-      Alt-N:@"p5.$('hyper-ide-main-container').raise('.onnext');"
-      Alt-P:@"p5.$('hyper-ide-main-container').raise('.onprevious');"
+      Alt-W:@"p5.$('hyper-ide-main-container').raise('.onnext');"
+      Alt-Q:@"p5.$('hyper-ide-main-container').raise('.onprevious');"
