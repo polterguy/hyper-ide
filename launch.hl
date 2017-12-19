@@ -20,6 +20,18 @@ select-data:x:/*/*/micro.codemirror.settings
 
 
 /*
+ * Checking that Hyper IDE has not already been launched.
+ */
+if
+  fetch:x:/0/0?value
+    widget-exists:hyper-ide-main-container
+  return
+
+
+
+
+
+/*
  * Including Micro, active skin, font CSS file, and main CSS file for Hyper IDE.
  */
 p5.web.include-css-file
@@ -531,16 +543,19 @@ create-widget:hyper-ide-main-container
              * if the file object toolbar was created for our active editor, and
              * if it was, we'll need to delete it too.
              */
-            get-widget-property:hyper-ide-active-file-object-toolbar
-              .file
-            if:x:/@get-widget-property/*/*?value
-              =:x:/@_dp/#?name
+            if
+              fetch:x:/0/0?value
+                widget-exists:hyper-ide-active-file-object-toolbar
+              get-widget-property:hyper-ide-active-file-object-toolbar
+                .file
+              if:x:/@get-widget-property/*/*?value
+                =:x:/@_dp/#?name
 
-              /*
-               * Current active file object toolbar was created for the active editor,
-               * hence making sure we delete it.
-               */
-              delete-widget:hyper-ide-active-file-object-toolbar
+                /*
+                 * Current active file object toolbar was created for the active editor,
+                 * hence making sure we delete it.
+                 */
+                delete-widget:hyper-ide-active-file-object-toolbar
 
           /*
            * Removing currently iterated editor from our list of editors.
@@ -706,23 +721,51 @@ create-widget:hyper-ide-main-container
                   .onexpand
 
                     /*
-                     * Checking if this is a request for a folder.
+                     * Making sure we wrap our stuff inside of a try/catch block,
+                     * since this will prevent the default exception handler from
+                     * being evaluated, in case user tries to access file objects
+                     * he does not have permission to access.
                      */
-                    if
-                      ends-with:x:/../*/_item-id?value
-                        src:/
+                    p5.web.viewstate.set:hyper-ide.no-select
+                    try
 
                       /*
-                       * Invoking file responsible for actually retrieving files
-                       * and folders structure, and returning items to caller.
+                       * Checking if this is a request for a folder.
                        */
-                      eval-x:x:/+/*
-                      micro.evaluate.file:@IDE/helpers/get-file-objects.hl
-                        folder:x:/../*/_item-id?value
-                      add:x:/..if/*/return/*/items
-                        src:x:/@micro.evaluate.file/*
-                      return
-                        items
+                      if
+                        ends-with:x:/../*/_item-id?value
+                          src:/
+
+                        /*
+                         * Invoking file responsible for actually retrieving files
+                         * and folders structure, and returning items to caller.
+                         */
+                        eval-x:x:/+/*
+                        micro.evaluate.file:@IDE/helpers/get-file-objects.hl
+                          folder:x:/../*/_item-id?value
+                        add:x:/..if/*/return/*/items
+                          src:x:/@micro.evaluate.file/*
+                        return
+                          items
+
+                    catch
+
+                      /*
+                       * Giving user some feedback, and making sure we delete any
+                       * additional toolbars that was created.
+                       */
+                      micro.windows.info:x:/@message?value
+                        class:micro-windows-info warning
+                      if
+                        fetch:x:/0/0?value
+                          widget-exists:hyper-ide-active-file-object-toolbar
+                        delete-widget:hyper-ide-active-file-object-toolbar
+
+                      /*
+                       * Making sure we don't try to select item in any ways.
+                       */
+                      p5.web.viewstate.set:hyper-ide.no-select
+                        src:bool:true
 
                   /*
                    * Callback invoked when an item ise selected.
@@ -730,42 +773,73 @@ create-widget:hyper-ide-main-container
                   .onselect
 
                     /*
-                     * Checking if this is a de-select invocation.
+                     * Making sure we wrap our stuff inside of a try/catch block,
+                     * since this will prevent the default exception handler from
+                     * being evaluated, in case user tries to access file objects
+                     * he does not have permission to access.
                      */
-                    if:x:/../*/items/*?count
-                      =:int:0
-
-                      /*
-                       * De-select invocation.
-                       */
+                    p5.web.viewstate.get:hyper-ide.no-select
+                    if:x:/-/*?value
+                      p5.web.viewstate.set:hyper-ide.no-select
                       return
-
-                    /*
-                     * Checking if this is a request for a folder or a file.
-                     */
-                    if
-                      ends-with:x:/../*/items/0?name
-                        src:/
+                    try
 
                       /*
-                       * Request for folder.
-                       *
-                       * Invoking file responsible for selecting the folder.
+                       * Checking if this is a de-select invocation.
                        */
-                      eval-x:x:/+/*
-                      micro.evaluate.file:@IDE/helpers/select-folder.hl
-                        folder:x:/../*/items/0?name
+                      if:x:/../*/items/*?count
+                        =:int:0
 
-                    else
+                        /*
+                         * De-select invocation.
+                         */
+                        return
 
                       /*
-                       * Request for file.
-                       *
-                       * Invoking file responsible for selecting the file.
+                       * Checking if this is a request for a folder or a file.
                        */
-                      eval-x:x:/+/*
-                      micro.evaluate.file:@IDE/helpers/select-file.hl
-                        file:x:/../*/items/0?name
+                      if
+                        ends-with:x:/../*/items/0?name
+                          src:/
+
+                        /*
+                         * Request for folder.
+                         *
+                         * Invoking file responsible for selecting the folder.
+                         */
+                        eval-x:x:/+/*
+                        micro.evaluate.file:@IDE/helpers/select-folder.hl
+                          folder:x:/../*/items/0?name
+
+                      else
+
+                        /*
+                         * Request for file.
+                         *
+                         * Invoking file responsible for selecting the file.
+                         */
+                        eval-x:x:/+/*
+                        micro.evaluate.file:@IDE/helpers/select-file.hl
+                          file:x:/../*/items/0?name
+
+                    catch
+
+                      /*
+                       * Giving user some feedback, and making sure we delete any
+                       * additional toolbars that was created.
+                       */
+                      micro.windows.info:x:/@message?value
+                        class:micro-windows-info warning
+                      if
+                        fetch:x:/0/0?value
+                          widget-exists:hyper-ide-active-file-object-toolbar
+                        delete-widget:hyper-ide-active-file-object-toolbar
+
+                      /*
+                       * Returning false to let caller know we don't want to invoke
+                       * our [.onexpand] lambda callback.
+                       */
+                      return:bool:false
 
         /*
          * Wrapper for our file editor.

@@ -36,8 +36,8 @@ if
  */
 p5.web.widgets.find
   .toolbar
-set-widget-property:x:/-/*/*?value
-  visible:false
+micro.css.add:x:/-/*/*?value
+  class:hide
 
 
 

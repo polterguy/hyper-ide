@@ -18,24 +18,6 @@ micro.lambda.contract.min:x:/..
 
 
 /*
- * Checking if user is trying to open up "illegal folders".
- */
-if:x:/../*/folder?value
-  =:/db/
-
-  /*
-   * User trying to access a "protected folder".
-   * Notifying user, and returning early.
-   */
-  micro.windows.info:That folder is protected
-    class:micro-windows-info warning
-  return
-
-
-
-
-
-/*
  * Lists all folders beneath specified [folder], and iterates through them,
  * making sure we return one item for each.
  */
