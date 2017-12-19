@@ -25,6 +25,20 @@ micro.lambda.contract.min:x:/..
 if
   fetch:x:/0/0?value
     widget-exists:hyper-ide-active-file-object-toolbar
+
+  /*
+   * Checking to see if the specified file is already edited.
+   */
+  get-widget-property:hyper-ide-active-file-object-toolbar
+    .file
+  if:x:/@get-widget-property/*/*?value
+    =:x:/../*/file?value
+
+    /*
+     * File is already activated, no reasons to continue, hence returning early.
+     */
+    return
+
   delete-widget:hyper-ide-active-file-object-toolbar
 
 

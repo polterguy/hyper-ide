@@ -82,7 +82,7 @@ create-widget:hyper-ide-main-container
      * Basically, it creates an "empty" Ajax request, every 10 minutes, to touch the session,
      * to avoid having automatic destruction of session occur.
      */
-    hyper-ide.pingback
+    hyper-ide._pingback
 
       /*
        * Pingbacking server 10 minutes from now.
@@ -90,13 +90,13 @@ create-widget:hyper-ide-main-container
       micro.lambda.create-timeout
         milliseconds:600000
         onfinish
-          hyper-ide.pingback
+          hyper-ide._pingback
 
 
     /*
      * Returns file paths for all open editors.
      */
-    hyper-ide.get-editors
+    hyper-ide.get-open-editors
 
       /*
        * Finding all "activate" buttons for all editors, and getting their filenames.
@@ -117,10 +117,91 @@ create-widget:hyper-ide-main-container
 
 
     /*
+     * Returns file path for active editor, if any.
+     */
+    hyper-ide.get-active-editor
+
+      /*
+       * Finding all "activate" buttons for all editors, and getting their filenames.
+       */
+      p5.web.widgets.find
+        visible:bool:true
+        .editor
+
+      /*
+       * Checking that above event returned something.
+       */
+      if:x:/@p5.web.widgets.find/*/*?count
+        >:int:0
+
+        /*
+         * Returning active editor's filepath to caller.
+         */
+        get-widget-property:x:/@p5.web.widgets.find/*/*?value
+          .editor
+        return:x:/@get-widget-property/*/*?value
+
+
+    /*
+     * Sets the active editor, if it is open.
+     *
+     * Pass in [_arg] being filename of editor to activate.
+     */
+    hyper-ide.set-active-editor
+
+      /*
+       * Finding all open editors.
+       */
+      hyper-ide.get-open-editors
+      if:x:@"/@hyper-ide.get-open-editors/*/""{0}"""
+        :x:/../*/_arg?value
+
+        /*
+         * For simplicity reasons, we simply select tree view item associated
+         * with editor, since this will map up everything automatically for us.
+         */
+        add:x:/./*/micro.widgets.tree.select-items/*/items
+          src:x:/../*/_arg?value
+        micro.widgets.tree.select-items:hyper-ide-folder-tree-browser
+          items
+
+        /*
+         * Making sure we scroll our selected tree view item into view.
+         */
+        p5.web.widgets.find-first-like:hyper-ide-folder-tree-browser
+          class:tree-selected
+        p5.web.send-javascript:@"p5.$('{0}').el.scrollIntoView();"
+          :x:/@p5.web.widgets.find-first-like/*/*?value
+
+
+    /*
+     * Close active editor.
+     */
+    hyper-ide.close-active-editor
+
+      /*
+       * Retrieving active editor, and closing it.
+       */
+      hyper-ide.get-active-editor
+
+      /*
+       * To stay "DRY", we invoke event that closes multiple editors, passing in
+       * [exact] to make sure only active editor is closed.
+       */
+      eval-x:x:/+/*
+      hyper-ide.close-editors
+        filter:x:/@hyper-ide.get-active-editor?value
+        exact:bool:true
+
+
+    /*
      * Close editors.
      *
      * Will close all editors that have filenames starting with the specified [filter] path.
      * If [exact] is boolean "true", it will only delete the editor with the exact name of [filter].
+     *
+     * Useful for closing multiple editors, such as when a folder is deleted or something, in addition
+     * to (of course) closing only a single editor (by setting exact to true).
      */
     hyper-ide.close-editors
 
@@ -133,17 +214,32 @@ create-widget:hyper-ide-main-container
         exact:bool
 
       /*
-       * Getting all open editors, and iterating through them, to check of they
-       * match our specified [filter] condition. Making sure we track whether
-       * or not the active editor was deleted.
+       * Retrieving all open editors, and checking that there actually are any
+       * open editors, and if not, returning early since there's nothing to do.
        */
-      .active-deleted:bool:false
-      hyper-ide.get-editors
-      hyper-ide.get-filename
-      for-each:x:/@hyper-ide.get-editors/*
+      hyper-ide.get-open-editors
+      if:x:/@hyper-ide.get-open-editors/*?count
+        =:int:0
 
         /*
-         * Checking if currently iterated editor is a match.
+         * No open editors, returning early to avoid evaluating the rest of our lambda.
+         */
+        return
+
+      /*
+       * Retrieving active editor, since we'll need to track if it was closed or
+       * not during lambda.
+       */
+      .active-deleted:bool:false
+      hyper-ide.get-active-editor
+
+      /*
+       * Iterating through all open editors.
+       */
+      for-each:x:/@hyper-ide.get-open-editors/*
+
+        /*
+         * Checking if currently iterated editor is a match for our [filter] condition.
          */
         if
           starts-with:x:/@_dp/#?name
@@ -158,7 +254,7 @@ create-widget:hyper-ide-main-container
               !=:x:/../*/filter?value
 
             /*
-             * Caller wanted an exact match, and this was not.
+             * Caller wanted an exact match, and this was not an exact match.
              */
             continue
 
@@ -186,25 +282,35 @@ create-widget:hyper-ide-main-container
           delete-widget:x:/-/*/*?value
 
           /*
-           * Now checking if currently iterated editor is the active editor, and
-           * if it is, we also delete the active file object toolbar.
+           * Checking if currently closed editor was the active editor.
            */
-          if:x:/@hyper-ide.get-filename?value
-            =:x:/@_dp/#?name
+          if:x:/@_dp/#?name
+            =:x:/@hyper-ide.get-active-editor?value
 
             /*
-             * This is the active editor.
-             *
-             * Deleting the active file object toolbar, and making sure we track 
-             * the fact that our active editor was deleted.
+             * Tracking the fact that our active editor was closed.
              */
-            delete-widget:hyper-ide-active-file-object-toolbar
             set:x:/@.active-deleted?value
               src:bool:true
 
+            /*
+             * Notice, when the active editor is deleted, we'll also need to check
+             * if the file object toolbar was created for our active editor, and
+             * if it was, we'll need to delete it too.
+             */
+            get-widget-property:hyper-ide-active-file-object-toolbar
+              .file
+            if:x:/@get-widget-property/*/*?value
+              =:x:/@_dp/#?name
+
+              /*
+               * Current active file object toolbar was created for the active editor,
+               * hence making sure we delete it.
+               */
+              delete-widget:hyper-ide-active-file-object-toolbar
+
           /*
-           * Then making sure we track which editors are left, if any, by removing
-           * it from our above collection of editors.
+           * Removing currently iterated editor from our list of editors.
            */
           set:x:/@_dp/#
 
@@ -219,27 +325,13 @@ create-widget:hyper-ide-main-container
         /*
          * Checking if there are anymore editors left.
          */
-        if:x:/@hyper-ide.get-editors/*?count
+        if:x:/@hyper-ide.get-open-editors/*?count
           >:int:0
 
           /*
            * Setting the first available editor as our active editor.
-           *
-           * Notice, the easiest way to accomplish this, is to simply select
-           * its associated tree view item.
            */
-          add:x:/./*/micro.widgets.tree.select-items/*/items
-            src:x:/@hyper-ide.get-editors/0?name
-          micro.widgets.tree.select-items:hyper-ide-folder-tree-browser
-            items
-
-          /*
-           * Making sure we scroll our selected tree view item into view.
-           */
-          p5.web.widgets.find-first-like:hyper-ide-folder-tree-browser
-            class:tree-selected
-          p5.web.send-javascript:@"p5.$('{0}').el.scrollIntoView();"
-            :x:/@p5.web.widgets.find-first-like/*/*?value
+          hyper-ide.set-active-editor::x:/@hyper-ide.get-open-editors/0?name
 
         else
 
@@ -253,7 +345,7 @@ create-widget:hyper-ide-main-container
           micro.widgets.tree.select-items:hyper-ide-folder-tree-browser
             items
 
-      else-if:x:/@hyper-ide.get-editors/*?count
+      else-if:x:/@hyper-ide.get-open-editors/*?count
         >:int:0
 
         /*
@@ -261,19 +353,7 @@ create-widget:hyper-ide-main-container
          * need to make sure our active editor becomes selected in our tree, due
          * to what occurs when deletion of a folder occurs, etc.
          */
-        hyper-ide.get-filename
-        add:x:/./*/micro.widgets.tree.select-items/*/items
-          src:x:/@hyper-ide.get-filename?value
-        micro.widgets.tree.select-items:hyper-ide-folder-tree-browser
-          items
-
-        /*
-         * Making sure we scroll our selected tree view item into view.
-         */
-        p5.web.widgets.find-first-like:hyper-ide-folder-tree-browser
-          class:tree-selected
-        p5.web.send-javascript:@"p5.$('{0}').el.scrollIntoView();"
-          :x:/@p5.web.widgets.find-first-like/*/*?value
+        hyper-ide.set-active-editor:@hyper-ide.get-open-editors/0?name
 
 
   oninit
@@ -281,7 +361,7 @@ create-widget:hyper-ide-main-container
     /*
      * Starting "pingback loop", to make sure we stay inside of session.
      */
-    hyper-ide.pingback
+    hyper-ide._pingback
 
   widgets
 
@@ -475,3 +555,12 @@ create-widget:hyper-ide-main-container
              * Creating initial "splash" screen.
              */
             hyper-ide.load-splash
+
+
+
+
+
+/*
+ * Helper debugger while developing.
+ */
+micro.evaluate.file:@HYPEREVAL/launch.hl
