@@ -15,7 +15,7 @@ create-event:hyper-ide.plugins.javascript.minify
          * value of editor.
          *
          * Notice, we also calculate length of both original version and minified version,
-         * to give user some feedback about how many percent of the code was eliminated.
+         * to give user some feedback about how many percent/KB of the code was eliminated.
          */
         hyper-ide.get-active-editor-code
         length:x:/@hyper-ide.get-active-editor-code?value
@@ -26,8 +26,8 @@ create-event:hyper-ide.plugins.javascript.minify
          * Unless we could remove something during minification, we inform user,
          * and return early.
          */
-        if:x:/../*/length/[0,1]?value.decimal
-          =:x:/../*/length/[1,2]?value.decimal
+        if:x:/../*/length/[0,1]?value
+          =:x:/../*/length/[1,2]?value
 
           /*
            * No further minification is possible.

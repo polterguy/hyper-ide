@@ -26,8 +26,8 @@ create-event:hyper-ide.plugins.css.minify
          * Unless we could remove something during minification, we inform user,
          * and return early.
          */
-        if:x:/../*/length/[0,1]?value.decimal
-          =:x:/../*/length/[1,2]?value.decimal
+        if:x:/../*/length/[0,1]?value
+          =:x:/../*/length/[1,2]?value
 
           /*
            * No further minification is possible.
