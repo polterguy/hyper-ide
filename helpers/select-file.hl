@@ -58,11 +58,20 @@ eval-x:x:/-
 
 
 /*
+ * Making sure we inject our toolbar as the first in our list of toolbars.
+ */
+p5.web.widgets.get-children:hyper-ide-toolbars
+
+
+
+
+
+/*
  * Making sure we create our "Active Object" widget.
  */
 eval-x:x:/+/**(/.value|/.file-name)
 create-widget:hyper-ide-active-file-object-toolbar
-  before:hyper-ide-main-toolbar
+  before::x:/@p5.web.widgets.get-children/*/0?value
   .file:x:/../*/file?value
   class:strip hyper-ide-toolbar
   widgets
@@ -72,7 +81,7 @@ create-widget:hyper-ide-active-file-object-toolbar
      */
     label
       style:"margin-bottom:0;"
-      innerValue:x:/@.file-name?value
+      innerValue:x:/../*/file?value
 
     /*
      * Renames file.

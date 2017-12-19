@@ -71,11 +71,20 @@ else
 
 
 /*
+ * Making sure we inject our toolbar as the first in our list of toolbars.
+ */
+p5.web.widgets.get-children:hyper-ide-toolbars
+
+
+
+
+
+/*
  * Making sure we create our "Active Object" widget.
  */
 eval-x:x:/+/**(/.value|/.folder-name)|/+/*/*/label/*/innerValue
 create-widget:hyper-ide-active-file-object-toolbar
-  before:hyper-ide-main-toolbar
+  before::x:/@p5.web.widgets.get-children/*/0?value
   .folder:x:/../*/folder?value
   class:strip hyper-ide-toolbar
   widgets
@@ -85,7 +94,7 @@ create-widget:hyper-ide-active-file-object-toolbar
      */
     label
       style:"margin-bottom:0;"
-      innerValue:x:/@.folder-name?value
+      innerValue:x:/../*/folder?value
 
     button:hyper-ide-child-file
       innerValue:@"<span class=""icon-file-empty""></span>"

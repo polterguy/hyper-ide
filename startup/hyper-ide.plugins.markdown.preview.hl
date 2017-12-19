@@ -1,7 +1,7 @@
 /*
  * Create our Markdown preview plugin button for editor.
  */
-create-event:hyper-ide.plugins.md.preview
+create-event:hyper-ide.plugins.markdown.preview
   return
     button
       innerValue:@"<span class=""icon-eye""></span>"

@@ -22,7 +22,7 @@ micro.lambda.contract.min:x:/..
  * Checking if file is already open, at which point we reuse existing editor, to
  * avoid reloading file, and loosing any potential changes.
  */
-p5.web.widgets.find
+p5.web.widgets.find:hyper-ide-editor-tab-buttons
   .activate:x:/../*/file?value
 if:x:/@p5.web.widgets.find/*/*?value
 
@@ -30,24 +30,72 @@ if:x:/@p5.web.widgets.find/*/*?value
    * File is already open, activating editor, and returning early.
    *
    * First making sure correct tab control button becomes toggled.
+   * The latter is done by making sure we remove the "toggled" class from all
+   * activate buttons, except the one caller is trying to activate.
+   *
+   * First finding all activate buttons.
    */
-  p5.web.widgets.find
+  p5.web.widgets.find:hyper-ide-editor-tab-buttons
     .activate
+
+  /*
+   * Then removing the one caller is trying to activate from our above invocation.
+   */
+  set:x:@"/@p5.web.widgets.find/*/*/""{0}"""
+    :x:/../*/p5.web.widgets.find/[0,1]/*/*?value
+
+  /*
+   * Then deleting the "toggled" CSS class from all editors in above list.
+   */
   micro.css.delete:x:/@p5.web.widgets.find/*/*?value
     class:toggled
+
+  /*
+   * Then adding the "toggled" class to the activate button caller is activating.
+   */
   micro.css.add:x:/../*/p5.web.widgets.find/[0,1]/*/*?value
     class:toggled
 
   /*
-   * Then making sure correct editor becomes toggled.
+   * Then making sure correct editor becomes visible.
+   *
+   * Notice, we'll need to make all editors' here invisible, except the one caller
+   * is trying to activate. Hence, first we find editor user is trying to activate.
    */
-  p5.web.widgets.find
+  p5.web.widgets.find:hyper-ide-editor-tab-editors
+    .editor:x:/../*/file?value
+
+  /*
+   * Then finding all editors.
+   */
+  p5.web.widgets.find:hyper-ide-editor-tab-editors
     .editor
+
+  /*
+   * Then removing the editor user is trying to activate from list of all editors
+   * that we retrieved above.
+   */
+  set:x:/@p5.web.widgets.find/*/*/{0}
+    :x:/@p5.web.widgets.find/@p5.web.widgets.find/*/*?value
+
+  /*
+   * Making all editors invisible, except the one caller is trying to make visible.
+   */
   set-widget-property:x:/@p5.web.widgets.find/*/*?value
     visible:false
-  p5.web.widgets.find
-    .editor:x:/../*/file?value
-  set-widget-property:x:/@p5.web.widgets.find/*/*?value
+
+  /*
+   * Then making the editor caller is trying to show become visible.
+   */
+  set-widget-property:x:/@p5.web.widgets.find/@p5.web.widgets.find/*/*?value
+    visible:true
+
+  /*
+   * Then making sure we display the editor's special toolbar.
+   */
+  p5.web.widgets.find:hyper-ide-toolbars
+    .toolbar:x:/../*/file?value
+  set-widget-property:x:/-/*/*?value
     visible:true
 
   /*
@@ -60,7 +108,19 @@ if:x:/@p5.web.widgets.find/*/*?value
 
 
 /*
- * Retrieving file extension of file.
+ * Loading file, such that we can pass its content into our editor instance.
+ *
+ * Making sure we do not convert the file.
+ */
+load-file:x:/../*/file?value
+  convert:false
+
+
+
+
+
+/*
+ * Retrieving file extension of file, and its filename.
  */
 split:x:/../*/file?value
   =:/
@@ -72,17 +132,7 @@ split:x:/-/0/-?name
 
 
 /*
- * Loading file, getting ready to launch editor.
- */
-load-file:x:/../*/file?value
-  convert:false
-
-
-
-
-
-/*
- * Retrieving editor for file, according to file's extension, making sure we
+ * Retrieving editor for file type, according to file's extension, making sure we
  * pass in file's content.
  *
  * First checking if a specialised editor exists.
@@ -99,16 +149,11 @@ if:x:/@split/*?count
    * Specialised editor exists, loading it by evaluating its file, and adding
    * the returned arguments into above [.editor-instance] lambda.
    */
-  eval-x:x:/+/*/content
-  micro.evaluate.file:@IDE/helpers/editors/{0}.hl
-    :x:/@split/0/-?name
-    content:x:/@load-file/*?value
-
-  /*
-   * Adding editor widget into above [.editor-instance].
-   */
+  eval-x:x:/+/*/*/content
   add:x:/@.editor-instance
-    src:x:/@micro.evaluate.file/*
+    micro.evaluate.file:@IDE/helpers/editors/{0}.hl
+      :x:/@split/0/-?name
+      content:x:/@load-file/*?value
 
 else
 
@@ -116,6 +161,11 @@ else
    * Trying to use one of the standard CodeMirror editors.
    *
    * First loading file extension to CM mode mapping file.
+   * This file contains a bunch of file extensions, that are "mapped" towards
+   * CodeMirror modes.
+   *
+   * Hence, we load the file, do a loopkup for our file extension, at which point
+   * we end up with a CodeMirror mode.
    */
   load-file:@IDE/configuration/extension2cm-instance.hl
 
@@ -126,7 +176,7 @@ else
     :x:/@split/0/-?name
 
     /*
-     * Extension to mode exists.
+     * CodeMirror mode for file's extension exists.
      */
     eval-x:x:/+/*/*/*
     add:x:/@.editor-instance
@@ -148,7 +198,7 @@ else
     /*
      * No editor exists, returning early, warning user first
      */
-    micro.windows.info:No editor for that file type
+    micro.windows.info:I don't know how to edit such files
       class:micro-windows-info warning
     return
 
@@ -170,6 +220,8 @@ if
 
 /*
  * Making sure our "tab control" exists.
+ *
+ * These widgets will "wrap" all of our editors.
  */
 if
   fetch:x:/0/0?value
@@ -194,8 +246,11 @@ if
 
 /*
  * Making sure we hide any previously created file toolbars.
+ *
+ * This is the toolbar that contains "Save" button, "Close" button, and plugin
+ * buttons, etc.
  */
-p5.web.widgets.find:hyper-ide-toolbar-wrapper
+p5.web.widgets.find:hyper-ide-toolbars
   .toolbar
 set-widget-property:x:/-/*/*?value
   visible:false
@@ -229,7 +284,7 @@ add:x:/../*/create-widgets/*/div/*/widgets/=editor
 /*
  * "Un-toggling" all previously created tab buttons.
  */
-p5.web.widgets.find
+p5.web.widgets.find:hyper-ide-editor-tab-buttons
   .activate
 micro.css.delete:x:/-/*/*?value
   class:toggled
@@ -239,16 +294,43 @@ micro.css.delete:x:/-/*/*?value
 
 
 /*
- * Retrieving plugin toolbar buttons.
+ * Retrieving active events that will create a plugin button for our current CM mode.
  */
 vocabulary:~hyper-ide.plugins.{0}.
-  :x:/../*/split/[1,2]/0/-?name
+  :x:/@.editor-instance/*/*/mode?value
+
+
+
+
+
+/*
+ * Adding all plugin active events for current mode into [.plugins] below.
+ */
 .plugins
   return:x:/../*/*
 for-each:x:/@vocabulary/*?value
   insert-before:x:/@.plugins/0/-
     src:x:/@_dp?value
+
+
+
+
+
+/*
+ * Evaluating [.plugins] lambda, which will invoke all plugin button events for us,
+ * and return its result.
+ */
 eval:x:/@.plugins
+
+
+
+
+
+/*
+ * Adding the results of above plugin creation logic into our toolbar widget.
+ *
+ * Notice, the above [eval] will return the results of all plugin active events.
+ */
 insert-after:x:/../*/create-widgets/*/div/[0,1]/*/widgets/0
   src:x:/@eval/*
 
@@ -259,8 +341,9 @@ insert-after:x:/../*/create-widgets/*/div/[0,1]/*/widgets/0
 /*
  * Creating our widgets.
  *
- * We create one "tab control button", we add one editor into "tab control editors",
- * and we create one toolbar for saving file etc.
+ * We create one "tab control button", then we add one editor into "tab control editors",
+ * before we finally create one toolbar for saving file, etc. The latter will also contain
+ * all plugins for current mode.
  */
 create-widgets
 
@@ -308,6 +391,8 @@ create-widgets
 
             /*
              * Solution explorer is visible.
+             *
+             * Hence, we make sure our "toggle solution explorer" button becomes toggled.
              */
             micro.css.add:x:/../*/_event?value
               class:toggled
@@ -339,7 +424,7 @@ create-widgets
           /*
            * Closing active editor
            */
-          hyper-ide.close
+          hyper-ide.close-active-editor
 
   /*
    * Activate tab/editor button.
@@ -398,7 +483,7 @@ create-widgets
       hyper-ide.save-file
 
     .onclose
-      hyper-ide.close
+      hyper-ide.close-active-editor
 
     .onprevious
       hyper-ide.previous
@@ -410,32 +495,6 @@ create-widgets
 
 
       /*
-       * Returns ID of active code editor.
-       */
-      hyper-ide.get-code-editor
-
-        /*
-         * Closing editor.
-         */
-        get-widget-property:x:/../*/_event?value
-          visible
-
-        /*
-         * Checking if this editor is the currently active one.
-         */
-        if:x:/@get-widget-property/*/*/visible?value
-          =:bool:false
-          return
-
-        /*
-         * Finding active editor's textarea, and returning its ID.
-         */
-        p5.web.widgets.find-first:x:/../*/_event?value
-          element:textarea
-        return:x:/@p5.web.widgets.find-first/*/*?value
-
-
-      /*
        * Returns code for currently active editor.
        */
       hyper-ide.get-code
@@ -443,7 +502,7 @@ create-widgets
         /*
          * Finding textarea and returning its innerValue.
          */
-        hyper-ide.get-code-editor
+        hyper-ide.get-active-editor-id
         get-widget-property:x:/-?value
           value
         return:x:/@get-widget-property/*/*?value
@@ -458,7 +517,7 @@ create-widgets
          * First finding active editor's textarea, and updating it, in case
          * other parts of our code tries to retrieve it during the current request.
          */
-        hyper-ide.get-code-editor
+        hyper-ide.get-active-editor-id
         set-widget-property:x:/-?value
           value:x:/../*/_arg?value
 
@@ -466,7 +525,7 @@ create-widgets
          * Updating value of CodeMirror instance on client side.
          */
         p5.web.send-javascript:@"p5['{0}'].getDoc().setValue(p5.$('{0}').el.value);"
-          :x:/@hyper-ide.get-code-editor?value
+          :x:/@hyper-ide.get-active-editor-id?value
 
 
       /*
@@ -494,7 +553,7 @@ create-widgets
         /*
          * Retriving filename.
          */
-        hyper-ide.get-filename
+        hyper-ide.get-active-editor
 
         /*
          * Retrieving editor's content.
@@ -504,32 +563,8 @@ create-widgets
         /*
          * Saving file and providing some feedback to user.
          */
-        save-file:x:/@hyper-ide.get-filename?value
+        save-file:x:/@hyper-ide.get-active-editor?value
           src:x:/@hyper-ide.get-code?value
-
-
-      /*
-       * Close active file editor.
-       */
-      hyper-ide.close
-
-        /*
-         * Checking if this is the active editor.
-         */
-        get-widget-property:x:/../*/_event?value
-          visible
-          .editor
-        if:x:/@get-widget-property/*/*/visible?value
-          =:bool:false
-          return
-
-        /*
-         * Closing editor.
-         */
-        eval-x:x:/+/*
-        hyper-ide.close-editors
-          filter:x:/@get-widget-property/*/*/.editor?value
-          exact:bool:true
 
 
       /*

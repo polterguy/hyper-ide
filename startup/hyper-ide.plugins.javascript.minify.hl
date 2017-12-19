@@ -2,7 +2,7 @@
 /*
  * Create our minify JavaScript plugin for editor.
  */
-create-event:hyper-ide.plugins.js.minify
+create-event:hyper-ide.plugins.javascript.minify
   return
     button
       innerValue:@"<span class=""icon-file-zip""></span>"

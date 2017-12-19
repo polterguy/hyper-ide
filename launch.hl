@@ -99,9 +99,9 @@ create-widget:hyper-ide-main-container
     hyper-ide.get-open-editors
 
       /*
-       * Finding all "activate" buttons for all editors, and getting their filenames.
+       * Finding all activate buttons for all editors, and returning their filenames.
        */
-      p5.web.widgets.find
+      p5.web.widgets.find:hyper-ide-editor-tab-buttons
         .activate
       get-widget-property:x:/@p5.web.widgets.find/*/*?value
         .activate
@@ -117,14 +117,40 @@ create-widget:hyper-ide-main-container
 
 
     /*
+     * Returns ID for active editor, if any.
+     */
+    hyper-ide.get-active-editor-id
+
+      /*
+       * Finding visible editor.
+       */
+      p5.web.widgets.find:hyper-ide-editor-tab-editors
+        visible:bool:true
+        .editor
+
+      /*
+       * Checking that above event returned something.
+       */
+      if:x:/@p5.web.widgets.find/*/*?count
+        >:int:0
+
+        /*
+         * Finding textarea widget beneath editor wrapper retrieved above.
+         */
+        p5.web.widgets.find:x:/@p5.web.widgets.find/*/*?value
+          element:textarea
+        return:x:/@p5.web.widgets.find/*/*?value
+
+
+    /*
      * Returns file path for active editor, if any.
      */
     hyper-ide.get-active-editor
 
       /*
-       * Finding all "activate" buttons for all editors, and getting their filenames.
+       * Finding visible editor.
        */
-      p5.web.widgets.find
+      p5.web.widgets.find:hyper-ide-editor-tab-editors
         visible:bool:true
         .editor
 
@@ -263,21 +289,21 @@ create-widget:hyper-ide-main-container
            *
            * First its activate button.
            */
-          p5.web.widgets.find:hyper-ide-file-editor
+          p5.web.widgets.find:hyper-ide-editor-tab-buttons
             .activate:x:/@_dp/#?name
           delete-widget:x:/-/*/*?value
 
           /*
            * Then its toolbar.
            */
-          p5.web.widgets.find:hyper-ide-file-editor
+          p5.web.widgets.find:hyper-ide-toolbars
             .toolbar:x:/@_dp/#?name
           delete-widget:x:/-/*/*?value
 
           /*
            * Then its actual editor.
            */
-          p5.web.widgets.find:hyper-ide-file-editor
+          p5.web.widgets.find:hyper-ide-editor-tab-editors
             .editor:x:/@_dp/#?name
           delete-widget:x:/-/*/*?value
 
@@ -311,6 +337,9 @@ create-widget:hyper-ide-main-container
 
           /*
            * Removing currently iterated editor from our list of editors.
+           *
+           * This is done such that we end up with a list of available editors,
+           * after we have closed all editors caller wants to close.
            */
           set:x:/@_dp/#
 
@@ -380,10 +409,10 @@ create-widget:hyper-ide-main-container
              *
              * Contains settings and home button.
              */
-            div
+            div:hyper-ide-toolbars
               class:right
               widgets
-                div:hyper-ide-main-toolbar
+                div
                   class:strip toolbar hyper-ide-toolbar
                   widgets
 
@@ -555,12 +584,3 @@ create-widget:hyper-ide-main-container
              * Creating initial "splash" screen.
              */
             hyper-ide.load-splash
-
-
-
-
-
-/*
- * Helper debugger while developing.
- */
-micro.evaluate.file:@HYPEREVAL/launch.hl

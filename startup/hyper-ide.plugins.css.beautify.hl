@@ -13,10 +13,10 @@ create-event:hyper-ide.plugins.css.beautify
         /*
          * Sends JavaScript necessary to beautify CSS to client.
          */
-        hyper-ide.get-code-editor
+        hyper-ide.get-active-editor-id
         p5.web.include-javascript-file:@IDE/media/cssbeautify.js
         p5.web.send-javascript:@"var css = p5.$('{0}').el.value;
 var res = cssbeautify(css);
 p5['{0}'].getDoc().setValue(res);
 "
-          :x:/@hyper-ide.get-code-editor?value
+          :x:/@hyper-ide.get-active-editor-id?value
