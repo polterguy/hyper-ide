@@ -208,45 +208,37 @@ create-widget:hyper-ide-main-container
     hyper-ide.set-active-editor
 
       /*
-       * Retrieving currently active editor, to make sure we don't set it to
-       * active, if it already is active.
+       * Finding all open editors, and making sire the editor caller is trying
+       * to activate, actually exists, and is open.
        */
-      hyper-ide.get-active-editor
-      if:x:/@hyper-ide.get-active-editor?value
-        !=:x:/../*/_arg?value
+      hyper-ide.get-open-editors
+      if:x:@"/@hyper-ide.get-open-editors/*/""{0}"""
+        :x:/../*/_arg?value
 
         /*
-         * Finding all open editors, and making sire the editor caller is trying
-         * to activate, actually exists, and is open.
+         * Editor passed in as [_arg] was found.
+         *
+         * For simplicity reasons, we simply select tree view item associated
+         * with editor, since this will map up everything automatically for us.
          */
-        hyper-ide.get-open-editors
-        if:x:@"/@hyper-ide.get-open-editors/*/""{0}"""
-          :x:/../*/_arg?value
+        add:x:/./*/micro.widgets.tree.select-items/*/items
+          src:x:/../*/_arg?value
+        micro.widgets.tree.select-items:hyper-ide-folder-tree-browser
+          items
 
-          /*
-           * Editor passed in as [_arg] was found.
-           *
-           * For simplicity reasons, we simply select tree view item associated
-           * with editor, since this will map up everything automatically for us.
-           */
-          add:x:/./*/micro.widgets.tree.select-items/*/items
-            src:x:/../*/_arg?value
-          micro.widgets.tree.select-items:hyper-ide-folder-tree-browser
-            items
+        /*
+         * Making sure we scroll our selected tree view item into view.
+         */
+        p5.web.widgets.find-first-like:hyper-ide-folder-tree-browser
+          class:tree-selected
+        p5.web.send-javascript:@"p5.$('{0}').el.scrollIntoView();"
+          :x:/@p5.web.widgets.find-first-like/*/*?value
 
-          /*
-           * Making sure we scroll our selected tree view item into view.
-           */
-          p5.web.widgets.find-first-like:hyper-ide-folder-tree-browser
-            class:tree-selected
-          p5.web.send-javascript:@"p5.$('{0}').el.scrollIntoView();"
-            :x:/@p5.web.widgets.find-first-like/*/*?value
-
-          /*
-           * Returning true to caller, indicating that we had success in setting
-           * the current editor.
-           */
-          return:bool:true
+        /*
+         * Returning true to caller, indicating that we had success in setting
+         * the current editor.
+         */
+        return:bool:true
 
 
     /*
@@ -557,6 +549,16 @@ create-widget:hyper-ide-main-container
           micro.widgets.tree.select-items:hyper-ide-folder-tree-browser
             items
 
+          /*
+           * Making sure we show our solution explorer, if it is hidden.
+           */
+          micro.css.delete:hyper-ide-file-browser-wrapper
+            class:hide
+          micro.css.delete:hyper-ide-file-editor
+            class:col
+          micro.css.add:hyper-ide-file-editor
+            class:col-70
+
       else-if:x:/@hyper-ide.get-open-editors/*?count
         >:int:0
 
@@ -593,10 +595,10 @@ create-widget:hyper-ide-main-container
              * Contains settings and home button.
              */
             div:hyper-ide-toolbars
-              class:right
               widgets
                 div
                   class:strip toolbar hyper-ide-toolbar
+                  style:"float:right;"
                   widgets
 
                     /*
@@ -767,13 +769,3 @@ create-widget:hyper-ide-main-container
              * Creating initial "splash" screen.
              */
             hyper-ide.load-splash
-
-
-
-
-
-/*
- * Debugger helper
- * TODO: Remove ...
- */
-_micro.evaluate.file:@HYPEREVAL/launch.hl

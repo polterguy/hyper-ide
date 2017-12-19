@@ -30,7 +30,7 @@ if:x:/@p5.web.widgets.find/*/*?value
    * File is already open, activating editor, and returning early.
    *
    * First making sure correct tab control button becomes toggled.
-   * The latter is done by making sure we remove the "toggled" class from all
+   * This is done by making sure we remove the "toggled" class from all
    * activate buttons, except the one caller is trying to activate.
    *
    * First finding all activate buttons.
@@ -41,7 +41,7 @@ if:x:/@p5.web.widgets.find/*/*?value
   /*
    * Then removing the one caller is trying to activate from our above invocation.
    */
-  set:x:@"/@p5.web.widgets.find/*/*/""{0}"""
+  set:x:@"/@p5.web.widgets.find/*/*/""={0}"""
     :x:/../*/p5.web.widgets.find/[0,1]/*/*?value
 
   /*
@@ -75,40 +75,66 @@ if:x:/@p5.web.widgets.find/*/*?value
    * Then removing the editor user is trying to activate from list of all editors
    * that we retrieved above.
    */
-  set:x:/@p5.web.widgets.find/*/*/{0}
+  set:x:@"/@p5.web.widgets.find/*/*/""={0}"""
     :x:/@p5.web.widgets.find/@p5.web.widgets.find/*/*?value
 
   /*
    * Making all editors invisible, except the one caller is trying to make visible.
    */
-  set-widget-property:x:/@p5.web.widgets.find/*/*?value
-    visible:false
+  micro.css.add:x:/@p5.web.widgets.find/*/*?value
+    class:hide
 
   /*
    * Then making the editor caller is trying to show become visible.
    */
-  set-widget-property:x:/@p5.web.widgets.find/@p5.web.widgets.find/*/*?value
-    visible:true
+  micro.css.delete:x:/@p5.web.widgets.find/@p5.web.widgets.find/*/*?value
+    class:hide
 
   /*
-   * Then making sure we hide all special toolbars, except for the one caller
-   * is trying to show.
+   * Then making sure we disable all editors, except the one caller wants activate,
+   * which we enable.
    */
-  p5.web.widgets.find:hyper-ide-toolbars
-    .toolbar:x:/../*/file?value
-  p5.web.widgets.find:hyper-ide-toolbars
-    .toolbar
-  set:x:/@p5.web.widgets.find/*/*/{0}
-    :x:/@p5.web.widgets.find/@p5.web.widgets.find/*/*?value
+  p5.web.widgets.find:x:/@p5.web.widgets.find/*/*?value
+    element:textarea
   set-widget-property:x:/@p5.web.widgets.find/*/*?value
-    visible:false
+    disabled
+  p5.web.widgets.find:x:/@p5.web.widgets.find/@p5.web.widgets.find/@p5.web.widgets.find/*/*?value
+    element:textarea
+  delete-widget-property:x:/@p5.web.widgets.find/*/*?value
+    disabled
 
   /*
-   * Then making sure we display the special toolbar for the editor caller wants
-   * to show.
+   * Then making sure correct toolbar becomes visible.
+   *
+   * First finding toolbar we should show.
    */
-  set-widget-property:x:/@p5.web.widgets.find/@p5.web.widgets.find/*/*?value
-    visible:true
+  p5.web.widgets.find
+    .toolbar:x:/../*/file?value
+
+  /*
+   * Then finding all toolbars.
+   */
+  p5.web.widgets.find
+    .toolbar
+
+  /*
+   * Then removing the toolbar user is trying to activate from list of all editors
+   * that we retrieved above.
+   */
+  set:x:@"/@p5.web.widgets.find/*/*/""={0}"""
+    :x:/@p5.web.widgets.find/@p5.web.widgets.find/*/*?value
+
+  /*
+   * Making all toolbars invisible, except the one caller is trying to make visible.
+   */
+  micro.css.add:x:/@p5.web.widgets.find/*/*?value
+    class:hide
+
+  /*
+   * Then making the toolbar caller is trying to show become visible.
+   */
+  micro.css.delete:x:/@p5.web.widgets.find/@p5.web.widgets.find/*/*?value
+    class:hide
 
   /*
    * Returning early to abort evaluation of the rest of our lambda (file).
@@ -262,10 +288,10 @@ if
  * This is the toolbar that contains "Save" button, "Close" button, and plugin
  * buttons, etc.
  */
-p5.web.widgets.find:hyper-ide-toolbars
+p5.web.widgets.find
   .toolbar
-set-widget-property:x:/-/*/*?value
-  visible:false
+micro.css.add:x:/@p5.web.widgets.find/*/*?value
+  class:hide
 
 
 
@@ -276,8 +302,21 @@ set-widget-property:x:/-/*/*?value
  */
 p5.web.widgets.find:hyper-ide-file-editor
   .editor
-set-widget-property:x:/-/*/*?value
-  visible:false
+micro.css.add:x:/@p5.web.widgets.find/*/*?value
+  class:hide
+
+
+
+
+
+/*
+ * Notice, to prevent editor's content being serialised back from client upon
+ * consecutive Ajax requests, we disable the editor's textarea
+ */
+p5.web.widgets.find:x:/@p5.web.widgets.find/*/*?value
+  element:textarea
+set-widget-property:x:/@p5.web.widgets.find/*/*?value
+  disabled
 
 
 
@@ -365,7 +404,7 @@ create-widgets
   div
     after:hyper-ide-active-file-object-toolbar
     class:strip hyper-ide-toolbar
-    style:"display:inline-block;"
+    style:"float:right;"
     .toolbar:x:/../*/file?value
     widgets
 

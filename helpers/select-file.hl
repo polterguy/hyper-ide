@@ -39,6 +39,10 @@ if
      */
     return
 
+  /*
+   * Some other file is currently edited, deleting active file object toolbar for
+   * the file that is edited.
+   */
   delete-widget:hyper-ide-active-file-object-toolbar
 
 
@@ -71,17 +75,11 @@ p5.web.widgets.get-children:hyper-ide-toolbars
  */
 eval-x:x:/+/**(/.value|/.file-name)
 create-widget:hyper-ide-active-file-object-toolbar
-  before::x:/@p5.web.widgets.get-children/*/0?value
+  after:x:/@p5.web.widgets.get-children/*/0?value
   .file:x:/../*/file?value
   class:strip hyper-ide-toolbar
+  style:"float:right;"
   widgets
-
-    /*
-     * Displays name of file.
-     */
-    label
-      style:"margin-bottom:0;"
-      innerValue:x:/../*/file?value
 
     /*
      * Renames file.
