@@ -157,7 +157,6 @@ create-widget:hyper-ide-main-container
        * Finding visible editor.
        */
       p5.web.widgets.find:hyper-ide-editor-tab-editors
-        visible:bool:true
         .editor
 
       /*
@@ -167,9 +166,16 @@ create-widget:hyper-ide-main-container
         >:int:0
 
         /*
-         * Finding textarea widget beneath editor wrapper retrieved above.
+         * Finding CSS classes for all editors, such that we can determine which
+         * editor is enabled.
          */
-        p5.web.widgets.find:x:/@p5.web.widgets.find/*/0?value
+        get-widget-property:x:/@p5.web.widgets.find/*/*?value
+          class
+
+        /*
+         * Finding textarea widget of visible editor and returning to caller.
+         */
+        p5.web.widgets.find:x:/@get-widget-property/*/*(!/=~hide)/.?name
           element:textarea
         return:x:/@p5.web.widgets.find/*/*?value
 
@@ -183,7 +189,6 @@ create-widget:hyper-ide-main-container
        * Finding visible editor.
        */
       p5.web.widgets.find:hyper-ide-editor-tab-editors
-        visible:bool:true
         .editor
 
       /*
@@ -193,9 +198,16 @@ create-widget:hyper-ide-main-container
         >:int:0
 
         /*
-         * Returning active editor's filepath to caller.
+         * Finding CSS classes for all editors, such that we can determine which
+         * editor is enabled.
          */
         get-widget-property:x:/@p5.web.widgets.find/*/*?value
+          class
+
+        /*
+         * Returning active editor's filepath to caller.
+         */
+        get-widget-property:x:/@get-widget-property/*/*(!/=~hide)/.?name
           .editor
         return:x:/@get-widget-property/*/*?value
 
@@ -267,6 +279,11 @@ create-widget:hyper-ide-main-container
         p5.web.widgets.ajax-events.raise:x:/@get-widget-property/*/*(/=~toggled)/./-?name
           onclick
 
+        /*
+         * Returning success to caller.
+         */
+        return:bool:true
+
 
     /*
      * Activating next editor in chain.
@@ -293,6 +310,11 @@ create-widget:hyper-ide-main-container
           class
         p5.web.widgets.ajax-events.raise:x:/@get-widget-property/*/*(/=~toggled)/./+?name
           onclick
+
+        /*
+         * Returning success to caller.
+         */
+        return:bool:true
 
 
     /*
@@ -347,6 +369,11 @@ create-widget:hyper-ide-main-container
         p5.web.send-javascript:@"p5['{0}'].getDoc().setValue(p5.$('{0}').el.value);"
           :x:/@hyper-ide.get-active-editor-id?value
 
+        /*
+         * Returning success to caller.
+         */
+        return:bool:true
+
 
     /*
      * Saves active editor's content.
@@ -373,6 +400,11 @@ create-widget:hyper-ide-main-container
          */
         save-file:x:/@hyper-ide.get-active-editor?value
           src:x:/@hyper-ide.get-active-editor-code?value
+
+        /*
+         * Returning success to caller.
+         */
+        return:bool:true
 
 
     /*
