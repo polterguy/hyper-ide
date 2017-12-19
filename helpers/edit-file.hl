@@ -104,6 +104,12 @@ if:x:/@p5.web.widgets.find/*/*?value
     disabled
 
   /*
+   * Making sure we give focus to recently shown CodeMirror instance.
+   */
+  p5.web.send-javascript:@"p5['{0}'].focus();"
+    :x:/@p5.web.widgets.find/*/*?value
+
+  /*
    * Then making sure correct toolbar becomes visible.
    *
    * First finding toolbar we should show.
