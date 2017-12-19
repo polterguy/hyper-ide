@@ -91,11 +91,23 @@ if:x:/@p5.web.widgets.find/*/*?value
     visible:true
 
   /*
-   * Then making sure we display the editor's special toolbar.
+   * Then making sure we hide all special toolbars, except for the one caller
+   * is trying to show.
    */
   p5.web.widgets.find:hyper-ide-toolbars
     .toolbar:x:/../*/file?value
-  set-widget-property:x:/-/*/*?value
+  p5.web.widgets.find:hyper-ide-toolbars
+    .toolbar
+  set:x:/@p5.web.widgets.find/*/*/{0}
+    :x:/@p5.web.widgets.find/@p5.web.widgets.find/*/*?value
+  set-widget-property:x:/@p5.web.widgets.find/*/*?value
+    visible:false
+
+  /*
+   * Then making sure we display the special toolbar for the editor caller wants
+   * to show.
+   */
+  set-widget-property:x:/@p5.web.widgets.find/@p5.web.widgets.find/*/*?value
     visible:true
 
   /*
@@ -188,10 +200,10 @@ else
           value:x:/../*/load-file/*?value
           auto-focus:true
           .keys
-            Alt-S:@"p5.$('hyper-ide-editor-wrapper').raise('.onsave');"
-            Alt-X:@"p5.$('hyper-ide-editor-wrapper').raise('.onclose');"
-            Alt-N:@"p5.$('hyper-ide-editor-wrapper').raise('.onnext');"
-            Alt-P:@"p5.$('hyper-ide-editor-wrapper').raise('.onprevious');"
+            Alt-S:@"p5.$('hyper-ide-main-container').raise('.onsave');"
+            Alt-X:@"p5.$('hyper-ide-main-container').raise('.onclose');"
+            Alt-N:@"p5.$('hyper-ide-main-container').raise('.onnext');"
+            Alt-P:@"p5.$('hyper-ide-main-container').raise('.onprevious');"
 
   else
 
@@ -369,7 +381,7 @@ create-widgets
           /*
            * Invoking event responsible for saving file.
            */
-          hyper-ide.save-file
+          hyper-ide.save-active-editor
 
       /*
        * Toggling visibility of "solution explorer".
@@ -438,33 +450,24 @@ create-widgets
     onclick
 
       /*
-       * Checking if this editor is already the active one, at which point we
-       * return early, to avoid invoking logic below.
-       */
-      get-widget-property:x:/../*/_event?value
-        class
-      if:x:/-/*/*/=~toggled
-        return
-
-      /*
-       * For simplicity reasons, we simply find the file that was clicked,
-       * and selects its associated tree item, since this will do everything 
-       * for us automatically, such as (re)-loading the editor, etc.
+       * Getting filename for editor.
        */
       get-widget-property:x:/../*/_event?value
         .activate
-      add:x:/../*/micro.widgets.tree.select-items/*/items
-        src:x:/@get-widget-property/*/*?value
-      micro.widgets.tree.select-items:hyper-ide-folder-tree-browser
-        items
 
       /*
-       * Making sure we scroll item into view.
+       * Activating editor, and verifying invocation was a success.
        */
-      p5.web.widgets.find-first-like:hyper-ide-folder-tree-browser
-        class:tree-selected
-      p5.web.send-javascript:@"p5.$('{0}').el.scrollIntoView();"
-        :x:/@p5.web.widgets.find-first-like/*/*?value
+      hyper-ide.set-active-editor:x:/@get-widget-property/*/*?value
+      if:x:/-?value
+
+        /*
+         * Making sure we scroll tree view item into view.
+         */
+        p5.web.widgets.find-first-like:hyper-ide-folder-tree-browser
+          class:tree-selected
+        p5.web.send-javascript:@"p5.$('{0}').el.scrollIntoView();"
+          :x:/@p5.web.widgets.find-first-like/*/*?value
 
   /*
    * Actual editor for file.
@@ -475,159 +478,4 @@ create-widgets
     parent:hyper-ide-editor-tab-editors
     class:hyper-ide-codemirror-wrapper
     .editor:x:/../*/file?value
-
-    /*
-     * Helper Ajax events, necessary to map up keyboard shortcuts, among other things.
-     */
-    .onsave
-      hyper-ide.save-file
-
-    .onclose
-      hyper-ide.close-active-editor
-
-    .onprevious
-      hyper-ide.previous
-
-    .onnext
-      hyper-ide.next
-
-    events
-
-
-      /*
-       * Returns code for currently active editor.
-       */
-      hyper-ide.get-code
-
-        /*
-         * Finding textarea and returning its innerValue.
-         */
-        hyper-ide.get-active-editor-id
-        get-widget-property:x:/-?value
-          value
-        return:x:/@get-widget-property/*/*?value
-
-
-      /*
-       * Sets code for currently active editor.
-       */
-      hyper-ide.set-code
-
-        /*
-         * First finding active editor's textarea, and updating it, in case
-         * other parts of our code tries to retrieve it during the current request.
-         */
-        hyper-ide.get-active-editor-id
-        set-widget-property:x:/-?value
-          value:x:/../*/_arg?value
-
-        /*
-         * Updating value of CodeMirror instance on client side.
-         */
-        p5.web.send-javascript:@"p5['{0}'].getDoc().setValue(p5.$('{0}').el.value);"
-          :x:/@hyper-ide.get-active-editor-id?value
-
-
-      /*
-       * Returns filename for currently active editor.
-       */
-      hyper-ide.get-filename
-
-        /*
-         * Checking if this is the active editor.
-         */
-        get-widget-property:x:/../*/_event?value
-          visible
-          .editor
-        if:x:/@get-widget-property/*/*/visible?value
-          =:bool:false
-          return
-        return:x:/@get-widget-property/*/*/.editor?value
-
-
-      /*
-       * Saves active file.
-       */
-      hyper-ide.save-file
-
-        /*
-         * Retriving filename.
-         */
-        hyper-ide.get-active-editor
-
-        /*
-         * Retrieving editor's content.
-         */
-        hyper-ide.get-code
-
-        /*
-         * Saving file and providing some feedback to user.
-         */
-        save-file:x:/@hyper-ide.get-active-editor?value
-          src:x:/@hyper-ide.get-code?value
-
-
-      /*
-       * Shows the previous available editor.
-       */
-      hyper-ide.previous
-
-        /*
-         * Finding all "activate buttons".
-         */
-        p5.web.widgets.find
-          .activate
-
-        /*
-         * Checking if there's only one button, at which point we return immediately,
-         * since switching editor instance, by the very definition becomes impossible.
-         */
-        if:x:/@p5.web.widgets.find/*/*?count
-          <:int:2
-          return
-
-        /*
-         * Retrieving class names for all "activate buttons".
-         */
-        get-widget-property:x:/@p5.web.widgets.find/*/*?value
-          class
-
-        /*
-         * Raising the "onclick" event for the activate button that is before the currently active one.
-         */
-        p5.web.widgets.ajax-events.raise:x:/@get-widget-property/*/*(/=~toggled)/./-?name
-          onclick
-
-
-      /*
-       * Shows the next available editor.
-       */
-      hyper-ide.next
-
-        /*
-         * Finding all "activate buttons".
-         */
-        p5.web.widgets.find
-          .activate
-
-        /*
-         * Checking if there's only one button, at which point we return immediately,
-         * since switching editor instance, by the very definition becomes impossible.
-         */
-        if:x:/@p5.web.widgets.find/*/*?count
-          <:int:2
-          return
-
-        /*
-         * Retrieving class names for all "activate buttons".
-         */
-        get-widget-property:x:/@p5.web.widgets.find/*/*?value
-          class
-
-        /*
-         * Raising the "onclick" event for the activate button that is after the currently active one.
-         */
-        p5.web.widgets.ajax-events.raise:x:/@get-widget-property/*/*(/=~toggled)/./+?name
-          onclick
-
     widgets:editor

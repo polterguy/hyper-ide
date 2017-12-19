@@ -16,12 +16,12 @@ create-event:hyper-ide.plugins.markdown.preview
          * for fetching relative images, etc.
          */
         hyper-ide.get-code
-        hyper-ide.get-filename
+        hyper-ide.get-active-editor
 
         /*
          * Figuring out root URL for document.
          */
-        split:x:/@hyper-ide.get-filename?value
+        split:x:/@hyper-ide.get-active-editor?value
           =:/
         set:x:/@split/0/-
         join:x:/@split/*?name

@@ -70,6 +70,38 @@ p5.web.page.set-title:Hyper IDE
  */
 create-widget:hyper-ide-main-container
   class:container-fullscreen
+
+  /*
+   * Helper Ajax events, necessary to map keyboard shortcuts, among other things.
+   */
+  .onsave
+
+    /*
+     * Saving active editor's content.
+     */
+    hyper-ide.save-active-editor
+
+  .onclose
+
+    /*
+     * Closing active editor.
+     */
+    hyper-ide.close-active-editor
+
+  .onprevious
+
+    /*
+     * Activating "previous editor" in chain of open editors.
+     */
+    hyper-ide.activate-previous-editor
+
+  .onnext
+
+    /*
+     * Activating "next editor" in chain of open editors.
+     */
+    hyper-ide.activate-next-editor
+
   events
 
 
@@ -137,7 +169,7 @@ create-widget:hyper-ide-main-container
         /*
          * Finding textarea widget beneath editor wrapper retrieved above.
          */
-        p5.web.widgets.find:x:/@p5.web.widgets.find/*/*?value
+        p5.web.widgets.find:x:/@p5.web.widgets.find/*/0?value
           element:textarea
         return:x:/@p5.web.widgets.find/*/*?value
 
@@ -169,35 +201,186 @@ create-widget:hyper-ide-main-container
 
 
     /*
-     * Sets the active editor, if it is open.
+     * Sets the active editor.
      *
      * Pass in [_arg] being filename of editor to activate.
      */
     hyper-ide.set-active-editor
 
       /*
-       * Finding all open editors.
+       * Retrieving currently active editor, to make sure we don't set it to
+       * active, if it already is active.
        */
-      hyper-ide.get-open-editors
-      if:x:@"/@hyper-ide.get-open-editors/*/""{0}"""
-        :x:/../*/_arg?value
+      hyper-ide.get-active-editor
+      if:x:/@hyper-ide.get-active-editor?value
+        !=:x:/../*/_arg?value
 
         /*
-         * For simplicity reasons, we simply select tree view item associated
-         * with editor, since this will map up everything automatically for us.
+         * Finding all open editors, and making sire the editor caller is trying
+         * to activate, actually exists, and is open.
          */
-        add:x:/./*/micro.widgets.tree.select-items/*/items
-          src:x:/../*/_arg?value
-        micro.widgets.tree.select-items:hyper-ide-folder-tree-browser
-          items
+        hyper-ide.get-open-editors
+        if:x:@"/@hyper-ide.get-open-editors/*/""{0}"""
+          :x:/../*/_arg?value
+
+          /*
+           * Editor passed in as [_arg] was found.
+           *
+           * For simplicity reasons, we simply select tree view item associated
+           * with editor, since this will map up everything automatically for us.
+           */
+          add:x:/./*/micro.widgets.tree.select-items/*/items
+            src:x:/../*/_arg?value
+          micro.widgets.tree.select-items:hyper-ide-folder-tree-browser
+            items
+
+          /*
+           * Making sure we scroll our selected tree view item into view.
+           */
+          p5.web.widgets.find-first-like:hyper-ide-folder-tree-browser
+            class:tree-selected
+          p5.web.send-javascript:@"p5.$('{0}').el.scrollIntoView();"
+            :x:/@p5.web.widgets.find-first-like/*/*?value
+
+          /*
+           * Returning true to caller, indicating that we had success in setting
+           * the current editor.
+           */
+          return:bool:true
+
+
+    /*
+     * Activating previous editor in chain.
+     */
+    hyper-ide.activate-previous-editor
+
+      /*
+       * Finding all "activate buttons".
+       */
+      p5.web.widgets.find:hyper-ide-editor-tab-buttons
+        .activate
+
+      /*
+       * Checking if are more than one button, and if there are, making sure we
+       * "click" the previous button in our chain.
+       */
+      if:x:/@p5.web.widgets.find/*/*?count
+        >:int:1
 
         /*
-         * Making sure we scroll our selected tree view item into view.
+         * Raising the "onclick" event for the activate button that is before the currently active one.
          */
-        p5.web.widgets.find-first-like:hyper-ide-folder-tree-browser
-          class:tree-selected
-        p5.web.send-javascript:@"p5.$('{0}').el.scrollIntoView();"
-          :x:/@p5.web.widgets.find-first-like/*/*?value
+        get-widget-property:x:/@p5.web.widgets.find/*/*?value
+          class
+        p5.web.widgets.ajax-events.raise:x:/@get-widget-property/*/*(/=~toggled)/./-?name
+          onclick
+
+
+    /*
+     * Activating next editor in chain.
+     */
+    hyper-ide.activate-next-editor
+
+      /*
+       * Finding all "activate buttons".
+       */
+      p5.web.widgets.find:hyper-ide-editor-tab-buttons
+        .activate
+
+      /*
+       * Checking if are more than one button, and if there are, making sure we
+       * "click" the next button in our chain.
+       */
+      if:x:/@p5.web.widgets.find/*/*?count
+        >:int:1
+
+        /*
+         * Raising the "onclick" event for the activate button that is after the currently active one.
+         */
+        get-widget-property:x:/@p5.web.widgets.find/*/*?value
+          class
+        p5.web.widgets.ajax-events.raise:x:/@get-widget-property/*/*(/=~toggled)/./+?name
+          onclick
+
+
+    /*
+     * Returns code for currently active editor.
+     */
+    hyper-ide.get-active-editor-code
+
+      /*
+       * Finding textarea and returning its innerValue.
+       */
+      hyper-ide.get-active-editor-id
+
+      /*
+       * Checking if above invocation returned anything.
+       */
+      if:x:/@hyper-ide.get-active-editor-id?value
+
+        /*
+         * Retrieves active editor's code, and returning it to caller.
+         */
+        get-widget-property:x:/@hyper-ide.get-active-editor-id?value
+          value
+        return:x:/@get-widget-property/*/*?value
+
+
+    /*
+     * Sets code for currently active editor.
+     */
+    hyper-ide.set-active-editor-code
+
+      /*
+       * First finding active editor's textarea, and updating it, in case
+       * other parts of our code tries to retrieve it during the current request.
+       */
+      hyper-ide.get-active-editor-id
+
+      /*
+       * Checking if above invocation returned nothing, at which point we
+       * return immediately.
+       */
+      if:x:/@hyper-ide.get-active-editor-id?value
+
+        /*
+         * Setting active editor's content to specified value.
+         */
+        set-widget-property:x:/@hyper-ide.get-active-editor-id?value
+          value:x:/../*/_arg?value
+
+        /*
+         * Updating value of CodeMirror instance on client side.
+         */
+        p5.web.send-javascript:@"p5['{0}'].getDoc().setValue(p5.$('{0}').el.value);"
+          :x:/@hyper-ide.get-active-editor-id?value
+
+
+    /*
+     * Saves active editor's content.
+     */
+    hyper-ide.save-active-editor
+
+      /*
+       * Retriving filename.
+       */
+      hyper-ide.get-active-editor
+
+      /*
+       * Checking if above invocation returned something.
+       */
+      if:x:/@hyper-ide.get-active-editor?value
+
+        /*
+         * Retrieving editor's content.
+         */
+        hyper-ide.get-active-editor-code
+
+        /*
+         * Saving file and providing some feedback to user.
+         */
+        save-file:x:/@hyper-ide.get-active-editor?value
+          src:x:/@hyper-ide.get-active-editor-code?value
 
 
     /*
@@ -584,3 +767,13 @@ create-widget:hyper-ide-main-container
              * Creating initial "splash" screen.
              */
             hyper-ide.load-splash
+
+
+
+
+
+/*
+ * Debugger helper
+ * TODO: Remove ...
+ */
+_micro.evaluate.file:@HYPEREVAL/launch.hl

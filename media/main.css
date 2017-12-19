@@ -12,7 +12,7 @@
 
 /* Main content, minus toolbars that is */
 .hyper-ide-content {
-    height:calc(100vh - 5rem);
+    height:calc(100vh - 5.7rem);
 }
 
 /* TreeView wrapper for browsing files (column wrapper) */
