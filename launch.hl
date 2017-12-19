@@ -726,8 +726,17 @@ create-widget:hyper-ide-main-container
                      * being evaluated, in case user tries to access file objects
                      * he does not have permission to access.
                      */
-                    p5.web.viewstate.set:hyper-ide.no-select
                     try
+
+                      /*
+                       * We need to track whether or not an exception occurs, from
+                       * our [.onexpand], and into our [.onselect]. We do this by setting
+                       * a "signal" viewstate value if an exception occurs.
+                       *
+                       * However, we need to default its value to empty, in case
+                       * no exception occurs.
+                       */
+                      p5.web.viewstate.set:hyper-ide.no-select
 
                       /*
                        * Checking if this is a request for a folder.
@@ -762,7 +771,8 @@ create-widget:hyper-ide-main-container
                         delete-widget:hyper-ide-active-file-object-toolbar
 
                       /*
-                       * Making sure we don't try to select item in any ways.
+                       * Making sure we don't try to select item in any ways 
+                       * further down in file.
                        */
                       p5.web.viewstate.set:hyper-ide.no-select
                         src:bool:true
@@ -773,15 +783,24 @@ create-widget:hyper-ide-main-container
                   .onselect
 
                     /*
+                     * Checking if we had an exception while invoking our [.onexpand],
+                     * at which point we don't evaluate this lambda.
+                     */
+                    p5.web.viewstate.get:hyper-ide.no-select
+                    if:x:/-/*?value
+
+                      /*
+                       * Re-setting exception signal and returning early.
+                       */
+                      p5.web.viewstate.set:hyper-ide.no-select
+                      return
+
+                    /*
                      * Making sure we wrap our stuff inside of a try/catch block,
                      * since this will prevent the default exception handler from
                      * being evaluated, in case user tries to access file objects
                      * he does not have permission to access.
                      */
-                    p5.web.viewstate.get:hyper-ide.no-select
-                    if:x:/-/*?value
-                      p5.web.viewstate.set:hyper-ide.no-select
-                      return
                     try
 
                       /*

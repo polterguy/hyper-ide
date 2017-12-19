@@ -50,18 +50,6 @@ if
 
 
 /*
- * Getting file's name.
- */
-split:x:/../*/file?value
-  =:/
-.file-name:x:/@split/0/-?name
-eval-x:x:/-
-
-
-
-
-
-/*
  * Making sure we inject our toolbar as the first in our list of toolbars.
  */
 p5.web.widgets.get-children:hyper-ide-toolbars
@@ -73,12 +61,24 @@ p5.web.widgets.get-children:hyper-ide-toolbars
 /*
  * Making sure we create our "Active Object" widget.
  */
-eval-x:x:/+/**(/.value|/.file-name)
 create-widget:hyper-ide-active-file-object-toolbar
   after:x:/@p5.web.widgets.get-children/*/0?value
   .file:x:/../*/file?value
   class:strip hyper-ide-toolbar
-  style:"float:right;"
+  style:"float:left;margin-left:0;"
+  events
+
+    /*
+     * Invoked when for some reasons active file changes name.
+     */
+    hyper-ide.set-active-filename
+
+      /*
+       * Updating [.file] attribute for widget.
+       */
+      set-widget-property:x:/../*/_event?value
+        .file:x:/../*/_arg?value
+
   widgets
 
     /*
@@ -93,6 +93,7 @@ create-widget:hyper-ide-active-file-object-toolbar
         /*
          * Renaming file.
          */
+        eval-x:x:/+/**/.filename
         create-widgets
           micro.widgets.modal:hyper-ide-confirm-rename-file
             widgets
@@ -107,16 +108,19 @@ create-widget:hyper-ide-active-file-object-toolbar
                   oninit
 
                     /*
-                     * Forward evaluated above.
+                     * Retrieving filename.
                      */
-                    .file-name:x:/../*/.file-name?value
+                    get-widget-property:hyper-ide-active-file-object-toolbar
+                      .file
+                    split:x:/-/*/*?value
+                      =:/
 
                     /*
                      * Setting initial focus to "Yes" button, and setting 
                      * initial value to old name.
                      */
                     set-widget-property:x:/../*/_event?value
-                      value:x:/@.file-name?value
+                      value:x:/@split/0/-?name
                     micro.page.set-focus:x:/../*/_event?value
 
               div
@@ -132,52 +136,67 @@ create-widget:hyper-ide-active-file-object-toolbar
                         onclick
 
                           /*
-                           * Forward evaluated above.
+                           * Retrieving filename.
                            */
-                          .value:x:/../*/file?value
+                          get-widget-property:hyper-ide-active-file-object-toolbar
+                            .file
 
                           /*
-                           * Serializing form, figuring out new name for file,
-                           * and changing its name.
+                           * Finding file's folder name.
+                           *
+                           * Making sure we get it in canonised form.
+                           */
+                          .folder
+                          split:x:/@get-widget-property/*/*?value
+                            =:/
+                          set:x:/@split/0/-
+                          join:x:/@split/*?name
+                            sep:/
+                          set:x:/@join?value
+                            src:/{0}/
+                              :x:/@join?value
+                          trim-left:x:/@join?value
+                            chars:/
+                          set:x:/@.folder?value
+                            src:/{0}
+                              :x:/@trim-left?value
+
+                          /*
+                           * Serializing form to figure out new name for file.
                            */
                           micro.widgets.wizard-form.value:hyper-ide-rename-file-form
-                          split:x:/@.value?value
-                            =:/
-                          set:x:/@split/0/-
-                          join:x:/@split/*?name
-                            sep:/
-                          set:x:/@join?value
-                            src:/{0}/{1}
-                              :x:/@join?value
-                              :x:/@micro.widgets.wizard-form.value/*/name?value
-                          trim-left:x:/@join?value
-                            chars:/
-                          move-file:x:/@.value?value
-                            dest:/{0}
-                              :x:/@trim-left?value
 
                           /*
-                           * Refreshing tree, and de-selecting file.
+                           * Renaming file.
                            */
-                          split:x:/@.value?value
-                            =:/
-                          set:x:/@split/0/-
-                          join:x:/@split/*?name
-                            sep:/
-                          set:x:/@join?value
-                            src:/{0}
-                              :x:/@join?value
-                          trim-left:x:/@join?value
-                            chars:/
+                          move-file:x:/@get-widget-property/*/*?value
+                            dest:{0}{1}
+                              :x:/@.folder?value
+                              :x:/@micro.widgets.wizard-form.value/*/name?value
+
+                          /*
+                           * Refreshing tree, since folder's content now has changed.
+                           */
                           add:x:/../*/micro.widgets.tree.refresh-items/*/items
-                            src:/{0}/
-                              :x:/@trim-left?value
+                            src:x:/@.folder?value
                           micro.widgets.tree.refresh-items:hyper-ide-folder-tree-browser
                             force-expand:bool:true
                             items
+
+                          /*
+                           * Changes name of active file.
+                           */
+                          hyper-ide.set-active-filename:{0}{1}
+                            :x:/@.folder?value
+                            :x:/@micro.widgets.wizard-form.value/*/name?value
+
+                          /*
+                           * Selecting (updated) file in tree view now.
+                           */
                           add:x:/../*/micro.widgets.tree.select-items/*/items
-                            src:/{0}
-                              :x:/@trim-left?value
+                            src:{0}{1}
+                              :x:/@.folder?value
+                              :x:/@micro.widgets.wizard-form.value/*/name?value
                           micro.widgets.tree.select-items:hyper-ide-folder-tree-browser
                             items
 

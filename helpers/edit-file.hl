@@ -412,6 +412,19 @@ create-widgets
     class:strip hyper-ide-toolbar
     style:"float:right;"
     .toolbar:x:/../*/file?value
+    events
+
+      /*
+       * Invoked when for some reasons active file changes name.
+       */
+      hyper-ide.set-active-filename
+
+        /*
+         * Updating [.file] attribute for widget.
+         */
+        set-widget-property:x:/../*/_event?value
+          .toolbar:x:/../*/_arg?value
+
     widgets
 
       /*
@@ -491,7 +504,24 @@ create-widgets
     class:hyper-ide-activate-tab-button toggled
     .activate:x:/../*/file?value
     innerValue:x:/../*/split/[0,1]/0/-?name
-    title:x:/../*/split/[0,1]/0/-?name
+    title:x:/../*/file?value
+    events
+
+      /*
+       * Invoked when for some reasons active file changes name.
+       */
+      hyper-ide.set-active-filename
+
+        /*
+         * Updating [.file] attribute for widget.
+         */
+        split:x:/../*/_arg?value
+          =:/
+        set-widget-property:x:/../*/_event?value
+          .activate:x:/../*/_arg?value
+          innerValue:x:/@split/0/-?name
+          title:x:/../*/_arg?value
+
     onclick
 
       /*
@@ -523,4 +553,17 @@ create-widgets
     parent:hyper-ide-editor-tab-editors
     class:hyper-ide-codemirror-wrapper
     .editor:x:/../*/file?value
+    events
+
+      /*
+       * Invoked when for some reasons active file changes name.
+       */
+      hyper-ide.set-active-filename
+
+        /*
+         * Updating [.file] attribute for widget.
+         */
+        set-widget-property:x:/../*/_event?value
+          .editor:x:/../*/_arg?value
+
     widgets:editor

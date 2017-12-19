@@ -87,7 +87,7 @@ create-widget:hyper-ide-active-file-object-toolbar
   after:x:/@p5.web.widgets.get-children/*/0?value
   .folder:x:/../*/folder?value
   class:strip hyper-ide-toolbar
-  style:"float:right;"
+  style:"float:left;margin-left:0;"
   widgets
 
     button:hyper-ide-child-file
