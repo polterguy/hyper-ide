@@ -20,12 +20,12 @@ micro.lambda.contract.min:x:/..
 
 
 /*
- * Deleting any previously Active Object widgets.
+ * Deleting any previously created edit active file object toolbars.
  */
 if
   fetch:x:/0/0?value
-    widget-exists:hyper-ide-active-folder-toolbar
-  delete-widget:hyper-ide-active-folder-toolbar
+    widget-exists:hyper-ide-active-file-object-toolbar
+  delete-widget:hyper-ide-active-file-object-toolbar
 
 
 
@@ -47,11 +47,18 @@ eval-x:x:/-
  * Making sure we create our "Active Object" widget.
  */
 eval-x:x:/+/**(/.value|/.file-name)
-create-widget:hyper-ide-active-folder-toolbar
+create-widget:hyper-ide-active-file-object-toolbar
   before:hyper-ide-main-toolbar
   .file:x:/../*/file?value
   class:strip hyper-ide-toolbar
   widgets
+
+    /*
+     * Displays name of file.
+     */
+    label
+      style:"margin-bottom:0;"
+      innerValue:x:/@.file-name?value
 
     /*
      * Renames file.
@@ -180,7 +187,7 @@ create-widget:hyper-ide-active-folder-toolbar
         /*
          * Using Micro to download file.
          */
-        get-widget-property:hyper-ide-active-folder-toolbar
+        get-widget-property:hyper-ide-active-file-object-toolbar
           .file
         micro.download.file:x:/-/*/*?value
 
@@ -225,7 +232,7 @@ create-widget:hyper-ide-active-folder-toolbar
                           /*
                            * Figuring out which file user is trying to delete.
                            */
-                          get-widget-property:hyper-ide-active-folder-toolbar
+                          get-widget-property:hyper-ide-active-file-object-toolbar
                             .file
 
                           /*
@@ -237,7 +244,7 @@ create-widget:hyper-ide-active-folder-toolbar
                            * Deleting selected item from tree.
                            *
                            * Notice, selected tree view item will always be the file or folder 
-                           * user is trying to delete, since selecting a tree node, 
+                           * user is trying to delete, since selecting a tree view item, 
                            * changes the active file object edited.
                            */
                           micro.widgets.tree.get-selected-items:hyper-ide-folder-tree-browser
@@ -275,9 +282,6 @@ create-widget:hyper-ide-active-folder-toolbar
 /*
  * Starts editing file immediately after we have selected it.
  */
-eval-x:x:/+/*
-micro.evaluate.file:@IDE/helpers/edit-file.hl
-  file:x:/../*/file?value
 eval-x:x:/+/*
 micro.evaluate.file:@IDE/helpers/edit-file.hl
   file:x:/../*/file?value

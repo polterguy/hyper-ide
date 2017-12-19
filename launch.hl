@@ -94,6 +94,29 @@ create-widget:hyper-ide-main-container
 
 
     /*
+     * Returns file paths for all open editors.
+     */
+    hyper-ide.get-editors
+
+      /*
+       * Finding all "activate" buttons for all editors, and getting their filenames.
+       */
+      p5.web.widgets.find
+        .activate
+      get-widget-property:x:/@p5.web.widgets.find/*/*?value
+        .activate
+
+      /*
+       * Iterating through all filenames returned above, and making sure we return
+       * them to caller.
+       */
+      for-each:x:/@get-widget-property/*/*?value
+        add:x:/../*/return
+          src:x:/@_dp?value
+      return
+
+
+    /*
      * Close editors.
      *
      * Will close all editors that have filenames starting with the specified [filter] path.
@@ -110,135 +133,147 @@ create-widget:hyper-ide-main-container
         exact:bool
 
       /*
-       * Finding all "activate" buttons for all editors, and getting their filenames,
-       * such that we can check if they are starting with the specified [filter] path.
+       * Getting all open editors, and iterating through them, to check of they
+       * match our specified [filter] condition. Making sure we track whether
+       * or not the active editor was deleted.
        */
-      p5.web.widgets.find
-        .activate
-      get-widget-property:x:/@p5.web.widgets.find/*/*?value
-        .activate
-
-      /*
-       * Looping through all activate buttons, checking if their
-       * associated files are beneath the folder we just deleted.
-       * And if so, making sure we delete the activate button.
-       */
-      for-each:x:/@get-widget-property/*/*
+      .active-deleted:bool:false
+      hyper-ide.get-editors
+      hyper-ide.get-filename
+      for-each:x:/@hyper-ide.get-editors/*
 
         /*
-         * Checking if currently iterated "activate" button's file
-         * is beneath the folder we just deleted.
+         * Checking if currently iterated editor is a match.
          */
         if
-          starts-with:x:/@_dp/#?value
+          starts-with:x:/@_dp/#?name
             src:x:/../*/filter?value
 
           /*
-           * Checking if [exact] was true, at which point the filename must
-           * be an exact match, and we do not delete editor instance.
+           * Checking if we need an exact match.
            */
           if:x:/../*/exact?value
             =:bool:true
-            and:x:/@_dp/#?value
+            and:x:/@_dp/#?name
               !=:x:/../*/filter?value
 
             /*
-             * Not an exact match.
+             * Caller wanted an exact match, and this was not.
              */
             continue
 
           /*
-           * Deleting activate button
+           * Current editor is a match, making sure we delete it.
+           *
+           * First its activate button.
            */
-          delete-widget:x:/@_dp/#/.?name
-
-          /*
-           * Deleting editor.
-           */
-          p5.web.widgets.find
-            .editor:x:/@_dp/#?value
+          p5.web.widgets.find:hyper-ide-file-editor
+            .activate:x:/@_dp/#?name
           delete-widget:x:/-/*/*?value
 
           /*
-           * Deleting toolbar.
+           * Then its toolbar.
            */
-          p5.web.widgets.find
-            .toolbar:x:/@_dp/#?value
+          p5.web.widgets.find:hyper-ide-file-editor
+            .toolbar:x:/@_dp/#?name
           delete-widget:x:/-/*/*?value
+
+          /*
+           * Then its actual editor.
+           */
+          p5.web.widgets.find:hyper-ide-file-editor
+            .editor:x:/@_dp/#?name
+          delete-widget:x:/-/*/*?value
+
+          /*
+           * Now checking if currently iterated editor is the active editor, and
+           * if it is, we also delete the active file object toolbar.
+           */
+          if:x:/@hyper-ide.get-filename?value
+            =:x:/@_dp/#?name
+
+            /*
+             * This is the active editor.
+             *
+             * Deleting the active file object toolbar, and making sure we track 
+             * the fact that our active editor was deleted.
+             */
+            delete-widget:hyper-ide-active-file-object-toolbar
+            set:x:/@.active-deleted?value
+              src:bool:true
+
+          /*
+           * Then making sure we track which editors are left, if any, by removing
+           * it from our above collection of editors.
+           */
+          set:x:/@_dp/#
 
       /*
-       * Checking if currently active editor was closed by above logic, at which
-       * case we'll either need to set the next available editor to active, or if
-       * there are none, load our splash screen.
+       * Checking if active editor was deleted, and if it was, we'll need to
+       * either load up another editor, or load our splash screen, depending 
+       * upon whether or not there are anymore editors left in our collection.
        */
-      p5.web.widgets.find
-        .editor:x:/../*/filter?value
-        visible:true
-      if:x:/@p5.web.widgets.find/*/*?value
-        not
+      if:x:/@.active-deleted?value
+        =:bool:true
 
         /*
-         * Currently edited file was closed.
-         *
-         * Open last available file for editing, by making sure we activate
-         * the item associated with the last available "activate" widget
-         * in out treeview.
+         * Checking if there are anymore editors left.
          */
-        p5.web.widgets.find
-          .activate:x:/../*/filter?value
-        get-widget-property:x:/@p5.web.widgets.find/*/0/-?value
-          .activate
-        add:x:/./*/micro.widgets.tree.select-items/*
-          src:x:/@get-widget-property/*/*?value
-        micro.widgets.tree.select-items:hyper-ide-folder-tree-browser
-          items
-
-        else-if:x:/../*/p5.web.widgets.find/[0,1]/*/*
+        if:x:/@hyper-ide.get-editors/*?count
+          >:int:0
 
           /*
-           * No more available editors, but there were available editors during 
-           * initial invocation of our event, hence deleting editor wrapper,
-           * and launching "splash" screen.
+           * Setting the first available editor as our active editor.
+           *
+           * Notice, the easiest way to accomplish this, is to simply select
+           * its associated tree view item.
            */
-          delete-widget:hyper-ide-editor-tab
-          hyper-ide.load-splash
-
-          /*
-           * Making sure we un-select all tree view items.
-           */
+          add:x:/./*/micro.widgets.tree.select-items/*/items
+            src:x:/@hyper-ide.get-editors/0?name
           micro.widgets.tree.select-items:hyper-ide-folder-tree-browser
             items
 
           /*
-           * Making sure we display solution explorer, in case user made it invisible.
+           * Making sure we scroll our selected tree view item into view.
            */
-          micro.css.delete:hyper-ide-file-browser-wrapper
-            class:hide
-          micro.css.delete:hyper-ide-file-editor
-            class:col
-          micro.css.add:hyper-ide-file-editor
-            class:col-70
+          p5.web.widgets.find-first-like:hyper-ide-folder-tree-browser
+            class:tree-selected
+          p5.web.send-javascript:@"p5.$('{0}').el.scrollIntoView();"
+            :x:/@p5.web.widgets.find-first-like/*/*?value
 
-      else-if:x:/@p5.web.widgets.find/*/*?value
+        else
+
+          /*
+           * No more editors, deleting editor wrapper, and loading our 
+           * splash screen, making sure we also un-select any selected tree 
+           * view items.
+           */
+          delete-widget:hyper-ide-editor-tab
+          hyper-ide.load-splash
+          micro.widgets.tree.select-items:hyper-ide-folder-tree-browser
+            items
+
+      else-if:x:/@hyper-ide.get-editors/*?count
+        >:int:0
 
         /*
-         * Currently edited file was not closed, making sure we select it
-         * in our tree view.
+         * Regardless of whether or not the active editor was deleted, we might 
+         * need to make sure our active editor becomes selected in our tree, due
+         * to what occurs when deletion of a folder occurs, etc.
          */
-        add:x:/./*/micro.widgets.tree.select-items/*
+        hyper-ide.get-filename
+        add:x:/./*/micro.widgets.tree.select-items/*/items
           src:x:/@hyper-ide.get-filename?value
         micro.widgets.tree.select-items:hyper-ide-folder-tree-browser
           items
 
-      else
-
         /*
-         * No editor open, deleting any potentially existing file object toolbars,
-         * and re-setting header.
+         * Making sure we scroll our selected tree view item into view.
          */
-        p5.web.widgets.find
-          .toolbar:x:/@_dp/#?value
-        delete-widget:x:/-/*/*?value
+        p5.web.widgets.find-first-like:hyper-ide-folder-tree-browser
+          class:tree-selected
+        p5.web.send-javascript:@"p5.$('{0}').el.scrollIntoView();"
+          :x:/@p5.web.widgets.find-first-like/*/*?value
 
 
   oninit

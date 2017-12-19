@@ -195,7 +195,7 @@ if
 /*
  * Making sure we hide any previously created file toolbars.
  */
-p5.web.widgets.find
+p5.web.widgets.find:hyper-ide-toolbar-wrapper
   .toolbar
 set-widget-property:x:/-/*/*?value
   visible:false
@@ -207,7 +207,7 @@ set-widget-property:x:/-/*/*?value
 /*
  * Making sure we hide any previously created editors.
  */
-p5.web.widgets.find
+p5.web.widgets.find:hyper-ide-file-editor
   .editor
 set-widget-property:x:/-/*/*?value
   visible:false
@@ -268,8 +268,8 @@ create-widgets
    * Toolbar for saving editor's content, closing it, etc.
    */
   div
-    before:hyper-ide-active-folder-toolbar
-    class:strip
+    after:hyper-ide-active-file-object-toolbar
+    class:strip hyper-ide-toolbar
     style:"display:inline-block;"
     .toolbar:x:/../*/file?value
     widgets
@@ -415,6 +415,19 @@ create-widgets
       hyper-ide.get-code-editor
 
         /*
+         * Closing editor.
+         */
+        get-widget-property:x:/../*/_event?value
+          visible
+
+        /*
+         * Checking if this editor is the currently active one.
+         */
+        if:x:/@get-widget-property/*/*/visible?value
+          =:bool:false
+          return
+
+        /*
          * Finding active editor's textarea, and returning its ID.
          */
         p5.web.widgets.find-first:x:/../*/_event?value
@@ -432,7 +445,7 @@ create-widgets
          */
         hyper-ide.get-code-editor
         get-widget-property:x:/-?value
-          innerValue
+          value
         return:x:/@get-widget-property/*/*?value
 
 
@@ -462,11 +475,15 @@ create-widgets
       hyper-ide.get-filename
 
         /*
-         * Returning filename to caller.
+         * Checking if this is the active editor.
          */
         get-widget-property:x:/../*/_event?value
+          visible
           .editor
-        return:x:/@get-widget-property/*/*?value
+        if:x:/@get-widget-property/*/*/visible?value
+          =:bool:false
+          return
+        return:x:/@get-widget-property/*/*/.editor?value
 
 
       /*
@@ -489,8 +506,6 @@ create-widgets
          */
         save-file:x:/@hyper-ide.get-filename?value
           src:x:/@hyper-ide.get-code?value
-        micro.windows.info:File was successfully saved
-          class:micro-windows-info success
 
 
       /*
@@ -499,13 +514,21 @@ create-widgets
       hyper-ide.close
 
         /*
-         * Closing editor.
+         * Checking if this is the active editor.
          */
         get-widget-property:x:/../*/_event?value
+          visible
           .editor
+        if:x:/@get-widget-property/*/*/visible?value
+          =:bool:false
+          return
+
+        /*
+         * Closing editor.
+         */
         eval-x:x:/+/*
         hyper-ide.close-editors
-          filter:x:/@get-widget-property/*/*?value
+          filter:x:/@get-widget-property/*/*/.editor?value
           exact:bool:true
 
 

@@ -20,12 +20,12 @@ micro.lambda.contract.min:x:/..
 
 
 /*
- * Deleting out any previously edit folder toolbars.
+ * Deleting any previously created edit active file object toolbars.
  */
 if
   fetch:x:/0/0?value
-    widget-exists:hyper-ide-active-folder-toolbar
-  delete-widget:hyper-ide-active-folder-toolbar
+    widget-exists:hyper-ide-active-file-object-toolbar
+  delete-widget:hyper-ide-active-file-object-toolbar
 
 
 
@@ -74,12 +74,15 @@ else
  * Making sure we create our "Active Object" widget.
  */
 eval-x:x:/+/**(/.value|/.folder-name)|/+/*/*/label/*/innerValue
-create-widget:hyper-ide-active-folder-toolbar
+create-widget:hyper-ide-active-file-object-toolbar
   before:hyper-ide-main-toolbar
   .folder:x:/../*/folder?value
   class:strip hyper-ide-toolbar
   widgets
 
+    /*
+     * Displays name of folder.
+     */
     label
       style:"margin-bottom:0;"
       innerValue:x:/@.folder-name?value
@@ -127,6 +130,7 @@ create-widget:hyper-ide-active-folder-toolbar
                            * Serializing form data and sanity checking name of new file.
                            *
                            * Notice, we only accept a-z, 0-9, ., _ and - characters, and no capital letters.
+                           * This is to avoid Windows/xNix path confusion.
                            */
                           micro.widgets.wizard-form.value:hyper-ide-create-new-file-form
                           match:x:/@micro.widgets.wizard-form.value/*/name?value
@@ -149,7 +153,7 @@ create-widget:hyper-ide-active-folder-toolbar
                           /*
                            * Creating our new file as a sub file of currently selected folder.
                            */
-                          get-widget-property:hyper-ide-active-folder-toolbar
+                          get-widget-property:hyper-ide-active-file-object-toolbar
                             .folder
                           save-file:{0}{1}
                             :x:/@get-widget-property/*/*?value
@@ -252,7 +256,7 @@ create-widget:hyper-ide-active-folder-toolbar
                              */
                             micro.css.add:hyper-ide-new-folder-name
                               class:error
-                            micro.windows.info:Only use a-z, _, - and 0-9 in your name
+                            micro.windows.info:Only use a-z, _, ., - and 0-9 in your name
                               class:micro-windows-info warning
                             micro.page.set-focus:hyper-ide-new-folder-name
                             return
@@ -260,7 +264,7 @@ create-widget:hyper-ide-active-folder-toolbar
                           /*
                            * Creating our new folder as a sub folder of currently selected folder.
                            */
-                          get-widget-property:hyper-ide-active-folder-toolbar
+                          get-widget-property:hyper-ide-active-file-object-toolbar
                             .folder
                           create-folder:{0}{1}/
                             :x:/@get-widget-property/*/*?value
@@ -448,7 +452,7 @@ are editing files inside of the deleted folder, and the <strong>action is perman
                           /*
                            * Figuring out which folder user is trying to delete.
                            */
-                          get-widget-property:hyper-ide-active-folder-toolbar
+                          get-widget-property:hyper-ide-active-file-object-toolbar
                             .folder
 
                           /*
