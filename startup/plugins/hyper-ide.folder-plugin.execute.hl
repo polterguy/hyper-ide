@@ -1,0 +1,60 @@
+
+/*
+ * Create our execute in folder plugin button.
+ */
+create-event:hyper-ide.folder-plugins.execute
+  return
+    button
+      innerValue:@"<span class=""icon-play""></span>"
+      style:"margin-bottom:0;"
+      title:Minifies your CSS
+      onclick
+
+        /*
+         * Retrieves code for currently visible editor, minifies it, and updates 
+         * value of editor.
+         *
+         * Notice, we also calculate length of both original version and minified version,
+         * to give user some feedback about how many percent of the code was eliminated.
+         */
+        hyper-ide.get-active-editor-code
+        length:x:/@hyper-ide.get-active-editor-code?value
+        p5.web.css.minify:x:/@hyper-ide.get-active-editor-code?value
+        length:x:/@p5.web.css.minify?value
+
+        /*
+         * Unless we could remove something during minification, we inform user,
+         * and return early.
+         */
+        if:x:/../*/length/[0,1]?value
+          =:x:/../*/length/[1,2]?value
+
+          /*
+           * No further minification is possible.
+           */
+          micro.windows.info:No further minification is possible
+            class:micro-windows-info warning
+          return
+
+        /*
+         * Updating code.
+         */
+        hyper-ide.set-active-editor-code:x:/@p5.web.css.minify?value
+
+        /*
+         * Notifying user, making sure we inform him of how many percent of the code was removed.
+         */
+        -:x:/../*/length/[0,1]?value.decimal
+          _:x:/../*/length/[1,2]?value.decimal
+        /:x:/-?value.decimal
+          _:1024
+        /:x:/../*/length/[1,2]?value.decimal
+          _:x:/../*/length/[0,1]?value.decimal
+        -:decimal:1
+          _:x:/./-?value
+        *:x:/-?value
+          _:100
+        micro.windows.info:"CSS successfully minified, we saved {0}% and {1:0.#}KB"
+          :x:/@*?value.int
+          :x:/./-4?value
+          class:micro-windows-info success
