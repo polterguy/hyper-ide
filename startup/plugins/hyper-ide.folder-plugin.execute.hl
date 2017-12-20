@@ -128,20 +128,20 @@ create-event:hyper-ide.folder-plugins.execute
 
                           /*
                            * Checking platform, since we might need to convert
-                           * from CR/LF to only LF, in case we're on MacOSX
+                           * from CR/LF to only LF, in case we're on MacOSX or Unix.
                            */
                           platform
                           if:x:/@platform?value
                             =:Unix
+                            or:x:/@platform?value
+                              =:MacOSX
 
                             /*
                              * Replacing CR/LF before we save file.
                              */
-                            replace:x:/@micro.form.serialize/*/code?value
-                              src:"\r\n"
-                              dest:"\n"
+                            normalize-string:x:/@micro.form.serialize/*/code?value
                             save-file:~/temp/temp-bash.sh
-                              src:x:/@replace?value
+                              src:x:/@normalize-string?value
 
                           else
 

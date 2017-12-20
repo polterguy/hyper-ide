@@ -27,15 +27,15 @@ create-event:hyper-ide.plugins.shell.execute
         platform
         if:x:/@platform?value
           =:Unix
+          or:x:/@platform?value
+            =:MacOSX
 
           /*
            * Replacing CR/LF before we save file.
            */
-          replace:x:/@hyper-ide.get-active-editor-code?value
-            src:"\r\n"
-            dest:"\n"
+          normalize-string:x:/@micro.form.serialize/*/code?value
           save-file:~/temp/temp-bash.sh
-            src:x:/@replace?value
+            src:x:/@normalize-string?value
 
         else
 
