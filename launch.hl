@@ -412,6 +412,8 @@ create-widget:hyper-ide-main-container
          */
         save-file:x:/@hyper-ide.get-active-editor?value
           src:x:/@hyper-ide.get-active-editor-code?value
+        micro.windows.info:File was saved
+          class:micro-windows-info success
 
         /*
          * Returning success to caller.
@@ -838,7 +840,7 @@ create-widget:hyper-ide-main-container
                          * Invoking file responsible for selecting the file.
                          */
                         eval-x:x:/+/*
-                        micro.evaluate.file:@IDE/helpers/select-file.hl
+                        micro.evaluate.file:@IDE/helpers/edit-file.hl
                           file:x:/../*/items/0?name
 
                     catch

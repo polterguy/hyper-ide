@@ -19,6 +19,23 @@ micro.lambda.contract.min:x:/..
 
 
 /*
+ * Deleting any previously created edit active file object toolbars.
+ */
+if
+  fetch:x:/0/0?value
+    widget-exists:hyper-ide-active-file-object-toolbar
+
+  /*
+   * A folder is currently edited, deleting active file object toolbar for
+   * the folder that is edited.
+   */
+  delete-widget:hyper-ide-active-file-object-toolbar
+
+
+
+
+
+/*
  * Checking if file is already open, at which point we reuse existing editor, to
  * avoid reloading file, and loosing any potential changes.
  */
@@ -86,6 +103,8 @@ if:x:/@p5.web.widgets.find/*/*?value
 
   /*
    * Then making the editor caller is trying to show become visible.
+   *
+   * But first we must make sure the editor actually exists.
    */
   micro.css.delete:x:/@p5.web.widgets.find/@p5.web.widgets.find/*/*?value
     class:hide
@@ -96,18 +115,20 @@ if:x:/@p5.web.widgets.find/*/*?value
    */
   p5.web.widgets.find:x:/@p5.web.widgets.find/*/*?value
     element:textarea
-  set-widget-property:x:/@p5.web.widgets.find/*/*?value
-    disabled
+  if:x:/-/*/*?value
+    set-widget-property:x:/@p5.web.widgets.find/*/*?value
+      disabled
   p5.web.widgets.find:x:/@p5.web.widgets.find/@p5.web.widgets.find/@p5.web.widgets.find/*/*?value
     element:textarea
-  delete-widget-property:x:/@p5.web.widgets.find/*/*?value
-    disabled
+  if:x:/-/*/*?value
+    delete-widget-property:x:/@p5.web.widgets.find/*/*?value
+      disabled
 
-  /*
-   * Making sure we give focus to recently shown CodeMirror instance.
-   */
-  p5.web.send-javascript:@"p5['{0}'].focus();"
-    :x:/@p5.web.widgets.find/*/*?value
+    /*
+     * Making sure we give focus to recently shown CodeMirror instance.
+     */
+    p5.web.send-javascript:@"p5['{0}'].focus();"
+      :x:/@p5.web.widgets.find/*/*?value
 
   /*
    * Then making sure correct toolbar becomes visible.
@@ -152,18 +173,6 @@ if:x:/@p5.web.widgets.find/*/*?value
 
 
 /*
- * Loading file, such that we can pass its content into our editor instance.
- *
- * Making sure we do not convert the file.
- */
-load-file:x:/../*/file?value
-  convert:false
-
-
-
-
-
-/*
  * Retrieving file extension of file, and its filename.
  */
 split:x:/../*/file?value
@@ -188,6 +197,14 @@ if:x:/@split/*?count
     fetch:x:/0/0?value
       file-exists:@IDE/helpers/editors/{0}.hl
         :x:/@split/0/-?name
+
+  /*
+   * Loading file, such that we can pass its content into our editor instance.
+   *
+   * Making sure we do not convert the file.
+   */
+  load-file:x:/../*/file?value
+    convert:false
 
   /*
    * Specialised editor exists, loading it by evaluating its file, and adding
@@ -220,6 +237,14 @@ else
     :x:/@split/0/-?name
 
     /*
+     * Loading file, such that we can pass its content into our editor instance.
+     *
+     * Making sure we do not convert the file.
+     */
+    load-file:x:/../*/file?value
+      convert:false
+
+    /*
      * CodeMirror mode for file's extension exists.
      */
     eval-x:x:/+/*/*/*
@@ -227,9 +252,9 @@ else
       src
         micro.widgets.codemirror
           .data-field:content
-          mode:x:/@load-file/*/*/{0}?value
+          mode:x:/@load-file/@load-file/*/*/{0}?value
             :x:/@split/0/-?name
-          value:x:/../*/load-file/*?value
+          value:x:/@load-file/*?value
           auto-focus:true
           .keys
             Alt-S:@"p5.$('hyper-ide-main-container').raise('.onsave');"
@@ -242,9 +267,66 @@ else
     /*
      * No editor exists, returning early, warning user first
      */
-    micro.windows.info:I don't know how to edit such files
-      class:micro-windows-info warning
-    return
+    add:x:/../*/create-widgets/**/.save-button/.
+      src:disabled
+    add:x:/@.editor-instance
+      src
+        div
+          class:air-inner
+          .not-loaded
+          widgets
+            h3
+              innerValue:Unknown file type
+            p
+              innerValue:@"This file does not have a default mapping for an editor type in Hyper IDE. If you wish, we could try to still load your file, 
+assuming it is a text file of some sort, using the markdown editor? Notice, you can still rename the file, delete it, and so on, without loading it up into your editor.
+You can edit the file <em>'/hyper-ide/configuration/extension2cm-instance.hl'</em> to associate file extensions with CodeMirror modes."
+            div
+              style:"position:absolute;bottom:0;right:0;margin-right:2rem;"
+              widgets
+                button
+                  innerValue:Load file
+                  style:"padding-left:35px;padding-right:35px;"
+                  onclick
+
+                    /*
+                     * Enabling save button.
+                     */
+                    p5.web.widgets.find-first-ancestor:x:/../*/_event?value
+                      .editor
+                    get-widget-property:x:/-/*/*?value
+                      .editor
+                    p5.web.widgets.find
+                      .save-button:x:/@get-widget-property/*/*?value
+                      disabled
+                    delete-widget-property:x:/-/*/*?value
+                      disabled
+
+                    /*
+                     * Deleting this warning.
+                     */
+                    p5.web.widgets.find-first-ancestor:x:/../*/_event?value
+                      .not-loaded
+                    p5.web.widgets.get-parent:x:/@p5.web.widgets.find-first-ancestor/*/*?value
+                    delete-widget:x:/@p5.web.widgets.find-first-ancestor/*/*?value
+
+                    /*
+                     * Loading our file, and creating our editor instance.
+                     */
+                    load-file:x:/../*/get-widget-property/[0,1]/*/*?value
+                      convert:false
+                    create-widgets
+                      micro.widgets.codemirror
+                        parent:x:/@p5.web.widgets.get-parent/*/*?value
+                        .data-field:content
+                        mode:markdown
+                        value:x:/@load-file/*?value
+                        auto-focus:true
+                        .keys
+                          Alt-S:@"p5.$('hyper-ide-main-container').raise('.onsave');"
+                          Alt-X:@"p5.$('hyper-ide-main-container').raise('.onclose');"
+                          Alt-W:@"p5.$('hyper-ide-main-container').raise('.onnext');"
+                          Alt-Q:@"p5.$('hyper-ide-main-container').raise('.onprevious');"
 
 
 
@@ -388,8 +470,17 @@ eval:x:/@.plugins
  *
  * Notice, the above [eval] will return the results of all plugin active events.
  */
-insert-after:x:/../*/create-widgets/*/div/[0,1]/*/widgets/0
+insert-before:x:/../*/create-widgets/*/div/[0,1]/*/widgets/0/-
   src:x:/@eval/*
+
+
+
+
+
+/*
+ * Making sure we inject our toolbar as the first in our list of toolbars.
+ */
+p5.web.widgets.get-children:hyper-ide-toolbars
 
 
 
@@ -408,7 +499,7 @@ create-widgets
    * Toolbar for saving editor's content, closing it, etc.
    */
   div
-    after:hyper-ide-active-file-object-toolbar
+    after:x:/@p5.web.widgets.get-children/*/0?value
     class:strip hyper-ide-toolbar
     style:"float:right;"
     .toolbar:x:/../*/file?value
@@ -434,6 +525,7 @@ create-widgets
         style:"padding-left:35px;padding-right:35px;margin-bottom:0;"
         innerValue:@"<span class=""icon-floppy-disk""></span>"
         title:Saves your file, keyboard shortcut Alt+S
+        .save-button:x:/../*/file?value
         onclick
 
           /*
@@ -442,12 +534,262 @@ create-widgets
           hyper-ide.save-active-editor
 
       /*
+       * Renames file.
+       */
+      button
+        innerValue:@"<span class=""icon-pencil""></span>"
+        style:"margin-bottom:0;"
+        title:Renames your file
+        onclick
+
+          /*
+           * Renaming file.
+           * First retrieving file name.
+           */
+          p5.web.widgets.get-parent:x:/../*/_event?value
+          get-widget-property:x:/-/*/*?value
+            .toolbar
+
+          /*
+           * Then passing filename into modal widget.
+           */
+          eval-x:x:/+/**/.filename
+          create-widgets
+            micro.widgets.modal:hyper-ide-confirm-rename-file
+              widgets
+                h3
+                  innerValue:New name
+                micro.widgets.wizard-form:hyper-ide-rename-file-form
+                  text:hyper-ide-new-file-name
+                    info:Name
+                    .data-field:name
+                    placeholder:New name for your file ...
+                    onkeydown:@"if (event.keyCode == 13) {p5.$('hyper-ide-rename-file-btn').raise('onclick');return false;}"
+                    oninit
+
+                      /*
+                       * Forward evaluated above.
+                       */
+                      .filename:x:/../*/get-widget-property/*/*?value
+                      split:x:/-?value
+                        =:/
+
+                      /*
+                       * Setting initial focus to "Yes" button, and setting 
+                       * initial value to old name.
+                       */
+                      set-widget-property:x:/../*/_event?value
+                        value:x:/@split/0/-?name
+                      micro.page.set-focus:x:/../*/_event?value
+
+                div
+                  class:right
+                  widgets
+                    div
+                      class:strip
+                      style:"display:inline-block;"
+                      widgets
+                        button:hyper-ide-rename-file-btn
+                          innerValue:OK
+                          style:"margin-bottom:0;"
+                          onclick
+
+                            /*
+                             * Forward evaluated above.
+                             */
+                            .filename:x:/../*/get-widget-property/*/*?value
+
+                            /*
+                             * Finding file's folder name.
+                             *
+                             * Making sure we get it in canonised form.
+                             */
+                            .folder
+                            split:x:/@.filename?value
+                              =:/
+                            set:x:/@split/0/-
+                            join:x:/@split/*?name
+                              sep:/
+                            set:x:/@join?value
+                              src:/{0}/
+                                :x:/@join?value
+                            trim-left:x:/@join?value
+                              chars:/
+                            set:x:/@.folder?value
+                              src:/{0}
+                                :x:/@trim-left?value
+
+                            /*
+                             * Serializing form to figure out new name for file.
+                             */
+                            micro.widgets.wizard-form.value:hyper-ide-rename-file-form
+
+                            /*
+                             * Renaming file.
+                             */
+                            move-file:x:/@.filename?value
+                              dest:{0}{1}
+                                :x:/@.folder?value
+                                :x:/@micro.widgets.wizard-form.value/*/name?value
+
+                            /*
+                             * Refreshing tree, since folder's content now has changed.
+                             */
+                            add:x:/../*/micro.widgets.tree.refresh-items/*/items
+                              src:x:/@.folder?value
+                            micro.widgets.tree.refresh-items:hyper-ide-folder-tree-browser
+                              force-expand:bool:true
+                              items
+
+                            /*
+                             * Changes name of active file.
+                             */
+                            hyper-ide.set-active-filename:{0}{1}
+                              :x:/@.folder?value
+                              :x:/@micro.widgets.wizard-form.value/*/name?value
+
+                            /*
+                             * Selecting (updated) file in tree view now.
+                             */
+                            add:x:/../*/micro.widgets.tree.select-items/*/items
+                              src:{0}{1}
+                                :x:/@.folder?value
+                                :x:/@micro.widgets.wizard-form.value/*/name?value
+                            micro.widgets.tree.select-items:hyper-ide-folder-tree-browser
+                              items
+
+                            /*
+                             * Deleting modal widget, and giving user some feedback.
+                             */
+                            delete-widget:hyper-ide-confirm-rename-file
+
+                        button
+                          innerValue:Cancel
+                          style:"margin-bottom:0;"
+                          onclick
+
+                            /*
+                             * Simply deleting modal widget.
+                             */
+                            delete-widget:hyper-ide-confirm-rename-file
+
+      /*
+       * Deletes file.
+       */
+      button
+        innerValue:@"<span class=""icon-bin""></span>"
+        title:Deletes your file
+        style:"margin-bottom:0;"
+        onclick
+
+          /*
+           * Deleting file.
+           * First retrieving file name.
+           */
+          p5.web.widgets.get-parent:x:/../*/_event?value
+          get-widget-property:x:/-/*/*?value
+            .toolbar
+
+          /*
+           * Then passing filename into modal widget.
+           */
+          eval-x:x:/+/**/.filename
+          create-widgets
+            micro.widgets.modal:hyper-ide-confirm-delete-file
+              widgets
+                h3
+                  innerValue:Confirm action
+                p
+                  innerValue:Are you sure you want to delete this file? This action is permanent!
+                div
+                  class:right
+                  widgets
+                    div
+                      class:strip
+                      style:"display:inline-block;"
+                      widgets
+                        button
+                          innerValue:Yes
+                          style:"margin-bottom:0;"
+                          oninit
+
+                            /*
+                             * Setting initial focus to "Yes" button.
+                             */
+                            micro.page.set-focus:x:/../*/_event?value
+
+                          onclick
+
+                            /*
+                             * Forward evaluated above.
+                             */
+                            .filename:x:/../*/get-widget-property/*/*?value
+
+                            /*
+                             * Deleting actual file.
+                             */
+                            delete-file:x:/@.filename?value
+
+                            /*
+                             * Deleting selected item from tree.
+                             *
+                             * Notice, selected tree view item will always be the file or folder 
+                             * user is trying to delete, since selecting a tree view item, 
+                             * changes the active file object edited.
+                             */
+                            micro.widgets.tree.get-selected-items:hyper-ide-folder-tree-browser
+                            add:x:/../*/micro.widgets.tree.delete-items
+                              src:x:/@micro.widgets.tree.get-selected-items/*
+                            micro.widgets.tree.delete-items:hyper-ide-folder-tree-browser
+
+                            /*
+                             * Making sure we close all editor for file.
+                             */
+                            eval-x:x:/+/*
+                            hyper-ide.close-editors
+                              filter:x:/@.filename?value
+                              exact:bool:true
+
+                            /*
+                             * Deleting modal window.
+                             */
+                            delete-widget:hyper-ide-confirm-delete-file
+
+                        button
+                          innerValue:No
+                          style:"margin-bottom:0;"
+                          onclick
+
+                            /*
+                             * Simply deleting modal widget.
+                             */
+                            delete-widget:hyper-ide-confirm-delete-file
+
+      /*
+       * Downloads file.
+       */
+      button
+        innerValue:@"<span class=""icon-download2""></span>"
+        title:Download file
+        style:"margin-bottom:0;"
+        onclick
+
+          /*
+           * Downloading file.
+           */
+          p5.web.widgets.get-parent:x:/../*/_event?value
+          get-widget-property:x:/-/*/*?value
+            .toolbar
+          micro.download.file:x:/-/*/*?value
+
+      /*
        * Toggling visibility of "solution explorer".
        */
       button
         innerValue:@"<span class=""icon-tree""></span>"
         title:Toggle visibility of solution explorer
         style:"margin-bottom:0;"
+        .toogle-solution-explorer-button
         oninit
 
           /*
@@ -477,7 +819,9 @@ create-widgets
            */
           micro.css.toggle:hyper-ide-file-browser-wrapper
             class:hide
-          micro.css.toggle:x:/../*/_event?value
+          p5.web.widgets.find
+            .toogle-solution-explorer-button
+          micro.css.toggle:x:/-/*/*?value
             class:toggled
           micro.css.toggle:hyper-ide-file-editor
             class:col-70 col

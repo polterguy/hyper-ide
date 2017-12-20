@@ -8,11 +8,12 @@
 .hyper-ide-toolbar {
     display:inline-block;
     margin-left:1rem;
+    float:right;
 }
 
 /* Main content, minus toolbars that is */
 .hyper-ide-content {
-    height:calc(100vh - 5.7rem);
+    height:calc(100vh - 5rem);
 }
 
 /* TreeView wrapper for browsing files (column wrapper) */
