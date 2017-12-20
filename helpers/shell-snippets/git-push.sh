@@ -1,2 +1,3 @@
 # This will will push all changes to your main repo.
-git push --all
+VAR1="$(git push --all)"
+echo "${VAR1}"
