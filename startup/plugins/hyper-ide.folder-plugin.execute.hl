@@ -137,7 +137,7 @@ create-event:hyper-ide.folder-plugins.execute
                               =:MacOSX
 
                             /*
-                             * Replacing CR/LF before we save file.
+                             * Replacing CR/LF before we save file to get platform specific CR sequence.
                              */
                             normalize-string:x:/@micro.form.serialize/*/code?value
                             save-file:~/temp/temp-bash.sh
