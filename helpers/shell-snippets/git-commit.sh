@@ -4,5 +4,5 @@
 # Notice, it WILL NOT PUSH your changes to the remote repo.
 #
 # Add a COMMIT MESSAGE below.
-git add -A .
+git add -all
 git commit -a -m "YOUR COMMIT MESSAGE GOES HERE"
