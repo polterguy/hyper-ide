@@ -5,4 +5,4 @@
 #
 # Add a COMMIT MESSAGE below.
 git add .
-git commit -a -m "COMMIT MESSAGE"
+git commit -a -m "YOUR COMMIT MESSAGE GOES HERE"
