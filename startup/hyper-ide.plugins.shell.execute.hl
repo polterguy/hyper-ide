@@ -1,0 +1,45 @@
+/*
+ * Create our execute shell command plugin button for editor.
+ */
+create-event:hyper-ide.plugins.shell.execute
+  return
+    button
+      innerValue:@"<span class=""icon-play3""></span>"
+      style:"margin-bottom:0;"
+      title:Execute shell script. Notice will execute the saved file, and not necessarily the code in your editor!
+      onclick
+
+        /*
+         * Retrieves filename.
+         */
+        hyper-ide.get-active-editor
+        execute-file:x:/-?value
+        p5.html.html-encode:x:/-/*?value
+
+        /*
+         * Opens a modal window, displaying the results of our execution.
+         */
+        eval-x:x:/+/*/*/*/div/*/innerHtml
+        create-widgets
+          micro.widgets.modal:hyper-ide-execute-output
+            widgets
+              h3
+                innerValue:Result of execution
+              pre
+                innerValue:x:/@p5.html.html-encode?value
+              div
+                class:right
+                widgets
+                  div
+                    class:strip
+                    style:"display:inline-block;"
+                    widgets
+                      button
+                        innerValue:Close
+                        style:"margin-bottom:0;"
+                        onclick
+
+                          /*
+                           * Deleting modal widget.
+                           */
+                          delete-widget:hyper-ide-execute-output

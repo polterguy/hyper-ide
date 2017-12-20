@@ -1,4 +1,3 @@
-﻿
 /*
  * Edits the specified [file], using some sort of CodeMirror editor, or whatever
  * is available.
@@ -699,9 +698,16 @@ create-widgets
             micro.widgets.modal:hyper-ide-confirm-delete-file
               widgets
                 h3
-                  innerValue:Confirm action
+                  innerValue:Confirm deletion
+                literal
+                  element:p
+                  style:"float:left;font-size:5rem;margin-right:.5rem;"
+                  class:icon-bin
                 p
-                  innerValue:Are you sure you want to delete this file? This action is permanent!
+                  innerValue:@"Are you sure you want to delete the <code>{0}</code> file? I need you to confirm this action before I allow you to do this."
+                    :x:/@get-widget-property/*/*?value
+                p
+                  innerValue:@"<strong>Warning, this action is permanent!</strong>"
                 div
                   class:right
                   widgets

@@ -1,4 +1,3 @@
-﻿
 /*
  * Invoked when a folder is selected.
  *
@@ -514,6 +513,11 @@ create-widget:hyper-ide-active-file-object-toolbar
       onclick
 
         /*
+         * Forward evaluated above.
+         */
+        .folder-name:x:/../*/folder?value
+
+        /*
          * Deleting folder, asking user to confirm the action.
          */
         create-widgets
@@ -521,9 +525,16 @@ create-widget:hyper-ide-active-file-object-toolbar
             widgets
               h3
                 innerValue:Confirm deletion
+              literal
+                element:p
+                style:"float:left;font-size:5rem;margin-right:.5rem;"
+                class:icon-bin
               p
-                innerValue:@"Are you sure you want to delete this folder? This will delete all files and sub-folders, and close all editors that
-are editing files inside of the deleted folder, and the <strong>action is permanent!</strong>"
+                innerValue:@"Are you sure you want to delete the <code>{0}</code> folder? This will delete all files and sub-folders, 
+and close all editors that are editing files inside of your folder. I need you to confirm this action before I allow you to do this."
+                  :x:/@.folder-name?value
+              p
+                innerValue:@"<strong>Warning, this action is permanent!</strong>"
               div
                 class:right
                 widgets
