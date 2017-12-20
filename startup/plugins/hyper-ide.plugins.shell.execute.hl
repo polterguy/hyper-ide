@@ -32,6 +32,7 @@ create-event:hyper-ide.plugins.shell.execute
          * from our execution.
          */
         .result
+        .class
         try
 
           /*
@@ -60,6 +61,8 @@ create-event:hyper-ide.plugins.shell.execute
            */
           set:x:/@.result?value
             src:x:/@execute-file/*?value
+          set:x:/@.class?value
+            src:success
 
         catch
 
@@ -68,6 +71,8 @@ create-event:hyper-ide.plugins.shell.execute
            */
           set:x:/@.result?value
             src:x:/@message?value
+          set:x:/@.class?value
+            src:warning
 
         finally
 
@@ -81,7 +86,7 @@ create-event:hyper-ide.plugins.shell.execute
          * sure we HTML encode any result.
          */
         p5.html.html-encode:x:/@.result?value
-        eval-x:x:/+/*/*/*/div/*/innerHtml
+        eval-x:x:/+/*/*/*/div/*/innerHtml|/+/**/pre/*/class
         create-widgets
           micro.widgets.modal:hyper-ide-execute-output
             widgets
@@ -90,6 +95,8 @@ create-event:hyper-ide.plugins.shell.execute
               pre
                 innerValue:x:/@p5.html.html-encode?value
                 style:"font-size:.7rem;"
+                class:air-top {0}
+                  :x:/@.class?value
               div
                 class:right
                 widgets

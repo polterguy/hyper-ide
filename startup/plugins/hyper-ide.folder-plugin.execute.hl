@@ -1,4 +1,3 @@
-
 /*
  * Create our execute in folder plugin button.
  */
@@ -149,7 +148,7 @@ create-event:hyper-ide.folder-plugins.execute
                             p5.html.html-encode:x:/@execute-file/*?value
                             set-widget-property:hyper-ide-execute-result
                               visible:true
-                              class:success
+                              class:success air-top
                               innerValue:x:/@p5.html.html-encode?value
 
                           catch
@@ -160,7 +159,7 @@ create-event:hyper-ide.folder-plugins.execute
                             p5.html.html-encode:x:/@message?value
                             set-widget-property:hyper-ide-execute-result
                               visible:true
-                              class:warning
+                              class:warning air-top
                               innerValue:x:/@p5.html.html-encode?value
 
                           finally
