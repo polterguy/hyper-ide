@@ -156,7 +156,7 @@ create-event:hyper-ide.folder-plugins.execute
                             /*
                              * Displaying error to user.
                              */
-                            p5.html.html-encode:x:/@execute-file/*?value
+                            p5.html.html-encode:x:/@message?value
                             set-widget-property:hyper-ide-execute-result
                               visible:true
                               innerValue:x:/@p5.html.html-encode?value
