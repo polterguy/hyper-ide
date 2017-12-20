@@ -1,0 +1,21 @@
+/*
+ * Create our execute Hyperlambda file plugin button for editor.
+ */
+create-event:hyper-ide.plugins.hyperlambda.execute
+  return
+    button
+      innerValue:@"<span class=""icon-flash""></span>"
+      style:"margin-bottom:0;"
+      title:Execute Hyperlambda file
+      onclick
+
+        /*
+         * Retrieves editor's content.
+         */
+        hyper-ide.get-active-editor-code
+
+        /*
+         * Transforming Hyperlambda to lambda, and simply evaluating it.
+         */
+        hyper2lambda:x:/@hyper-ide.get-active-editor-code?value
+        eval:x:/-
