@@ -639,6 +639,18 @@ create-widget:hyper-ide-main-container
           widgets
 
             /*
+             * Wrapper for path of file object header.
+             */
+            div
+              widgets
+                div
+                  style:"float:left;"
+                  widgets
+                    h4:hyper-ide-file-path-header
+                      innerValue:
+                      class:hyper-ide-file-path
+
+            /*
              * Our primary toolbar.
              *
              * Contains settings and home button.
@@ -842,6 +854,12 @@ create-widget:hyper-ide-main-container
                         eval-x:x:/+/*
                         micro.evaluate.file:@IDE/helpers/edit-file.hl
                           file:x:/../*/items/0?name
+
+                      /*
+                       * Updating header or file/folder path.
+                       */
+                      set-widget-property:hyper-ide-file-path-header
+                        innerValue:x:/../*/items/0?name
 
                     catch
 
