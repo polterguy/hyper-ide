@@ -70,6 +70,50 @@ else
 
 
 /*
+ * Retrieving active events that will create a plugin button for our folder.
+ */
+vocabulary:~hyper-ide.folder-plugins.
+
+
+
+
+
+/*
+ * Adding all plugin active events for current mode into [.plugins] below.
+ */
+.plugins
+  return:x:/../*/*
+for-each:x:/@vocabulary/*?value
+  insert-before:x:/@.plugins/0/-
+    src:x:/@_dp?value
+
+
+
+
+
+/*
+ * Evaluating [.plugins] lambda, which will invoke all plugin button events for us,
+ * and return its result.
+ */
+eval:x:/@.plugins
+
+
+
+
+
+/*
+ * Adding the results of above plugin creation logic into our toolbar widget.
+ *
+ * Notice, the above [eval] will return the results of all plugin active events.
+ */
+insert-before:x:/../*/create-widget/*/widgets/0/-
+  src:x:/@eval/*
+
+
+
+
+
+/*
  * Making sure we inject our toolbar as the first in our list of toolbars.
  */
 p5.web.widgets.get-children:hyper-ide-toolbars

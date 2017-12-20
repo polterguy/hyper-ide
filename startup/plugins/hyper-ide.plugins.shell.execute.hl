@@ -4,29 +4,92 @@
 create-event:hyper-ide.plugins.shell.execute
   return
     button
-      innerValue:@"<span class=""icon-play3""></span>"
+      innerValue:@"<span class=""icon-flash""></span>"
       style:"margin-bottom:0;"
-      title:Execute shell script. Notice will execute the saved file, and not necessarily the code in your editor!
+      title:Execute script
       onclick
 
         /*
-         * Retrieves filename.
+         * Retrieves editor's content.
          */
-        hyper-ide.get-active-editor
-        execute-file:x:/-?value
-        p5.html.html-encode:x:/-/*?value
+        hyper-ide.get-active-editor-code
 
         /*
-         * Opens a modal window, displaying the results of our execution.
+         * Creates a temporary file, containing the current code from the active 
+         * editor, which is the one.
+         *
+         * This is being done in case user has edited file, yet still not saved
+         * his changed, since we assume user wants to execute whatever is in his
+         * code editor, and not necessarily what's in his physical file on disc.
          */
+        save-file:~/temp/temp-bash.sh
+          src:x:/@hyper-ide.get-active-editor-code?value
+
+        /*
+         * Then making sure we wrap our execution inside of a try/catch block,
+         * such that we can be certain of that our temporary file is always deleted,
+         * since it might contain passwords and such, while we track the result
+         * from our execution.
+         */
+        .result
+        try
+
+          /*
+           * Figuring out "working folder", which is the folder where the original
+           * file can be found.
+           */
+          hyper-ide.get-active-editor
+          split:x:/@hyper-ide.get-active-editor?value
+            =:/
+          set:x:/@split/0/-
+          join:x:/@split/*?name
+            sep:/
+          trim-left:x:/@join?value
+            chars:/
+
+          /*
+           * Executing temp file, with working folder being folder where original
+           * file is physically located.
+           */
+          execute-file:~/temp/temp-bash.sh
+            working-folder:/{0}
+              :x:/@trim-left?value
+
+          /*
+           * Setting result to result of invocation above.
+           */
+          set:x:/@.result?value
+            src:x:/@execute-file/*?value
+
+        catch
+
+          /*
+           * Setting result to exception message.
+           */
+          set:x:/@.result?value
+            src:x:/@message?value
+
+        finally
+
+          /*
+           * Deleting temp file.
+           */
+          delete-file:~/temp/temp-bash.sh
+
+        /*
+         * Opens a modal window, displaying the results of our execution, making
+         * sure we HTML encode any result.
+         */
+        p5.html.html-encode:x:/@.result?value
         eval-x:x:/+/*/*/*/div/*/innerHtml
         create-widgets
           micro.widgets.modal:hyper-ide-execute-output
             widgets
               h3
-                innerValue:Result of execution
+                innerValue:Result
               pre
                 innerValue:x:/@p5.html.html-encode?value
+                style:"font-size:.7rem;"
               div
                 class:right
                 widgets
@@ -37,6 +100,13 @@ create-event:hyper-ide.plugins.shell.execute
                       button
                         innerValue:Close
                         style:"margin-bottom:0;"
+                        oninit
+
+                          /*
+                           * Making sure we set initial focus to "Close" button.
+                           */
+                          micro.page.set-focus:x:/../*/_event?value
+
                         onclick
 
                           /*

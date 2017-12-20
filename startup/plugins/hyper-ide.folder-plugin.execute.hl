@@ -5,56 +5,129 @@
 create-event:hyper-ide.folder-plugins.execute
   return
     button
-      innerValue:@"<span class=""icon-play""></span>"
+      innerValue:@"<span class=""icon-flash""></span>"
       style:"margin-bottom:0;"
-      title:Minifies your CSS
+      title:Open terminal window
       onclick
 
         /*
-         * Retrieves code for currently visible editor, minifies it, and updates 
-         * value of editor.
-         *
-         * Notice, we also calculate length of both original version and minified version,
-         * to give user some feedback about how many percent of the code was eliminated.
+         * Retrieving current folder.
          */
-        hyper-ide.get-active-editor-code
-        length:x:/@hyper-ide.get-active-editor-code?value
-        p5.web.css.minify:x:/@hyper-ide.get-active-editor-code?value
-        length:x:/@p5.web.css.minify?value
+        p5.web.widgets.find-first-ancestor:x:/../*/_event?value
+          .folder
+        get-widget-property:x:/-/*/*?value
+          .folder
 
         /*
-         * Unless we could remove something during minification, we inform user,
-         * and return early.
+         * Opens a modal window, asking user for command(s) he wants to execute.
          */
-        if:x:/../*/length/[0,1]?value
-          =:x:/../*/length/[1,2]?value
+        eval-x:x:/+/**/.folder
+        create-widgets
+          micro.widgets.modal:hyper-ide-execute-modal
+            widgets
+              h3
+                innerValue:Shell script
+                oninit
 
-          /*
-           * No further minification is possible.
-           */
-          micro.windows.info:No further minification is possible
-            class:micro-windows-info warning
-          return
+                  /*
+                   * Forward evaluated above.
+                   */
+                  .folder:x:/../*/get-widget-property/*/*?value
 
-        /*
-         * Updating code.
-         */
-        hyper-ide.set-active-editor-code:x:/@p5.web.css.minify?value
+                  /*
+                   * Displaying working folder as part of header.
+                   */
+                  set-widget-property:x:/../*/_event?value
+                    innerValue:"$ {0}"
+                      :x:/@.folder?value
 
-        /*
-         * Notifying user, making sure we inform him of how many percent of the code was removed.
-         */
-        -:x:/../*/length/[0,1]?value.decimal
-          _:x:/../*/length/[1,2]?value.decimal
-        /:x:/-?value.decimal
-          _:1024
-        /:x:/../*/length/[1,2]?value.decimal
-          _:x:/../*/length/[0,1]?value.decimal
-        -:decimal:1
-          _:x:/./-?value
-        *:x:/-?value
-          _:100
-        micro.windows.info:"CSS successfully minified, we saved {0}% and {1:0.#}KB"
-          :x:/@*?value.int
-          :x:/./-4?value
-          class:micro-windows-info success
+              micro.widgets.codemirror:hyper-ide-terminal-commands
+                .data-field:code
+                auto-focus:true
+                mode:shell
+
+              div
+                class:right air-top
+                widgets
+                  div
+                    class:strip
+                    style:"display:inline-block;"
+                    widgets
+
+                      /*
+                       * Execute button.
+                       */
+                      button
+                        innerValue:Execute
+                        style:"margin-bottom:0;"
+                        onclick
+
+                          /*
+                           * Forward evaluated above.
+                           */
+                          .folder:x:/../*/get-widget-property/*/*?value
+
+                          /*
+                           * Saving editor's content to a temporary file.
+                           */
+                          micro.form.serialize:hyper-ide-execute-modal
+                          save-file:~/temp/temp-bash.sh
+                            src:x:/@micro.form.serialize/*/code?value
+
+                          /*
+                           * In case temp file contains passwords and such, we want
+                           * to make 100% certain of that we can successfully delete
+                           * it after execution, even if an exception occurs.
+                           */
+                          try
+
+                            /*
+                             * Executing file with current folder being the currently open folder.
+                             */
+                            execute-file:~/temp/temp-bash.sh
+                              working-folder:x:/@.folder?value
+
+                            /*
+                             * Displaying results of evaluation, making sure we
+                             * HTML encode it, to be sure.
+                             */
+                            p5.html.html-encode:x:/@execute-file/*?value
+                            set-widget-property:hyper-ide-execute-result
+                              visible:true
+                              innerValue:x:/@p5.html.html-encode?value
+
+                          catch
+
+                            /*
+                             * Displaying error to user.
+                             */
+                            p5.html.html-encode:x:/@execute-file/*?value
+                            set-widget-property:hyper-ide-execute-result
+                              visible:true
+                              innerValue:x:/@p5.html.html-encode?value
+
+                          finally
+
+                            /*
+                             * Deleting temporary file.
+                             */
+                            delete-file:~/temp/temp-bash.sh
+
+                      /*
+                       * Close window button.
+                       */
+                      button
+                        innerValue:Close
+                        style:"margin-bottom:0;"
+                        onclick
+
+                          /*
+                           * Simply closing modal window.
+                           */
+                          delete-widget:hyper-ide-execute-modal
+
+              literal:hyper-ide-execute-result
+                class:air-top
+                style:"margin-bottom:0;font-size:.7rem;"
+                element:pre
+                visible:false
