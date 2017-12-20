@@ -149,6 +149,7 @@ create-event:hyper-ide.folder-plugins.execute
                             p5.html.html-encode:x:/@execute-file/*?value
                             set-widget-property:hyper-ide-execute-result
                               visible:true
+                              class:success
                               innerValue:x:/@p5.html.html-encode?value
 
                           catch
@@ -159,6 +160,7 @@ create-event:hyper-ide.folder-plugins.execute
                             p5.html.html-encode:x:/@message?value
                             set-widget-property:hyper-ide-execute-result
                               visible:true
+                              class:warning
                               innerValue:x:/@p5.html.html-encode?value
 
                           finally
