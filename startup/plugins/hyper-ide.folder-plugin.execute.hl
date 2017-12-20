@@ -122,11 +122,34 @@ create-event:hyper-ide.folder-plugins.execute
                           .folder:x:/../*/get-widget-property/*/*?value
 
                           /*
-                           * Saving editor's content to a temporary file.
+                           * Retrieving script.
                            */
                           micro.form.serialize:hyper-ide-execute-modal
-                          save-file:~/temp/temp-bash.sh
-                            src:x:/@micro.form.serialize/*/code?value
+
+                          /*
+                           * Checking platform, since we might need to convert
+                           * from CR/LF to only LF, in case we're on MacOSX
+                           */
+                          platform
+                          if:x:/@platform?value
+                            =:MacOSX
+
+                            /*
+                             * Replacing CR/LF before we save file.
+                             */
+                            replace:x:/@micro.form.serialize/*/code?value
+                              src:"\r\n"
+                              dest:"\n"
+                            save-file:~/temp/temp-bash.sh
+                              src:x:/@replace?value
+
+                          else
+
+                            /*
+                             * Saving file with CR/LF as new line characters.
+                             */
+                            save-file:~/temp/temp-bash.sh
+                              src:x:/@micro.form.serialize/*/code?value
 
                           /*
                            * In case temp file contains passwords and such, we want

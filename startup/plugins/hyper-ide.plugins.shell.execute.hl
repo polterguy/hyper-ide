@@ -16,14 +16,34 @@ create-event:hyper-ide.plugins.shell.execute
 
         /*
          * Creates a temporary file, containing the current code from the active 
-         * editor, which is the one.
+         * editor, which is the file we actually execute.
+         * This is done since the file might not necessarily be saved, and we 
+         * assume user wants to execute the code from his editor, and not 
+         * necessarily the code from his physical file.
          *
-         * This is being done in case user has edited file, yet still not saved
-         * his changed, since we assume user wants to execute whatever is in his
-         * code editor, and not necessarily what's in his physical file on disc.
+         * However, first checking platform, since we might need to convert
+         * from CR/LF to only LF, in case we're on MacOSX
          */
-        save-file:~/temp/temp-bash.sh
-          src:x:/@hyper-ide.get-active-editor-code?value
+        platform
+        if:x:/@platform?value
+          =:MacOSX
+
+          /*
+           * Replacing CR/LF before we save file.
+           */
+          replace:x:/@hyper-ide.get-active-editor-code?value
+            src:"\r\n"
+            dest:"\n"
+          save-file:~/temp/temp-bash.sh
+            src:x:/@replace?value
+
+        else
+
+          /*
+           * Saving file with CR/LF as new line characters.
+           */
+          save-file:~/temp/temp-bash.sh
+            src:x:/@hyper-ide.get-active-editor-code?value
 
         /*
          * Then making sure we wrap our execution inside of a try/catch block,
