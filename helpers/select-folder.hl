@@ -177,12 +177,11 @@ create-widget:hyper-ide-active-file-object-toolbar
                           /*
                            * Serializing form data and sanity checking name of new file.
                            *
-                           * Notice, we only accept a-z, 0-9, ., _ and - characters, and no capital letters.
-                           * This is to avoid Windows/xNix path confusion.
+                           * Notice, we only accept a-z, 0-9, ., _ and - characters.
                            */
                           micro.widgets.wizard-form.value:hyper-ide-create-new-file-form
                           match:x:/@micro.widgets.wizard-form.value/*/name?value
-                            src:regex:/^[-_a-z0-9]+\.{1}[-_a-z0-9\.]+$/
+                            src:regex:/^[-_a-z0-9]+\.{1}[-_a-z0-9\.]+$/i
                           if:x:/@match/*?count
                             =:int:0
                             or:x:/@match/0?name
