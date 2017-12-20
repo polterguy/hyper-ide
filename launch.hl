@@ -9,6 +9,30 @@
 
 
 /*
+ * Checking if this is an upload request.
+ */
+if:x:/../*/url?value
+  =:/hyper-ide/upload
+
+  /*
+   * This is an upload request, making sure we let our upload file handle it,
+   * and returning early.
+   *
+   * Wrapping our attempt inside a try/catch, and returning any exception message
+   * to client.
+   */
+  try
+    micro.evaluate.file:@IDE/helpers/upload-files.hl
+  catch
+    p5.web.response.set-status-code:500
+    p5.web.echo:x:/@message?value
+  return
+
+
+
+
+
+/*
  * Figuring out skin to use, and other settings.
  */
 .defaults
@@ -20,7 +44,7 @@ select-data:x:/*/*/micro.codemirror.settings
 
 
 /*
- * Checking that Hyper IDE has not already been launched.
+ * Checking if Hyper IDE has already been launched, at which point we return early.
  */
 if
   fetch:x:/0/0?value
@@ -255,8 +279,6 @@ create-widget:hyper-ide-main-container
          */
         p5.web.widgets.find-first-like:hyper-ide-folder-tree-browser
           class:tree-selected
-        p5.web.send-javascript:@"p5.$('{0}').el.scrollIntoView();"
-          :x:/@p5.web.widgets.find-first-like/*/*?value
 
         /*
          * Returning true to caller, indicating that we had success in setting
@@ -906,6 +928,12 @@ create-widget:hyper-ide-main-container
               add:x:/../*/create-widgets
                 src:x:/@load-file/*/*
               create-widgets
+
+              /*
+               * Making sure we reset file/folder path header.
+               */
+              set-widget-property:hyper-ide-file-path-header
+                innerValue:
 
 
           oninit

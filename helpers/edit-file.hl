@@ -272,7 +272,8 @@ else
     add:x:/@.editor-instance
       src
         div
-          class:air-inner
+          class:micro-codemirror-wrapper air-inner
+          style:"border:solid 1px #e0e0e0;background:#ffffff;margin-top:-1px;position:relative;"
           .not-loaded
           widgets
             h3
@@ -885,8 +886,6 @@ create-widgets
          */
         p5.web.widgets.find-first-like:hyper-ide-folder-tree-browser
           class:tree-selected
-        p5.web.send-javascript:@"p5.$('{0}').el.scrollIntoView();"
-          :x:/@p5.web.widgets.find-first-like/*/*?value
 
   /*
    * Actual editor for file.
