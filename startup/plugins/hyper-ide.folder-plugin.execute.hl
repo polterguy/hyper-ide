@@ -132,7 +132,7 @@ create-event:hyper-ide.folder-plugins.execute
                            */
                           platform
                           if:x:/@platform?value
-                            =:MacOSX
+                            =:Unix
 
                             /*
                              * Replacing CR/LF before we save file.
