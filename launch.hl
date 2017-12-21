@@ -1,4 +1,4 @@
-﻿/*
+/*
  * File responsible for starting app.
  *
  * This file is evaluated when the user clicks the desktop icon.
@@ -106,6 +106,7 @@ p5.web.page.set-title:Hyper IDE
  */
 create-widget:hyper-ide-main-container
   class:container-fullscreen
+  style:"padding-top:0;"
 
   /*
    * Helper Ajax events, necessary to map keyboard shortcuts, among other things.
@@ -664,6 +665,7 @@ create-widget:hyper-ide-main-container
              * Wrapper for path of file object header.
              */
             div
+              style:"float:left;"
               widgets
                 div
                   style:"float:left;"
@@ -678,6 +680,7 @@ create-widget:hyper-ide-main-container
              * Contains settings and home button.
              */
             div:hyper-ide-toolbars
+              style:"float:right;"
               widgets
                 div
                   class:strip toolbar hyper-ide-toolbar

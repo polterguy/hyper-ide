@@ -1,4 +1,3 @@
-
 /* Making sure strip labels have uniform width */
 .strip > label:first-child {
     min-width:100px;
@@ -6,7 +5,7 @@
 
 /* Header displaying file/folder path */
 .hyper-ide-file-path {
-    margin-top:1rem;
+    margin-top:2rem;
     margin-bottom:0;
     color:#e0e0e0;
 }
@@ -16,6 +15,7 @@
     display:inline-block;
     margin-left:1rem;
     float:right;
+    margin-top:1rem;
 }
 
 /* Main content, minus toolbars that is */
