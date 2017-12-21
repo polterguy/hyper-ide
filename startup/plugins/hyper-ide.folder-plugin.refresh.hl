@@ -1,0 +1,27 @@
+/*
+ * Create our refresh folder plugin button.
+ */
+create-event:hyper-ide.folder-plugins.refresh
+  return
+    button
+      innerValue:@"<span class=""icon-spinner11""></span>"
+      style:"margin-bottom:0;"
+      title:Refresh folder
+      onclick
+
+        /*
+         * Retrieving current folder.
+         */
+        p5.web.widgets.find-first-ancestor:x:/../*/_event?value
+          .folder
+        get-widget-property:x:/-/*/*?value
+          .folder
+
+        /*
+         * Refreshing tree.
+         */
+        add:x:/../*/micro.widgets.tree.refresh-items/*/items
+          src:x:/@get-widget-property/*/*?value
+        micro.widgets.tree.refresh-items:hyper-ide-folder-tree-browser
+          force-expand:bool:true
+          items
