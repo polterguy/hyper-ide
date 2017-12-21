@@ -18,9 +18,17 @@ create-event:hyper-ide.folder-plugins.execute
           .folder
 
         /*
+         * Retrieving active code.
+         */
+        p5.web.session.get:hyper-ide.terminal-code
+        if:x:/@p5.web.session.get/*?value
+          eval-x:x:/../*/.code
+        .code:x:/@p5.web.session.get/*?value
+
+        /*
          * Opens a modal window, asking user for command(s) he wants to execute.
          */
-        eval-x:x:/+/**/.folder
+        eval-x:x:/+/**/.folder|/+/**/.code
         create-widgets
           micro.widgets.modal:hyper-ide-execute-modal
             widgets
@@ -99,6 +107,7 @@ create-event:hyper-ide.folder-plugins.execute
                 .data-field:code
                 auto-focus:true
                 mode:shell
+                value:x:/../*/.code?value
 
               div
                 class:right air-top
@@ -125,6 +134,13 @@ create-event:hyper-ide.folder-plugins.execute
                            * Retrieving script.
                            */
                           micro.form.serialize:hyper-ide-execute-modal
+
+                          /*
+                           * Saving current code in session, since it's highly likely that
+                           * user wants to execute similar code the next time he or she opens this window.
+                           */
+                          p5.web.session.set:hyper-ide.terminal-code
+                            src:x:/@micro.form.serialize/*/code?value
 
                           /*
                            * Checking platform, since we might need to convert
@@ -201,7 +217,8 @@ create-event:hyper-ide.folder-plugins.execute
                         onclick
 
                           /*
-                           * Simply closing modal window.
+                           * Simply closing modal window, making sure we save the active code
+                           * in our session at the same time.
                            */
                           delete-widget:hyper-ide-execute-modal
 
