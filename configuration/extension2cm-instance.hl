@@ -2,6 +2,7 @@
  * Maps file extensions to CodeMirror modes.
  */
 groovy:groovy
+go:go
 ini:properties
 properties:properties
 css:css

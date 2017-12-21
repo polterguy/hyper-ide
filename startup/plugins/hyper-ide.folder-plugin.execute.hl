@@ -22,8 +22,9 @@ create-event:hyper-ide.folder-plugins.execute
          */
         p5.web.session.get:hyper-ide.terminal-code
         if:x:/@p5.web.session.get/*?value
-          eval-x:x:/../*/.code
-        .code:x:/@p5.web.session.get/*?value
+          set:x:/../*/.code?value
+            src:x:/@p5.web.session.get/*?value
+        .code:
 
         /*
          * Opens a modal window, asking user for command(s) he wants to execute.
