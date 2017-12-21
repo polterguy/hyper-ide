@@ -132,7 +132,7 @@ create-event:hyper-ide.folder-plugins.execute
                            * Making sure we show obscurer, for then to invoke "real" implementation.
                            */
                           set-widget-property:hyper-ide-eval-shell-obscurer
-                            style:"display:block;"
+                            style:"display:block;position:absolute;"
                           p5.web.send-javascript:@"p5.$('hyper-ide-execute-shell-script-button').raise('.onclick');"
 
                         .onclick
