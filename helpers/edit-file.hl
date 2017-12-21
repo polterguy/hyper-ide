@@ -511,6 +511,15 @@ create-widgets
       hyper-ide.set-active-filename
 
         /*
+         * Checking if this is our active editor, and if not, returning early.
+         */
+        get-widget-property:x:/../*/_event?value
+          class
+        if:x:/@get-widget-property/*/*?value
+          ~:hide
+          return
+
+        /*
          * Updating [.file] attribute for widget.
          */
         set-widget-property:x:/../*/_event?value
@@ -864,6 +873,15 @@ create-widgets
       hyper-ide.set-active-filename
 
         /*
+         * Checking if this is our active file, and if not, returning early.
+         */
+        get-widget-property:x:/../*/_event?value
+          class
+        if:x:/@get-widget-property/*/*?value
+          !~:toggled
+          return
+
+        /*
          * Updating [.file] attribute for widget.
          */
         split:x:/../*/_arg?value
@@ -908,6 +926,15 @@ create-widgets
        * Invoked when for some reasons active file changes name.
        */
       hyper-ide.set-active-filename
+
+        /*
+         * Checking if this is our active editor, and if not, returning early.
+         */
+        get-widget-property:x:/../*/_event?value
+          class
+        if:x:/@get-widget-property/*/*?value
+          ~:hide
+          return
 
         /*
          * Updating [.file] attribute for widget.
