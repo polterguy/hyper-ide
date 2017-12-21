@@ -1,4 +1,3 @@
-
 /*
  * Create our beautify CSS plugin for editor.
  */
@@ -20,3 +19,9 @@ var res = cssbeautify(css);
 p5['{0}'].getDoc().setValue(res);
 "
           :x:/@hyper-ide.get-active-editor-id?value
+
+        /*
+         * giving user some feedback.
+         */
+        micro.windows.info:CSS was successfully beautified
+          class:micro-windows-info success
