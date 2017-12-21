@@ -52,20 +52,15 @@ it can look with a different theme than the default theme, if you don't like my 
 
 ![screenshot](media/screenshots/screenshot-secondary.png)
 
-## Installation
+## Installation (Source)
 
 If you want to use it locally, you'll need some sort of .Net/Mono runtime, e.g. Visual Studio, Mono Develop,
-or Xamarin (now Visual Studio for Mac), in addition to the following.
+or Xamarin (now Visual Studio for Mac), in addition to downloading 
+the [main Phosphorus Five source version](https://github.com/polterguy/phosphorusfive/releases/download/v5.8/source.zip).
 
-* [Phosphorus Five](https://github.com/polterguy/phosphorusfive)
-* [Micro](https://github.com/polterguy/micro)
+## Installation (Binaries on Linux)
 
-The easiest way to install Hyper IDE though, is to [install Phosphorus Five](https://github.com/polterguy/phosphorusfive/releases),
-for then to afterwards simply visit _"The Bazar"_ and install it through the Bazar. If you want a more 
-manual process, you'll need to unzip Hyper IDE's download into your _"modules"_ folder, which you can 
-find inside of your main Phosphorus Five download folder's _"core/p5.webapp"_ folder. Hyper IDE is
-a Phosphorus Five module, and will not work without Phosphorus Five. Makes sure your Hyper IDE's modules folder
-is called exactly _"/hyper-ide/"_.
+[Read more here](https://github.com/polterguy/phosphorusfive/releases).
 
 ## Roadmap
 
