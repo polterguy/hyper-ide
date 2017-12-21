@@ -32,6 +32,9 @@ create-event:hyper-ide.folder-plugins.execute
         create-widgets
           micro.widgets.modal:hyper-ide-execute-modal
             widgets
+              micro.widgets.obscurer:hyper-ide-eval-shell-obscurer
+                style:"display:none;"
+                message:Executing your script ...
               h3
                 innerValue:Shell script
                 oninit
@@ -120,10 +123,19 @@ create-event:hyper-ide.folder-plugins.execute
                       /*
                        * Execute button.
                        */
-                      button
+                      button:hyper-ide-execute-shell-script-button
                         innerValue:Execute
                         style:"margin-bottom:0;"
                         onclick
+
+                          /*
+                           * Making sure we show obscurer, for then to invoke "real" implementation.
+                           */
+                          set-widget-property:hyper-ide-eval-shell-obscurer
+                            style:"display:block;"
+                          p5.web.send-javascript:@"p5.$('hyper-ide-execute-shell-script-button').raise('.onclick');"
+
+                        .onclick
 
                           /*
                            * Forward evaluated above.
@@ -207,6 +219,12 @@ create-event:hyper-ide.folder-plugins.execute
                              * Deleting temporary file.
                              */
                             delete-file:~/temp/temp-bash.sh
+
+                            /*
+                             * Making sure we hide obscurer.
+                             */
+                            set-widget-property:hyper-ide-eval-shell-obscurer
+                              style:"display:none;"
 
                       /*
                        * Close window button.
