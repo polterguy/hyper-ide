@@ -670,7 +670,7 @@ create-widget:hyper-ide-main-container
                 div
                   style:"float:left;"
                   widgets
-                    h4:hyper-ide-file-path-header
+                    small:hyper-ide-file-path-header
                       innerValue:
                       class:hyper-ide-file-path
 
