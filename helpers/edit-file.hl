@@ -487,6 +487,34 @@ p5.web.widgets.get-children:hyper-ide-toolbars
 
 
 /*
+ * Helper JavaScript to make sure switching between tabs "feels" faster.
+ *
+ * Basically switches immediately, by updating CSS classes of active and to-become
+ * active editor, before invoking server-side method to do "hard work".
+ */
+p5.web.include-javascript:@"
+p5.hyper_ide_show_editor = function (ed) {
+  ed = p5.$(ed).el;
+  ed.className = 'toggled';
+  var all = document.querySelectorAll('[data-editor]');
+  var file = ed.getAttribute('data-activate');
+  var cur = document.querySelectorAll('[data-editor=""' + file + '""]')[0];
+  for(var idx = 0; idx < all.length; idx++) {{
+    if (all[idx].id == ed.id) {{
+      continue;
+    }}
+    all[idx].className = 'hyper-ide-codemirror-wrapper hide';
+  }}
+  cur.className = 'hyper-ide-codemirror-wrapper';
+  p5.$(ed.id).raise('.onclick');
+  return false;
+}"
+
+
+
+
+
+/*
  * Creating our widgets.
  *
  * We create one "tab control button", then we add one editor into "tab control editors",
@@ -849,7 +877,65 @@ create-widgets
     parent:hyper-ide-editor-tab-buttons
     class:hyper-ide-activate-tab-button toggled
     .activate:x:/../*/file?value
+    data-activate:x:/../*/file?value
     title:x:/../*/file?value
+    oninit
+
+      /*
+       * Making sure we wire up onclick eventhandler for widget.
+       */
+      set-widget-property:x:/../*/_event?value
+        onclick:@"return p5.hyper_ide_show_editor ('{0}');"
+          :x:/../*/_event?value
+
+    events
+
+
+      /*
+       * Invoked when for some reasons active file changes name.
+       */
+      hyper-ide.set-active-filename
+
+        /*
+         * Checking if this is our active file, and if not, returning early.
+         */
+        get-widget-property:x:/../*/_event?value
+          class
+        if:x:/@get-widget-property/*/*?value
+          !~:toggled
+          return
+
+        /*
+         * Updating [.file] attribute for widget.
+         */
+        split:x:/../*/_arg?value
+          =:/
+        set-widget-property:x:/../*/_event?value
+          .activate:x:/../*/_arg?value
+          data-value:x:/../*/_arg?value
+          innerValue:x:/@split/0/-?name
+          title:x:/../*/_arg?value
+
+    .onclick
+
+      /*
+       * Getting filename for editor.
+       */
+      get-widget-property:x:/../*/_event?value
+        .activate
+
+      /*
+       * Activating editor, and verifying invocation was a success.
+       */
+      hyper-ide.set-active-editor:x:/@get-widget-property/*/*?value
+      if:x:/-?value
+
+        /*
+         * Making sure we scroll tree view item into view.
+         */
+        p5.web.widgets.find-first-like:hyper-ide-folder-tree-browser
+          class:tree-selected
+
     widgets
       span
         innerValue:x:/../*/split/[0,1]/0/-?name
@@ -875,52 +961,6 @@ create-widgets
           hyper-ide.close-editors
             filter:x:/@get-widget-property/*/*?value
 
-    events
-
-      /*
-       * Invoked when for some reasons active file changes name.
-       */
-      hyper-ide.set-active-filename
-
-        /*
-         * Checking if this is our active file, and if not, returning early.
-         */
-        get-widget-property:x:/../*/_event?value
-          class
-        if:x:/@get-widget-property/*/*?value
-          !~:toggled
-          return
-
-        /*
-         * Updating [.file] attribute for widget.
-         */
-        split:x:/../*/_arg?value
-          =:/
-        set-widget-property:x:/../*/_event?value
-          .activate:x:/../*/_arg?value
-          innerValue:x:/@split/0/-?name
-          title:x:/../*/_arg?value
-
-    onclick
-
-      /*
-       * Getting filename for editor.
-       */
-      get-widget-property:x:/../*/_event?value
-        .activate
-
-      /*
-       * Activating editor, and verifying invocation was a success.
-       */
-      hyper-ide.set-active-editor:x:/@get-widget-property/*/*?value
-      if:x:/-?value
-
-        /*
-         * Making sure we scroll tree view item into view.
-         */
-        p5.web.widgets.find-first-like:hyper-ide-folder-tree-browser
-          class:tree-selected
-
   /*
    * Actual editor for file.
    *
@@ -930,6 +970,7 @@ create-widgets
     parent:hyper-ide-editor-tab-editors
     class:hyper-ide-codemirror-wrapper
     .editor:x:/../*/file?value
+    data-editor:x:/../*/file?value
     events
 
       /*

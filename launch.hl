@@ -312,7 +312,7 @@ create-widget:hyper-ide-main-container
         get-widget-property:x:/@p5.web.widgets.find/*/*?value
           class
         p5.web.widgets.ajax-events.raise:x:/@get-widget-property/*/*(/=~toggled)/./-?name
-          onclick
+          .onclick
 
         /*
          * Returning success to caller.
@@ -344,7 +344,7 @@ create-widget:hyper-ide-main-container
         get-widget-property:x:/@p5.web.widgets.find/*/*?value
           class
         p5.web.widgets.ajax-events.raise:x:/@get-widget-property/*/*(/=~toggled)/./+?name
-          onclick
+          .onclick
 
         /*
          * Returning success to caller.
