@@ -48,7 +48,7 @@ version I tend to mostly use.
 It consumes tiny amounts of bandwidth, if you consider what it actually does. Opening
 up Hyper IDE, and start editing a handful of code files, seldom downloads more than  ~0.5MB of data -
 Of course depending upon how large your code files are. Below is a screenshot of how 
-it can look with a different theme than the default theme, if you don't like my choice of colors.
+it looks like with multiple open tabs, and AutoCompletion suggest open (use CTRL+Space to display AutoCompletion).
 
 ![screenshot](media/screenshots/screenshot-secondary.png)
 
@@ -56,17 +56,20 @@ it can look with a different theme than the default theme, if you don't like my 
 
 If you want to use it locally, you'll need some sort of .Net/Mono runtime, e.g. Visual Studio, Mono Develop,
 or Xamarin (now Visual Studio for Mac), in addition to downloading 
-the [main Phosphorus Five source version](https://github.com/polterguy/phosphorusfive/releases/download/v5.8/source.zip).
+the [main Phosphorus Five source version](https://github.com/polterguy/phosphorusfive/releases).
 
 ## Installation (Binaries on Linux)
 
-[Read more here](https://github.com/polterguy/phosphorusfive/releases).
+[Read more here](https://github.com/polterguy/phosphorusfive/releases), but basically there's a shell script that
+automates the entire process of installing both Mono, Apache mod_mon, Phosphorus Five, and Hyper IDE
+on a Linux/Apache server.
 
 ## Roadmap
 
 * Backup of folders (downloading as ZIP files)
 * Template support (choosing from a pre-defined set of templates when creating new files, according to file type)
 * Even better plugin support, even though today's plugin support is actually fairly good
+* Optimisiation (for instance changing tabs is sluggish)
 
 ## Keyboard shortcuts
 
