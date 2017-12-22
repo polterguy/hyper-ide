@@ -705,6 +705,21 @@ create-widget:hyper-ide-main-container
                         micro.codemirror.settings
 
                     /*
+                     * Close all editors button.
+                     */
+                    button
+                      innerValue:@"<span class=""icon-cross""></span>"
+                      title:Close all editors
+                      style:"margin-bottom:0;"
+                      onclick
+
+                        /*
+                         * Making sure we close all editors.
+                         */
+                        hyper-ide.close-editors
+                          filter:/
+
+                    /*
                      * Home button, launches desktop (or default app).
                      */
                     button

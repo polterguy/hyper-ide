@@ -910,10 +910,12 @@ create-widgets
          */
         split:x:/../*/_arg?value
           =:/
+        p5.web.widgets.get-children:x:/../*/_event?value
+        set-widget-property:x:/-/*/0?value
+          innerValue:x:/@split/0/-?name
         set-widget-property:x:/../*/_event?value
           .activate:x:/../*/_arg?value
           data-value:x:/../*/_arg?value
-          innerValue:x:/@split/0/-?name
           title:x:/../*/_arg?value
 
     .onclick
@@ -953,6 +955,7 @@ create-widgets
           /*
            * Closing active editor.
            */
+          p5.web.widgets.get-parent:x:/../*/_event?value
           get-widget-property:x:/-/*/*?value
             .activate
           eval-x:x:/+/*
