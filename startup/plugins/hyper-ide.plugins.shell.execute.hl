@@ -33,7 +33,7 @@ create-event:hyper-ide.plugins.shell.execute
           /*
            * Replacing CR/LF before we save file.
            */
-          normalize-string:x:/@micro.form.serialize/*/code?value
+          normalize-string:x:/@hyper-ide.get-active-editor-code?value
           save-file:~/temp/temp-bash.sh
             src:x:/@normalize-string?value
 
