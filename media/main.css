@@ -6,9 +6,10 @@
 /* Header displaying file/folder path */
 .hyper-ide-file-path {
     display:inline-block;
-    margin-top:2rem;
-    margin-bottom:0;
+    margin-top:3rem;
+    margin-bottom:-1rem;
     color:#e0e0e0;
+    position:absolute;
 }
 
 /* All Hyper IDE toolbars */
@@ -16,7 +17,8 @@
     display:inline-block;
     margin-left:1rem;
     float:right;
-    margin-top:1rem;
+    margin-top:.5rem;
+    margin-bottom:.5rem;
 }
 
 /* Main content, minus toolbars that is */
@@ -70,7 +72,8 @@
     border-bottom-left-radius: 0;
     border-bottom-right-radius: 0;
     border-bottom: none;
-    max-width: 150px;
+    width: 130px;
+    text-align:left;
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
