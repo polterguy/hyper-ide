@@ -411,6 +411,78 @@ create-widget:hyper-ide-main-container
 
 
     /*
+     * Returns code for specified [_arg] editor.
+     */
+    hyper-ide.get-editor-code
+
+      /*
+       * Sanity check.
+       */
+      micro.lambda.contract.min:x:/..
+        _arg:string
+
+      /*
+       * Finding editor's wrapper widget's textarea, and returning its value.
+       */
+      p5.web.widgets.find-first:hyper-ide-editor-tab-editors
+        .editor:x:/../*/_arg?value
+      p5.web.widgets.find-first:x:/-/*/*?value
+        element:textarea
+      get-widget-property:x:/-/*/*?value
+        value
+      return:x:/-/*/*?value
+
+
+    /*
+     * Sets the code for specified [_arg] editor.
+     */
+    hyper-ide.set-editor-code
+
+      /*
+       * Sanity check.
+       */
+      micro.lambda.contract.min:x:/..
+        _arg:string
+        content:string
+
+      /*
+       * Finding editor's wrapper widget's textarea, and setting its value.
+       */
+      p5.web.widgets.find-first:hyper-ide-editor-tab-editors
+        .editor:x:/../*/_arg?value
+      p5.web.widgets.find-first:x:/-/*/*?value
+        element:textarea
+      set-widget-property:x:/-/*/*?value
+        value:x:/../*/content?value
+
+
+    /*
+     * Saves specified [_arg] editor's content.
+     */
+    hyper-ide.save-editor
+
+      /*
+       * Sanity check.
+       */
+      micro.lambda.contract.min:x:/..
+        _arg:string
+
+      /*
+       * Getting editor's content, saving it, and updating its dirty flag.
+       */
+      hyper-ide.get-editor-code:x:/../*/_arg?value
+      save-file:x:/../*/_arg?value
+        src:x:/@hyper-ide.get-editor-code?value
+      p5.web.widgets.find-first:hyper-ide-editor-tab-editors
+        .editor:x:/../*/_arg?value
+      p5.web.widgets.find-first:x:/-/*/*?value
+        element:input
+        type:hidden
+      set-widget-property:x:/-/*/*?value
+        value:clean
+
+
+    /*
      * Saves active editor's content.
      */
     hyper-ide.save-active-editor
@@ -426,15 +498,9 @@ create-widget:hyper-ide-main-container
       if:x:/@hyper-ide.get-active-editor?value
 
         /*
-         * Retrieving editor's content.
+         * Saving editor, and providing some feedback to user.
          */
-        hyper-ide.get-active-editor-code
-
-        /*
-         * Saving file and providing some feedback to user.
-         */
-        save-file:x:/@hyper-ide.get-active-editor?value
-          src:x:/@hyper-ide.get-active-editor-code?value
+        hyper-ide.save-editor:x:/@hyper-ide.get-active-editor?value
         micro.windows.info:File was saved
           class:micro-windows-info success
 
