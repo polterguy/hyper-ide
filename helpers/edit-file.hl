@@ -842,20 +842,6 @@ create-widgets
           micro.css.toggle:hyper-ide-file-editor
             class:col-70 col
 
-      /*
-       * Close editor button.
-       */
-      button
-        innerValue:@"<span class=""icon-cross""></span>"
-        style:"margin-bottom:0;"
-        title:Close editor, keyboard shortcut Alt+X
-        onclick
-
-          /*
-           * Closing active editor
-           */
-          hyper-ide.close-active-editor
-
   /*
    * Activate tab/editor button.
    */
@@ -863,8 +849,32 @@ create-widgets
     parent:hyper-ide-editor-tab-buttons
     class:hyper-ide-activate-tab-button toggled
     .activate:x:/../*/file?value
-    innerValue:x:/../*/split/[0,1]/0/-?name
     title:x:/../*/file?value
+    widgets
+      span
+        innerValue:x:/../*/split/[0,1]/0/-?name
+
+      /*
+       * Close editor button.
+       */
+      literal
+        element:span
+        class:hyper-ide-close icon-cross
+        title:Close editor, keyboard shortcut Alt+X
+        role:button
+        onclick
+
+          /*
+           * Closing active editor.
+           */
+          p5.web.widgets.find-first-ancestor:x:/../*/_event?value
+            .activate
+          get-widget-property:x:/-/*/*?value
+            .activate
+          eval-x:x:/+/*
+          hyper-ide.close-editors
+            filter:x:/@get-widget-property/*/*?value
+
     events
 
       /*

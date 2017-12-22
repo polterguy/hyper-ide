@@ -69,7 +69,7 @@
     border-bottom-left-radius: 0;
     border-bottom-right-radius: 0;
     border-bottom: none;
-    max-width: 120px;
+    max-width: 150px;
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
@@ -81,6 +81,7 @@
     background:none;
     background-color: #fefefe;
     font-size:.7rem;
+    padding-right:30px;
 }
 .hyper-ide-editor-tab-buttons > .toggled {
     background:none;
@@ -101,6 +102,22 @@
 .hyper-ide-editor-tab-buttons > button.toggled:focus {
     background:none;
     background-color:#ffffff;
+}
+.hyper-ide-editor-tab-buttons > button > span.hyper-ide-close {
+    position:absolute;
+    font-size:.6rem;
+    top:4px;
+    right:4px;
+    color:#c0c0c0;
+    padding:3px;
+    border-radius:3px;
+    border:solid 1px rgba(0,0,0,.05);
+}
+.hyper-ide-editor-tab-buttons > button > span.hyper-ide-close:hover,
+.hyper-ide-editor-tab-buttons > button > span.hyper-ide-close:active,
+.hyper-ide-editor-tab-buttons > button > span.hyper-ide-close:focus {
+    color:#a0a0a0;
+    background-color:#e0e0e0;
 }
 
 /* "Tab control" content wrapper  */

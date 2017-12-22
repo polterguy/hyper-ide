@@ -106,7 +106,7 @@ eval:x:/@.plugins
  *
  * Notice, the above [eval] will return the results of all plugin active events.
  */
-insert-before:x:/../*/create-widget/*/widgets/0/-
+add:x:/../*/create-widget/*/widgets
   src:x:/@eval/*
 
 
@@ -467,86 +467,6 @@ create-widget:hyper-ide-active-file-object-toolbar
                           delete-widget:hyper-ide-confirm-rename-folder
 
     /*
-     * Upload file button.
-     */
-    button:hyper-ide-upload-file
-      innerValue:@"<span class=""icon-upload2""></span>"
-      title:Upload a file
-      style:"margin-bottom:0;"
-      onclick:@"p5.$('hyper-ide-upload-file-input').el.click();return false;"
-
-    /*
-     * Hidden upload file dialog.
-     */
-    input:hyper-ide-upload-file-input
-      type:file
-      multiple
-      style:@"opacity:0 !important;position:absolute !important;width:0;height:0;z-index:-1;top:-5000px;left:0;"
-      onchange:@"p5.hyper_ide_upload_files(this.files);"
-      .onrefresh
-
-        /*
-         * Forward evaluated above.
-         */
-        .folder-name:x:/../*/folder?value
-
-        /*
-         * Refresh our destination folder.
-         */
-        add:x:/../*/micro.widgets.tree.refresh-items/*/items
-          src:x:/@.folder-name?value
-        micro.widgets.tree.refresh-items:hyper-ide-folder-tree-browser
-          force-expand:bool:true
-          items
-
-        /*
-         * Giving user some feedback
-         */
-        p5.web.session.get:hyper-ide.uploaded-files-count
-        micro.windows.info:{0} file(s) uploaded successfully
-          :x:/@p5.web.session.get/*?value
-          class:micro-windows-info success
-
-      oninit
-
-        /*
-         * Forward evaluated above.
-         */
-        .folder-name:x:/../*/folder?value
-
-        /*
-         * Making sure we include JavaScript necessary to upload a file on page,
-         * but in such a way that it's only included once, since it's the same 
-         * JavaScript, for each instance of our upload dialog implementation.
-         */
-        p5.web.include-javascript:@"p5.hyper_ide_upload_files = function (files) {
-    var xhr = new XMLHttpRequest();
-    xhr.onreadystatechange = function() {
-        if (this.readyState == XMLHttpRequest.DONE) {
-            if (this.status == 200) {
-                p5.$('hyper-ide-upload-file-input').raise('.onrefresh');
-            } else if (this.status == 500) {
-                alert(this.responseText);
-            }
-        }
-    };
-    xhr.open('POST', '/hyper-ide/upload', true);
-    var fd = new FormData();
-    fd.append('folder', p5.hyper_ide_upload_files_folder);
-    for (var i = 0; i < files.length; i++) {
-        fd.append('file' + i, files[i]);
-    }
-    xhr.send(fd);
-}"
-
-        /*
-         * Then making sure we send the JavaScript necessary to track our 
-         * destination folder.
-         */
-        p5.web.send-javascript:@"p5.hyper_ide_upload_files_folder = '{0}';"
-          :x:/@.folder-name?value
-
-    /*
      * Delete folder button.
      */
     button:hyper-ide-delete-folder
@@ -642,3 +562,83 @@ and close all editors that are editing files inside of your folder. I need you t
                            * Simply deleting modal widget.
                            */
                           delete-widget:hyper-ide-confirm-delete-folder
+
+    /*
+     * Upload file button.
+     */
+    button:hyper-ide-upload-file
+      innerValue:@"<span class=""icon-upload2""></span>"
+      title:Upload a file
+      style:"margin-bottom:0;"
+      onclick:@"p5.$('hyper-ide-upload-file-input').el.click();return false;"
+
+    /*
+     * Hidden upload file dialog.
+     */
+    input:hyper-ide-upload-file-input
+      type:file
+      multiple
+      style:@"opacity:0 !important;position:absolute !important;width:0;height:0;z-index:-1;top:-5000px;left:0;"
+      onchange:@"p5.hyper_ide_upload_files(this.files);"
+      .onrefresh
+
+        /*
+         * Forward evaluated above.
+         */
+        .folder-name:x:/../*/folder?value
+
+        /*
+         * Refresh our destination folder.
+         */
+        add:x:/../*/micro.widgets.tree.refresh-items/*/items
+          src:x:/@.folder-name?value
+        micro.widgets.tree.refresh-items:hyper-ide-folder-tree-browser
+          force-expand:bool:true
+          items
+
+        /*
+         * Giving user some feedback
+         */
+        p5.web.session.get:hyper-ide.uploaded-files-count
+        micro.windows.info:{0} file(s) uploaded successfully
+          :x:/@p5.web.session.get/*?value
+          class:micro-windows-info success
+
+      oninit
+
+        /*
+         * Forward evaluated above.
+         */
+        .folder-name:x:/../*/folder?value
+
+        /*
+         * Making sure we include JavaScript necessary to upload a file on page,
+         * but in such a way that it's only included once, since it's the same 
+         * JavaScript, for each instance of our upload dialog implementation.
+         */
+        p5.web.include-javascript:@"p5.hyper_ide_upload_files = function (files) {
+    var xhr = new XMLHttpRequest();
+    xhr.onreadystatechange = function() {
+        if (this.readyState == XMLHttpRequest.DONE) {
+            if (this.status == 200) {
+                p5.$('hyper-ide-upload-file-input').raise('.onrefresh');
+            } else if (this.status == 500) {
+                alert(this.responseText);
+            }
+        }
+    };
+    xhr.open('POST', '/hyper-ide/upload', true);
+    var fd = new FormData();
+    fd.append('folder', p5.hyper_ide_upload_files_folder);
+    for (var i = 0; i < files.length; i++) {
+        fd.append('file' + i, files[i]);
+    }
+    xhr.send(fd);
+}"
+
+        /*
+         * Then making sure we send the JavaScript necessary to track our 
+         * destination folder.
+         */
+        p5.web.send-javascript:@"p5.hyper_ide_upload_files_folder = '{0}';"
+          :x:/@.folder-name?value
