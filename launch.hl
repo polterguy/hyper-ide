@@ -11,8 +11,12 @@
 /*
  * Checking if this is an upload request.
  */
+p5.io.unroll-path:@IDE/
+split:x:/-?value
+  =:/
 if:x:/../*/url?value
-  =:/hyper-ide/upload
+  =:/{0}/upload
+    :x:/@split/0/-?name
 
   /*
    * This is an upload request, making sure we let our upload file handle it,
