@@ -2,6 +2,9 @@
 .strip > label:first-child {
     min-width:100px;
 }
+.CodeMirror {
+    border-radius:var(--border-radius);
+}
 
 /* Header displaying file/folder path */
 .hyper-ide-file-path {
@@ -86,6 +89,7 @@
     background-color: #fefefe;
     font-size:.7rem;
     padding-right:30px;
+    height:28px;
 }
 .hyper-ide-editor-tab-buttons > .toggled {
     background:none;
