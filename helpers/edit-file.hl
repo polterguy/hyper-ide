@@ -860,7 +860,7 @@ create-widgets
       literal
         element:span
         class:hyper-ide-close icon-cross
-        title:Close editor, keyboard shortcut Alt+X
+        title:Close editor
         role:button
         onclick
 
