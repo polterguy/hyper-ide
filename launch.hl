@@ -74,18 +74,17 @@ p5.web.include-css-file:@IDE/media/main.css
 
 
 /*
- * Verifying user is logged in as root, and if not, 
+ * Verifying user is logged in, and if not, 
  * forcing the user to login before we proceed.
  */
 whoami
-if:x:/@whoami/*/role?value
-  !=:root
+if:x:/@whoami/*/default?value
 
   /*
    * User is not logged in as root.
    */
   p5.core.login
-    message:You'll need to login with a root account to access this module
+    message:You'll need to login to access this module
 
   /*
    * Returning early to abort evaluating the rest of our file.
@@ -493,26 +492,39 @@ create-widget:hyper-ide-main-container
     hyper-ide.editors.save-active
 
       /*
-       * Retriving filename.
+       * Avoiding having exceptions leave event.
        */
-      hyper-ide.editors.get-active
-
-      /*
-       * Checking if above invocation returned something.
-       */
-      if:x:/@hyper-ide.editors.get-active?value
+      try
 
         /*
-         * Saving editor, and providing some feedback to user.
+         * Retriving filename.
          */
-        hyper-ide.editors.save:x:/@hyper-ide.editors.get-active?value
-        micro.windows.info:File was saved
-          class:micro-windows-info success
+        hyper-ide.editors.get-active
 
         /*
-         * Returning success to caller.
+         * Checking if above invocation returned something.
          */
-        return:bool:true
+        if:x:/@hyper-ide.editors.get-active?value
+
+          /*
+           * Saving editor, and providing some feedback to user.
+           */
+          hyper-ide.editors.save:x:/@hyper-ide.editors.get-active?value
+          micro.windows.info:File was saved
+            class:micro-windows-info success
+
+          /*
+           * Returning success to caller.
+           */
+          return:bool:true
+
+      catch
+
+        /*
+         * Displaying a friendly message to user.
+         */
+        micro.windows.info:You don't have permissions to modify that file
+          class:micro-windows-info warning
 
 
     /*
