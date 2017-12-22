@@ -1,4 +1,4 @@
-/*
+﻿/*
  * Create our execute Hyperlambda file plugin button for editor.
  */
 create-event:hyper-ide.plugins.hyperlambda.execute
@@ -12,13 +12,13 @@ create-event:hyper-ide.plugins.hyperlambda.execute
         /*
          * Retrieves editor's content.
          */
-        hyper-ide.get-active-editor-code
-        hyper-ide.get-active-editor
+        hyper-ide.editors.get-active-code
+        hyper-ide.editors.get-active
 
         /*
          * Transforming Hyperlambda to lambda, and simply evaluating it.
          */
-        hyper2lambda:x:/@hyper-ide.get-active-editor-code?value
+        hyper2lambda:x:/@hyper-ide.editors.get-active-code?value
         set:x:/-?name
-          src:x:/@hyper-ide.get-active-editor?value
+          src:x:/@hyper-ide.editors.get-active?value
         eval:x:/-2

@@ -116,28 +116,28 @@ create-widget:hyper-ide-main-container
     /*
      * Saving active editor's content.
      */
-    hyper-ide.save-active-editor
+    hyper-ide.editors.save-active
 
   .onclose
 
     /*
      * Closing active editor.
      */
-    hyper-ide.close-active-editor
+    hyper-ide.editors.close-active
 
   .onprevious
 
     /*
      * Activating "previous editor" in chain of open editors.
      */
-    hyper-ide.activate-previous-editor
+    hyper-ide.editors.activate-previous
 
   .onnext
 
     /*
      * Activating "next editor" in chain of open editors.
      */
-    hyper-ide.activate-next-editor
+    hyper-ide.editors.activate-next
 
   events
 
@@ -165,7 +165,7 @@ create-widget:hyper-ide-main-container
     /*
      * Returns file paths for all open editors.
      */
-    hyper-ide.get-open-editors
+    hyper-ide.editors.get-open
 
       /*
        * Finding all activate buttons for all editors, and returning their filenames.
@@ -188,7 +188,7 @@ create-widget:hyper-ide-main-container
     /*
      * Returns ID for active editor, if any.
      */
-    hyper-ide.get-active-editor-id
+    hyper-ide.editors.get-active-id
 
       /*
        * Finding visible editor.
@@ -220,7 +220,7 @@ create-widget:hyper-ide-main-container
     /*
      * Returns file path for active editor, if any.
      */
-    hyper-ide.get-active-editor
+    hyper-ide.editors.get-active
 
       /*
        * Finding visible editor.
@@ -254,14 +254,14 @@ create-widget:hyper-ide-main-container
      *
      * Pass in [_arg] being filename of editor to activate.
      */
-    hyper-ide.set-active-editor
+    hyper-ide.editors.set-active
 
       /*
        * Finding all open editors, and making sire the editor caller is trying
        * to activate, actually exists, and is open.
        */
-      hyper-ide.get-open-editors
-      if:x:@"/@hyper-ide.get-open-editors/*/""{0}"""
+      hyper-ide.editors.get-open
+      if:x:@"/@hyper-ide.editors.get-open/*/""{0}"""
         :x:/../*/_arg?value
 
         /*
@@ -291,7 +291,7 @@ create-widget:hyper-ide-main-container
     /*
      * Activating previous editor in chain.
      */
-    hyper-ide.activate-previous-editor
+    hyper-ide.editors.activate-previous
 
       /*
        * Finding all "activate buttons".
@@ -323,7 +323,7 @@ create-widget:hyper-ide-main-container
     /*
      * Activating next editor in chain.
      */
-    hyper-ide.activate-next-editor
+    hyper-ide.editors.activate-next
 
       /*
        * Finding all "activate buttons".
@@ -355,22 +355,22 @@ create-widget:hyper-ide-main-container
     /*
      * Returns code for currently active editor.
      */
-    hyper-ide.get-active-editor-code
+    hyper-ide.editors.get-active-code
 
       /*
        * Finding textarea and returning its innerValue.
        */
-      hyper-ide.get-active-editor-id
+      hyper-ide.editors.get-active-id
 
       /*
        * Checking if above invocation returned anything.
        */
-      if:x:/@hyper-ide.get-active-editor-id?value
+      if:x:/@hyper-ide.editors.get-active-id?value
 
         /*
          * Retrieves active editor's code, and returning it to caller.
          */
-        get-widget-property:x:/@hyper-ide.get-active-editor-id?value
+        get-widget-property:x:/@hyper-ide.editors.get-active-id?value
           value
         return:x:/@get-widget-property/*/*?value
 
@@ -378,31 +378,31 @@ create-widget:hyper-ide-main-container
     /*
      * Sets code for currently active editor.
      */
-    hyper-ide.set-active-editor-code
+    hyper-ide.editors.set-active-code
 
       /*
        * First finding active editor's textarea, and updating it, in case
        * other parts of our code tries to retrieve it during the current request.
        */
-      hyper-ide.get-active-editor-id
+      hyper-ide.editors.get-active-id
 
       /*
        * Checking if above invocation returned nothing, at which point we
        * return immediately.
        */
-      if:x:/@hyper-ide.get-active-editor-id?value
+      if:x:/@hyper-ide.editors.get-active-id?value
 
         /*
          * Setting active editor's content to specified value.
          */
-        set-widget-property:x:/@hyper-ide.get-active-editor-id?value
+        set-widget-property:x:/@hyper-ide.editors.get-active-id?value
           value:x:/../*/_arg?value
 
         /*
          * Updating value of CodeMirror instance on client side.
          */
         p5.web.send-javascript:@"p5['{0}'].getDoc().setValue(p5.$('{0}').el.value);"
-          :x:/@hyper-ide.get-active-editor-id?value
+          :x:/@hyper-ide.editors.get-active-id?value
 
         /*
          * Returning success to caller.
@@ -413,7 +413,7 @@ create-widget:hyper-ide-main-container
     /*
      * Returns code for specified [_arg] editor.
      */
-    hyper-ide.get-editor-code
+    hyper-ide.editors.get-code
 
       /*
        * Sanity check.
@@ -422,7 +422,7 @@ create-widget:hyper-ide-main-container
         _arg:string
 
       /*
-       * Finding editor's wrapper widget's textarea, and returning its value.
+       * Finding editor's textarea, and returning its value.
        */
       p5.web.widgets.find-first:hyper-ide-editor-tab-editors
         .editor:x:/../*/_arg?value
@@ -435,8 +435,9 @@ create-widget:hyper-ide-main-container
 
     /*
      * Sets the code for specified [_arg] editor.
+     * Pass in new code as [content].
      */
-    hyper-ide.set-editor-code
+    hyper-ide.editors.set-code
 
       /*
        * Sanity check.
@@ -459,7 +460,7 @@ create-widget:hyper-ide-main-container
     /*
      * Saves specified [_arg] editor's content.
      */
-    hyper-ide.save-editor
+    hyper-ide.editors.save
 
       /*
        * Sanity check.
@@ -468,11 +469,11 @@ create-widget:hyper-ide-main-container
         _arg:string
 
       /*
-       * Getting editor's content, saving it, and updating its dirty flag.
+       * Getting editor's content, saving it, and resetting its dirty flag.
        */
-      hyper-ide.get-editor-code:x:/../*/_arg?value
+      hyper-ide.editors.get-code:x:/../*/_arg?value
       save-file:x:/../*/_arg?value
-        src:x:/@hyper-ide.get-editor-code?value
+        src:x:/@hyper-ide.editors.get-code?value
       p5.web.widgets.find-first:hyper-ide-editor-tab-editors
         .editor:x:/../*/_arg?value
       p5.web.widgets.find-first:x:/-/*/*?value
@@ -485,22 +486,22 @@ create-widget:hyper-ide-main-container
     /*
      * Saves active editor's content.
      */
-    hyper-ide.save-active-editor
+    hyper-ide.editors.save-active
 
       /*
        * Retriving filename.
        */
-      hyper-ide.get-active-editor
+      hyper-ide.editors.get-active
 
       /*
        * Checking if above invocation returned something.
        */
-      if:x:/@hyper-ide.get-active-editor?value
+      if:x:/@hyper-ide.editors.get-active?value
 
         /*
          * Saving editor, and providing some feedback to user.
          */
-        hyper-ide.save-editor:x:/@hyper-ide.get-active-editor?value
+        hyper-ide.editors.save:x:/@hyper-ide.editors.get-active?value
         micro.windows.info:File was saved
           class:micro-windows-info success
 
@@ -511,14 +512,41 @@ create-widget:hyper-ide-main-container
 
 
     /*
+     * Returns true if current editor is dirty.
+     */
+    hyper-ide.editors.is-dirty
+
+      /*
+       * Sanity check.
+       */
+      micro.lambda.contract.min:x:/..
+        _arg:string
+
+      /*
+       * Finding hidden field, and returning true if its value is "dirty".
+       */
+      p5.web.widgets.find-first:hyper-ide-editor-tab-editors
+        .editor:x:/../*/_arg?value
+      p5.web.widgets.find-first:x:/-/*/*?value
+        element:input
+        type:hidden
+      get-widget-property:x:/-/*/*?value
+        value
+      if:x:/-/*/*?value
+        =:dirty
+        return:bool:true
+      return:bool:false
+
+
+    /*
      * Close active editor.
      */
-    hyper-ide.close-active-editor
+    hyper-ide.editors.close-active
 
       /*
        * Retrieving active editor, and closing it.
        */
-      hyper-ide.get-active-editor
+      hyper-ide.editors.get-active
       if:x:/-?value
         not
         return
@@ -528,8 +556,8 @@ create-widget:hyper-ide-main-container
        * [exact] to make sure only active editor is closed.
        */
       eval-x:x:/+/*
-      hyper-ide.close-editors
-        filter:x:/@hyper-ide.get-active-editor?value
+      hyper-ide.editors.close
+        filter:x:/@hyper-ide.editors.get-active?value
         exact:bool:true
 
 
@@ -538,11 +566,12 @@ create-widget:hyper-ide-main-container
      *
      * Will close all editors that have filenames starting with the specified [filter] path.
      * If [exact] is boolean "true", it will only delete the editor with the exact name of [filter].
+     * Pass in [force] to close editor(s), even if they are "dirty" (having unsaved content).
      *
      * Useful for closing multiple editors, such as when a folder is deleted or something, in addition
      * to (of course) closing only a single editor (by setting exact to true).
      */
-    hyper-ide.close-editors
+    hyper-ide.editors.close
 
       /*
        * Sanity checking arguments.
@@ -551,13 +580,14 @@ create-widget:hyper-ide-main-container
         filter:string
       micro.lambda.contract.optional:x:/..
         exact:bool
+        force:bool
 
       /*
        * Retrieving all open editors, and checking that there actually are any
        * open editors, and if not, returning early since there's nothing to do.
        */
-      hyper-ide.get-open-editors
-      if:x:/@hyper-ide.get-open-editors/*?count
+      hyper-ide.editors.get-open
+      if:x:/@hyper-ide.editors.get-open/*?count
         =:int:0
 
         /*
@@ -570,12 +600,12 @@ create-widget:hyper-ide-main-container
        * not during lambda.
        */
       .active-deleted:bool:false
-      hyper-ide.get-active-editor
+      hyper-ide.editors.get-active
 
       /*
        * Iterating through all open editors.
        */
-      for-each:x:/@hyper-ide.get-open-editors/*
+      for-each:x:/@hyper-ide.editors.get-open/*
 
         /*
          * Checking if currently iterated editor is a match for our [filter] condition.
@@ -600,31 +630,120 @@ create-widget:hyper-ide-main-container
           /*
            * Current editor is a match, making sure we delete it.
            *
-           * First its activate button.
+           * Finding the actual editor first.
            */
-          p5.web.widgets.find:hyper-ide-editor-tab-buttons
+          p5.web.widgets.find-first:hyper-ide-editor-tab-editors
+            .editor:x:/@_dp/#?name
+
+          /*
+           * Checking if it is dirty.
+           */
+          hyper-ide.editors.is-dirty:x:/@_dp/#?name
+          if:x:/../*/force?value
+            !=:bool:true
+            and
+              hyper-ide.editors.is-dirty:x:/@_dp/#?name
+
+            /*
+             * Editor is dirty, and [force] was not set to true, hence asking user to
+             * confirm that he wants to actually close the editor, giving him the
+             * option of saving its content first.
+             */
+            eval-x:x:/+/*/*/*/p/*/innerValue|/+/**(/.filter|/.file)
+            create-widgets
+              micro.widgets.modal:hyper-ide-unsaved-changes-modal
+                widgets
+                  h3
+                    innerValue:Unsaved content
+                  p
+                    innerValue:<code>{0}</code> contains unsaved data. Do you wish to save it before closing your editor?
+                      :x:/@_dp/#?name
+                  div
+                    class:right
+                    widgets
+                      div
+                        class:strip
+                        style:"display:inline-block;"
+                        widgets
+                          button
+                            innerValue:Yes
+                            style:"margin-bottom:0;"
+                            oninit
+
+                              /*
+                               * Making sure our "Yes" button gets initial focus.
+                               */
+                              micro.page.set-focus:x:/../*/_event?value
+
+                            onclick
+
+                              /*
+                               * Forward evaluated above.
+                               * Saves given editor, and reinvokes self.
+                               */
+                              .file:x:/@_dp/#?name
+                              .filter:x:/../*/filter?value
+                              hyper-ide.editors.save:x:/@.file?value
+                              eval-x:x:/+/*
+                              hyper-ide.editors.close
+                                filter:x:/@.filter?value
+
+                              /*
+                               * Deleting modal widget, and giving user some feedback.
+                               */
+                              delete-widget:hyper-ide-unsaved-changes-modal
+                              micro.windows.info:File successfully saved
+                                class:micro-windows-info success
+
+                          button
+                            innerValue:No
+                            style:"margin-bottom:0;"
+                            onclick
+
+                              /*
+                               * Forward evaluated above.
+                               * Reinvokes self with the [force] flag.
+                               */
+                              .filter:x:/../*/filter?value
+                              eval-x:x:/+/*
+                              hyper-ide.editors.close
+                                filter:x:/@.filter?value
+                                force:bool:true
+
+                              /*
+                               * Deleting modal widget.
+                               */
+                              delete-widget:hyper-ide-unsaved-changes-modal
+
+            /*
+             * Returning early to avoid evaluation of the rest of our lambda.
+             */
+            return
+
+          /*
+           * Deleting actual editor.
+           */
+          delete-widget:x:/@p5.web.widgets.find-first/*/*?value
+
+          /*
+           * Then its activate button.
+           */
+          p5.web.widgets.find-first:hyper-ide-editor-tab-buttons
             .activate:x:/@_dp/#?name
-          delete-widget:x:/-/*/*?value
+          delete-widget:x:/@p5.web.widgets.find-first/*/*?value
 
           /*
            * Then its toolbar.
            */
-          p5.web.widgets.find:hyper-ide-toolbars
+          p5.web.widgets.find-first:hyper-ide-toolbars
             .toolbar:x:/@_dp/#?name
-          delete-widget:x:/-/*/*?value
-
-          /*
-           * Then its actual editor.
-           */
-          p5.web.widgets.find:hyper-ide-editor-tab-editors
-            .editor:x:/@_dp/#?name
-          delete-widget:x:/-/*/*?value
+          delete-widget:x:/@p5.web.widgets.find-first/*/*?value
 
           /*
            * Checking if currently closed editor was the active editor.
            */
           if:x:/@_dp/#?name
-            =:x:/@hyper-ide.get-active-editor?value
+            =:x:/@hyper-ide.editors.get-active?value
 
             /*
              * Tracking the fact that our active editor was closed.
@@ -670,13 +789,13 @@ create-widget:hyper-ide-main-container
         /*
          * Checking if there are anymore editors left.
          */
-        if:x:/@hyper-ide.get-open-editors/*?count
+        if:x:/@hyper-ide.editors.get-open/*?count
           >:int:0
 
           /*
            * Setting the first available editor as our active editor.
            */
-          hyper-ide.set-active-editor::x:/@hyper-ide.get-open-editors/0?name
+          hyper-ide.editors.set-active::x:/@hyper-ide.editors.get-open/0?name
 
         else
 
@@ -700,7 +819,7 @@ create-widget:hyper-ide-main-container
           micro.css.add:hyper-ide-file-editor
             class:col-70
 
-      else-if:x:/@hyper-ide.get-open-editors/*?count
+      else-if:x:/@hyper-ide.editors.get-open/*?count
         >:int:0
 
         /*
@@ -708,7 +827,7 @@ create-widget:hyper-ide-main-container
          * need to make sure our active editor becomes selected in our tree, due
          * to what occurs when deletion of a folder occurs, etc.
          */
-        hyper-ide.set-active-editor:@hyper-ide.get-open-editors/0?name
+        hyper-ide.editors.set-active:@hyper-ide.editors.get-open/0?name
 
 
   oninit
@@ -782,7 +901,7 @@ create-widget:hyper-ide-main-container
                         /*
                          * Making sure we close all editors.
                          */
-                        hyper-ide.close-editors
+                        hyper-ide.editors.close
                           filter:/
 
                     /*

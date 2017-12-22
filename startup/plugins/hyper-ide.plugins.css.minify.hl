@@ -1,4 +1,4 @@
-
+﻿
 /*
  * Create our minify CSS plugin for editor.
  */
@@ -17,9 +17,9 @@ create-event:hyper-ide.plugins.css.minify
          * Notice, we also calculate length of both original version and minified version,
          * to give user some feedback about how many percent of the code was eliminated.
          */
-        hyper-ide.get-active-editor-code
-        length:x:/@hyper-ide.get-active-editor-code?value
-        p5.web.css.minify:x:/@hyper-ide.get-active-editor-code?value
+        hyper-ide.editors.get-active-code
+        length:x:/@hyper-ide.editors.get-active-code?value
+        p5.web.css.minify:x:/@hyper-ide.editors.get-active-code?value
         length:x:/@p5.web.css.minify?value
 
         /*
@@ -39,7 +39,7 @@ create-event:hyper-ide.plugins.css.minify
         /*
          * Updating code.
          */
-        hyper-ide.set-active-editor-code:x:/@p5.web.css.minify?value
+        hyper-ide.editors.set-active-code:x:/@p5.web.css.minify?value
 
         /*
          * Notifying user, making sure we inform him of how many percent of the code was removed.

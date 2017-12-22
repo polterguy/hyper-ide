@@ -1,4 +1,4 @@
-/*
+﻿/*
  * Invoked when a folder is selected.
  *
  * Expects [folder] being path to the selected folder.
@@ -545,7 +545,7 @@ and close all editors that are editing files inside of your folder. I need you t
                            * currently deleted folder.
                            */
                           eval-x:x:/+/*
-                          hyper-ide.close-editors
+                          hyper-ide.editors.close
                             filter:x:/@get-widget-property/*/*?value
 
                           /*

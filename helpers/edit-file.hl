@@ -1,4 +1,4 @@
-/*
+﻿/*
  * Edits the specified [file], using some sort of CodeMirror editor, or whatever
  * is available.
  */
@@ -568,7 +568,7 @@ create-widgets
           /*
            * Invoking event responsible for saving file.
            */
-          hyper-ide.save-active-editor
+          hyper-ide.editors.save-active
 
       /*
        * Renames file.
@@ -790,7 +790,7 @@ create-widgets
                              * Making sure we close all editor for file.
                              */
                             eval-x:x:/+/*
-                            hyper-ide.close-editors
+                            hyper-ide.editors.close
                               filter:x:/@.filename?value
                               exact:bool:true
 
@@ -929,7 +929,7 @@ create-widgets
       /*
        * Activating editor, and verifying invocation was a success.
        */
-      hyper-ide.set-active-editor:x:/@get-widget-property/*/*?value
+      hyper-ide.editors.set-active:x:/@get-widget-property/*/*?value
       if:x:/-?value
 
         /*
@@ -959,7 +959,7 @@ create-widgets
           get-widget-property:x:/-/*/*?value
             .activate
           eval-x:x:/+/*
-          hyper-ide.close-editors
+          hyper-ide.editors.close
             filter:x:/@get-widget-property/*/*?value
 
   /*

@@ -1,4 +1,4 @@
-/*
+﻿/*
  * Create our Markdown preview plugin button for editor.
  */
 create-event:hyper-ide.plugins.markdown.preview
@@ -15,13 +15,13 @@ create-event:hyper-ide.plugins.markdown.preview
          * The latter is necessary to figure out relative URL to use
          * for fetching relative images, etc.
          */
-        hyper-ide.get-active-editor-code
-        hyper-ide.get-active-editor
+        hyper-ide.editors.get-active-code
+        hyper-ide.editors.get-active
 
         /*
          * Figuring out root URL for document.
          */
-        split:x:/@hyper-ide.get-active-editor?value
+        split:x:/@hyper-ide.editors.get-active?value
           =:/
         set:x:/@split/0/-
         join:x:/@split/*?name
@@ -35,7 +35,7 @@ create-event:hyper-ide.plugins.markdown.preview
         /*
          * Transforming content to Markdown.
          */
-        markdown2html:x:/@hyper-ide.get-active-editor-code?value
+        markdown2html:x:/@hyper-ide.editors.get-active-code?value
           root-url:{0}
             :x:/@join?value
 
