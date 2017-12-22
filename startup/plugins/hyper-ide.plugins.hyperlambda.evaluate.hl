@@ -13,9 +13,12 @@ create-event:hyper-ide.plugins.hyperlambda.execute
          * Retrieves editor's content.
          */
         hyper-ide.get-active-editor-code
+        hyper-ide.get-active-editor
 
         /*
          * Transforming Hyperlambda to lambda, and simply evaluating it.
          */
         hyper2lambda:x:/@hyper-ide.get-active-editor-code?value
-        eval:x:/-
+        set:x:/-?name
+          src:x:/@hyper-ide.get-active-editor?value
+        eval:x:/-2

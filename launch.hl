@@ -453,6 +453,9 @@ create-widget:hyper-ide-main-container
        * Retrieving active editor, and closing it.
        */
       hyper-ide.get-active-editor
+      if:x:/-?value
+        not
+        return
 
       /*
        * To stay "DRY", we invoke event that closes multiple editors, passing in

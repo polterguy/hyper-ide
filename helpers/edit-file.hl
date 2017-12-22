@@ -953,8 +953,6 @@ create-widgets
           /*
            * Closing active editor.
            */
-          p5.web.widgets.find-first-ancestor:x:/../*/_event?value
-            .activate
           get-widget-property:x:/-/*/*?value
             .activate
           eval-x:x:/+/*
