@@ -512,6 +512,52 @@ create-widget:hyper-ide-main-container
 
 
     /*
+     * Removes the "dirty" flag for specified [_arg] editor.
+     */
+    hyper-ide.set-clean
+
+      /*
+       * Sanity check.
+       */
+      micro.lambda.contract.min:x:/..
+        _arg:string
+
+      /*
+       * Finding hidden field, and returning true if its value is "dirty".
+       */
+      p5.web.widgets.find-first:hyper-ide-editor-tab-editors
+        .editor:x:/../*/_arg?value
+      p5.web.widgets.find-first:x:/-/*/*?value
+        element:input
+        type:hidden
+      set-widget-property:x:/-/*/*?value
+        value:clean
+
+
+    /*
+     * Adds the "dirty" flag for specified [_arg] editor.
+     */
+    hyper-ide.set-dirty
+
+      /*
+       * Sanity check.
+       */
+      micro.lambda.contract.min:x:/..
+        _arg:string
+
+      /*
+       * Finding hidden field, and returning true if its value is "dirty".
+       */
+      p5.web.widgets.find-first:hyper-ide-editor-tab-editors
+        .editor:x:/../*/_arg?value
+      p5.web.widgets.find-first:x:/-/*/*?value
+        element:input
+        type:hidden
+      set-widget-property:x:/-/*/*?value
+        value:dirty
+
+
+    /*
      * Returns true if current editor is dirty.
      */
     hyper-ide.editors.is-dirty
@@ -566,7 +612,6 @@ create-widget:hyper-ide-main-container
      *
      * Will close all editors that have filenames starting with the specified [filter] path.
      * If [exact] is boolean "true", it will only delete the editor with the exact name of [filter].
-     * Pass in [force] to close editor(s), even if they are "dirty" (having unsaved content).
      *
      * Useful for closing multiple editors, such as when a folder is deleted or something, in addition
      * to (of course) closing only a single editor (by setting exact to true).
@@ -580,7 +625,6 @@ create-widget:hyper-ide-main-container
         filter:string
       micro.lambda.contract.optional:x:/..
         exact:bool
-        force:bool
 
       /*
        * Retrieving all open editors, and checking that there actually are any
@@ -629,154 +673,157 @@ create-widget:hyper-ide-main-container
 
           /*
            * Current editor is a match, making sure we delete it.
-           *
-           * Finding the actual editor first.
+           * Checking if currently iterated editor is dirty.
            */
-          p5.web.widgets.find-first:hyper-ide-editor-tab-editors
-            .editor:x:/@_dp/#?name
-
-          /*
-           * Checking if it is dirty.
-           */
-          hyper-ide.editors.is-dirty:x:/@_dp/#?name
-          if:x:/../*/force?value
-            !=:bool:true
-            and
-              hyper-ide.editors.is-dirty:x:/@_dp/#?name
+          if
+            hyper-ide.editors.is-dirty:x:/@_dp/#?name
 
             /*
              * Editor is dirty, and [force] was not set to true, hence asking user to
              * confirm that he wants to actually close the editor, giving him the
              * option of saving its content first.
-             */
-            eval-x:x:/+/*/*/*/p/*/innerValue|/+/**(/.filter|/.file)
-            create-widgets
-              micro.widgets.modal:hyper-ide-unsaved-changes-modal
-                widgets
-                  h3
-                    innerValue:Unsaved content
-                  p
-                    innerValue:<code>{0}</code> contains unsaved data. Do you wish to save it before closing your editor?
-                      :x:/@_dp/#?name
-                  div
-                    class:right
-                    widgets
-                      div
-                        class:strip
-                        style:"display:inline-block;"
-                        widgets
-                          button
-                            innerValue:Yes
-                            style:"margin-bottom:0;"
-                            oninit
-
-                              /*
-                               * Making sure our "Yes" button gets initial focus.
-                               */
-                              micro.page.set-focus:x:/../*/_event?value
-
-                            onclick
-
-                              /*
-                               * Forward evaluated above.
-                               * Saves given editor, and reinvokes self.
-                               */
-                              .file:x:/@_dp/#?name
-                              .filter:x:/../*/filter?value
-                              hyper-ide.editors.save:x:/@.file?value
-                              eval-x:x:/+/*
-                              hyper-ide.editors.close
-                                filter:x:/@.filter?value
-
-                              /*
-                               * Deleting modal widget, and giving user some feedback.
-                               */
-                              delete-widget:hyper-ide-unsaved-changes-modal
-                              micro.windows.info:File successfully saved
-                                class:micro-windows-info success
-
-                          button
-                            innerValue:No
-                            style:"margin-bottom:0;"
-                            onclick
-
-                              /*
-                               * Forward evaluated above.
-                               * Reinvokes self with the [force] flag.
-                               */
-                              .filter:x:/../*/filter?value
-                              eval-x:x:/+/*
-                              hyper-ide.editors.close
-                                filter:x:/@.filter?value
-                                force:bool:true
-
-                              /*
-                               * Deleting modal widget.
-                               */
-                              delete-widget:hyper-ide-unsaved-changes-modal
-
-            /*
-             * Returning early to avoid evaluation of the rest of our lambda.
-             */
-            return
-
-          /*
-           * Deleting actual editor.
-           */
-          delete-widget:x:/@p5.web.widgets.find-first/*/*?value
-
-          /*
-           * Then its activate button.
-           */
-          p5.web.widgets.find-first:hyper-ide-editor-tab-buttons
-            .activate:x:/@_dp/#?name
-          delete-widget:x:/@p5.web.widgets.find-first/*/*?value
-
-          /*
-           * Then its toolbar.
-           */
-          p5.web.widgets.find-first:hyper-ide-toolbars
-            .toolbar:x:/@_dp/#?name
-          delete-widget:x:/@p5.web.widgets.find-first/*/*?value
-
-          /*
-           * Checking if currently closed editor was the active editor.
-           */
-          if:x:/@_dp/#?name
-            =:x:/@hyper-ide.editors.get-active?value
-
-            /*
-             * Tracking the fact that our active editor was closed.
-             */
-            set:x:/@.active-deleted?value
-              src:bool:true
-
-            /*
-             * Notice, when the active editor is deleted, we'll also need to check
-             * if the file object toolbar was created for our active editor, and
-             * if it was, we'll need to delete it too.
+             *
+             * Making sure we only show one dialog though.
              */
             if
               fetch:x:/0/0?value
-                widget-exists:hyper-ide-active-file-object-toolbar
-              get-widget-property:hyper-ide-active-file-object-toolbar
-                .file
-              if:x:/@get-widget-property/*/*?value
-                =:x:/@_dp/#?name
+                widget-exists:hyper-ide-unsaved-changes-modal
+              not
 
-                /*
-                 * Current active file object toolbar was created for the active editor,
-                 * hence making sure we delete it.
-                 */
-                delete-widget:hyper-ide-active-file-object-toolbar
+              /*
+               * Asking user to confirm that he wants to have editor closed.
+               */
+              hyper-ide.editors.set-active:x:/@_dp/#?name
+              eval-x:x:/+/*/*/*/p/*/innerValue|/+/**(/.filter|/.file)
+              create-widgets
+                micro.widgets.modal:hyper-ide-unsaved-changes-modal
+                  widgets
+                    h3
+                      innerValue:Unsaved content
+                    p
+                      innerValue:<code>{0}</code> contains unsaved data. Do you wish to save it before closing your editor?
+                        :x:/@_dp/#?name
+                    div
+                      class:right
+                      widgets
+                        div
+                          class:strip
+                          style:"display:inline-block;"
+                          widgets
+                            button
+                              innerValue:Yes
+                              style:"margin-bottom:0;"
+                              oninit
 
-          /*
-           * Removing currently iterated editor from our list of editors.
-           *
-           * This is done such that we end up with a list of available editors,
-           * after we have closed all editors caller wants to close.
-           */
-          set:x:/@_dp/#
+                                /*
+                                 * Making sure our "Yes" button gets initial focus.
+                                 */
+                                micro.page.set-focus:x:/../*/_event?value
+
+                              onclick
+
+                                /*
+                                 * Forward evaluated above.
+                                 * Saves given editor, and reinvokes self.
+                                 */
+                                .file:x:/@_dp/#?name
+                                .filter:x:/../*/filter?value
+                                hyper-ide.editors.save:x:/@.file?value
+
+                                /*
+                                 * Deleting modal widget, and giving user some feedback,
+                                 * before we invoke "self".
+                                 */
+                                delete-widget:hyper-ide-unsaved-changes-modal
+                                micro.windows.info:File successfully saved
+                                  class:micro-windows-info success
+                                eval-x:x:/+/*
+                                hyper-ide.editors.close
+                                  filter:x:/@.filter?value
+
+                            button
+                              innerValue:No
+                              style:"margin-bottom:0;"
+                              onclick
+
+                                /*
+                                 * Forward evaluated above.
+                                 * Reinvokes self after having set editor to "clean".
+                                 */
+                                .file:x:/@_dp/#?name
+                                .filter:x:/../*/filter?value
+                                hyper-ide.set-clean:x:/@.file?value
+
+                                /*
+                                 * Deleting modal widget, before we invoke "self".
+                                 */
+                                delete-widget:hyper-ide-unsaved-changes-modal
+                                eval-x:x:/+/*
+                                hyper-ide.editors.close
+                                  filter:x:/@.filter?value
+
+          else
+
+            /*
+             * Editor is not dirty.
+             * Deleting actual editor.
+             */
+            p5.web.widgets.find-first:hyper-ide-editor-tab-editors
+              .editor:x:/@_dp/#?name
+            delete-widget:x:/@p5.web.widgets.find-first/*/*?value
+
+            /*
+             * Then its activate button.
+             */
+            p5.web.widgets.find-first:hyper-ide-editor-tab-buttons
+              .activate:x:/@_dp/#?name
+            delete-widget:x:/@p5.web.widgets.find-first/*/*?value
+
+            /*
+             * Then its toolbar.
+             */
+            p5.web.widgets.find-first:hyper-ide-toolbars
+              .toolbar:x:/@_dp/#?name
+            delete-widget:x:/@p5.web.widgets.find-first/*/*?value
+
+            /*
+             * Checking if currently closed editor was the active editor.
+             */
+            if:x:/@_dp/#?name
+              =:x:/@hyper-ide.editors.get-active?value
+
+              /*
+               * Tracking the fact that our active editor was closed.
+               */
+              set:x:/@.active-deleted?value
+                src:bool:true
+
+              /*
+               * Notice, when the active editor is deleted, we'll also need to check
+               * if the file object toolbar was created for our active editor, and
+               * if it was, we'll need to delete it too.
+               */
+              if
+                fetch:x:/0/0?value
+                  widget-exists:hyper-ide-active-file-object-toolbar
+                get-widget-property:hyper-ide-active-file-object-toolbar
+                  .file
+                if:x:/@get-widget-property/*/*?value
+                  =:x:/@_dp/#?name
+
+                  /*
+                   * Current active file object toolbar was created for the active editor,
+                   * hence making sure we delete it.
+                   */
+                  delete-widget:hyper-ide-active-file-object-toolbar
+
+            /*
+             * Removing currently iterated editor from our list of editors.
+             *
+             * This is done such that we end up with a list of available editors,
+             * after we have closed all editors caller wants to close.
+             */
+            set:x:/@_dp/#
 
       /*
        * Checking if active editor was deleted, and if it was, we'll need to
