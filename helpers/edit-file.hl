@@ -515,6 +515,16 @@ p5.hyper_ide_show_editor = function (ed) {
 
 
 /*
+ * Making sure we enable our "Close all editors" button.
+ */
+delete-widget-property:hyper-ide-close-all-editors
+  disabled
+
+
+
+
+
+/*
  * Creating our widgets.
  *
  * We create one "tab control button", then we add one editor into "tab control editors",

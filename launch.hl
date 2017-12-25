@@ -78,7 +78,10 @@ p5.web.include-css-file:@IDE/media/main.css
  * forcing the user to login before we proceed.
  */
 whoami
-if:x:/@whoami/*/default?value
+if:x:/@whoami/*/role?value
+  !=:root
+  and:x:/@whoami/*/role?value
+    !=:developer
 
   /*
    * User is not logged in as root.
@@ -955,9 +958,10 @@ create-widget:hyper-ide-main-container
                     /*
                      * Close all editors button.
                      */
-                    button
+                    button:hyper-ide-close-all-editors
                       innerValue:@"<span class=""icon-cross""></span>"
                       title:Close all editors
+                      disabled
                       style:"margin-bottom:0;"
                       onclick
 
@@ -1203,6 +1207,12 @@ create-widget:hyper-ide-main-container
                */
               set-widget-property:hyper-ide-file-path-header
                 innerValue:
+
+              /*
+               * Making sure we disable our "Close all editors" button.
+               */
+              set-widget-property:hyper-ide-close-all-editors
+                disabled
 
 
           oninit

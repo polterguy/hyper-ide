@@ -11,7 +11,10 @@ container
      * Verifying user is logged in, and if not, deleting widget altogether, and returning early.
      */
     whoami
-    if:x:/@whoami/*/default?value
+    if:x:/@whoami/*/role?value
+      !=:root
+      and:x:/@whoami/*/role?value
+        !=:developer
 
       /*
        * User is not logged in, simply deleting entire icon.
