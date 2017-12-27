@@ -159,18 +159,18 @@ create-event:hyper-ide.folder-plugins.execute
                            * Checking platform, since we might need to convert
                            * from CR/LF to only LF, in case we're on MacOSX or Unix.
                            */
-                          platform
-                          if:x:/@platform?value
+                          p5.system.platform
+                          if:x:/@p5.system.platform?value
                             =:Unix
-                            or:x:/@platform?value
+                            or:x:/@p5.system.platform?value
                               =:MacOSX
 
                             /*
                              * Replacing CR/LF before we save file to get platform specific CR sequence.
                              */
-                            normalize-string:x:/@micro.form.serialize/*/code?value
+                            p5.system.platform.normalize-string:x:/@micro.form.serialize/*/code?value
                             save-file:~/temp/temp-bash.sh
-                              src:x:/@normalize-string?value
+                              src:x:/@p5.system.platform.normalize-string?value
 
                           else
 
@@ -190,14 +190,14 @@ create-event:hyper-ide.folder-plugins.execute
                             /*
                              * Executing file with current folder being the currently open folder.
                              */
-                            execute-file:~/temp/temp-bash.sh
+                            p5.system.shell.execute-file:~/temp/temp-bash.sh
                               working-folder:x:/@.folder?value
 
                             /*
                              * Displaying results of evaluation, making sure we
                              * HTML encode it, to be sure.
                              */
-                            p5.html.html-encode:x:/@execute-file/*?value
+                            p5.html.html-encode:x:/@p5.system.shell.execute-file/*?value
                             set-widget-property:hyper-ide-execute-result
                               visible:true
                               class:success air-top
