@@ -190,14 +190,14 @@ create-event:hyper-ide.folder-plugins.execute
                             /*
                              * Executing file with current folder being the currently open folder.
                              */
-                            p5.system.shell.execute-file:~/temp/temp-bash.sh
+                            p5.system.platform.execute-file:~/temp/temp-bash.sh
                               working-folder:x:/@.folder?value
 
                             /*
                              * Displaying results of evaluation, making sure we
                              * HTML encode it, to be sure.
                              */
-                            p5.html.html-encode:x:/@p5.system.shell.execute-file/*?value
+                            p5.html.html-encode:x:/@p5.system.platform.execute-file/*?value
                             set-widget-property:hyper-ide-execute-result
                               visible:true
                               class:success air-top

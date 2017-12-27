@@ -72,7 +72,7 @@ create-event:hyper-ide.plugins.shell.execute
            * Executing temp file, with working folder being folder where original
            * file is physically located.
            */
-          p5.system.shell.execute-file:~/temp/temp-bash.sh
+          p5.system.platform.execute-file:~/temp/temp-bash.sh
             working-folder:/{0}
               :x:/@trim-left?value
 
@@ -80,7 +80,7 @@ create-event:hyper-ide.plugins.shell.execute
            * Setting result to result of invocation above.
            */
           set:x:/@.result?value
-            src:x:/@p5.system.shell.execute-file/*?value
+            src:x:/@p5.system.platform.execute-file/*?value
           set:x:/@.class?value
             src:success
 
