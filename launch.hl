@@ -74,31 +74,6 @@ p5.web.include-css-file:@IDE/media/main.css
 
 
 /*
- * Verifying user is logged in, and if not, 
- * forcing the user to login before we proceed.
- */
-whoami
-if:x:/@whoami/*/role?value
-  !=:root
-  and:x:/@whoami/*/role?value
-    !=:developer
-
-  /*
-   * User is not logged in as root.
-   */
-  p5.core.login
-    message:You'll need to login to access this module
-
-  /*
-   * Returning early to abort evaluating the rest of our file.
-   */
-  return
-
-
-
-
-
-/*
  * Setting title of our page.
  */
 p5.web.page.set-title:Hyper IDE
