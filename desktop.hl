@@ -1,10 +1,11 @@
+
 /*
  * Desktop widget.
  */
 container
   element:a
   class:desktop-app shaded rounded air-inner
-  title:Hyper IDE
+  title:Hyper IDE is an integrated development environment, allowing you to write code in more than 100 different programming languages
   widgets
     span
       class:desktop-app-name
@@ -13,5 +14,6 @@ container
           element:span
           class:icon-rocket desktop-app-icon
         span
-          style:"position:absolute;top:5px;right:5px;font-size:.7rem;"
-          innerValue:Hyper IDE
+          class:desktop-app-text
+          innerValue:IDE
+                    
