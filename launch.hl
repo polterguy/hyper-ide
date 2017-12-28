@@ -65,9 +65,12 @@ if
 micro.page.minify-and-bundle-css-file
   @MICRO/media/main.css
   @MICRO/media/fonts.css
+p5.web.include-css-file:x:/-?value
 micro.page.minify-and-bundle-css-file:@MICRO/media/skins/{0}.css
   :x:(/@select-data/*/*/skin|/../*/.defaults/*/skin)/$?value
+p5.web.include-css-file:x:/-?value
 micro.page.minify-and-bundle-css-file:@IDE/media/main.css
+p5.web.include-css-file:x:/-?value
 
 
 

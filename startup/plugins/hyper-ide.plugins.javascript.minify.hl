@@ -20,7 +20,7 @@ create-event:hyper-ide.plugins.javascript.minify
         hyper-ide.editors.get-active-code
         length:x:/@hyper-ide.editors.get-active-code?value
         p5.web.javascript.minify:x:/@hyper-ide.editors.get-active-code?value
-        length:x:/@p5.web.javascript.minify?value
+        length:x:/@p5.web.javascript.minify/*?value
 
         /*
          * Unless we could remove something during minification, we inform user,
@@ -39,7 +39,7 @@ create-event:hyper-ide.plugins.javascript.minify
         /*
          * Updating code.
          */
-        hyper-ide.editors.set-active-code:x:/@p5.web.javascript.minify?value
+        hyper-ide.editors.set-active-code:x:/@p5.web.javascript.minify/*?value
 
         /*
          * Notifying user, making sure we inform him of how many percent of the code was removed.
