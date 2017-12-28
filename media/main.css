@@ -31,6 +31,10 @@
 .hyper-ide-content {
     height:calc(100vh - 4rem);
 }
+.hyper-ide-page-scroll .hyper-ide-content {
+    height:auto;
+    margin-bottom:5rem;
+}
 
 /* TreeView wrapper for browsing files (column wrapper) */
 .hyper-ide-solution-explorer-col {

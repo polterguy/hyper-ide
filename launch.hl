@@ -41,6 +41,7 @@ if:x:/../*/url?value
  */
 .defaults
   skin:serious
+  page-scroll:bool:false
 select-data:x:/*/*/micro.codemirror.settings
 
 
@@ -86,10 +87,23 @@ p5.web.page.set-title:Hyper IDE
 
 
 /*
+ * Checking if we should use page scrolling or not.
+ */
+_page-scroll
+if:x:(/@select-data/*/*/page-scroll|/../*/.defaults/*/page-scroll)/$?value
+  set:x:/@_page-scroll?value
+    src:" hyper-ide-page-scroll"
+
+
+
+
+
+/*
  * Creating main container.
  */
 create-widget:hyper-ide-main-container
-  class:container-fullscreen hyper-ide-container
+  class:container-fullscreen hyper-ide-container{0}
+    :x:/@_page-scroll?value
   style:"padding-top:0;"
 
   /*
@@ -929,9 +943,25 @@ create-widget:hyper-ide-main-container
                       onclick
 
                         /*
-                         * Showing settings for CM to user.
+                         * Allowing user to modify his settings.
                          */
                         micro.codemirror.settings
+                          checkbox
+                            info:Browser scroll
+                            title:If true, will enable the browser scroll bars when document(s) overflows the size of viewport
+                            .data-field:page-scroll
+                            oninit
+
+                              /*
+                               * Making sure we retrieve existing value.
+                               */
+                              .defaults
+                                page-scroll:bool:false
+                              select-data:x:/*/*/micro.codemirror.settings
+                              if:x:(/@select-data/*/*/page-scroll|/../*/.defaults/*/page-scroll)/$?value
+                                =:bool:true
+                                set-widget-property:x:/../*/_event?value
+                                  checked
 
                     /*
                      * Close all editors button.
