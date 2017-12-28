@@ -648,6 +648,7 @@ create-widget:hyper-ide-main-container
         /*
          * No open editors, returning early to avoid evaluating the rest of our lambda.
          */
+        eval:x:/../*/.onclosed
         return
 
       /*
@@ -705,6 +706,8 @@ create-widget:hyper-ide-main-container
                * Asking user to confirm that he wants to have editor closed.
                */
               hyper-ide.editors.set-active:x:/@_dp/#?name
+              add:x:/+2/**/.onclosed
+                src:x:/../*/.onclosed/*
               eval-x:x:/+/*/*/*/p/*/innerValue|/+/**(/.filter|/.file)
               create-widgets
                 micro.widgets.modal:hyper-ide-unsaved-changes-modal
@@ -739,6 +742,7 @@ create-widget:hyper-ide-main-container
                                  */
                                 .file:x:/@_dp/#?name
                                 .filter:x:/../*/filter?value
+                                .onclosed
                                 hyper-ide.editors.save:x:/@.file?value
 
                                 /*
@@ -748,6 +752,8 @@ create-widget:hyper-ide-main-container
                                 delete-widget:hyper-ide-unsaved-changes-modal
                                 micro.windows.info:File successfully saved
                                   class:micro-windows-info success
+                                add:x:/../*/hyper-ide.editors.close
+                                  src:x:/@.onclosed
                                 eval-x:x:/+/*
                                 hyper-ide.editors.close
                                   filter:x:/@.filter?value
@@ -763,12 +769,15 @@ create-widget:hyper-ide-main-container
                                  */
                                 .file:x:/@_dp/#?name
                                 .filter:x:/../*/filter?value
+                                .onclosed
                                 hyper-ide.set-clean:x:/@.file?value
 
                                 /*
                                  * Deleting modal widget, before we invoke "self".
                                  */
                                 delete-widget:hyper-ide-unsaved-changes-modal
+                                add:x:/../*/hyper-ide.editors.close
+                                  src:x:/@.onclosed
                                 eval-x:x:/+/*
                                 hyper-ide.editors.close
                                   filter:x:/@.filter?value
@@ -887,6 +896,21 @@ create-widget:hyper-ide-main-container
          */
         hyper-ide.editors.set-active:@hyper-ide.editors.get-open/0?name
 
+      /*
+       * Checking if we have unsaved changes, and if so, returning false, otherwise
+       * returning true.
+       */
+      if
+        fetch:x:/0/0?value
+          widget-exists:hyper-ide-unsaved-changes-modal
+        return:bool:false
+
+      /*
+       * Evaluating any optional [.onclose] lambda callbacks.
+       */
+      eval:x:/../*/.onclosed
+      return:bool:true
+
 
   oninit
 
@@ -989,10 +1013,20 @@ create-widget:hyper-ide-main-container
                       onclick
 
                         /*
-                         * Redirecting user to server's root URL.
+                         * Making sure we close all editors, and checking if event
+                         * returns "false", which implies we have unsaved changes,
+                         * and we need to ask user about confirmation before we allow
+                         * him to leave page.
                          */
-                        p5.web.get-root-location
-                        p5.web.set-location:x:/-?value
+                        hyper-ide.editors.close
+                          filter:/
+                          .onclosed
+
+                            /*
+                             * Redirecting user to server's root URL.
+                             */
+                            p5.web.get-root-location
+                            p5.web.set-location:x:/-?value
 
     /*
      * Wrapper for actual content.
