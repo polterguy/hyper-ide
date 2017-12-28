@@ -1,4 +1,4 @@
-﻿/*
+/*
  * Invoked when a folder is selected.
  *
  * Expects [folder] being path to the selected folder.
@@ -86,6 +86,10 @@ vocabulary:~hyper-ide.folder-plugins.
 for-each:x:/@vocabulary/*?value
   insert-before:x:/@.plugins/0/-
     src:x:/@_dp?value
+eval-x:x:/+/*/*
+add:x:/@.plugins/*(!/return)
+  src
+    folder:x:/../*/folder?value
 
 
 

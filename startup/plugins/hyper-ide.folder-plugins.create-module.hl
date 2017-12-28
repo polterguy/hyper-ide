@@ -1,0 +1,171 @@
+/*
+ * Create our create new module plugin.
+ *
+ * This button is only visible if the currently selected folder is the "/modules/" folder.
+ */
+create-event:hyper-ide.folder-plugins.create-module
+
+  /*
+   * Verifying we're in our "/modules/" folder, and if not, returning early.
+   *
+   * This is to prevent this plugin to be visible in any other folders than our "/modules/" folder.
+   */
+  if:x:/../*/folder?value
+    !=:/modules/
+    return
+
+  /*
+   * Returning plugin button to caller.
+   */
+  return
+    button
+      innerValue:@"<span class=""icon-plus""></span>"
+      style:"margin-bottom:0;"
+      title:Create new module (new project, kind of)
+      onclick
+      
+        /*
+         * Showing a modal window, asking user to supply a name for his project.
+         */
+        create-widgets
+          micro.widgets.modal:hyper-ide-new-module-modal
+            widgets
+              h3
+                innerValue:Create new module
+              p
+                innerValue:Provide a name for your module, such as <code>foo-bar</code>, which also will become its URL.
+              micro.widgets.wizard-form
+                text
+                  info:Name
+                  .data-field:name
+                  onkeydown:@"if (event.keyCode == 13) {p5.$('hyper-ide-create-module-button').raise('onclick');return false;}"
+                  oninit
+
+                    /*
+                     * Setting initial focus to "name" textbox.
+                     */
+                    micro.page.set-focus:x:/../*/_event?value
+
+                div
+                  class:right
+                  widgets
+                    div
+                      class:strip
+                      style:"display:inline-block;"
+                      widgets
+                        button:hyper-ide-create-module-button
+                          innerValue:Create
+                          style:"margin-bottom:0;"
+                          onclick
+
+                            /*
+                             * Creating a new default "empty module", with all the relevant base files,
+                             * necessary to tie things up.
+                             *
+                             * But first verifying the name of the module is something we can accept.
+                             */
+                            micro.form.serialize:hyper-ide-new-module-modal
+                            match:x:/@micro.form.serialize/*/name?value
+                              src:regex:/[-a-z_0-9]/
+                            if:x:/@match/*?count
+                              =:int:0
+
+                              /*
+                               * Not a valid module name, informing user, and returning early.
+                               */
+                              micro.windows.info:Only use a-z, 0-9, _ or - characters in your name.
+                                class:micro-windows-info warning
+                              return
+
+                            /*
+                             * Checking if a module with the same exists from before.
+                             */
+                            if
+                              fetch:x:/0/0?value
+                                folder-exists:/modules/{0}/
+                                  :x:/@micro.form.serialize/*/name?value
+
+                              /*
+                               * Not a valid module name, informing user, and returning early.
+                               */
+                              micro.windows.info:That module exists from before
+                                class:micro-windows-info warning
+                              return
+
+                            /*
+                             * Creating our new empty module, and informaing user.
+                             */
+                            create-folder:/modules/{0}/
+                              :x:/@micro.form.serialize/*/name?value
+                            save-file:/modules/{0}/launch.hl
+                              :x:/@micro.form.serialize/*/name?value
+                              src:@"
+/*
+ * Creating main wire frame for module.
+ */
+create-widget
+  class:container
+  widgets
+    div
+      class:row
+      widgets
+        div
+          class:col
+          widgets
+            h3
+              innerValue:Hello World
+            button:foo-button
+              innerValue:Click me!
+              onclick
+                set-widget-property:foo-button
+                  innerValue:I was clicked!
+"
+                            save-file:/modules/{0}/desktop.hl
+                              :x:/@micro.form.serialize/*/name?value
+                              src:@"
+/*
+ * Desktop widget.
+ */
+container
+  element:a
+  class:desktop-app shaded rounded air-inner
+  title:This module says Hello World!
+  widgets
+    span
+      class:desktop-app-name
+      widgets
+        literal
+          element:span
+          class:icon-gift desktop-app-icon
+        span
+          class:desktop-app-text
+          innerValue:Hello World module
+"
+                            save-file:/modules/{0}/startup.hl
+                              :x:/@micro.form.serialize/*/name?value
+                              src:@"
+/*
+ * Provide whatever startup logic your module requires here, if any.
+ */
+"
+                            save-file:/modules/{0}/uninstall.hl
+                              :x:/@micro.form.serialize/*/name?value
+                              src:@"
+/*
+ * Provide whatever uninstall logic your module requires here, if any.
+ */
+"
+                            /*
+                             * Deleting modal window, refreshing treeview, and informing user.
+                             */
+                            delete-widget:hyper-ide-new-module-modal
+                            micro.windows.info:Your module was successfully created
+                              class:micro-windows-info success
+                            micro.widgets.tree.refresh-items:hyper-ide-folder-tree-browser
+                              force-expand:true
+                              items
+                                /modules/
+
+                        button
+                          innerValue:Close
+                          style:"margin-bottom:0;"
