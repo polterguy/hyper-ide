@@ -1,4 +1,7 @@
 /* Making sure strip labels have uniform width */
+.hyper-ide-container {
+    padding-bottom:0;
+}
 .strip > label:first-child {
     min-width:100px;
 }
@@ -26,17 +29,18 @@
 
 /* Main content, minus toolbars that is */
 .hyper-ide-content {
-    height:calc(100vh - 5.5rem);
+    height:calc(100vh - 4rem);
 }
 
 /* TreeView wrapper for browsing files (column wrapper) */
 .hyper-ide-solution-explorer-col {
-    height:100%;
+    height:calc(100% - 1rem);
 }
 
 /* TreeView wrapper for browsing files (inside of column) */
 .hyper-ide-solution-explorer {
     height:100%;
+    margin-bottom:0;
 }
 
 /* Actual TreeView (solution explorer) CSS class */
@@ -49,7 +53,7 @@
 
 /* Wrapper column around editors (and splash screen) */
 .hyper-ide-editor-col {
-    height:100%;
+    height:calc(100% -1rem);
 }
 
 /* Hyper IDE splash screen, which you see when you initially start Hyper IDE */
@@ -57,6 +61,7 @@
     position:relative;
     height:100%;
     background-color:#ffffff;
+    margin-bottom:0;
 }
 
 /* "Tab control" wrapping editor (both tab buttons, and editor surface) */
@@ -132,6 +137,7 @@
 .hyper-ide-editor-tab-content {
     /* Set to "auto" to remove scrollbars from CodeMirror instance */
     height:calc(100% - 26px);
+    margin-bottom:0;
 }
 
 /* Making sure we modify main CodeMirror (Micro) wrapper class */

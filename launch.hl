@@ -89,7 +89,7 @@ p5.web.page.set-title:Hyper IDE
  * Creating main container.
  */
 create-widget:hyper-ide-main-container
-  class:container-fullscreen
+  class:container-fullscreen hyper-ide-container
   style:"padding-top:0;"
 
   /*
