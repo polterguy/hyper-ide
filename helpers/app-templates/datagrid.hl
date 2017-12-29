@@ -14,6 +14,93 @@
  */
 micro.lambda.contract.min:x:/..
   name:string
+  database:string
+  table:string
+
+
+
+
+
+/*
+ * Special settings for module.
+ */
+.settings
+  micro.widgets.wizard-form
+    select:hyper-ide-new-module-database-name
+      info:Database
+      .data-field:database
+      onchange
+
+        /*
+         * Re-databinding tables select dropdown list.
+         */
+        hyper-ide.new-module.databind-tables
+
+      oninit
+
+        /*
+         * Populating select dropdown with all databases that exists in MySQL.
+         */
+        p5.mysql.connect:[sys]
+          p5.mysql.select:show databases
+
+          /*
+           * Iterating through each database, and creating one option element for each database.
+           * Making sure we remove database prefix in the process.
+           */
+          p5.config.get:p5.data.prefix
+          for-each:x:/@p5.mysql.select/*/*?value
+            replace:x:/@_dp?value
+              src:x:/@p5.config.get/*?value
+            create-widget
+              element:option
+              parent:x:/../*/_event?value
+              innerValue:x:/@replace?value
+
+          /*
+           * Making sure we databind our tables.
+           */
+          hyper-ide.new-module.databind-tables
+
+    select:hyper-ide-new-module-database-table
+      info:Table
+      .data-field:table
+      disabled
+      events
+
+        /*
+         * Invoked when database name changes, selects all tables from currently selected
+         * database from above select list, and creates one option element for each table.
+         */
+        hyper-ide.new-module.databind-tables
+
+          /*
+           * Figuring out database name, opening up database connection, and populates
+           * select dropdown with all available tables from database.
+           *
+           * Making sure we delete any previously created option elements first.
+           */
+          clear-widget:hyper-ide-new-module-database-table
+          get-widget-property:hyper-ide-new-module-database-name
+            value
+          delete-widget-property:x:/../*/_event?value
+            disabled
+
+          /*
+           * Populating select dropdown with all databases that exists in MySQL.
+           */
+          p5.mysql.connect:[{0}]
+            :x:/@get-widget-property/*/*?value
+            p5.mysql.select:show tables
+
+            /*
+             * Iterating through each database, and creating one option element for each table.
+             */
+            for-each:x:/@p5.mysql.select/*/*?value
+              create-widget
+                element:option
+                parent:x:/../*/_event?value
+                innerValue:x:/@_dp?value
 
 
 

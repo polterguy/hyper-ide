@@ -50,6 +50,13 @@ Then choose a template type for your app."
                 select:hyper-ide-new-module-template-type
                   info:Type
                   .data-field:type
+                  onchange
+
+                    /*
+                     * Re-databinding settings for module type.
+                     */
+                    hyper-ide.new-module.template-type-changed
+
                   oninit
 
                     /*
@@ -61,6 +68,10 @@ Then choose a template type for your app."
                       split:x:/@_dp?value
                         =:/
                         =:.
+                      if:x:/@split/0/-2?name
+                        =:hello-world
+                        add:x:/..for-each/*/create-widget
+                          src:selected
                       create-widget
                         parent:x:/../*/_event?value
                         element:option
@@ -97,12 +108,11 @@ Then choose a template type for your app."
                         /*
                          * Selected template type contains additional settings.
                          */
-                        add:x:/./*/create-widgets
+                        add:x:/./*/create-widget/*/widgets
                           src:x:/@load-file/*/*/.settings/*
-                        add:x:/./*/create-widgets/*
-                          src
-                            parent:hyper-ide-new-module-template-settings
-                        create-widgets
+                        create-widget
+                          parent:hyper-ide-new-module-template-settings
+                          widgets
 
                 hr
                 container:hyper-ide-new-module-template-settings
