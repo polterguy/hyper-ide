@@ -216,9 +216,23 @@ delete-event:p5.io.unroll-path.@HELLO
                             micro.windows.info:Your module was successfully created
                               class:micro-windows-info success
                             micro.widgets.tree.refresh-items:hyper-ide-folder-tree-browser
-                              force-expand:true
                               items
                                 /modules/
+
+                            /*
+                             * Immediately start editing our "launch.hl" file.
+                             */
+                            add:x:/+/*/items
+                              src:/modules/{0}/
+                                :x:/@micro.form.serialize/*/name?value
+                            micro.widgets.tree.toggle-items:hyper-ide-folder-tree-browser
+                              force-expand:true
+                              items
+                            add:x:/+/*/items
+                              src:/modules/{0}/launch.hl
+                                :x:/@micro.form.serialize/*/name?value
+                            micro.widgets.tree.select-items:hyper-ide-folder-tree-browser
+                              items
 
                         button
                           innerValue:Close
