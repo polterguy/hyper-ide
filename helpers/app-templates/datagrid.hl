@@ -172,26 +172,28 @@ create-widget
               class:air-inner shaded rounded bg
               widgets
                 h3
-                  innerValue:Hello World
-                p
-                  innerValue:@""Here is a template for your convenience, creating a default startup module wire frame for you.
-It contains 4 files.""
-                ul
-                  widgets
-                    li
-                      innerValue:<code>'launch.hl'</code> - This is the file that is evaluated when your module is launched
-                    li
-                      innerValue:<code>'desktop.hl'</code> - This creates a 'desktop icon' for your module
-                    li
-                      innerValue:<code>'startup.hl'</code> - Evaluated when the server is started
-                    li
-                      innerValue:<code>'uninstall.hl'</code> - Evaluated when your module is uninstalled, normally it should do the 'opposite' of your startup.hl file
-                button:foo-button
-                  innerValue:Click me!
-                  onclick
-                    set-widget-property:foo-button
-                      innerValue:Hello World
+                  innerValue:DataGrid
+                micro.widgets.grid:app-template-grid
+                  oninit
+
+                    /*
+                     * Connects to database, selects first 10 records, 
+                     * and creates a datagrid item for each.
+                     */
+                    p5.mysql.connect:[{0}]
+                      p5.mysql.select:select * from `{1}` limit 10
+                      for-each:x:/@p5.mysql.select/*
+                        add:x:/../*/micro.widgets.grid.databind
+                          src:item
+                        for-each:x:/@_dp/#/*
+                          add:x:/../*/micro.widgets.grid.databind/0/-
+                            src:@""{{0}}:""""{{1}}""""""
+                              :x:/@_dp/#?name
+                              :x:/@_dp/#?value
+                    micro.widgets.grid.databind::x:/../*/_event?value
 "
+    :x:/../*/database?value
+    :x:/../*/table?value
 
 
 
