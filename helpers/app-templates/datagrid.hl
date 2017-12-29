@@ -148,6 +148,8 @@ p5.web.include-css-file:x:/-?value
 
 /*
  * Setting page title.
+ *
+ * Modify the value of this invocation to change your app's title.
  */
 p5.web.page.set-title:{0}.{1} items
 
@@ -188,7 +190,56 @@ create-widget
                 div
                   class:strip toolbar
                   style:""display:inline-block;""
+                  .offset:0
                   widgets
+                    button
+                      innerValue:@""<span class=""""icon-arrow-left""""></span>""
+                      onclick
+
+                        /*
+                         * Decrements page, and re-databinds grid.
+                         */
+                        p5.web.widgets.get-parent:x:/../*/_event?value
+                        get-widget-property:x:/@p5.web.widgets.get-parent/*/*?value
+                          .offset
+
+                        /*
+                         * Making sure we don't page beneath 0.
+                         */
+                        if:x:/@get-widget-property/*/*?value.long
+                          >:long:0
+                          -:x:/@get-widget-property/*/*?value.long
+                            _:10
+                          set-widget-property:x:/@p5.web.widgets.get-parent/*/*?value
+                            .offset:x:/@-?value
+                          eval-x:x:/+/*
+                          hyper-ide.templates.databind-grid
+                            offset:x:/@-?value
+
+                    button
+                      innerValue:@""<span class=""""icon-arrow-right""""></span>""
+                      onclick
+
+                        /*
+                         * Decrements page, and re-databinds grid.
+                         */
+                        p5.web.widgets.get-parent:x:/../*/_event?value
+                        get-widget-property:x:/@p5.web.widgets.get-parent/*/*?value
+                          .offset
+                        +:x:/@get-widget-property/*/*?value.long
+                          _:10
+                        eval-x:x:/+/*
+                        hyper-ide.templates.databind-grid
+                          offset:x:/@+?value
+
+                        /*
+                         * Making sure we don't page beyond the end of our dataset.
+                         */
+                        if:x:/@hyper-ide.templates.databind-grid?value
+                          =:bool:true
+                          set-widget-property:x:/@p5.web.widgets.get-parent/*/*?value
+                            .offset:x:/@+?value
+
                     button
                       innerValue:@""<span class=""""icon-home3""""></span>""
                       onclick
@@ -212,34 +263,73 @@ create-widget
                   oninit
 
                     /*
-                     * Connects to database, selects first 10 records, 
-                     * and creates a datagrid item for each.
+                     * Initial databinding of grid.
                      */
-                    .columns:x:/../*/.columns?value
-                    p5.mysql.connect:[{0}]
-                      p5.mysql.select:select {{0}} from `{1}` limit 10
-                        :x:/@.columns?value
+                    hyper-ide.templates.databind-grid
 
-                      /*
-                       * Looping through each row, adding one [item] for each.
-                       */
-                      for-each:x:/@p5.mysql.select/*
-                        add:x:/../*/micro.widgets.grid.databind
-                          src:item
-
-                        /*
-                         * Looping through each cell in row, creating one databound value for each.
-                         */
-                        for-each:x:/@_dp/#/*
-                          add:x:/../*/micro.widgets.grid.databind/0/-
-                            src:@""{{0}}:""""{{1}}""""""
-                              :x:/@_dp/#?name
-                              :x:/@_dp/#?value
+                  events
 
                     /*
-                     * Databinding our grid.
+                     * Databinds grid, optionally pass in [offset].
                      */
-                    micro.widgets.grid.databind::x:/../*/_event?value
+                    hyper-ide.templates.databind-grid
+
+                      /*
+                       * Connects to database, selects first 'n' records, 
+                       * and creates a datagrid item for each.
+                       */
+                      .defaults
+                        offset:long:0
+                      .columns:x:/../*/.columns?value
+                      p5.mysql.connect:[{0}]
+                        p5.mysql.select:select {{0}} from `{1}` limit 10 offset {{1}}
+                          :x:/@.columns?value
+                          :x:(/../*/offset|/@.defaults/*/offset)/$?value
+
+                        /*
+                         * Looping through each row, adding one [item] for each.
+                         */
+                        for-each:x:/@p5.mysql.select/*
+                          eval-x:x:/+/*/*/*/.row/*/.id
+                          add:x:/../*/micro.widgets.grid.databind
+                            src
+                              item
+                                .row
+                                  .id:x:/@_dp/#/*/id?value
+                                  onclick
+
+                                    /*
+                                     * Retrieving item ID, and showing an info window with the item's ID.
+                                     */
+                                    get-widget-property:x:/../*/_event?value
+                                      .id
+                                    micro.windows.info:You clicked item {{0}}
+                                      :x:/@get-widget-property/*/*?value
+
+                          /*
+                           * Looping through each cell in row, creating one databound value for each.
+                           */
+                          for-each:x:/@_dp/#/*
+                            add:x:/../*/micro.widgets.grid.databind/0/-
+                              src:@""{{0}}:""""{{1}}""""""
+                                :x:/@_dp/#?name
+                                :x:/@_dp/#?value
+
+
+                      /*
+                       * Returning true or false to caller, depending upon whether or 
+                       * not we had anymore items or not.
+                       * Notice, we avoid databinding our grid, if there were no more items.
+                       */
+                      if:x:/@p5.mysql.connect/*/p5.mysql.select/*
+                        not
+                        return:bool:false
+
+                      /*
+                       * Databinding our grid.
+                       */
+                      micro.widgets.grid.databind::x:/../*/_event?value
+                      return:bool:true
 "
     :x:/../*/database?value
     :x:/../*/table?value
