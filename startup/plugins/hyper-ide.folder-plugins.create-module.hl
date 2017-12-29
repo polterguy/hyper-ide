@@ -222,6 +222,7 @@ create-event:p5.io.unroll-path.@HELLO
  */
 delete-event:p5.io.unroll-path.@HELLO
 "
+
                             /*
                              * Deleting modal window, refreshing treeview, and informing user.
                              */
@@ -250,3 +251,9 @@ delete-event:p5.io.unroll-path.@HELLO
                         button
                           innerValue:Close
                           style:"margin-bottom:0;"
+                          onclick
+
+                            /*
+                             * Simply deletes modal widget.
+                             */
+                            delete-widget:hyper-ide-new-module-modal
