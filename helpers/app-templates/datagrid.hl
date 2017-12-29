@@ -362,9 +362,9 @@ container
           class:icon-happy desktop-app-icon
         span
           class:desktop-app-text
-          innerValue:Datagrid
+          innerValue:{0}
 "
-
+    :x:/../*/name?value
 
 
 
