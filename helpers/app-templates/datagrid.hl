@@ -138,8 +138,41 @@ p5.web.include-css-file:x:/-?value
 
 
 /*
+ * Change this to specifically named columns, if you don't want to show all columns.
+ */
+.columns:*
+
+
+
+
+
+/*
+ * Setting page title.
+ */
+p5.web.page.set-title:{0}.{1} items
+
+
+
+
+
+/*
+ * Creating our columns in our grid below
+ */
+p5.mysql.connect:[{0}]
+  p5.mysql.select:select {{0}} from `{1}` limit 1
+    :x:/@.columns?value
+  for-each:x:/@p5.mysql.select/*/*?name
+    add:x:/../*/create-widget/**/micro.widgets.grid/*/columns
+      src:x:/@_dp?value
+
+
+
+
+
+/*
  * Creating main wire frame for module.
  */
+eval-x:x:/+/**/.columns
 create-widget
   class:container
   widgets
@@ -174,22 +207,38 @@ create-widget
                 h3
                   innerValue:DataGrid
                 micro.widgets.grid:app-template-grid
+                  class:hover striped
+                  columns
                   oninit
 
                     /*
                      * Connects to database, selects first 10 records, 
                      * and creates a datagrid item for each.
                      */
+                    .columns:x:/../*/.columns?value
                     p5.mysql.connect:[{0}]
-                      p5.mysql.select:select * from `{1}` limit 10
+                      p5.mysql.select:select {{0}} from `{1}` limit 10
+                        :x:/@.columns?value
+
+                      /*
+                       * Looping through each row, adding one [item] for each.
+                       */
                       for-each:x:/@p5.mysql.select/*
                         add:x:/../*/micro.widgets.grid.databind
                           src:item
+
+                        /*
+                         * Looping through each cell in row, creating one databound value for each.
+                         */
                         for-each:x:/@_dp/#/*
                           add:x:/../*/micro.widgets.grid.databind/0/-
                             src:@""{{0}}:""""{{1}}""""""
                               :x:/@_dp/#?name
                               :x:/@_dp/#?value
+
+                    /*
+                     * Databinding our grid.
+                     */
                     micro.widgets.grid.databind::x:/../*/_event?value
 "
     :x:/../*/database?value
@@ -223,7 +272,7 @@ container
           class:icon-happy desktop-app-icon
         span
           class:desktop-app-text
-          innerValue:Hello
+          innerValue:Datagrid
 "
 
 
