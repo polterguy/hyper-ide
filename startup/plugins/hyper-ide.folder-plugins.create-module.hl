@@ -33,7 +33,8 @@ create-event:hyper-ide.folder-plugins.create-module
               h3
                 innerValue:Create new module
               p
-                innerValue:Provide a name for your module, such as <code>foo-bar</code>, which also will become its URL.
+                innerValue:@"Provide a name for your module, such as <code>foo-bar</code>, which also will become its URL.
+Then choose a template type for your app."
               micro.widgets.wizard-form
                 text
                   info:Name
@@ -120,6 +121,17 @@ create-event:hyper-ide.folder-plugins.create-module
                             eval-x:x:/+/*/name
                             micro.evaluate.file:x:/@micro.form.serialize/*/type?value
                               name:x:/@micro.form.serialize/*/name?value
+
+
+                            /*
+                             * Evaluating startup file, if it exists.
+                             */
+                            if
+                              fetch:x:/0/0?value
+                                file-exists:/modules/{0}/startup.hl
+                                  :x:/@micro.form.serialize/*/name?value
+                              micro.evaluate.file:/modules/{0}/startup.hl
+                                :x:/@micro.form.serialize/*/name?value
 
 
                             /*

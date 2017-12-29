@@ -131,7 +131,7 @@ container
       widgets
         literal
           element:span
-          class:icon-gift desktop-app-icon
+          class:icon-happy desktop-app-icon
         span
           class:desktop-app-text
           innerValue:Hello
@@ -144,6 +144,7 @@ container
 /*
  * Then creating our "startup.hl" file.
  */
+to-upper:x:/../*/name?value
 save-file:/modules/{0}/startup.hl
   :x:/../*/name?value
   src:@"
@@ -160,10 +161,11 @@ set:x:/@split/0/-
 join:x:/@split/*?name
   sep:/
 eval-x:x:/+/*
-create-event:p5.io.unroll-path.@HELLO
-  return:/{0}
+create-event:p5.io.unroll-path.@{0}
+  return:/{{0}}
     :x:/@join?value
 "
+    :x:/@to-upper?value
 
 
 
@@ -181,5 +183,6 @@ save-file:/modules/{0}/uninstall.hl
  * Common tasks for this file, is to delete all Active Events created by
  * your module, such as the following example illustrates.
  */
-delete-event:p5.io.unroll-path.@HELLO
+delete-event:p5.io.unroll-path.@{0}
 "
+    :x:/@to-upper?value
