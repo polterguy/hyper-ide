@@ -149,11 +149,24 @@ create-widget
               widgets
                 h3
                   innerValue:Hello World
+                p
+                  innerValue:@""Here is a template for your convenience, creating a default startup module wire frame for you.
+It contains 4 files.""
+                ul
+                  widgets
+                    li
+                      innerValue:<code>'launch.hl'</code> - This is the file that is evaluated when your module is launched
+                    li
+                      innerValue:<code>'desktop.hl'</code> - This creates a 'desktop icon' for your module
+                    li
+                      innerValue:<code>'startup.hl'</code> - Evaluated when the server is started
+                    li
+                      innerValue:<code>'uninstall.hl'</code> - Evaluated when your module is uninstalled, normally it should do the 'opposite' of your startup.hl file
                 button:foo-button
                   innerValue:Click me!
                   onclick
                     set-widget-property:foo-button
-                      innerValue:I was clicked!
+                      innerValue:Hello World
 "
                             save-file:/modules/{0}/desktop.hl
                               :x:/@micro.form.serialize/*/name?value
