@@ -20,6 +20,17 @@ micro.lambda.contract.min:x:/..
 
 
 /*
+ * Special settings for module.
+ */
+.settings
+  button
+    innerValue:Foo bar
+
+
+
+
+
+/*
  * Creates our new module.
  *
  * First making sure our main module folder exists.

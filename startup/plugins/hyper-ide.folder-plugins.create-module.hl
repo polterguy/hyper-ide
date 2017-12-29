@@ -47,7 +47,7 @@ Then choose a template type for your app."
                      */
                     micro.page.set-focus:x:/../*/_event?value
 
-                select
+                select:hyper-ide-new-module-template-type
                   info:Type
                   .data-field:type
                   oninit
@@ -66,6 +66,46 @@ Then choose a template type for your app."
                         element:option
                         value:x:/@_dp?value
                         innerValue:x:/@split/0/-2?name
+
+                    /*
+                     * Invoking our "databind template type" event initially.
+                     */
+                    hyper-ide.new-module.template-type-changed
+
+                  events
+
+                    /*
+                     * Invoked when the template type is changed.
+                     *
+                     * Rebinds the template options widget.
+                     */
+                    hyper-ide.new-module.template-type-changed
+
+                      /*
+                       * Retrieving the select list's selected value, and databinding
+                       * the "template type settings" accordingly.
+                       *
+                       * But first, clearing any previously created additional settings, for
+                       * previously selected template types.
+                       */
+                      clear-widget:hyper-ide-new-module-template-settings
+                      get-widget-property:hyper-ide-new-module-template-type
+                        value
+                      load-file:x:/@get-widget-property/*/*?value
+                      if:x:/@load-file/*/*/.settings
+
+                        /*
+                         * Selected template type contains additional settings.
+                         */
+                        add:x:/./*/create-widgets
+                          src:x:/@load-file/*/*/.settings/*
+                        add:x:/./*/create-widgets/*
+                          src
+                            parent:hyper-ide-new-module-template-settings
+                        create-widgets
+
+                hr
+                container:hyper-ide-new-module-template-settings
 
                 div
                   class:right
@@ -118,9 +158,9 @@ Then choose a template type for your app."
                              * Invoking file responsible for creating user's selected module type,
                              * which depends upon which application template type user has selected.
                              */
-                            eval-x:x:/+/*/name
+                            add:x:/+
+                              src:x:/@micro.form.serialize/*(!/type)
                             micro.evaluate.file:x:/@micro.form.serialize/*/type?value
-                              name:x:/@micro.form.serialize/*/name?value
 
 
                             /*
