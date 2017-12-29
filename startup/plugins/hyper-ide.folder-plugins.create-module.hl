@@ -101,6 +101,19 @@ create-event:hyper-ide.folder-plugins.create-module
                               :x:/@micro.form.serialize/*/name?value
                               src:@"
 /*
+ * Includes CSS for our module.
+ */
+micro.page.minify-and-bundle-css-file
+  @MICRO/media/main.css
+  @MICRO/media/fonts.css
+  @MICRO/media/skins/serious.css
+p5.web.include-css-file:x:/-?value
+
+
+
+
+
+/*
  * Creating main wire frame for module.
  */
 create-widget
@@ -110,21 +123,45 @@ create-widget
       class:row
       widgets
         div
-          class:col
+          class:col-100
           widgets
-            h3
-              innerValue:Hello World
-            button:foo-button
-              innerValue:Click me!
-              onclick
-                set-widget-property:foo-button
-                  innerValue:I was clicked!
+            div
+              class:right
+              widgets
+                div
+                  class:strip toolbar
+                  style:""display:inline-block;""
+                  widgets
+                    button
+                      innerValue:@""<span class=""""icon-home3""""></span>""
+                      onclick
+
+                        /*
+                         * Redirecting user to server's root URL.
+                         */
+                        p5.web.get-root-location
+                        p5.web.set-location:x:/-?value
+        div
+          class:col-100
+          widgets
+            div
+              class:air-inner shaded rounded bg
+              widgets
+                h3
+                  innerValue:Hello World
+                button:foo-button
+                  innerValue:Click me!
+                  onclick
+                    set-widget-property:foo-button
+                      innerValue:I was clicked!
 "
                             save-file:/modules/{0}/desktop.hl
                               :x:/@micro.form.serialize/*/name?value
                               src:@"
 /*
  * Desktop widget.
+ *
+ * This becomes your module's 'desktop icon'.
  */
 container
   element:a
@@ -139,21 +176,38 @@ container
           class:icon-gift desktop-app-icon
         span
           class:desktop-app-text
-          innerValue:Hello World module
+          innerValue:Hello
 "
                             save-file:/modules/{0}/startup.hl
                               :x:/@micro.form.serialize/*/name?value
                               src:@"
 /*
  * Provide whatever startup logic your module requires here, if any.
+ *
+ * For instance, create Active Events necessary to wire up your module.
+ * Below is an example of creating a 'path' event for instance, which unrolls
+ * the path declaration of @HELLO to your module's main folder.
  */
+split:x:/..?name
+  =:/
+set:x:/@split/0/-
+join:x:/@split/*?name
+  sep:/
+eval-x:x:/+/*
+create-event:p5.io.unroll-path.@HELLO
+  return:/{0}
+    :x:/@join?value
 "
                             save-file:/modules/{0}/uninstall.hl
                               :x:/@micro.form.serialize/*/name?value
                               src:@"
 /*
  * Provide whatever uninstall logic your module requires here, if any.
+ *
+ * Common tasks for this file, is to delete all Active Events created by
+ * your module, such as the following example illustrates.
  */
+delete-event:p5.io.unroll-path.@HELLO
 "
                             /*
                              * Deleting modal window, refreshing treeview, and informing user.
