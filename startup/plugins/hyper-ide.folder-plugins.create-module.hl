@@ -46,6 +46,26 @@ create-event:hyper-ide.folder-plugins.create-module
                      */
                     micro.page.set-focus:x:/../*/_event?value
 
+                select
+                  info:Type
+                  .data-field:type
+                  oninit
+
+                    /*
+                     * Creating one option element for each app-template that exists in installation.
+                     */
+                    list-files:@IDE/helpers/app-templates/
+                      filter:.hl
+                    for-each:x:/@list-files/*?name
+                      split:x:/@_dp?value
+                        =:/
+                        =:.
+                      create-widget
+                        parent:x:/../*/_event?value
+                        element:option
+                        value:x:/@_dp?value
+                        innerValue:x:/@split/0/-2?name
+
                 div
                   class:right
                   widgets
@@ -92,136 +112,14 @@ create-event:hyper-ide.folder-plugins.create-module
                                 class:micro-windows-info warning
                               return
 
+
                             /*
-                             * Creating our new empty module, and informaing user.
+                             * Invoking file responsible for creating user's selected module type.
                              */
-                            create-folder:/modules/{0}/
-                              :x:/@micro.form.serialize/*/name?value
-                            save-file:/modules/{0}/launch.hl
-                              :x:/@micro.form.serialize/*/name?value
-                              src:@"
-/*
- * Includes CSS for our module.
- */
-micro.page.minify-and-bundle-css-file
-  @MICRO/media/main.css
-  @MICRO/media/fonts.css
-  @MICRO/media/skins/serious.css
-p5.web.include-css-file:x:/-?value
+                            eval-x:x:/+/*/name
+                            micro.evaluate.file:x:/@micro.form.serialize/*/type?value
+                              name:x:/@micro.form.serialize/*/name?value
 
-
-
-
-
-/*
- * Creating main wire frame for module.
- */
-create-widget
-  class:container
-  widgets
-    div
-      class:row
-      widgets
-        div
-          class:col-100
-          widgets
-            div
-              class:right
-              widgets
-                div
-                  class:strip toolbar
-                  style:""display:inline-block;""
-                  widgets
-                    button
-                      innerValue:@""<span class=""""icon-home3""""></span>""
-                      onclick
-
-                        /*
-                         * Redirecting user to server's root URL.
-                         */
-                        p5.web.get-root-location
-                        p5.web.set-location:x:/-?value
-        div
-          class:col-100
-          widgets
-            div
-              class:air-inner shaded rounded bg
-              widgets
-                h3
-                  innerValue:Hello World
-                p
-                  innerValue:@""Here is a template for your convenience, creating a default startup module wire frame for you.
-It contains 4 files.""
-                ul
-                  widgets
-                    li
-                      innerValue:<code>'launch.hl'</code> - This is the file that is evaluated when your module is launched
-                    li
-                      innerValue:<code>'desktop.hl'</code> - This creates a 'desktop icon' for your module
-                    li
-                      innerValue:<code>'startup.hl'</code> - Evaluated when the server is started
-                    li
-                      innerValue:<code>'uninstall.hl'</code> - Evaluated when your module is uninstalled, normally it should do the 'opposite' of your startup.hl file
-                button:foo-button
-                  innerValue:Click me!
-                  onclick
-                    set-widget-property:foo-button
-                      innerValue:Hello World
-"
-                            save-file:/modules/{0}/desktop.hl
-                              :x:/@micro.form.serialize/*/name?value
-                              src:@"
-/*
- * Desktop widget.
- *
- * This becomes your module's 'desktop icon'.
- */
-container
-  element:a
-  class:desktop-app shaded rounded air-inner
-  title:This module says Hello World!
-  widgets
-    span
-      class:desktop-app-name
-      widgets
-        literal
-          element:span
-          class:icon-gift desktop-app-icon
-        span
-          class:desktop-app-text
-          innerValue:Hello
-"
-                            save-file:/modules/{0}/startup.hl
-                              :x:/@micro.form.serialize/*/name?value
-                              src:@"
-/*
- * Provide whatever startup logic your module requires here, if any.
- *
- * For instance, create Active Events necessary to wire up your module.
- * Below is an example of creating a 'path' event for instance, which unrolls
- * the path declaration of @HELLO to your module's main folder.
- */
-split:x:/..?name
-  =:/
-set:x:/@split/0/-
-join:x:/@split/*?name
-  sep:/
-eval-x:x:/+/*
-create-event:p5.io.unroll-path.@HELLO
-  return:/{0}
-    :x:/@join?value
-"
-                            save-file:/modules/{0}/uninstall.hl
-                              :x:/@micro.form.serialize/*/name?value
-                              src:@"
-/*
- * Provide whatever uninstall logic your module requires here, if any.
- *
- * Common tasks for this file, is to delete all Active Events created by
- * your module, such as the following example illustrates.
- */
-delete-event:p5.io.unroll-path.@HELLO
-"
 
                             /*
                              * Deleting modal window, refreshing treeview, and informing user.
