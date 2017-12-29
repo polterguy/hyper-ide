@@ -86,14 +86,14 @@ create-event:hyper-ide.folder-plugins.create-module
                              */
                             micro.form.serialize:hyper-ide-new-module-modal
                             match:x:/@micro.form.serialize/*/name?value
-                              src:regex:/[-a-z_0-9]/
+                              src:regex:/^[-a-z_0-9]{3,}$/
                             if:x:/@match/*?count
                               =:int:0
 
                               /*
                                * Not a valid module name, informing user, and returning early.
                                */
-                              micro.windows.info:Only use a-z, 0-9, _ or - characters in your name.
+                              micro.windows.info:Only use a-z, 0-9, _ or - characters, and use at least 3 characters.
                                 class:micro-windows-info warning
                               return
 
@@ -114,7 +114,8 @@ create-event:hyper-ide.folder-plugins.create-module
 
 
                             /*
-                             * Invoking file responsible for creating user's selected module type.
+                             * Invoking file responsible for creating user's selected module type,
+                             * which depends upon which application template type user has selected.
                              */
                             eval-x:x:/+/*/name
                             micro.evaluate.file:x:/@micro.form.serialize/*/type?value
@@ -132,7 +133,9 @@ create-event:hyper-ide.folder-plugins.create-module
                                 /modules/
 
                             /*
-                             * Immediately start editing our "launch.hl" file.
+                             * Immediately start editing our "launch.hl" file, which we'll need to
+                             * to by first selecting module's folder (to expand it), and then selecting
+                             * module's "launch.hl" file.
                              */
                             add:x:/+/*/items
                               src:/modules/{0}/
