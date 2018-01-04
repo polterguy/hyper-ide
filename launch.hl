@@ -937,12 +937,16 @@ create-widget:hyper-ide-main-container
             div
               style:"float:left;"
               widgets
-                div
-                  style:"float:left;"
-                  widgets
-                    small:hyper-ide-file-path-header
-                      innerValue:
-                      class:hyper-ide-file-path
+                a
+                  href:#
+                  innerValue:
+                  target:_blank
+                  class:hyper-ide-file-path
+                  events
+                    hyper-ide.set-path
+                      set-widget-property:x:/../*/_event?value
+                        href:x:/../*/_arg?value
+                        innerValue:x:/../*/_arg?value
 
             /*
              * Our primary toolbar.
@@ -1244,8 +1248,7 @@ create-widget:hyper-ide-main-container
                       /*
                        * Updating header or file/folder path.
                        */
-                      set-widget-property:hyper-ide-file-path-header
-                        innerValue:x:/../*/items/0?name
+                      hyper-ide.set-path:x:/../*/items/0?name
 
                     catch
 
@@ -1296,8 +1299,7 @@ create-widget:hyper-ide-main-container
               /*
                * Making sure we reset file/folder path header.
                */
-              set-widget-property:hyper-ide-file-path-header
-                innerValue:
+              hyper-ide.set-path:x:/../*/items/0?name
 
               /*
                * Making sure we disable our "Close all editors" button.

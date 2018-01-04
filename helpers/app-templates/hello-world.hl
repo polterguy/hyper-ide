@@ -153,7 +153,7 @@ save-file:/modules/{0}/startup.hl
  *
  * For instance, create Active Events necessary to wire up your module.
  * Below is an example of creating a 'path' event for instance, which unrolls
- * the path declaration of @HELLO to your module's main folder.
+ * the path declaration of @YOUR-APP-NAME to your module's main folder.
  */
 split:x:/..?name
   =:/
