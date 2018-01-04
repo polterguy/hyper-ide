@@ -94,6 +94,14 @@ eval-x:x:/+/*
 create-event:p5.io.unroll-path.@{0}
   return:/{{0}}
     :x:/@join?value
+
+
+/*
+ * Creates our database.
+ *
+ * Notice, if the schema exists from before, this will throw an exception,
+ * which we simply silently catch.
+ */
 try
   p5.config.get:p5.data.prefix
   p5.mysql.connect:[sys]
@@ -163,10 +171,10 @@ save-file:/modules/{0}/index.html
 <html ng-app='todoApp'>
   <head>
     <script src='https://ajax.googleapis.com/ajax/libs/angularjs/1.6.6/angular.min.js'></script>
-    <script src='modules/{0}/controller.js'></script>
+    <script src='/modules/{0}/controller.js'></script>
     <link rel='stylesheet' type='text/css' href='/modules/micro/media/main.css' />
     <link rel='stylesheet' type='text/css' href='/modules/micro/media/skins/serious.css' />
-    <link rel='stylesheet' type='text/css' href='modules/{0}/styles.css' />
+    <link rel='stylesheet' type='text/css' href='/modules/{0}/styles.css' />
   </head>
   <body>
     <div class='container'>
@@ -206,7 +214,7 @@ save-file:/modules/{0}/controller.js
   src:@"
 
 /*
- * Main modulesfor our Angular app.
+ * Main module for our Angular app.
  */
 angular.module ('todoApp', [])
 
@@ -220,7 +228,7 @@ angular.module ('todoApp', [])
      * Fetching existing items from our server.
      */
     var todoList = this;
-    $http.get ('/hyper-core/database/{0}/items/select').
+    $http.get ('/hyper-core/mysql/{0}/items/select').
       then (function successCallback (response) {{
         todoList.todos = response.data;
     }});
@@ -239,7 +247,7 @@ angular.module ('todoApp', [])
        */
       $http ({{
         method:'PUT', 
-        url: '/hyper-core/database/{0}/items/insert', 
+        url: '/hyper-core/mysql/{0}/items/insert', 
 
         /*
          * Our server-side requires the data for our insert operation to be URL encoded,
@@ -285,11 +293,11 @@ angular.module ('todoApp', [])
       }}
 
       /*
-       * Invoking our server-side method, to insert item into our database.
+       * Invoking our server-side method, to delete the item from our database.
        *
-       * Notice, server-side back end requires a 'PUT' request.
+       * Notice, server-side back end requires a 'DELETE' request.
        */
-      $http.delete('/hyper-core/database/{0}/items/delete?id=' + id);
+      $http.delete('/hyper-core/mysql/{0}/items/delete?id=' + id);
     }}
   }});
 "
