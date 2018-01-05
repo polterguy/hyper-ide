@@ -5,7 +5,7 @@
 container
   element:a
   class:desktop-app shaded rounded air-inner
-  title:Hyper IDE is an integrated development environment, allowing you to write code in more than 100 different programming languages
+  title:An integrated development environment for the web
   widgets
     span
       class:desktop-app-name

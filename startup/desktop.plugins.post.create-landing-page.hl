@@ -1,0 +1,26 @@
+/*
+ * Creates our plugin Active Event, that initialized Magic menu, by creating
+ * a "toolbar button", that allows us to start Magic menu.
+ *
+ * Notice, this button is only created if there exists a widget with a 
+ * CSS class containing the CSS class "toolbar" on the page, and the button 
+ * is automatically injected into the first matching widget.
+ *
+ * Notice, this toolbar button is also only created if user is logged in,
+ * which implies that Magic menu is only available for "actual users" in
+ * your system, and not guest accounts, or random visitors that are not logged in.
+ */
+create-event:desktop.plugins.post.create-landing-page
+
+  p5.web.get-root-location
+  p5.web.get-location-url
+  replace:x:/@p5.web.get-location-url?value
+    src:x:/@p5.web.get-root-location?value
+  if:x:/@replace?value
+    =:
+    load-file:/common/documents/private/HYPER-IDE.md
+    markdown2html:x:/@load-file/*?value
+    create-widget
+      parent:desktop-main-container
+      innerValue:@"<div class=""row""><div class=""col""><div class=""air-inner shaded rounded"">{0}</div></div></div>"
+        :x:/@markdown2html?value
