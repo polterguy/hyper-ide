@@ -1,4 +1,4 @@
-﻿/*
+/*
  * Edits the specified [file], using some sort of CodeMirror editor, or whatever
  * is available.
  */
@@ -434,9 +434,25 @@ micro.css.delete:x:/-/*/*?value
 
 /*
  * Retrieving active events that will create a plugin button for our current CM mode.
+ *
+ * Making sure we check for the existence of a configuration file, and if it exists,
+ * we turn OFF everything not explicitly turned on in that file.
+ *
+ * This allows an installation to simply create a configuration file, which will turn
+ * OFF all plugins, and then explicitly grant access to whatever plugins they want to
+ * turn ON. If no configuration file exists, we turn ON all plugins by default.
  */
 vocabulary:~hyper-ide.plugins.{0}.
   :x:/@.editor-instance/*/*/mode?value
+if
+  fetch:x:/0/0?value
+    file-exists:@IDE/configuration/plugins.hl
+  load-file:@IDE/configuration/plugins.hl
+  for-each:x:/@vocabulary/*
+    if:x:/@load-file/*/*/{0}
+      :x:/@_dp/#?value
+      not
+      set:x:/@_dp/#
 
 
 

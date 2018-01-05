@@ -983,38 +983,6 @@ create-widget:hyper-ide-main-container
                       onclick
 
                         /*
-                         * Retrieving all plugins, and creating one checkbox for each.
-                         */
-                        .plugin-events
-                          ~hyper-ide.folder-plugins.
-                          ~hyper-ide.plugins.
-                        vocabulary:x:/-/*?name
-                        for-each:x:/@vocabulary/*?value
-                          eval-x:x:/+/*/*/*(/info|/.data-field)
-                          add:x:/../*/micro.codemirror.settings
-                            src
-                              checkbox
-                                info:x:/@_dp?value
-                                .data-field:x:/@_dp?value
-                                oninit
-
-                                  /*
-                                   * Making sure we retrieve existing value.
-                                   */
-                                  get-widget-property:x:/../*/_event?value
-                                    .data-field
-                                  .defaults
-                                    value:bool:true
-                                  select-data:x:/*/*/micro.codemirror.settings
-                                  if:x:(/@select-data/*/*/{0}|/../*/.defaults/*/value)/[0,1]?value
-                                    :x:/@get-widget-property/*/*?value
-                                    =:bool:true
-                                    set-widget-property:x:/../*/_event?value
-                                      checked
-                              br
-
-
-                        /*
                          * Allowing user to modify his settings.
                          */
                         micro.codemirror.settings
@@ -1034,11 +1002,6 @@ create-widget:hyper-ide-main-container
                                 =:bool:true
                                 set-widget-property:x:/../*/_event?value
                                   checked
-                          hr
-                          h3
-                            innerValue:Plugins
-                          p
-                            innerValue:Enable or disable specific plugins here.
 
                     /*
                      * Close all editors button.

@@ -1,4 +1,3 @@
-
 /*
  * Opens up the specified [path], by expanding the tree view (if possible),
  * and opening the file, if the path points to a file.
