@@ -138,9 +138,9 @@ since Phosphorus Five is licensed as GPLv3."
       innerValue:Hyper IDE <small>{Develop anything from anywhere}</small>
     p
       innerValue:@"An ultra slick, responsive, and modularised web based Integrated Development Environment, supporting 100+ programming languages out of the box, allowing
-you to code from your phone if you wish. By combining Hyper IDE with the <a href=""/bazar?app=magic-menu"">Magic Menu</a>, you can even create apps using your voice, while 
-speaking natural English, if you wish. Or by combining it with <a href=""/bazar?app=hypereval"">Hypereval</a>, you can store code snippets in your database. Notice, there
-also exists <a href=""/bazar?app=license"">proprietary licensing options</a>, making you eligible for professional support, among other things."
+you to code from your phone if you wish. Hyper IDE contains strong plugin support, in addition to several different types of template projects,
+allowing you to literally start your new projects <em>'running'</em>. Hyper IDE is Open Source, but there also exists proprietary licensing
+options, which among other things makes you eligible for professional support. <a href=""/bazar?app=license"">Read more about the proprietary licensing options here</a>."
 
     p
       style:"position:absolute; bottom:0; right:1rem; color:#b0b0b0; font-style:italic; font-size:.7rem;"
