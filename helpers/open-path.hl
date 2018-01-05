@@ -1,0 +1,77 @@
+
+/*
+ * Opens up the specified [path], by expanding the tree view (if possible),
+ * and opening the file, if the path points to a file.
+ *
+ * First sanity checking arguments.
+ */
+micro.lambda.contract.min:x:/..
+  path:string
+
+
+/*
+ * These two next ones will contain the folder, and the file name (if any).
+ */
+.folder
+.file
+
+
+/*
+ * Splitting given path on each "/", to retrieve all entities, for then to
+ * iterate through them all, making sure we expand our tree view.
+ */
+split:x:/../*/path?value
+  =:/
+
+
+/*
+ * Checking is the specified [path] points to a folder or a file.
+ */
+split:x:/@split/0/-?name
+  =:.
+if:x:/@split/*?count
+  >:int:1
+
+  /*
+   * [path] points to a file.
+   *
+   * Removing the file parts, and putting it into our above [.file] node's value.
+   */
+  set:x:/@.file?value
+    src:x:/@split/@split/0/-?name
+  set:x:/@split/@split/0/-
+
+
+/*
+ * Looping through each entity of our path, making sure we expand the tree view
+ * for that item.
+ */
+for-each:x:/@split/@split/*?name
+
+  /*
+   * Appending currently iterated entity into our [.folder] variable,
+   * such that we can incrementally expand our ways into the specified path.
+   */
+  set:x:/@.folder?value
+    src:{0}/{1}
+      :x:/@.folder?value
+      :x:/@_dp?value
+
+  /*
+   * Toggling the item, forcing it to expand.
+   */
+  add:x:/+/*/items
+    src:{0}/
+      :x:/@.folder?value
+  micro.widgets.tree.toggle-items:hyper-ide-folder-tree-browser
+    force-expand:bool:true
+    items
+
+
+/*
+ * Making sure we select our final ressulting item
+ */
+add:x:/+/*/items
+  src:x:/../*/path?value
+micro.widgets.tree.select-items:hyper-ide-folder-tree-browser
+  items

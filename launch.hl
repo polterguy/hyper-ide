@@ -1314,3 +1314,17 @@ create-widget:hyper-ide-main-container
              * Creating initial "splash" screen.
              */
             hyper-ide.load-splash
+
+
+
+
+
+/*
+ * Checking if client requested to open a specific file or path initially,
+ * and if so, invoking file responsible for doing just that.
+ */
+p5.web.query.get:path
+if:x:/@p5.web.query.get/*?value
+  eval-x:x:/+/*
+  micro.evaluate.file:@IDE/helpers/open-path.hl
+    path:x:/@p5.web.query.get/*?value
