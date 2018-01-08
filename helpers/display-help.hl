@@ -1,0 +1,103 @@
+
+/*
+ * File responsible for displaying help.
+ *
+ * Notice, these help files are in general terms created a Hyperlambda files, to 
+ * make them "interactive", such that they can contain macros, and other things,
+ * that somehow modifies the state of Hyper IDE, or in any other ways "interact"
+ * with Hyper IDE.
+ */
+create-widget:hyper-ide-help-wrapper
+  parent:hyper-ide-content-wrapper
+  class:col-100
+  style:"margin-top:.5rem;"
+  widgets
+    container:hyper-ide-help-content
+      class:air-inner shaded rounded bg
+      oninit
+      
+        /*
+         * Loading "index.hl", which is our "help landing page file".
+         */
+        hyper-ide.help.display-file:@IDE/helpers/help-files/index.hl
+
+      events
+
+        /*
+         * Event responsible for loading Hyperlambda interactive help file.
+         */
+        hyper-ide.help.display-file
+
+          /*
+           * Checking file type first.
+           */
+          if
+            ends-with:x:/../*/_arg?value
+              src:.hl
+
+            /*
+             * Loading specified Hyperlambda file.
+             */
+            load-file:x:/../*/_arg?value
+            add:x:/@load-file/*/*
+              src
+                parent:hyper-ide-help-content
+            add:x:/..if/*/create-widgets
+              src:x:/@load-file/*/*
+
+            /*
+             * Clearing old widget, before we load new widgets.
+             */
+            clear-widget:hyper-ide-help-content
+            create-widgets
+
+          else
+
+            /*
+             * Loading specified Markdown file, and converting it into HTML.
+             */
+            load-file:x:/../*/_arg?value
+            markdown2html:x:/@load-file/*?value
+
+            /*
+             * Clearing old widget, before we create our new widget, 
+             * wrapping the HTML from Markdown file.
+             */
+            clear-widget:hyper-ide-help-content
+            create-widget
+              parent:hyper-ide-help-content
+              element:div
+              innerValue:x:/@markdown2html?value
+
+          /*
+           * Creating our common "go to index.hl" button, unless this IS our idnex.hl file.
+           */
+          if
+            ends-with:x:/../*/_arg?value
+              src:/index.hl
+            not
+            create-widget
+              parent:hyper-ide-help-content
+              element:a
+              href:#
+              class:hyper-ide-help-index-button
+              innerValue:Back to index
+              onclick
+
+                /*
+                 * Loading and displaying "index.hl" file.
+                 */
+                hyper-ide.help.display-file:@IDE/helpers/help-files/index.hl
+                
+
+      widgets
+
+
+
+
+
+/*
+ * Notifying user that he must scroll to the bottom to actually see the help files.
+ */
+micro.windows.info:Help files can be found at the bottom of your page
+  class:micro-windows-info success

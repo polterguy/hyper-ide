@@ -971,6 +971,20 @@ create-widget:hyper-ide-main-container
                   widgets
 
                     /*
+                     * Help button.
+                     */
+                    button
+                      innerValue:@"<span class=""icon-question""></span>"
+                      title:Help
+                      style:"margin-bottom:0;"
+                      onclick
+
+                        /*
+                         * Evaluating file responsible for displaying "help files".
+                         */
+                        micro.evaluate.file:@IDE/helpers/display-help.hl
+
+                    /*
                      * Settings button.
                      */
                     button
