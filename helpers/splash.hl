@@ -143,7 +143,7 @@ allowing you to literally start your new projects <em>'running'</em>. Hyper IDE 
 options, which among other things makes you eligible for professional support. <a href=""/bazar?app=license"">Read more about the proprietary licensing options here</a>."
 
     p
-      style:"position:absolute; bottom:0; right:1rem; color:#b0b0b0; font-style:italic; font-size:.7rem;"
+      class:hyper-ide-copyright
       innerValue:@"Copyright (c) <a target=""_blank"" href=""https://gaiasoul.com"">Thomas Hansen</a>, thomas@gaiasoul.com, license GPLv3"
     img
       src:"https://phosphorusfive.files.wordpress.com/2017/12/ufo.png"
