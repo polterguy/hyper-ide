@@ -1,3 +1,4 @@
+
 /*
  * Initial "splash" screen.
  *
@@ -137,10 +138,23 @@ since Phosphorus Five is licensed as GPLv3."
     h3
       innerValue:Hyper IDE <small>{Develop anything from anywhere}</small>
     p
-      innerValue:@"An ultra slick, responsive, and modularised web based Integrated Development Environment, supporting 100+ programming languages out of the box, allowing
+      widgets
+        span
+          innerValue:@"An ultra slick, responsive, and modularised web based Integrated Development Environment, supporting 100+ programming languages out of the box, allowing
 you to code from your phone if you wish. Hyper IDE contains strong plugin support, in addition to several different types of template projects,
-allowing you to literally start your new projects <em>'running'</em>. Hyper IDE is Open Source, but there also exists proprietary licensing
-options, which among other things makes you eligible for professional support. <a href=""/bazar?app=license"">Read more about the proprietary licensing options here</a>."
+allowing you to literally start your new projects <em>'running'</em>."
+        literal
+          element:span
+          oninit
+            if
+              license.is-valid
+              set-widget-property:x:/../*/_event?value
+                innerValue:You seem to be properly licensed, and ready to create close source applications if you wish.
+            else
+              set-widget-property:x:/../*/_event?value
+                innerValue:@"Hyper IDE is Open Source, but there also exists proprietary licensing
+options, which among other things makes you eligible for professional support, in addition to allowing you
+to create close source apps in Hyperlambda. <a href=""/bazar?app=license"">Read more about the proprietary licensing options here</a>."
 
     p
       class:hyper-ide-copyright
@@ -148,6 +162,6 @@ options, which among other things makes you eligible for professional support. <
     img
       src:"https://phosphorusfive.files.wordpress.com/2017/12/ufo.png"
       class:hyper-ide-ufo
-      title:@"That feeling Hyper IDE gives you ... ;)"
+      title:@"That feeling Hyper IDE gives you ..."
       alt:UFO
 
