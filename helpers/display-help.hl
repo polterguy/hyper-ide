@@ -1,4 +1,3 @@
-
 /*
  * File responsible for displaying help.
  *
@@ -6,14 +5,21 @@
  * make them "interactive", such that they can contain macros, and other things,
  * that somehow modifies the state of Hyper IDE, or in any other ways "interact"
  * with Hyper IDE.
+ *
+ * Making sure we check for existence of widget first though, and deleting it, to
+ * easily allow user to "re-open" help, if it's already open.
  */
+if
+  fetch:x:/0/0?value
+    widget-exists:hyper-ide-help-wrapper
+  delete-widget:hyper-ide-help-wrapper
 create-widget:hyper-ide-help-wrapper
   parent:hyper-ide-content-wrapper
   class:col-100
-  style:"margin-top:.5rem;"
+  style:"margin-top:.5rem;position:relative;"
   widgets
     container:hyper-ide-help-content
-      class:air-inner shaded rounded bg
+      class:air-inner shaded rounded
       oninit
       
         /*
@@ -70,12 +76,25 @@ create-widget:hyper-ide-help-wrapper
               innerValue:x:/@markdown2html?value
 
           /*
-           * Creating our common "go to index.hl" button, unless this IS our idnex.hl file.
+           * Making sure we store the file reference, in case user wants to edit the
+           * currently viewed file.
+           */
+          p5.io.unroll-path:x:/../*/_arg?value
+          set-widget-property:hyper-ide-help-content
+            .file:x:/@p5.io.unroll-path?value
+
+          /*
+           * Creating our common "go to index.hl" button, unless this is our "index.hl" file.
            */
           if
             ends-with:x:/../*/_arg?value
               src:/index.hl
             not
+
+            /*
+             * This is not our "index.hl" file, making sure we make it easy for user
+             * to go back to "index.hl".
+             */
             create-widget
               parent:hyper-ide-help-content
               element:a
@@ -88,16 +107,72 @@ create-widget:hyper-ide-help-wrapper
                  * Loading and displaying "index.hl" file.
                  */
                 hyper-ide.help.display-file:@IDE/helpers/help-files/index.hl
-                
+
+          /*
+           * Scrolling browser to the bottom.
+           */
+          p5.web.send-javascript:@"p5.$('hyper-ide-help-wrapper').el.scrollIntoView ({behavior:'smooth', block:'start'});"
+
+          /*
+           * Creating our "edit file" button.
+           */
+          create-widget
+            parent:hyper-ide-help-content
+            element:a
+            href:#
+            class:hyper-ide-edit-help-file-button
+            innerValue:@"<span class=""icon-pencil""></span>"
+            title:Edits the current help file
+            onclick
+
+              /*
+               * Allowing user to edit the file.
+               */
+              p5.web.widgets.find-first-ancestor:x:/../*/_event?value
+                .file
+              get-widget-property:x:/-/*/*?value
+                .file
+              eval-x:x:/+/*
+              micro.evaluate.file:@IDE/helpers/open-path.hl
+                path:x:/@get-widget-property/*/*?value
+              p5.web.send-javascript:@"p5.$('hyper-ide-file-editor').el.scrollIntoView ({behavior:'instant'});"
+
+          /*
+           * Creating our "edit file" button.
+           */
+          create-widget
+            parent:hyper-ide-help-content
+            element:a
+            href:#
+            class:hyper-ide-refresh-help
+            innerValue:@"<span class=""icon-spinner11""></span>"
+            title:Reloads the current help file
+            onclick
+
+              /*
+               * Allowing user to edit the file.
+               */
+              p5.web.widgets.find-first-ancestor:x:/../*/_event?value
+                .file
+              get-widget-property:x:/-/*/*?value
+                .file
+              hyper-ide.help.display-file:x:/-/*/*?value
+
+          /*
+           * Creating our "close help" button.
+           */
+          create-widget
+            parent:hyper-ide-help-content
+            element:a
+            href:#
+            class:hyper-ide-close-help-button
+            innerValue:@"<span class=""icon-cross""></span>"
+            title:Close help
+            onclick
+
+              /*
+               * Deleting entire "help widget".
+               */
+              delete-widget:hyper-ide-help-wrapper
 
       widgets
-
-
-
-
-
-/*
- * Notifying user that he must scroll to the bottom to actually see the help files.
- */
-micro.windows.info:Help files can be found at the bottom of your page
-  class:micro-windows-info success

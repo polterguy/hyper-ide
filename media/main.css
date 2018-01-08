@@ -204,3 +204,21 @@
     font-style: italic;
     font-size: .7rem;
 }
+
+.hyper-ide-close-help-button {
+    position:absolute;
+    top:1rem;
+    right:1rem;
+}
+
+.hyper-ide-edit-help-file-button {
+    position:absolute;
+    bottom:2rem;
+    right:1rem;
+}
+
+.hyper-ide-refresh-help {
+    position:absolute;
+    bottom:2rem;
+    right:2.5rem;
+}
