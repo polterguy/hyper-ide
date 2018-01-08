@@ -127,11 +127,10 @@ save-file:/modules/{0}/launch.hl
 /*
  * Includes CSS for our module.
  */
-micro.page.minify-and-bundle-css-file
+p5.web.include-css-file
   @MICRO/media/main.css
   @MICRO/media/fonts.css
   @MICRO/media/skins/serious.css
-p5.web.include-css-file:x:/-?value
 
 
 
