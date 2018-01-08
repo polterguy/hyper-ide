@@ -14,7 +14,7 @@
 /* Header displaying file/folder path */
 .hyper-ide-file-path {
     display: inline-block;
-    margin-top: 3rem;
+    margin-top: 3.5rem;
     margin-bottom: -1rem;
     color: #a0a0e0;
     position: absolute;
@@ -61,7 +61,7 @@
 
 /* Wrapper column around editors (and splash screen) */
 .hyper-ide-editor-col {
-    height: calc(100% - 1rem);
+    height: calc(100% - 1.5rem);
     margin-bottom:.5rem;
 }
 
@@ -71,7 +71,7 @@
     background-color: #ffffff;
     margin-bottom: 0;
     height:auto;
-    min-height:calc(100% - .5rem);
+    min-height:100%;
     margin-bottom:.5rem;
 }
 
