@@ -1,3 +1,4 @@
+
 ## A 5 minutes introduction to Hyper IDE
 
 ### The file explorer
@@ -80,4 +81,36 @@ action, try clicking the _"Edit button"_ (which show a pencil icon) at the botto
 Some of the help files are written in Hyperlambda, to provide example code, and allow you to test out concepts
 as you read. However, most of them (such as this file) is written in Markdown. Try clicking the _"pencil"_ button
 at the bottom right corner of this document to try it out for yourself. When you have saved your edits, you
-can view them instantly by clicking the _"refresh"_ button, next to the edit button.
+can view them instantly by clicking the _"refresh"_ button, next to the edit button. Any YouTube videos you include,
+will automatically be embedded, such as the example video below illustrates. **Hint**, you can also embed _"unlisted"_
+YouTube videos, which allows you to document your own code and projects inline, as an integral part of the IDE 
+and code itself.
+
+https://www.youtube.com/watch?v=mWFitx9py80
+
+### License information
+
+Hyper IDE is Open Source, and distributed under the terms of the GPL license version 3. This (might) have some
+implications for you, and your ability to (legally) create closed source applications with it. As a general rule
+of thumb, if you only use Hyper IDE to create code, and you do not consume any of the underlaying Phosphorus Five
+components in any ways - You don't have to worry about this. However, if you create your apps such that they somehow
+use Hyperlambda, either directly or indirectly, you will have to [obtain a proprietary license](/bazar?app=license),
+unless you have already obtained one. Notice for the record, Hyper Core is built on top of Phosphorus Five,
+and hence if you consume it, you must (and should) obtain a proprietary enabling license.
+
+Regardless of whether or not you legally need a license, please realise that maintaining Hyper IDE, and its
+associated components, is actually my dayjob. I am therefor 100% dependent upon people's willingness
+to supply me with the monetary means to continue my work, which arguably is to help you become better at what you do.
+In addition, if you purchase a license, you are also eligible to professional support, and I often find 
+myself prioritising feature requests submitted by those who have helped me in monetary ways for obvious reasons.
+
+I have also consciously set the price for a license arguably very low, such that it should not be a hurdle 
+for most (professional) developers. Hence, I would therefor encourage you
+to [get properly licensed](/bazar?app=license) if you intend to use Hyper IDE or Phosphorus Five
+professionally. The purchasing of a professional license is 100% automated, and secured by PayPal, and I provide
+a 30 days money back guarantee. When you have obtained a license, Hyper IDE will also stop _"bugging you"_, asking
+you to get properly licensed.
+
+<a href="/bazar?app=license">
+  <img style="display:block;margin-left:auto;margin-right:auto;" class="shaded rounded" src="https://phosphorusfive.files.wordpress.com/2017/09/license.jpg" alt="Get licensed" />
+</a>

@@ -50,12 +50,32 @@ micro.lambda.contract.min:x:/..
            */
           p5.config.get:p5.data.prefix
           for-each:x:/@p5.mysql.select/*/*?value
-            replace:x:/@_dp?value
-              src:x:/@p5.config.get/*?value
-            create-widget
-              element:option
-              parent:x:/../*/_event?value
-              innerValue:x:/@replace?value
+
+            /*
+             * Removing database prefix, if any.
+             */
+            if:x:/@p5.config.get/*?value
+              !=:
+
+              /*
+               * We have a database prefix.
+               */
+              replace:x:/@_dp?value
+                src:x:/@p5.config.get/*?value
+              create-widget
+                element:option
+                parent:x:/../*/_event?value
+                innerValue:x:/@replace?value
+
+            else
+
+              /*
+               * We no not have a database prefix.
+               */
+              create-widget
+                element:option
+                parent:x:/../*/_event?value
+                innerValue:x:/@_dp?value
 
           /*
            * Making sure we databind our tables.

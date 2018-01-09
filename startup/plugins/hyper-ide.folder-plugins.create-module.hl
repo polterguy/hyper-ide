@@ -178,6 +178,12 @@ Then choose a template type for your app."
                              */
                             if
                               fetch:x:/0/0?value
+                                file-exists:/modules/{0}/install.hl
+                                  :x:/@micro.form.serialize/*/name?value
+                              micro.evaluate.file:/modules/{0}/install.hl
+                                :x:/@micro.form.serialize/*/name?value
+                            if
+                              fetch:x:/0/0?value
                                 file-exists:/modules/{0}/startup.hl
                                   :x:/@micro.form.serialize/*/name?value
                               micro.evaluate.file:/modules/{0}/startup.hl

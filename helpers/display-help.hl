@@ -66,14 +66,62 @@ create-widget:hyper-ide-help-wrapper
             markdown2html:x:/@load-file/*?value
 
             /*
+             * Making sure we transform all YouTube links, such that they're replaced by
+             * a preview of the video.
+             */
+            html2lambda:x:/@markdown2html?value
+            for-each:x:@"/@html2lambda/*/p/*/#text/""=:regex:/^https:\\/\\/www.youtube.com\\/watch/"""
+
+              /*
+               * Replacing entire paragraph with a preview of YouTube video.
+               */
+              split:x:/@_dp/#?value
+                =:?v=
+              split:x:/@split/0/-?name
+                =:&
+              eval-x:x:/+/**/\@src
+              insert-before:x:/@_dp/#/.
+                src
+                  div
+                    @class:hyper-ide-youtube-outer-wrapper
+                    div
+                      @class:hyper-ide-youtube-wrapper
+                      iframe
+                        @type:text/html
+                        @class:hyper-ide-youtube-embed
+                        @allowfullscreen
+                        @src:@"https://www.youtube.com/embed/{0}?modestbranding=1&autohide=1&showinfo=0"
+                          :x:/@split/0?name
+              set:x:/@_dp/#/.
+
+            /*
+             * Making sure we transform all images linked to in paragraphs, such that they're replaced by
+             * an img HTML tag.
+             */
+            for-each:x:@"/@html2lambda/*/p/*/#text/""=:regex:/^https{0,1}:\\/\\/.+\\.[png|jpg|jpeg|gif]/i"""
+
+              /*
+               * Replacing entire paragraph with an image tag.
+               */
+              eval-x:x:/+/*/*/*
+              insert-before:x:/@_dp/#/.
+                src
+                  img
+                    @class:hyper-ide-help-image
+                    @src:x:/@_dp/#?value
+                    alt:Image
+              set:x:/@_dp/#/.
+
+            /*
              * Clearing old widget, before we create our new widget, 
              * wrapping the HTML from Markdown file.
              */
             clear-widget:hyper-ide-help-content
+            lambda2html:x:/@html2lambda/*
             create-widget
               parent:hyper-ide-help-content
               element:div
-              innerValue:x:/@markdown2html?value
+              innerValue:x:/@lambda2html?value
 
           /*
            * Making sure we store the file reference, in case user wants to edit the

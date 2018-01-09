@@ -1,0 +1,41 @@
+h2
+  innerValue:An introduction to Hyperlambda
+p
+  innerValue:@"First things first, this is our first tutorial file so far, that is actually written in Hyperlambda. In fact,
+the best way to see some Hyperlambda, is in fact to click the pencil icon at the bottom right corner of your screen. As you
+can clearly see, it contains an 'h1' element, some paragraphs, in addition to a couple of interactive elements. In fact, try
+to click the button below for a demonstration of having the click of a button trigger a server side Ajax event."
+button
+  innerValue:Click me!
+  onclick
+    set-widget-property:x:/../*/_event?value
+      innerValue:I was clicked!
+p
+  innerValue:@"If you inspect what goes over the wire as you click the above button, you will see that obviously it triggered
+an Ajax request, fetching some piece of JSON on the server side, which again automatically updated the UI on the client side. 
+This model of creating your web apps, facilitates for being able to <em>'declare'</em> your widgets and HTML elements, in a 
+very nice and structured way, in server side code - Which then automatically renders your HTML and/or JSON back to the client, 
+as properties and attributes of your widgets are updated and changed on the server."
+p
+  innerValue:@"This trait of Hyperlambda allows you to focus more on what you should do, and your problem - And less on the
+nitty gritty wiring, and in between code, necessary to create complex and rich web apps. As a testimonial to Hyperlambda's
+abilities, realise that Hyper IDE is exclusively built in Hyperlambda. So is Hyper Core, which is an HTTP REST based ORM
+library for JSON based clients. So even though you can completely circumvent Hyperlambda with Hyper IDE, and create your
+apps in for instance AngularJS, I encourage you to at least for some types of apps, dive into Hyperlambda, to see if it
+can solve the problem at hand better."
+p
+  innerValue:@"Try to edit this file, and add an onmouseover Ajax event for your button, and then invoke <strong>[micro.windows.info]</strong>, 
+and pass some piece of text that you want to display in an information bubble type of window. You can see the code below for 
+how your button's code should look like afterwards."
+pre
+  innerValue:@"button
+  innerValue:Click me!
+  onmouseover
+    micro.windows.info:Foo bar
+  onclick
+    set-widget-property:x:/../*/_event?value
+      innerValue:I was clicked!
+"
+p
+  innerValue:@"Then save your file, and click the <em>'refresh'</em> button in the bottom right corner of this page, before
+you hover your mouse above the button."

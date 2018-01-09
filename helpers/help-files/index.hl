@@ -1,11 +1,10 @@
-
 /*
  * This is our main "landing page" for the help system in Hyper IDE.
  *
  * This file displays the general "index", and such serves as a starting ground
  * for other files in the help system.
  */
-h3
+h2
   innerValue:Help
 container
   element:ul
@@ -28,11 +27,13 @@ container
     for-each:x:/@list-files/*
 
       /*
-       * Figuring out filename, without extension.
+       * Figuring out filename, without extension, and removing numbering parts.
        */
       split:x:/@_dp/#?name
         =:/
         =:.
+      replace:x:/@split/0/-2?name
+        src:regex:/[0-9]+ - /
 
       /*
        * Creating a list item, containing a hyperlink button, which once clicked,
@@ -44,7 +45,7 @@ container
         widgets
           a
             href:#
-            innerValue:x:/@split/0/-2?name
+            innerValue:x:/@replace?value
             .file:x:/@_dp/#?name
             onclick
 
@@ -56,3 +57,9 @@ container
                 .file
               hyper-ide.help.display-file:x:/@get-widget-property/*/*?value
               
+p
+  innerValue:@"<strong>Disclaimer</strong> - This is an early preview release of the interactive and integrated documentation system for Hyper IDE, 
+and hence I have not had much time to add a lot of documentation files for it. In a later release, I will significantly add to
+this help system, making it the primary mechanism for how to learn Phosphorus Five, Hyper IDE, and Hyperlambda. If you have a specific
+question though, you can check out the <a href=""https://github.com/polterguy/phosphorusfive/issues"">GitHub issues page</a>,
+and request information about a specific subject."
