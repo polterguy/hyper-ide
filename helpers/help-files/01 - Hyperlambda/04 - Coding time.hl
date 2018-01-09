@@ -1,0 +1,22 @@
+/*
+ * This will create a video widget, as we illustrated in our previous chapter.
+ * Feel free to edit it, and play with it if you wish.
+ *
+ * Notice, the structure of the widget is a container widget, with one paragraph
+ * element, and another video element is its children
+ */
+container
+  widgets
+    literal
+      element:video
+      width:320
+      height:240
+      controls
+      src:"http://www.w3schools.com/html/movie.ogg"
+      type:video/ogg
+      innerValue:Your browser needs to be updated
+    literal
+      element:p
+      innerValue:@"Click the pencil in the bottom right corner to see how 
+we created this widget, and play around with it in your Hyperlambda 
+editor by editing it, as I taught you in the previous chapter."

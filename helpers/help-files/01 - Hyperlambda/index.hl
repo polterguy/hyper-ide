@@ -1,15 +1,13 @@
+
 /*
- * This is our main "landing page" for the help system in Hyper IDE.
- *
- * This file displays the general "index", and such serves as a starting ground
- * for other files in the help system.
+ * This is our main "landing page" for our Hyperlambda help files.
  */
 h2
-  innerValue:Help
+  innerValue:Hyperlambda
 
 
 /*
- * All files at "root" of help files folder.
+ * All files at "root" of Hyperlambda help folder.
  */
 container
   element:ul
@@ -18,7 +16,7 @@ container
     /*
      * Retrieving all other Hyperlambda files in the help folder.
      */
-    list-files:@IDE/helpers/help-files/
+    list-files:@IDE/helpers/help-files/01 - Hyperlambda/
       filter:.hl|.md
 
     /*
@@ -77,7 +75,7 @@ container
     /*
      * Retrieving all other Hyperlambda files in the help folder.
      */
-    list-folders:@IDE/helpers/help-files/
+    list-folders:@IDE/helpers/help-files/01 - Hyperlambda/
 
     /*
      * Looping through each Hyperlambda file (except of course "index.hl").
