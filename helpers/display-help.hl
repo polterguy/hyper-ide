@@ -230,16 +230,21 @@ create-widget:hyper-ide-help-wrapper
                           textarea
                             @id:x_{0}
                               :x:/@replace?value
+                            @disabled
                             #text:x:/@trim-right?value
                       set:x:/@_dp/#/./.
+                      .defaults
+                        theme:phosphorus
+                      select-data:x:/*/*/micro.codemirror.settings
                       p5.web.include-javascript-file
                         @MICRO/media/codemirror-all.min.js
                       p5.web.include-javascript-file:@MICRO/media/codemirror/mode/hyperlambda/hyperlambda.min.js
                       p5.web.include-css-file:@MICRO/media/codemirror-all.min.css
-                      p5.web.include-css-file:@MICRO/media/codemirror/theme/phosphorus.css
+                      p5.web.include-css-file:@MICRO/media/codemirror/theme/{0}.css
+                        :x:(/@select-data/*/*/theme|/@.defaults/*/theme)/$?value
                       p5.web.send-javascript:@"p5['x_{0}'] = CodeMirror.fromTextArea(p5.$('x_{0}').el, {{
   mode:'{1}',
-  theme:'phosphorus',
+  theme:'{2}',
   lineNumbers:true,
   readOnly:true,
   styleActiveLine:true,
@@ -251,6 +256,8 @@ p5['x_{0}'].setSize('100%', 'auto');
 "
                         :x:/@replace?value
                         :x:/@replace/@replace?value
+                        :x:(/@select-data/*/*/theme|/@.defaults/*/theme)/$?value
+                      micro.widgets.codemirror._include-auto-complete
 
                     /*
                      * Clearing old widget, before we create our new widget, 

@@ -108,6 +108,62 @@ if:x:(/@select-data/*/*/page-scroll|/../*/.defaults/*/page-scroll)/$?value
 
 
 /*
+ * Retrieving active events that will create a "global" plugin button.
+ *
+ * Making sure we check for the existence of a configuration file, and if it exists,
+ * we turn OFF everything not explicitly turned on in that file.
+ */
+vocabulary:~hyper-ide.global-plugin.
+if
+  fetch:x:/0/0?value
+    file-exists:@IDE/configuration/plugins.hl
+  load-file:@IDE/configuration/plugins.hl
+  for-each:x:/@vocabulary/*
+    if:x:/@load-file/*/*/{0}
+      :x:/@_dp/#?value
+      not
+      set:x:/@_dp/#
+
+
+
+
+
+/*
+ * Adding all plugin active events into [.plugins] below.
+ */
+.plugins
+  return:x:/../*/*
+for-each:x:/@vocabulary/*?value
+  insert-before:x:/@.plugins/0/-
+    src:x:/@_dp?value
+
+
+
+
+
+/*
+ * Evaluating [.plugins] lambda, which will invoke all plugin button events for us,
+ * and return its result.
+ */
+eval:x:/@.plugins
+
+
+
+
+
+/*
+ * Adding the results of above plugin creation logic into our toolbar widget.
+ *
+ * Notice, the above [eval] will return the results of all plugin active events.
+ */
+insert-before:x:/../*/create-widget/**/widgets/=plugins/0/-2
+  src:x:/@eval/*
+
+
+
+
+
+/*
  * Creating main container.
  */
 create-widget:hyper-ide-main-container
@@ -960,7 +1016,7 @@ create-widget:hyper-ide-main-container
             /*
              * Our primary toolbar.
              *
-             * Contains settings and home button.
+             * Contains settings and home button, and "global" plugins.
              */
             div:hyper-ide-toolbars
               style:"float:right;"
@@ -968,7 +1024,7 @@ create-widget:hyper-ide-main-container
                 div
                   class:strip toolbar hyper-ide-toolbar
                   style:"float:right;"
-                  widgets
+                  widgets:plugins
 
                     /*
                      * Help button.
@@ -1047,7 +1103,7 @@ create-widget:hyper-ide-main-container
                      */
                     button
                       innerValue:@"<span class=""icon-home3""></span>"
-                      title:Close Hypereval
+                      title:Close Hyper IDE
                       style:"margin-bottom:0;"
                       onclick
 

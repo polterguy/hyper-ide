@@ -26,7 +26,7 @@ in other ways extending it, to fit your own needs. So even if you never intend t
 in Hyperlambda, you will still benefit from reading this book, since it allows you to customise Hyper IDE according to
 your needs.
 
-## A guide to the guide
+### A guide to the guide
 
 The book's convention, is created carefully to allow you to understand what is being described. First of all, 
 any property or attribute from Hyperlambda is referenced like **[foo]**, where *"foo"* assumes we are talking about
@@ -34,11 +34,22 @@ a node's name. This convention is used whenever a node is referenced inline in t
 are written like *this*. Inline code is written like `this` and multiple lines of code is written like the following.
 
 ```hyperlambda
-howdy-world
-  this-is:A piece of Hyperlambda code!
+create-widget:my-widget
+  innerValue:A piece of Hyperlambda code!
+  onclick
+    set-widget-property:my-widget
+      innerValue:I was clicked!
 ```
 
-## External articles and references
+### Evaluating the code examples
+
+For the most parts, most coding examples are _"self contained"_, meaning you can simply copy them from
+the documentation, and paste them into some other place, to immediately evaluate them and try out the concepts
+we go through. If you have the _"Hypereval"_ plugin enabled, you can click it at the top of this 
+page (the toolbar button that resembles a _"lightning"_), copy and paste the above code into Hypereval, and click
+the _"Evaluate"_ button in Hypereval (which is the button that resembles a _"lightning"_).
+
+### External articles and references
 
 I have written several article about Hyper IDE, Phosphorus Five, and its associated technologies in several online magazines.
 Below is a short list of some of these, which you might benefit from reading.

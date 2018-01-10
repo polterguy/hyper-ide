@@ -210,6 +210,11 @@
     position:relative;
 }
 
+.hyper-ide-help .CodeMirror {
+    margin-top:2rem;
+    margin-bottom:2rem;
+}
+
 .hyper-ide-help-content {
     text-align: justify;
     padding:5rem;
