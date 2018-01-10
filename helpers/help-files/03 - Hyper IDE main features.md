@@ -1,4 +1,3 @@
-
 ## A 5 minutes introduction to Hyper IDE
 
 ### The file explorer
@@ -46,6 +45,8 @@ Below is a list of these keyboard shortcuts.
 * __Ctrl+F__ - Search, _"highlight"_ version (regex support) - Cmd+F on Mac
 * __Ctrl+Alt+F__ - Replace in file. Cmd+Alt+F on Mac
 * __Alt+G__ - Go to line number
+* __Ctrl+Z__ - Undo
+* __Ctrl+Shift+Z__ - Redo
 
 **Notice**, on a Mac OS X computer, you'll have to use the **CMD** key where it says _"Ctrl"_ above.
 

@@ -1,6 +1,7 @@
 /* Making sure strip labels have uniform width */
 .hyper-ide-container {
     padding-bottom: 0;
+    overflow:auto;
 }
 
 .strip > label:first-child {
@@ -205,22 +206,41 @@
     font-size: .7rem;
 }
 
+.hyper-ide-help {
+    position:relative;
+}
+
+.hyper-ide-help-content {
+    text-align: justify;
+    padding:5rem;
+}
+
 .hyper-ide-close-help-button {
     position:absolute;
-    top:1rem;
-    right:1rem;
+    top:2rem;
+    right:2rem;
 }
 
 .hyper-ide-edit-help-file-button {
     position:absolute;
-    bottom:2rem;
-    right:1rem;
+    bottom:3rem;
+    right:2rem;
 }
 
 .hyper-ide-refresh-help {
     position:absolute;
-    bottom:2rem;
-    right:2.5rem;
+    bottom:3rem;
+    right:3.5rem;
+}
+.hyper-ide-help-previous-button {
+    position:absolute;
+    bottom:3rem;
+    right:7rem;
+}
+.hyper-ide-help-next-button {
+    position:absolute;
+    bottom:3rem;
+    right:5rem;
 }
 .hyper-ide-youtube-outer-wrapper {
     max-width:800px;
