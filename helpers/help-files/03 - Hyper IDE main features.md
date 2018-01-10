@@ -119,11 +119,13 @@ create-widgets
         innerValue:It's alive!
       img
         src:"https://phosphorusfive.files.wordpress.com/2018/01/it-is-alive.jpg"
+        style:"display:block;margin-left:auto;margin-right:auto;"
       div
-        class:right
+        class:right air-top
         widgets
           button
             innerValue:Close
+            style:"margin-bottom:0;"
             onclick
               delete-widget:sample-dox-modal-window
 
@@ -139,9 +141,8 @@ with the ideas put forth in this documentation, to modify them, to create differ
 
 If you are too lazy to even copy and paste code into your Hypereval editor, you can also simply click the lightning
 button, beneath the above code snippets. Not all code snippets have this lightning button, but all those that do,
-allows you to evaluate the snippet immediately.
-
-If you're too lazy to even click at the button, you can simply enjoy this screenshot of its result.
+allows you to evaluate the snippet immediately. If you're too lazy to even click at the button, you can simply 
+enjoy this screenshot of its result.
 
 https://phosphorusfive.files.wordpress.com/2018/01/screenshot-its-alive-example.png
 
