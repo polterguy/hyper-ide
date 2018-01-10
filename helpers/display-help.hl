@@ -210,6 +210,49 @@ create-widget:hyper-ide-help-wrapper
                       set:x:/@_dp/#/.
 
                     /*
+                     * Making sure we transform all code to use CodeMirror in "read only" mode, 
+                     * to allow syntax highlighting of code examples.
+                     */
+                    for-each:x:/@html2lambda/*/pre/*/code/*/#text
+
+                      /*
+                       * Replacing entire paragraph with an image tag.
+                       */
+                      replace:x:/@_dp/#/./*/\@class?value
+                        src:language-
+                      p5.types.guid.new
+                      replace:x:/-?value.string
+                        src:-
+                      trim-right:x:/@_dp/#?value
+                      eval-x:x:/+/*/*/*
+                      insert-before:x:/@_dp/#/./.
+                        src
+                          textarea
+                            @id:x_{0}
+                              :x:/@replace?value
+                            #text:x:/@trim-right?value
+                      set:x:/@_dp/#/./.
+                      p5.web.include-javascript-file
+                        @MICRO/media/codemirror-all.min.js
+                      p5.web.include-javascript-file:@MICRO/media/codemirror/mode/hyperlambda/hyperlambda.min.js
+                      p5.web.include-css-file:@MICRO/media/codemirror-all.min.css
+                      p5.web.include-css-file:@MICRO/media/codemirror/theme/phosphorus.css
+                      p5.web.send-javascript:@"p5['x_{0}'] = CodeMirror.fromTextArea(p5.$('x_{0}').el, {{
+  mode:'{1}',
+  theme:'phosphorus',
+  lineNumbers:true,
+  readOnly:true,
+  styleActiveLine:true,
+  path:'hyperlambda/media/codemirror/',
+  autofocus:false,
+  viewportMargin: Infinity
+}});
+p5['x_{0}'].setSize('100%', 'auto');
+"
+                        :x:/@replace?value
+                        :x:/@replace/@replace?value
+
+                    /*
                      * Clearing old widget, before we create our new widget, 
                      * wrapping the HTML from Markdown file.
                      */

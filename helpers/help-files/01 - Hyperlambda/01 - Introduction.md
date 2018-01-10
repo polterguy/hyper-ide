@@ -33,7 +33,7 @@ any property or attribute from Hyperlambda is referenced like **[foo]**, where *
 a node's name. This convention is used whenever a node is referenced inline in the text. Emphasized and important points, 
 are written like *this*. Inline code is written like `this` and multiple lines of code is written like the following.
 
-```
+```hyperlambda
 howdy-world
   this-is:A piece of Hyperlambda code!
 ```
