@@ -17,20 +17,21 @@ When you create a widget, you often want to associate HTML attributes with it. T
 the attributes as a key/value argument to your widget. Consider the following code, which creates an HTML5 video 
 element for you.
 
-```
+```hyperlambda-snippet
 create-widget:my_video
+  parent:hyper-ide-help-content
   element:video
   width:320
   height:240
   controls
-  src:http://www.w3schools.com/html/movie.ogg
+  src:"http://www.w3schools.com/html/movie.ogg"
   type:video/ogg
   innerValue:Your browser needs to be updated
 ```
 
 In the above code, almost all arguments will create some sort of attribute. The resulting HTML will resemble something like the following.
 
-```xml
+```html
 <video 
   id="my_video"
   width="320"
@@ -46,7 +47,7 @@ All nodes you add to a widget, that does not have some special meaning, will aut
 knows nothing of any *"video"* element, but the ability to dynamically declare any attributes you wish, combined with being able to 
 control the HTML element used for rendering the widget, allows you to easily create any HTML you wish.
 
-In fact, in the above code, the only arguments that are handled by P5 as *"non-attribute arguments"* are **[element]** and **[innerValue]**. 
+In fact, in the above code, the only arguments that are handled by P5 as *"special arguments"* are **[element]**, **[parent]**, and **[innerValue]**. 
 All the other arguments are considered attributes to the resulting HTML. Notice the **[controls]** declaration above, that translates into 
 an *"empty attribute"*. If you wish to create XHTML compliant HTML, you can exchange it with `controls:controls`.
 
@@ -69,12 +70,15 @@ You can also create JavaScript events with similar syntax. Although if you wish 
 executed when your DOM event is raised - You will need to put your JavaScript into the _value_ of your event handler's node, instead 
 of adding it as a child lambda object. The following is an example of that.
 
-```
+```hyperlambda-snippet
 create-widget
+  parent:hyper-ide-help-content
   element:button
   innerValue:Click me
-  onclick:"alert('Hello JavaScript!')"
+  onclick:"alert('Hello JavaScript!');return false;"
 ```
+
+You can of course attach your DOM events on the client side, using JavaScript instead, by referencing the ID of your widget.
 
 ### Widget arguments
 
@@ -91,7 +95,7 @@ Below are the special arguments you can apply to your widgets.
 * **[after]** - Inject widget *"after"* specified widget
 * **[oninit]** - A custom lambda object to execute when your widget is displayed
 
-#### Positioning your widget
+### Positioning your widget
 
 The **[parent]**, **[before]** and **[after]** arguments, are mutually exclusive, and you can only apply one of these. If you choose to 
 use a **[parent]** argument, then your widget will be appended into this widget's children collection. If you use a **[parent]** argument, 
@@ -99,21 +103,21 @@ you can optionally apply a **[position]** argument, containing an integer number
 injected, instead of being appended at the end.
 
 If you apply a **[before]** or **[after]** argument, you cannot apply a **[parent]**, or a **[position]** argument. You can also only use 
-one of **[before]** of **[after]**. These arguments refers to an existing widget on your page, which you want to insert your widget *"before"* 
+one of **[before]** or **[after]**. These arguments refers to an existing widget on your page, which you want to insert your widget *"before"* 
 or *"after"*. You can insert your widget exactly where you wish, by cleverly using the right positioning argument(s).
 
-Notice how we in the above Hyperlambda, actually completely omitted any positioning arguments. This results in that a default value of *"cnt"* 
+Notice you can also completely omit any positioning arguments. This results in that a default value of *"cnt"* 
 as **[parent]** will be used. If no **[parent]**, **[before]** or **[after]** arguments are supplied, its default position becomes **[parent]** 
 of *"cnt"*. The *"cnt"* container, is the main root widget on your page.
 
-#### Which HTML element to render
+### Which HTML element to render
 
 The **[element]** declares which HTML element or *"tagName"* you want to use. There are no checks in P5 in regards to HTML validity. This 
 allows you to create an HTML element with the name of *"foo-bar"*. Such an element, would obviously not conform to any HTML standards, 
 and would be considered invalid HTML. You are responsible for making sure your code creates valid HTML markup. The **[element]** argument, 
 if omitted, defaults to *"div"* for **[container]** widgets, *"p"* for **[literal]** widgets, and *"input"* for **[void]** widgets.
 
-#### Controlling the visibility of your widget
+### Controlling the visibility of your widget
 
 The **[visible]** argument, is a boolean, and can take either *"true"* or *"false"*. This declares whether or not your widget should be 
 initially visible. If you create your widget as initially invisible, an invisible wrapper HTML element will be created for you, at the 
@@ -125,7 +129,7 @@ it on your page, until you're ready to display it.
 Notice that your **[oninit]** lambda callback, will only be invoked when the widget becomes visible, and it will be invoked *every time* 
 your widget becomes visible. The **[visible]** argument defaults to *"true"* if omitted.
 
-#### Types of widgets you can create
+### Types of widgets you can create
 
 The **[widgets]** and **[innerValue]** arguments are mutually exclusive, and only one of these can be supplied. If you supply a **[widgets]** 
 argument, your widget will be created as a **[container]** widget. If you supply an **[innerValue]** argument, your widget will become 
@@ -146,14 +150,14 @@ The first 3 in our list above, does the exact same thing as the last 3 above. Th
 is to make it easier to retrieve your list of Active Events, according to which namespace they belong to. Try typing out e.g. `p5.web.` into 
 some Hyperlambda editor at an empty line, and then click Ctrl+Space to see an example of how this might be beneficial for you.
 
-#### Initializing your widget
+### Initializing your widget
 
 The **[oninit]** argument declares a lambda object, which will be executed when the widget is displayed. This lambda will be executed on the 
 server, like all other lambda objects. It allows you to create initialization logic. The **[oninit]** lambda will be executed only when 
 the widget becomes visible, and in fact, once *every time* your widget becomes visible. This means that if you hide a widget, for then to 
 display it again - Your **[oninit]** will be executed every time you show your widget.
 
-#### Uniquely IDentifying your widgets
+### Uniquely IDentifying your widgets
 
 As previously discussed, the ID of your widget is the value of your widget creation node. Every widget you create on the same page must 
 have a unique ID.  This might create a problem for you, as you create reusable lambda objects, intended to be repeatedly executed, that 
@@ -165,7 +169,7 @@ This makes it impossible for you to know the ID of your widgets as you create yo
 for you, since the ID of your widget is always passed into your Ajax event handlers automatically. The name of this node is **[_event]**. 
 We will take a look at some examples later in this book, where we take advantage of this automatically generated ID.
 
-#### Widget lambda events
+### Widget lambda events
 
 The **[events]** argument, allows you to associate Active Events with your widget. These are often referred to as *"widget lambda events"* 
 in P5. We will go into more details of exactly what this is later, but for now, think of these as *"widget methods"*, *"functions"*, or 
@@ -177,21 +181,22 @@ The name of the children node beneath your **[events]** node, becomes the name o
 such an event, is similar to raising any other types of Active Events, and there are no semantic differences between a predefined event, 
 or a widget lambda event. Below is an example.
 
-```
+```hyperlambda-snippet
 create-widget
+  parent:hyper-ide-help-content
   element:button
   class:btn btn-primary
   innerValue:Click me
   onclick
 
     // Raising the widget's lambda event
-    sys42.examples.foo-event
+    examples.foo-event
 
   events
 
     // Declaring a widget lambda event
-    sys42.examples.foo-event
-      sys42.windows.info-tip:Your widget's lambda event says hello!
+    examples.foo-event
+      micro.windows.info:Your widget's lambda event says hello!
 ```
 
 ### Invisible properties and Ajax events
@@ -221,15 +226,16 @@ However, both of the above events have convenience overloads, which you'd probab
 
 Both of the above mentioned Active Events, takes one or more IDs, and reacts upon the specified widget(s) accordingly. Below is a piece 
 of Hyperlambda that creates a widget, which once the mouse is hovered above it, changes a couple of attributes. When the mouse leaves the 
-widget, it retrieves a couple of attributes, and shows a debug window.
+widget, it retrieves one attribute, and shows an info window.
 
-```
+```hyperlambda-snippet
 create-widget:my_video
+  parent:hyper-ide-help-content
   element:video
   width:320
   height:240
   controls
-  src:http://www.w3schools.com/html/movie.ogg
+  src:"http://www.w3schools.com/html/movie.ogg"
   type:video/ogg
   innerValue:Your browser needs to be updated
   onmouseover
@@ -239,8 +245,7 @@ create-widget:my_video
   onmouseout
     p5.web.widgets.property.get:my_video
       src
-      type
-    sys42.windows.show-lambda:x:/..
+    micro.windows.info:x:/@p5.web.widgets.property.get/*/*?value
 ```
 
 As you can see in our example above, you can change and retrieve multiple attributes in one invocation. You can also change and retrieve 

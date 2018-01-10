@@ -44,7 +44,7 @@ the simple - Which you will discover as you proceed.
 Managed Ajax also implies that it becomes much harder to create security holes, since all the code that is executed, is 
 executed on the server - And the HTML and JavaScript parts, are automatically created for you on the client side. In addition, 
 a code model where you only have to think about one concept, makes your code much more easily maintained - Contrary to a pure 
-JavaScript solution, where you have to change multiple places, if you want to change even a small piece of logic in your own app.
+JavaScript solution, where you often have to change multiple places, if you want to change even a small piece of logic in your own app.
 
 ### Ajax technology choices in P5
 
@@ -85,15 +85,16 @@ than what P5 consumes to solve the same problem.
 In fact, I am running [my own webserver out of my home](https://home.gaiasoul.com), over a plain home 5Mb internet connection - Yet 
 still, I can easily check my email, upload and download my own files securely, without any problems in regards to responsiveness. 
 Sephia Five for instance, is using 1/25th of the bandwidth that its competitor GMail is using. In addition, I have installed Hyper
-IDE on that server, with hundreds and thousands of guests visiting my server, every single day.
+IDE on that server, with hundreds, and sometimes even thousands of guests visiting my server, every single day. Below is a graph
+showing the difference in bandwidth consumption between GMail and Sephia Five.
 
-![alt bandwidth](https://github.com/polterguy/sephia-five/raw/master/media/bandwidth-comparison.png)
+https://github.com/polterguy/sephia-five/raw/master/media/bandwidth-comparison.png
 
 ### Server side performance and security
 
 In a stateless web app, often your database must be more frequently queried, or some other expensive resource must be polled 
 upon every single postback to your server. Although Hyperlambda is an extremely *"high level programming language"*, it often 
-due to these facts, performs surprisingly well, compared with other technologies. In addition, without state, a whole range 
+performs surprisingly well, compared to other technologies. In addition, without state, a whole range 
 of security issues becomes much more prevalent, broadening the *"attack surface"* of your server. P5 is *secure by default*, 
 and you'll actually have to consciously do something wrong, to create security holes. In addition, the risk of leaking business 
 logic to the client, simply does not exist in P5.

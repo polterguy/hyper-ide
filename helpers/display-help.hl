@@ -277,6 +277,8 @@ create-widget:hyper-ide-help-wrapper
                           .onevaluate
                             .code:x:/@_dp/#?value
                             eval:x:/-?value
+                            micro.windows.info:Your result can (probably) be found at the bottom of your page
+                              class:micro-windows-info success
 
                       trim-right:x:/@_dp/#?value
                       eval-x:x:/+/*/*/*

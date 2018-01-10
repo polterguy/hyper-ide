@@ -11,7 +11,7 @@ you have 4 basic Active Events you can use.
 - **[insert-after]**, inserts nodes, *after* some specified nodes
 
 These four Active Events, allows you to modify your lambda objects, during the execution of your lambda. Notice, the **[set]** event, which 
-in addition to changing a node, also can completely remove nodes, values and names. Hence, with these four events, you have all the 4 
+in addition to changing a node, also can completely remove nodes, values, or names for you. Hence, with these four events, you have all the 4 
 basic *"CRUD"* operations available for your lambda objects, and its individual nodes.
 
 **Definition**; *"CRUD"* is an acronym, and means *"Create, Remove, Update and Delete"*, and is a reference to all the 4 basic operations 
@@ -22,9 +22,9 @@ All of these Active Events, can be given multiple destinations. This means that 
 ### The [set] event
 
 This is the most basic Active Event for modifying your lambda objects. You can change a node, its value, or its name by using this event. 
-Consider the following code.
+Consider the following code. Yet again, for the examples in this chapter, please use Hypereval if you want to try them out for yourself.
 
-```
+```hyperlambda
 _foo
 set:x:/@_foo?value
   src:I was changed
@@ -33,7 +33,7 @@ set:x:/@_foo?value
 After executing the above Hyperlambda, your **[\_foo]** node's value, will be *"I was changed"*. By combining the **[set]** event, with what 
 we refer to as *"formatting expressions"*, you can easily concatenate strings. Consider the following code.
 
-```
+```hyperlambda
 _foo:Old value
 set:x:/@_foo?value
   src:{0}, and additional value
@@ -49,7 +49,7 @@ string *"Old value"*. These formatting expressions resembles `String.Format` fro
 Let's create a form, where we use the **[set]** event, in combination with some *"formatting expressions"*, to ask the user for his name, 
 and create a modal confirmation window.
 
-```
+```hyperlambda-snippet
 /*
  * Includes CSS for our module.
  */
@@ -62,6 +62,7 @@ p5.web.include-css-file
  * Creating main wire frame for module.
  */
 create-widget
+  parent:hyper-ide-help-content
   class:container
   widgets
     div
@@ -83,15 +84,27 @@ create-widget
               class:btn btn-default prepend-top
               innerValue:Submit
               onclick
+
+                /*
+                 * Retrieves first and last name of the user.
+                 */
                 .widgets
                   first_name
                   last_name
                 p5.web.widgets.property.get:x:/@.widgets/*?name
                   value
+
+                /*
+                 * Sets the [p/innerValue] further down.
+                 */
                 set:x:/../**/micro.widgets.modal/**/p/*/innerValue?value
                   src:Hello there {0}, {1}
                     :x:/@p5.web.widgets.property.get/0/*?value
                     :x:/@p5.web.widgets.property.get/1/*?value
+
+                /*
+                 * Creates a modal window, now with a first and last name greeting.
+                 */
                 create-widgets
                   micro.widgets.modal
                     widgets
@@ -118,78 +131,10 @@ of our two input elements in our form, which will result in that our invocation 
 both of these widgets' **[value]** in one invocation. Almost all Active Events in P5 can take expressions, and hence 
 do *"multiple things at the same time"*.
 
-To understand these expressions, let's show a *"debugging window*". This is easily done, by changing your **[onclick]** event handler, 
-adding some additional code, just before our **[set]** invocation. Modify your code, to resemble the following;
-
-```
-/*
- * Includes CSS for our module.
- */
-p5.web.include-css-file
-  @MICRO/media/main.css
-  @MICRO/media/fonts.css
-  @MICRO/media/skins/serious.css
-
-/*
- * Creating main wire frame for module.
- */
-create-widget
-  class:container
-  widgets
-    div
-      class:row
-      widgets
-        div
-          class:col-100
-          widgets
-            void:first_name
-              element:input
-              placeholder:Give me your first name ...
-              class:fill
-            void:last_name
-              element:input
-              placeholder:Give me your last name ...
-              class:fill
-            literal
-              element:button
-              class:btn btn-default prepend-top
-              innerValue:Submit
-              onclick
-                .widgets
-                  first_name
-                  last_name
-                p5.web.widgets.property.get:x:/@.widgets/*?name
-                  value
-
-                /*
-                 * Creates a "debugging window" for us.
-                 */
-                create-widget
-                  element:pre
-                  innerValue:x:/..
-                set:x:/../**/micro.widgets.modal/**/p/*/innerValue?value
-                  src:Hello there {0}, {1}
-                    :x:/@p5.web.widgets.property.get/0/*?value
-                    :x:/@p5.web.widgets.property.get/1/*?value
-                create-widgets
-                  micro.widgets.modal
-                    widgets
-                      h3
-                        innerValue:Hello world
-                      p
-                        innerValue
-```
-
-If you save this into your _"Hello World"_ app's _"launch.hl"_ file, and supply your first and last name, you will see the returned result, 
-from your invocation to **[p5.web.widgets.property.get]**. Here you can confirm that indeed it does return two values.
-
 With this in mind, realise that the expression we're using as the zeroth formatting expressions to our **[src]** node, is first retrieving 
 the **[p5.web.widgets.property.get]** node. Then it is retrieving its zeroth child, which is the node named **[first_name]** from our image 
 above. Then it retrieves this node's children. Since there only happens to be one child beneath this node, it will return this node's value, 
-which happens to be your first name, for the example above. If you still haven't watched the video from chapter 4, I encourage you to watch 
-this video.
-
-https://www.youtube.com/watch?v=VjG2hGeMnbU
+which happens to be your first name, for the example above.
 
 Then, after having evaluated both children expressions beneath our **[src]** node, it will substitute the `{0}` and `{1}` parts of 
 its **[src]** node's value, with the strings *"Thomas"* and *"Hansen"* respectively, if these were the names you supplied in your form.
@@ -205,7 +150,7 @@ this way.
 
 The **[add]** event, allows you to append new children into other nodes. However, let's start out with an example.
 
-```
+```hyperlambda-snippet
 /*
  * Includes CSS for our module.
  */
@@ -218,6 +163,7 @@ p5.web.include-css-file
  * Creating main wire frame for module.
  */
 create-widget
+  parent:hyper-ide-help-content
   class:container
   widgets
     div
@@ -226,7 +172,7 @@ create-widget
         div
           class:col-100
           widgets
-            void:first_name
+            void:first_name2
               element:input
               placeholder:Give me your first name ...
               class:fill
@@ -244,7 +190,7 @@ create-widget
                 /*
                  * Retrieving the input supplied by the user
                  */
-                p5.web.widgets.property.get:first_name
+                p5.web.widgets.property.get:first_name2
                   value
 
                 /*
@@ -289,10 +235,9 @@ if the value of our textbox is *"Thomas"*, it will **[add]** a different lambda 
 other input values.
 
 Finally, it will invoke this **[.exe]** node, and execute it as a lambda object. Hence, what we have actually done, is to 
-dynamically create a piece of lambda, depending upon the input of a textbox, for then to execute our dynamically created lambda. 
+dynamically create a piece of lambda, depending upon the value of our textbox, for then to execute our dynamically created lambda. 
 The above code is a naive example, but the concept is extremely powerful, since it allows you to dynamically create your lambda 
-objects, according to some criteria. This again, allows you to dynamically create logic, during runtime, directly modifying the 
-execution tree itself.
+objects, according to some criteria.
 
 ### Commenting Hyperlambda
 
@@ -302,28 +247,22 @@ you can create comments by starting your lines with `//`, which makes the parser
 semantic meaning to your lambda objects after your Hyperlambda have been parsed, and are in fact completely gone, after a lambda
 object have been created out of your Hyperlambda.
 
-The above code might be challenging to visualize in the beginning. In fact, especially for experienced developers, since there are 
-no similar concepts in main stream use, as far as I know, in any other programming languages.erent lambda objects. Hence, the code has *"morphed"*, in accordance to its environment. This particular example, is a fairly naive and simple one, but this feature is a highly useful feature of Hyperlambda. It might however be difficult to grasp in the beginning, since there doesn't really exist any similar concepts in other programming languages. It also requires some well developed visualization skills.
-In Hyperlambda, you can dynamically create and *"decorate"* your lambda objects, by inserting execution instructions into your lambda 
-object, almost the same way you'd decorate any object in a classic programming language. You can also remove instructions from 
-existing lambda objects. A lambda object in P5, is a _"dynamic living thing"_.
+### Still confused?
+
+The above code might be challenging to visualize in the beginning, especially for experienced developers, since there are 
+no similar concepts in main stream use out there as far as I know.
 
 If you imagine Hyperlambda as HTML, and lambda as the DOM your HTML creates. Then imagining how JavaScript can change your DOM 
 dynamically, and how this becomes the equivalent of dynamically *"molding"* your lambda objects during runtime - This might create 
 a mental model you can use to visualise this more easily.
 
-In P5, a lambda object can mold any lambda objects, the same way JavaScript can dynamically modify the DOM. In fact, Hyperlambda 
-makes all other functional and dynamic programming languages in the world hopelessly static in nature. Hyperlambda is 
-arguably _"orders of magnitudes more dynamic"_ than any other programming language out there - Including super dynamic languages 
-such as LISP and JavaScript.
-
 ## [insert-before] and [insert-after]
 
-These two Active Events works identically to **[add]**, except they don't append nodes to its destination(s), but rather *"injects"* 
+These two Active Events functions identically to **[add]**, except they don't append nodes to its destination(s), but rather *"injects"* 
 its **[src]** argument's, either *"before"* or *"after"* its destination nodes. Execute the following code in your Hypereval module, 
 and watch its result.
 
-```
+```hyperlambda
 _foo
 insert-before:x:/@_foo
   src
@@ -339,12 +278,12 @@ one of these Active Events, very effectively teaches you how to use all of them.
 
 ## [add], [insert-before] and [insert-after]
 
-Besides from inserting before/after, and appending children nodes, these three Active events works exactly the same. So let us have 
+Besides from inserting before/after, and appending children nodes, these three Active events functions exactly the same. So let us have 
 a look at how they actually work, and how we can parametrize them. So far, we have only used *"static sources"*. A static source, 
 is a bunch of static nodes, being children of the **[src]** node. However, you can also supply an expression, leading to another 
 node-set as its **[src]**. Imagine having a node-set that you want to copy into some destination.
 
-```
+```hyperlambda
 _src
   foo1:bar1
   foo2:bar2
@@ -353,11 +292,12 @@ add:x:/@_dest
   src:x:/@_src/*
 ```
 
-After evaluating the above Hyperlambda in Hypereval, the **[\_dest]** node, will have a copy of all children from **[\_src]**. Both 
-the **[add]** and the **[insert-xxx]** Active Events, can be given multiple **[src]** arguments. Imagine something like the following 
-for instance.
+After evaluating the above Hyperlambda in Hypereval, the **[\_dest]** node, will have a copy of all children nodes from **[\_src]**.
 
-```
+Both the **[add]** and the **[insert-xxx]** Active Events, can be given multiple **[src]** arguments. Imagine something like the 
+following.
+
+```hyperlambda
 _src1
   foo1:bar1
 _src2
@@ -379,7 +319,7 @@ do multiple things with one invocation. We saw this further up in this chapter, 
 with a single invocation. Both **[set]**, **[add]** and **[insert-xxx]** have similar semantics. Try to run the following 
 Hyperlambda in your Hypereval module to see this for yourselves.
 
-```
+```hyperlambda
 _data
 _data
 set:x:/../*/_data?value
@@ -388,12 +328,12 @@ set:x:/../*/_data?value
 
 This feature, although powerful, also implies that you must be careful, to make sure you are only referencing nodes you 
 actually want to reference - Unless you want to end up having unintentional side-effects. On the positive side, it is also a 
-feature that allows you to *"do a lot, with a little"*. One of my favourite examples in these regards, are loading all Hyperlambda 
+feature that allows you to *"do a lot, with a little"*. One of my favourite examples in these regards, is loading all Hyperlambda 
 files from a folder, and evaluating them in order - Which can actually be done with 4 lines of code (don't evaluate this code though).
 
 **Example of executing all Hyperlambda files in some folder**
 
-```
+```hyperlambda
 list-files:/foo
   filter:.hl
 load-file:x:/-/*?name
@@ -406,7 +346,7 @@ This leaves us with only one remaining concept we'll need to visit, before we ca
 within our toolbelt - Which is deleting stuff. Deletion is extremely easy. Simply use the **[set]** event, without a **[src]** argument. 
 Consider the following Hyperlambda.
 
-```
+```hyperlambda
 _foo:bar
 set:x:/@_foo
 ```
@@ -414,7 +354,7 @@ set:x:/@_foo
 The above code will delete the **[\_foo]** node entirely. If you supply a type declaration for your expression pointing to its value 
 instead, its value will become *"null"*. If you point it to its name, its name will become the *"empty string"*. Consider the following.
 
-```
+```hyperlambda
 _foo1:bar
 set:x:/@_foo1?value
 _foo2:bar
@@ -428,7 +368,7 @@ specification, is that a node cannot have a *"null name"*. It can however have a
 
 You should now have a basic understanding of all four *"CRUD operations"* for lambda objects. You can now dynamically create and change 
 lambda objects as you see fit. However, as we started out this chapter with, no other programming languages contains any similar 
-constructs as to what we have seen in this chapter. Hence, the largest problem you're now faced with, is creating a mental model for 
-understanding this unique idea. Yet again, an old video, but illustrating the concepts we covered pretty thoroughly anyways.
+constructs. Hence, the largest problem you're now faced with, is creating a mental model for understanding this unique idea. Yet again, 
+an old video, but illustrating the concepts we covered in this chapter fairly thoroughly.
 
 https://www.youtube.com/watch?v=w7A4TcWHolk

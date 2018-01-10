@@ -9,7 +9,7 @@ languages out there.
 ### An overview of lambda expressions
 
 A lambda expression is declared with the type declaration of `:x:`. If you wish to create a lambda expression, you will have to make sure 
-your node containing your expression, resembles something like the following; `_foo:x:/iterator1/iterator2` - The `:x:` parts, makes sure the 
+your node containing your expression, resembles something like the following; `_foo:x:/iterator1/iterator2/etc...` - The `:x:` parts, makes sure the 
 Hyperlambda parser, understands that the value of the previously defined **[_foo]** node is an expression.
 
 **Definition**; The correct scientific name for lambda expressions is; *"Hyperdimensional boolean algebraic graph object expressions"*, 
@@ -17,11 +17,11 @@ because they allow you to use boolean algebra, to create sub graph objects, out 
 a *"hyperplane"* through your graph objects, which again results in retrieving a sub-portion of your tree structures. If you imagine your 
 graph objects as an n dimensional tree structure, then lambda expressions allows you to create n+1 dimensions through these graph objects. 
 These expressions extracts a sub-portion of your tree, and yields its results, as a new tree. Each expression, creates a new *"dimension"* 
-through your tree. Such dimensions are often referred to as *"hyperplanes"*.
+through your tree. Such dimensions are often referred to as *"hyperplanes"*. To make this easier to visualise, think of lambda expressions 
+as _"SQL for tree structures"_. A lambda expression creates a new tree structure, from another source tree structure. This resulting tree 
+structure can have zero, one, or more nodes in it. 
 
-To make this easier to visualise, think of lambda expressions as _"SQL for tree structures"_. A lambda expression creates a new tree structure, 
-from another source tree structure. This resulting tree structure can have zero, one, or more nodes in it. The expression itself, can contain 
-3 different segments, all of which are optional to declare.
+The expression itself, can contain 3 different segments, all of which are optional.
 
 * Zero or more _"iterators"_
 * An expression's type declaration
@@ -34,18 +34,19 @@ declared as a value. Hence, the expression in this code `_bar:x:`, will yield th
 The iterators of your expressions are said to be *"left associative"*, because they are evaluated in order of appearance, from left to right. 
 Hence, you start out with the identity node, and apply zero or more iterators to it, to retrieve whatever result you are interested in, 
 _relative to the identity node_. There are many different types of iterators, and in theory, they might even vary from implementation to 
-implementation. However, the most common ones, are listed in one of our appendixes at the end of this book. Each iterator reacts upon 
-the results of its previous iterator, starting from left to right. Whenever an iterator yields a *"null result"*, the rest of the expression 
-is discarded, and the expression as a whole, will yield a *"null result"*. Each iterator starts out with a forward-slash *"/"*. The first 
-iterator in your expression, starts out with the *"identity node"* as its initial result set.
+implementation. However, the most common ones, are listed in one of our appendixes at the end of this book.
+
+Each iterator reacts upon the results of its previous iterator, starting from left to right. Whenever an iterator yields a *"null result"*, 
+the rest of the expression is discarded, and the expression as a whole, will yield a *"null result"*. Each iterator starts out with a 
+forward-slash *"/"*. The first iterator in your expression, starts out with the *"identity node"* as its initial result set.
 
 Below is a piece of Hyperlambda, which demonstrates the construct. Notice, at this time, it might be beneficial for you to evaluate
 the next example in _"Hypereval"_. Hypereval is a module for Phosphorus Five, which allows you to execute Hyperlambda in _"immediate"_ mode,
-and see the results of your evaluation. Make sure you install [Hypereval](/bazar?app=hypereval), open it up in another tab, and click the _"eye"_
-button, to enable the _"output"_ view. Then type in your code in the top code editor, and click the _"flash"_ button, which will evaluate
-your Hyperlambda.
+and see the results of your evaluation. Make sure you install [Hypereval](/bazar?app=hypereval), open it up by clicking the _"lightning"_
+button at the top of Hyper IDE, and click the _"eye"_ button beneath Hypereval, to enable the _"output"_ view. Then type in your code into 
+Hypereval's CodeMirror instance, and click the _"flash"_ button beneath Hypereval, which will evaluate your Hyperlambda.
 
-```
+```hyperlambda
 _foo
 set:x:/@_foo?value
   src:Jo dude
@@ -54,7 +55,7 @@ set:x:/@_foo?value
 The above code is using the **[set]** Active Event, to change the `?value` of the first *"elder relative node"*, having the name of *"_foo"*, 
 to become *"Jo dude"*. After execution of the above Hyperlambda, your lambda object will have changed, and turned into the following;
 
-```
+```hyperlambda
 _foo:Jo dude
 set:x:/@_foo?value
   src:Jo dude
@@ -75,7 +76,7 @@ declarations for your expressions.
 
 If you changed the above Hyperlambda, such that it had a `?name` type declaration for its expression, it would result in the following;
 
-```
+```hyperlambda
 Jo dude
 set:x:/@_foo?name
   src:Jo dude
@@ -84,7 +85,7 @@ set:x:/@_foo?name
 Using **[set]**, you can also change the entire node, by using `?node` as your expression's type declaration. The node itself is the 
 default type declaration, if you do not supply one - Hence you don't need to supply the `?node` type declaration. Below is an example;
 
-```
+```hyperlambda
 _foo
 set:x:/@_foo
   src:"_bar:howdy"
@@ -99,7 +100,7 @@ the Hyperlambda parser would assume that `_bar` was a type declaration for the *
 An expression of type `?count` is read only, and cannot be used as a destination for a **[set]** invocation. It can however be used as 
 the **[src]**. Try the following code to see an example of this.
 
-```
+```hyperlambda
 _foo
 set:x:/@_foo?value
   src:x:/../*?count
@@ -113,8 +114,9 @@ learn, are listed below.
 
 * `/..` - Returns the root node of your lambda object
 * `/*` - Returns all children nodes of the previous result set
+* `/**` - Returns all descendants of the previous result set
 * `/xxx` - Named nodes, filtering away anything not matching the specified *"xxx"* name
-* `/n` - Numbered child node, returning the *n'th* child of the previous result set.
+* `/n` - Numbered child node, returning the *n'th* child of the previous result set
 * `/=xxx` - Nodes having the specified *"xxx"* value
 * `/-` - Elder sibling iterator
 * `/+` - Younger sibling iterator
@@ -129,7 +131,7 @@ expression yields a *"null result"*.
 Think of this iterator as an easy way to retrieve the first node, matching the specified name, within the *"scope"* of your currently executed 
 lambda object. Below is an example of its use.
 
-```
+```hyperlambda
 _foo
 _bar
   _foo
@@ -138,7 +140,7 @@ set:x:/@_foo?value
 _foo
 ```
 
-Notice, after evaluation of the above Hyperlambda, only the first **[\_foo]** node will have its value changed. This is because the 
+Notice, after evaluating the above Hyperlambda, only the first **[\_foo]** node will have its value changed. This is because the 
 second **[\_foo]**, inside of our **[\_bar]** node, is not an elder sibling, or direct elder relative in any ways, of the identity node 
 of **[set]**. Hence, it is not found *"within the scope"* of our identity node, where our expression starts looking for a match.
 
@@ -146,7 +148,7 @@ If you tried something like the following though, only the last **[\_foo]** node
 the *"named elder relative"* iterator, will stop iterating, once it finds its first match. This iterator always returns exactly one node, 
 or a null result if it cannot find a match.
 
-```
+```hyperlambda
 _foo
 _foo
 set:x:/@_foo?value
@@ -165,7 +167,7 @@ Optionally, you can convert the results of an expression, by appending a ".", an
 into. Imagine the following code, that copies the value from **[\_foo]**, and puts it into **[\_bar]**'s value, but converting it from a 
 string to an integer.
 
-```
+```hyperlambda
 _foo:5
 _bar
 set:x:/@_bar?value

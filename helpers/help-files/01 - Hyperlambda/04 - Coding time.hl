@@ -3,7 +3,7 @@
  * Feel free to edit it, and play with it if you wish.
  *
  * Notice, the structure of the widget is a container widget, with one paragraph
- * element, and another video element is its children
+ * element, and another video element as its children.
  */
 container
   widgets
@@ -18,5 +18,7 @@ container
     literal
       element:p
       innerValue:@"Click the pencil in the bottom right corner to see how 
-we created this widget, and play around with it in your Hyperlambda 
-editor by editing it, as I taught you in the previous chapter."
+we created this widget, and edit it in your Hyperlambda editor,
+as we learned in the previous chapter. When you have edited it,
+save your file, and click the <em>'reload'</em> icon at the bottom of this page.
+Try to add an <em>'h3</em> element to it.'"
