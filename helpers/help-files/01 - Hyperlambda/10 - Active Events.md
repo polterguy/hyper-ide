@@ -10,14 +10,14 @@ find [here](https://msdn.microsoft.com/en-us/magazine/mt795187).
 
 Active Events are first and foremost a design pattern. It is however a design pattern, that largely replaces most other design patterns 
 in this world. Simply because it solves the same problems as dozens of other design patterns do combined. Active Events also happens 
-to solve these problems in a very beautiful way arguably, making sure you are able to create better cohesion in your software, while 
+to solve these problems very beautifully, making sure you are able to create better cohesion in your software, while 
 retaining a larger degree of encapsulation, and end up with increased means to apply polymorphism. Hence, it also largely becomes a 
 replacement to OOP.
 
 An Active Event is an alternative way of invoking functionality. It is, in such a way, a substitute to what traditional programming 
 refers to as *"functions"* and *"methods"*. Among its defining traits, is the fact that every Active Event, can accept the same set 
 of arguments. In fact, they all have the same input signatures, which can be condensed down to *"a bunch of nodes"* or *"a lambda object"* 
-to be specific. They also all return the exact same stuff, which again, you guessed it, is *"a lambda object"*.
+to be specific. They also all return the exact same stuff, which again is a _"bunch of nodes"_, or a *"lambda object"*.
 
 ### Terms
 
@@ -40,7 +40,7 @@ you're talking about new years eve, or 4th of July. Hence, the last sentence, is
 
 ### The importance of good software design
 
-All of the above, are concepts you would want to increasingly take advantage of, as you create more and more complex systems. A software 
+All of the above definitions, are concepts you would want to increasingly take advantage of, as you create more and more complex systems. A software 
 system, lacking any of the above, is often referred to as being *"badly designed"*. A software architect, and developer, should strive 
 to *"increase cohesion"*, *"apply encapsulation"*, and *"facilitate for polymorphism"*. If he or she does not do this, the result 
 often becomes *"spaghettic code"*.
@@ -87,7 +87,7 @@ of Active Events. Breaking the rules of cohesion, is almost impossible with Acti
 
 Since no lambda objects contains any public methods, properties or fields, beyond the ones they all contain, necessary to traverse 
 and change the object - There are no semantic differences between two different lambda objects. Arguably hence, the lambda object 
-becomes perfectly encapsulated - And exchanging any lambda object with any other, is as easy as editing a word in a text editor.
+becomes perfectly encapsulated - And exchanging any lambda object with any other, is as easy as editing a string in a text editor.
 
 ### The LSP problem
 
@@ -109,19 +109,3 @@ In Hyperlambda, the Liskov Substitution Principle makes absolutely no sense, and
 of asking the question; *"Is your car married?"*. In Hyperlambda, a vehicle can be a cat, a soccer field, or a piece of metal - _Without_ 
 breaking LSP. And you can easily marry any lambda object with any other lambda object. This makes it possible for you, to apply 
 whatever *"object model you feel for applying"*, to your code, making the LSP problem completely *obsolete*.
-
-### The proof is in the pudding
-
-One of the things that have historically bothered me the most about ASP.NET, and more specifically Web Forms, is that the *"Page"* 
-class inherits from the *"Control"* class. You can see this clearly for yourselves, if you create a new .ASPX page, and follow its 
-inheritance chain upwards in its hierarchy. This is clearly a violation of the Liskov Substitution Principle, and arguably 
-a *very bad thing to do*. I am certain of that the developers who originally architected this class hierarchy, had very good 
-reasons to do this, and I don't mean to bully them in any ways - But it is still a very real problem, creating a lot of potential 
-problems for developers. Now if Microsoft couldn't get this right, spending 5 years creating .Net Framework in the first place, 
-what makes you think you can get it right?
-
-In Hyperlambda the above problem makes absolutely no sense at all, and dynamically loading a page from your MySQL database, 
-and modifying it to become a *"user control"*, often makes perfect sense, and can be easily done, with a handful of lines of code.
-And this is in fact, something I often applies myself, without hurting neither bunnys nor LSPs in any ways. LSP is simply vanished
-as a problem in Hyperlambda.
-

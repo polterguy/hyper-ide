@@ -13,20 +13,21 @@ we can dive into our application though, there are some concepts we'll need to c
 In P5, there are two important events for loading and saving files. These are **[load-file]** and **[save-file]**. Before we start using 
 them though, we'll need to have a look at the folder structure of P5. The most important folder for this chapter is called *"users"*. This 
 folder will contain one folder for each user you have in your P5 installation. By default, P5 has only one user, which is your *"root"* user - 
-So typically as you start out with P5, there will only be one folder here. This folder will be the *"root"* folder.
+So typically as you start out with P5, there will only be one folder here. This folder will be the *"root"* folder. You can browse this folder
+using your folder explorer in Hyper IDE.
 
 Inside of your user's folder, the *"root"* folder that is, you can find a *"documents"* folder. This is the equivalent of *"Your documents"* 
 in windows, or *"Home"* in Linux. This is important to understand for this chapter, since we will store our *"database"* within this folder. 
 Our file will be named *"adr.hl"*. The extension *".hl"* implies *"[H]yper - [L]ambda"*. Your *"documents"* folder, contains two folders. 
 One *"private"* folder, and another *"public"* folder. We will be using the *"private"* folder, to store a file, containing the data for our 
-CRUD application. Files inside of this folder, cannot in general by default, be accessed by anyone, except the user whom these files belongs to. 
+CRUD application. Files inside of this folder, cannot in general, be accessed by anyone, except the user whom these files belongs to. 
 Hence, they are your user's *"private files"*.
 
 To reference files inside of your user's home folder, you can prepend your path with a tilde `~/`. If you start out a filename with a tilde, 
 this will automatically refer to a file in your user's home folder. If you want to create a file inside of your private documents folder, 
 you can use something resembling the following code.
 
-```
+```hyperlambda
 save-file:~/documents/private/foo.txt
   src:Hello filesystem!
 ```
@@ -62,8 +63,9 @@ by loading our database file, and create an HTML table widget, for each **[item]
 
 With these concepts, at least partially covered, let's move on to the code, and show you the entire listing for an Address book web app. 
 Modify our _"Hello World"_ app's _"launch.hl"_ file from one of the first chapters, and exchange its code with the code listed below.
+Or, simply click the _"lightning"_ button at the bottom of our source listing, to evaluate it inline.
 
-```
+```hyperlambda-snippet
 /*
  * Includes CSS for our module.
  */
@@ -71,7 +73,6 @@ p5.web.include-css-file
   @MICRO/media/main.css
   @MICRO/media/fonts.css
   @MICRO/media/skins/serious.css
-
 
 /*
  * Creating our main application wrapper widget.
@@ -276,7 +277,7 @@ iterated **[src]** node, as its identity node.
 
 You can see one of the data bound expressions in your code editor above where it says `{innerValue}:x:/*/name?value`. Such a databound 
 expression, is declared by making sure its name starts with a `{`and ending with a `}`. These two parts of your node's name are removed 
-though, before the node is created, and appended into its destination. They are simply there to inform **[apply]** about that this is a 
+though, before the node is created, and appended into its destination. They are simply there to inform **[apply]** that this is a 
 databound node. Hence, to declare a databound node, simply wrap its name inside of curly braces, and add up an expression being its relative 
 path, to whatever you wish to databind the node's value towards.
 
@@ -289,7 +290,7 @@ At this point, it might be useful to realize that our invocation to **[load-file
 into a lambda object, unless you explicitly tell it not to. So our **[load-file]**, after invocation, will in fact not yield plain text, 
 but in fact an entire lambda hierarchy. It will resemble the following example after evaluation.
 
-```
+```hyperlambda
 /* ... rest of code ... */
 
 load-file
@@ -315,35 +316,40 @@ for the first iteration of our **[src]** argument, relative to the first **[item
 For the second iteration, it is relative to the second **[item]**, and so on. So what is added to our **[widget]** hierarchy, becomes 
 something similar to the following.
 
-```
+```hyperlambda
 container
   element:tr
   widgets
     literal
       element:td
-      
-      // Taken from first [item], after expression is evaluated.
       innerValue:Thomas Hansen
     literal
       element:td
-      
-      // Taken from first [item], after expression is evaluated.
       innerValue:thomas@gaiasoul.com
     literal
       element:td
-      
-      // Taken from first [item], after expression is evaluated.
       innerValue:98765432
+container
+  element:tr
+  widgets
+    literal
+      element:td
+      innerValue:John Doe
+    literal
+      element:td
+      innerValue:john@doe.com
+    literal
+      element:td
+      innerValue:99887766
 ```
 
-Obviously the comments will not exists after having evaluated **[apply]**, but are only there to illustrate where the items are fetched from.
 If you find the **[apply]** event to be confusing, you can watch this video, which unfortunately is a little bit old though.
 
 https://www.youtube.com/watch?v=KcaRyjj2w58
 
 ### [lambda2hyper], converting lambda to Hyperlambda
 
-The above **[lambda2hyper]** Active Event, which we use at line 87 in our code, simply converts a piece of lambda to a string, resembling 
+The above **[lambda2hyper]** Active Event, which we use at line 107 in our code, simply converts a piece of lambda to a string, resembling 
 its Hyperlambda version. There also exists a **[hyper2lambda]** event, which does the opposite. These events are useful for transforming 
 lambda objects to strings, and vice versa - Such as when we want to save a lambda object to disc, or use it as a string for some reason. 
 Both of these two events should be relatively self explaining.
@@ -357,7 +363,7 @@ the **[micro.widgets.wizard]** node's children, and the 3 input textboxes, askin
 
 The **[micro.form.serialize]** event, does exactly what you think it does. After invocation, it will look something like the following.
 
-```
+```hyperlambda
 micro.form.serialize
   name:Thomas Hansen
   email:thomas@gaiasoul.com
@@ -365,7 +371,7 @@ micro.form.serialize
 ```
 
 After we have retrieved the values from our wizard window, we first check if there already exists a *"database file"*. This is necessary, 
-in order to make sure we actually *add* records to our data. If it does, we load this file, and adds the contents of it into a 
+in order to make sure we actually *add* records to our data. If it does, we load this file, and add the contents of it into a 
 temporary **[.content]** node. Notice, we do this before we add the values from our newly created record into this file, to ensure the 
 last record supplied, physically becomes the last record in our file. This preserves the order of our records, according to the order 
 they were supplied by the user. Then finally, before we convert this **[.content]** node to Hyperlambda, and save it to disc, we add 
