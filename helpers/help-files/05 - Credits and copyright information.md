@@ -1,5 +1,4 @@
-
-## Copyright information
+## Credits and copyright information
 
 * [Phosphorus Five](https://github.com/polterguy/phosphorusfive) - Copyright © 2014-2018 Thomas Hansen
 * [Hyper IDE](https://github.com/polterguy/hyper-ide) - Copyright © 2018 Thomas Hansen
@@ -22,10 +21,13 @@
 * [Font Awesome](http://fontawesome.io/) - Copyright © ? Dave Gandy
 * [Hero Patterns](http://www.heropatterns.com/) - Copyright © ? Steve Schoger
 
-See the above respective projects for licensing information, but in general they are all _"permissive"_ in nature,
+See the above respective Open Source projects for licensing information, but in general they are all _"permissive"_ in nature,
 except iTextSharp, which is distributed under an Affero GPL license. Which implies that if you use the PDF
 featured of Posphorus Five, you'll have to explicitly link to the parts of your source code in your application
-that is using iTextSharp. **Hint**; You don't have to use the builtin PDF features of Phosphorus Five.
-Phosphorus Five and Hyper IDE was only made possible due to the great and brilliant work of many others,
-besides myself, I would like to thank everyone above, and encourage my users to support these projects,
-anyways you can.
+that is using iTextSharp. If this is a problem, then simply **avoid using the PDF features in Phosphorus Five**, and
+you should be safe.
+
+Phosphorus Five and Hyper IDE was only made possible due to the great and brilliant work of many others, besides myself.
+I would like to thank everyone involved in the above projects, and encourage my users to support these projects, anyways you can.
+If you want to be explicitly mentioned by name here, please send me an email at thomas@gaiasoul.com, with your full name, and
+a link to some website you want me to link to here.

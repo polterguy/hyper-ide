@@ -229,29 +229,20 @@ create-widget:hyper-ide-help-wrapper
                     .file:x:/@p5.io.unroll-path?value
 
                   /*
-                   * Creating our common "go to index.hl" button, unless this is our "index.hl" file.
+                   * Creating our common "go to index.hl" file button.
                    */
-                  if
-                    ends-with:x:/../*/_arg?value
-                      src:/index.hl
-                    not
+                  create-widget
+                    parent:hyper-ide-help-wrapper
+                    element:a
+                    href:#
+                    class:hyper-ide-help-index-button
+                    innerValue:@"<span class=""icon-home3""></span>"
+                    onclick
 
-                    /*
-                     * This is not our "index.hl" file, making sure we make it easy for user
-                     * to go back to "index.hl".
-                     */
-                    create-widget
-                      parent:hyper-ide-help-content
-                      element:a
-                      href:#
-                      class:hyper-ide-help-index-button
-                      innerValue:Back to index
-                      onclick
-
-                        /*
-                         * Loading and displaying "index.hl" file.
-                         */
-                        hyper-ide.help.display-file:@IDE/helpers/help-files/index.hl
+                      /*
+                       * Loading and displaying "index.hl" file.
+                       */
+                      hyper-ide.help.display-file:@IDE/helpers/help-files/index.hl
 
                   /*
                    * Creating "previous" and "next" buttons.

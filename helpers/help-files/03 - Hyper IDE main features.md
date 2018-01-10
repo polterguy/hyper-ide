@@ -1,5 +1,10 @@
 ## A 5 minutes introduction to Hyper IDE
 
+Welcome to Hyper IDE. Hyper IDE is an extendible web based integrated development environment, supporting more than
+100 programming languages out of the box. Below is a 2 minutes long video, demonstrating some of its features.
+
+https://www.youtube.com/watch?v=mWFitx9py80
+
 ### The file explorer
 
 To the left at the top of your page, you can find a tree view widget. This will display all the files on your server, 
@@ -22,11 +27,12 @@ Try to select back and forth between a file and a folder to see how it changes. 
 can be renamed. If you hover your mouse over a toolbar button, you will get some information about what 
 that particular button does.
 
-**Notice**, depending upon what plugins you happen to have (turned on) in your installation, you might
+**Notice**, depending upon what plugins you have (turned on) in your installation, you might
 have additional buttons, such as the _"Create new template module"_ plugin, which allows you to create
-an AngularJS and MySQL app, and many other types of apps, by following a _"wizard"_ - But only when you
-have selected the `/modules/` folder. Some plugins are _"context sensitive"_, and only available for
-specific folders, and/or specific files extensions.
+new apps, by following a _"wizard"_. This button will only be visible when you have selected the `/modules/` 
+folder. Some plugins are _"context sensitive"_, and only available for
+specific folders, and/or specific file extensions. You can also easily extend this toolbar, and create
+your own plugins.
 
 ### Keyboard shortcuts
 
@@ -56,9 +62,9 @@ Hyper IDE comes with 57 themes out of the box. These are for the most parts them
 CodeMirror, and allows you to change the background color, font, etc of the CodeMirror editor. In addition there
 are several skins in Hyper IDE. These skins are skins from Micro, and can be found in the `/modules/micro/media/skins/`
 folder, and you can probably easily figure out how to create your own skin and/or theme. You can access the settings by
-clicking the _"cog"_ at the top of your page.
+clicking the _"cog"_ in your toolbar.
 
-### Plugins and access control
+### Plugins
 
 Most features in Hyper IDE can be turned off or on, and some features are only available if you are logged in
 as root. In addition, plugins can be turned on or off according to the declarations of plugins in the 
@@ -67,27 +73,36 @@ if it exists, since all plugins are enabled by default. If you want to turn off 
 create an empty file. If you want to only allow some specific plugin, you can create a `plugins.hl` file,
 and declare which plugins you want to enable as items in this file. The available plugins in your installation,
 can for the most parts be found in your `/hyper-ide/startup/plugins/` folder - However, this depends upon your
-installation, and which additional modules you have installed.
+installation, and which additional modules you have installed. Plugins are Active Events, and resolved according
+to their namespace, so any Hyperlambda file, and/or C# module, might in theory create plugins for Hyper IDE.
+This allows you to extend Hyper IDE, without modifying any of the files inside of your Hyper IDE folder - Which
+allows you to extend Hyper IDE, and still easily upgrade to newer versions later, without loosing your extensions.
 
-In addition, read and write access, can be either explicitly granted, or denied, on a per file/folder basis,
+### Authorization
+
+Read and write access to files and folders, can be either explicitly granted, or denied, on a per file/folder basis,
 and a role basis, depending upon which role some user belongs to. This allows you to prevent write access for 
 instance, to specific files, yet still maintain read access to the same files. You can see how to enable
 and disable read and/or write access to folders and files under the _"Security"_ parts of this documentation.
+The following video, also demonstrates some of these features of Hyper IDE.
+
+https://www.youtube.com/watch?v=TLm0nuYzfoc
 
 ### The documentation is extendible
 
-The documentation for Hyper IDE is actually extendible, and allows you to edit it, as you see fit.
-This allows you to write inline personal comments, and add to it, as you see fit yourself. To see this in
-action, try clicking the _"Edit button"_ (which show a pencil icon) at the bottom right corner of your screen.
+The documentation for Hyper IDE is actually extendible, and allows you to edit it inline.
+This allows you to write your own personal comments in the documentation. To see this in
+action, try clicking the _"Edit button"_ (the _"pencil"_ button) at the bottom right corner of your browser.
 Some of the help files are written in Hyperlambda, to provide example code, and allow you to test out concepts
 as you read. However, most of them (such as this file) is written in Markdown. Try clicking the _"pencil"_ button
 at the bottom right corner of this document to try it out for yourself. When you have saved your edits, you
 can view them instantly by clicking the _"refresh"_ button, next to the edit button. Any YouTube videos you include,
-will automatically be embedded, such as the example video below illustrates. **Hint**, you can also embed _"unlisted"_
+will automatically be embedded, such as the example video above illustrates. **Hint**, you can also embed _"unlisted"_
 YouTube videos, which allows you to document your own code and projects inline, as an integral part of the IDE 
-and code itself.
+and code itself - Without having to disclose your videos to the world at large.
 
-https://www.youtube.com/watch?v=mWFitx9py80
+**Warning**, if you edit documentation files in your own installation, you have to be careful when you upgrade Hyper IDE,
+since this might overwrite your own comments.
 
 ### License information
 
@@ -105,7 +120,7 @@ to supply me with the monetary means to continue my work, which arguably is to h
 In addition, if you purchase a license, you are also eligible to professional support, and I often find 
 myself prioritising feature requests submitted by those who have helped me in monetary ways for obvious reasons.
 
-I have also consciously set the price for a license arguably very low, such that it should not be a hurdle 
+I have also set the price for a license very low, such that it should not be a hurdle 
 for most (professional) developers. Hence, I would therefor encourage you
 to [get properly licensed](/bazar?app=license) if you intend to use Hyper IDE or Phosphorus Five
 professionally. The purchasing of a professional license is 100% automated, and secured by PayPal, and I provide

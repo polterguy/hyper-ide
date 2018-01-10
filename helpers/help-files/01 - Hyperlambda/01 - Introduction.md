@@ -2,16 +2,15 @@
 
 Welcome to the _"book"_ about Hyperlambda. In this interactive _"book"_, we will go through Hyperlambda examples, 
 allowing you to instantly play with them, from within your IDE. This _"book"_ is created in an interactive way, 
-allowing for you to instantly play with the examples, by interacting with the documentation itself. I refer to 
+allowing you to instantly play with the examples, by interacting with the documentation itself. I refer to 
 this as _"literate documentation"_, implying that the documentation itself, understands, and can execute, the 
-same type of computer code, it is intended to document. This book is not _"read only"_. In fact, you can edit 
-this page if you want to, by scrolling to the bottom of this page, and clicking the _"pencil"_ button in the 
-bottom right corner of the page. This will open up this file in Hyper IDE, allowing for you to edit it, and add 
-your own personal notes, as you proceed through the book. When you are done editing some parts of the book, 
-you can click the _"refresh"_ button, to reload the page, into the _"reader"_. This _"book"_ will also sometimes 
-contain inline YouTube videos, and images, such as the video below is a demonstration of.
+same type of computer code, it is intended to document.
 
-https://www.youtube.com/watch?v=mWFitx9py80
+This book is not _"read only"_. In fact, you can edit this page if you want to, by scrolling to the bottom of 
+this page, and clicking the _"pencil"_ button in the bottom right corner of the page. This will open up this 
+file in Hyper IDE, allowing for you to edit it, and add your own personal notes, as you proceed through the book. 
+When you are done editing some parts of the book, you can click the _"refresh"_ button, to reload the page, into 
+the _"reader"_. This _"book"_ will also sometimes contain inline YouTube videos and images.
 
 ### Goals of the book
 
@@ -48,10 +47,3 @@ Below is a short list of some of these, which you might benefit from reading.
 2. [MSDN Magazine, make C# more dynamic with Hyperlambda](https://msdn.microsoft.com/en-us/magazine/mt809119)
 3. [MSDN Magazine, could managed AJAX put your web apps in the fast lane?](https://msdn.microsoft.com/en-us/magazine/mt826343)
 4. [DZone, How I created a web based IDE in 7 days](https://dzone.com/articles/how-i-created-a-web-based-ide-in-7-days)
-
-## License and copyright
-
-The book is licensed under the terms of the GPL, version 3, like the rest of Phosphorus Five and Hyper IDE,
-and is the sole copyright of Thomas Hansen, thomas@gaiasoul.com, 2017 - 2018. However, there also exists
-[proprietary licensing alternatives](/bazar?app=license).
-
