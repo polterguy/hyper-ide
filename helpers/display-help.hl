@@ -53,7 +53,10 @@ create-widget:hyper-ide-help-wrapper
               oninit
 
                 /*
-                 * Loading "index.hl", which is our "help landing page file".
+                 * Loading specified "index.hl" file, which is our "help landing page file".
+                 *
+                 * Notice, all "sub-sections" (folders) needs such a file, to function
+                 * correctly.
                  */
                 .folder:x:(/../*/folder|/@.defaults/*/folder)/$?value
                 eval-x:x:/+/*
@@ -299,7 +302,7 @@ create-widget:hyper-ide-help-wrapper
                       /*
                        * Allowing user to edit the file.
                        */
-                      p5.web.widgets.find-first-ancestor:x:/../*/_event?value
+                      p5.web.widgets.find-first:hyper-ide-help-wrapper
                         .file
                       get-widget-property:x:/-/*/*?value
                         .file
@@ -323,7 +326,7 @@ create-widget:hyper-ide-help-wrapper
                       /*
                        * Allowing user to edit the file.
                        */
-                      p5.web.widgets.find-first-ancestor:x:/../*/_event?value
+                      p5.web.widgets.find-first:hyper-ide-help-wrapper
                         .file
                       get-widget-property:x:/-/*/*?value
                         .file

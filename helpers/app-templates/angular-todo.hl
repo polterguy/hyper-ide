@@ -94,6 +94,19 @@ eval-x:x:/+/*
 create-event:p5.io.unroll-path.@{0}
   return:/{{0}}
     :x:/@join?value
+"
+    :x:/@to-upper?value
+
+
+
+
+
+/*
+ * Then creating our "install.hl" file.
+ */
+save-file:/modules/{0}/install.hl
+  :x:/../*/name?value
+  src:@"
 
 
 /*
@@ -105,9 +118,9 @@ create-event:p5.io.unroll-path.@{0}
 try
   p5.config.get:p5.data.prefix
   p5.mysql.connect:[sys]
-    p5.mysql.execute:create schema `{{0}}{1}`
+    p5.mysql.execute:create schema `{{0}}{0}`
       :x:/@p5.config.get/*?value
-  p5.mysql.connect:[{1}]
+  p5.mysql.connect:[{0}]
     p5.mysql.execute:@""
 create table if not exists `items` (
   `id` int(10) unsigned not null auto_increment,
@@ -120,7 +133,6 @@ catch
    * Database exists from before.
    */
 "
-    :x:/@to-upper?value
     :x:/../*/name?value
 
 
