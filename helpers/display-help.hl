@@ -132,6 +132,11 @@ create-widget:hyper-ide-help-wrapper
                 hyper-ide.help.display-file
 
                   /*
+                   * Clearing old content, if any.
+                   */
+                  clear-widget:hyper-ide-help-content
+
+                  /*
                    * Checking file type first.
                    */
                   if
@@ -217,12 +222,62 @@ create-widget:hyper-ide-help-wrapper
 
                       /*
                        * Replacing entire paragraph with an image tag.
+                       * First retrieving language mode of code.
                        */
                       replace:x:/@_dp/#/./*/\@class?value
                         src:language-
+                      eval-x:x:/+
+                      .language:x:/@replace?value
+
+                      /*
+                       * Making sure we use a unique ID for our CodeMirror instance.
+                       */
                       p5.types.guid.new
                       replace:x:/-?value.string
                         src:-
+
+                      /*
+                       * Checking if this is an "immediate snippet".
+                       */
+                      if:x:/@.language?value
+                        =:hyperlambda-snippet
+
+                        /*
+                         * This is an "immediate snippet", which allows for instance evaluation.
+                         * Making sure we inject an "evaluate" button.
+                         *
+                         * First removing "-snippet" parts from language mode.
+                         */
+                        set:x:/@.language?value
+                          src:hyperlambda
+
+                        /*
+                         * Making sure we inject our "evaluate" button.
+                         */
+                        eval-x:x:/+/*/*/*/\@onclick
+                        insert-after:x:/@_dp/#/./.
+                          src
+                            button
+                              #text:@"<span class=""icon-flash""></span>"
+                              @style:"padding-left:35px;padding-right:35px;float:right;margin-top:-4.7rem;margin-bottom:0;display:block;z-index:999;position:relative;margin-right:.5rem;"
+                              @onclick:@"p5.$('x_eval_{0}').raise('.onevaluate');return false;"
+                                :x:/@replace?value
+
+                        /*
+                         * Injecting a hidden input element, which simply serves as a "wrapper" 
+                         * for our "eval" lambda object, to make sure we are able to evaluate the code
+                         * on the server side.
+                         */
+                        eval-x:x:/+/*/*/.code
+                        create-void-widget:x_eval_{0}
+                          :x:/@replace?value
+                          parent:hyper-ide-help-content
+                          element:input
+                          type:hidden
+                          .onevaluate
+                            .code:x:/@_dp/#?value
+                            eval:x:/-?value
+
                       trim-right:x:/@_dp/#?value
                       eval-x:x:/+/*/*/*
                       insert-before:x:/@_dp/#/./.
@@ -255,15 +310,13 @@ create-widget:hyper-ide-help-wrapper
 p5['x_{0}'].setSize('100%', 'auto');
 "
                         :x:/@replace?value
-                        :x:/@replace/@replace?value
+                        :x:/@.language?value
                         :x:(/@select-data/*/*/theme|/@.defaults/*/theme)/$?value
                       micro.widgets.codemirror._include-auto-complete
 
                     /*
-                     * Clearing old widget, before we create our new widget, 
-                     * wrapping the HTML from Markdown file.
+                     * Creating new widgets, wrapping the HTML from Markdown file.
                      */
-                    clear-widget:hyper-ide-help-content
                     lambda2html:x:/@html2lambda/*
                     create-widget
                       parent:hyper-ide-help-content

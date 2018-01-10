@@ -104,14 +104,14 @@ and code itself - Without having to disclose your videos to the world at large.
 **Warning**, if you edit documentation files in your own installation, you have to be careful when you upgrade Hyper IDE,
 since this might overwrite your own changes.
 
-### The documentation is a "living thing"
+### The documentation is "alive"
 
 The above might sound absurd for the uninitiated, but it is arguably true in fact. What I mean by that, is that the
 documentation is _"literate"_, implying that the documentation will sometimes itself evaluate snippets of code,
-and interact with your system, one way or another. This allows you to utilise the tactile parts of your brain,
-to learn new concepts and ideas. A good example is the following code.
+and interact with your system. This allows you to utilise the tactile parts of your brain, to learn new concepts 
+and ideas. A good example is the following snippet.
 
-```hyperlambda
+```hyperlambda-snippet
 create-widgets
   micro.widgets.modal:sample-dox-modal-window
     widgets
@@ -126,14 +126,22 @@ create-widgets
             innerValue:Close
             onclick
               delete-widget:sample-dox-modal-window
+
+
 ```
 
-If you have [installed Hypereval](/bazar?app=hypereval) from your Bazar, and you have enabled the Hypereval plugin,
-you can click the _"Lightning"_ button at the top of this page, in your toolbar. This will load up Hypereval, which
+If you have [installed Hypereval](/bazar?app=hypereval) from the Bazar, and you have enabled the Hypereval plugin,
+you can click the _"Lightning"_ button at the top of this page in your toolbar. This will load up Hypereval, which
 allows you to create code in _"immediate mode"_. This allows you to evaluate Hyperlambda snippets. If you want
 to try this out, then open up Hypereval, copy and paste the code from above into your Hypereval CodeMirror editor,
-and click _"Evaluate"_ - The button with the lightning beneath Hypereval's code editor. This off course, will result
-in something resembling the following.
+and click _"Evaluate"_ - The button with the lightning beneath Hypereval's code editor. This allows you to _"play"_
+with the ideas put forth in this documentation, to modify them, to create different results.
+
+If you are too lazy to even copy and paste code into your Hypereval editor, you can also simply click the lightning
+button, beneath the above code snippets. Not all code snippets have this lightning button, but all those that do,
+allows you to evaluate the snippet immediately.
+
+If you're too lazy to even click at the button, you can simply enjoy this screenshot of its result.
 
 https://phosphorusfive.files.wordpress.com/2018/01/screenshot-its-alive-example.png
 

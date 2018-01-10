@@ -1,17 +1,18 @@
-
 /*
  * Create our "launch Hypereval" plugin.
  */
 create-event:hyper-ide.global-plugin.launch-hyper-eval
-  return
-    button
-      innerValue:@"<span class=""icon-flash""></span>"
-      style:"margin-bottom:0;"
-      title:Launch Hypereval
-      onclick
+  if
+    hypereval.version
+    return
+      button
+        innerValue:@"<span class=""icon-flash""></span>"
+        style:"margin-bottom:0;"
+        title:Launch Hypereval
+        onclick
 
-        /*
-         * Launching Hypereval.
-         */
-        micro.evaluate.file:@HYPEREVAL/launch.hl
-          chrome:bool:false
+          /*
+           * Launching Hypereval.
+           */
+          micro.evaluate.file:@HYPEREVAL/launch.hl
+            chrome:bool:false
