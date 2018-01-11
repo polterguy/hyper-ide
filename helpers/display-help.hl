@@ -259,7 +259,7 @@ create-widget:hyper-ide-help-wrapper
                           src
                             button
                               #text:@"<span class=""icon-flash""></span>"
-                              @style:"padding-left:35px;padding-right:35px;float:right;margin-top:-4.7rem;margin-bottom:0;display:block;z-index:999;position:relative;margin-right:.5rem;"
+                              @class:hyper-ide-evaluate-snippet-button
                               @onclick:@"p5.$('x_eval_{0}').raise('.onevaluate');return false;"
                                 :x:/@replace?value
 
@@ -277,8 +277,6 @@ create-widget:hyper-ide-help-wrapper
                           .onevaluate
                             .code:x:/@_dp/#?value
                             eval:x:/-?value
-                            micro.windows.info:Your result can (probably) be found at the bottom of your page
-                              class:micro-windows-info success
 
                       trim-right:x:/@_dp/#?value
                       eval-x:x:/+/*/*/*

@@ -286,5 +286,22 @@
     box-shadow:3px 3px 5px rgba(0,0,0,.1);
     border-radius:5px;
 }
+.hyper-ide-evaluate-snippet-button {
+    padding-left:35px;
+    padding-right:35px;
+    float:right;
+    margin-top:-4.7rem;
+    margin-bottom:0;
+    display:block;
+    z-index:999;
+    position:relative;
+    margin-right:.5rem;
+    background:linear-gradient(#ffff00,#e0e000);
+}
+.hyper-ide-evaluate-snippet-button:hover,
+.hyper-ide-evaluate-snippet-button:active,
+.hyper-ide-evaluate-snippet-button:focus {
+    background:linear-gradient(#f0f000,#d5d500);
+}
 
 
