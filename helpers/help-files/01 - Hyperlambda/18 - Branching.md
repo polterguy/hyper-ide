@@ -1,8 +1,7 @@
-
 ## Branching
 
 Branching is at the core of any Turing complete programming language. Although Hyperlambda is not per se a programming language, 
-it is still Turing complete, and features all common branching constructs. For those used to programming, branching means that 
+it is still Turing complete, and features all common branching constructs. For those new to programming, branching implies that 
 your execution instruction pointer _"jumps"_, often in accordance to some condition. The most common form of branching is an _"if"_ 
 statement. Below is an example of how to branch in Hyperlambda using an _"if/else"_ block.
 
@@ -33,14 +32,25 @@ which you can use.
 - **[!~]** checks for _"not contains"_ (only useful when comparing strings)
 
 All the above _"operators"_ are actually Active Events themselves, and these operators can easily be extended with your own 
-comparison events. If you do, your comparison event must return boolean true, if it is supposed to be evaluated to true.
+comparison events. If you do, your comparison event must return boolean true, if it is supposed to be evaluated to true. You 
+can also use any Active Event in place of a condition event, at which its return value, will determine whether or not
+it evaluates to true or not. Below is an example that checks for the existence of a file.
+
+```hyperlambda-snippet
+if
+  fetch:x:/0/0?value
+    file-exists:/foo.txt
+  micro.windows.info:Foo exists
+else
+  micro.windows.info:No foo today!
+```
 
 ### Boolean algebraic compound conditions
 
 In addition to the operator Active Events, there are also boolean algebraic events, allowing you to create compound conditions, 
 where you have multiple conditions. Below is an example.
 
-```hyperlambda
+```hyperlambda-snippet
 _data1:foo
 _data2:bar
 if:x:/@_data1?value
@@ -61,6 +71,8 @@ into something that is actually useful, realise that you can actually created au
 lambda objects. And you can create automated processes, that inspects what an existing piece of branching lambda object does.
 The previous sentence might sound weird, until you've had some experience with Hyperlambda - But basically it allows your computer
 to generate code for you, and to maintain existing code for you - To some extent.
+
+I often say that _"Hyperlambda understands Hyperlambda"_, which is actually quite unique in the programming world.
 
 Below is a list of all the boolean algebraic compound Active Events in P5.
 
@@ -202,36 +214,37 @@ this is a choice, which you will have to do in accordance to the problem at hand
 are looping through a bunch of nodes, and using an **[if]**, to extract only the nodes having some specified name.
 
 ```hyperlambda
-_data
+.data
   foo:foo1
   bar:XXX
   foo:foo2
-for-each:x:/@_data/*
+for-each:x:/@.data/*
   if:x:/@_dp/#?name
     =:foo
     create-widget
       innerValue:x:/@_dp/#?value
 ```
 
-The above will create a widget for each node inside of our **[\_data]** segment, having the name of *"foo"*. The exact same 
+The above will create a widget for each node inside of our **[.data]** segment, having the name of *"foo"*. The exact same 
 logic could have been much more easily created using a slightly more complex lambda expression for your **[for-each]** invocation. 
 This would significantly reduce the complexity of your code, and make it much more readable. Below is an example of doing just that.
 
 ```hyperlambda
-_data
+.data
   foo:foo1
   bar:XXX
   foo:foo2
-for-each:x:/@_data/*/foo
+for-each:x:/@.data/*/foo
   create-widget
     innerValue:x:/@_dp/#?value
 ```
 
 Using a single additional iterator in our above **[for-each]**, we have gotten entirely rid of our original **[if]** invocation, 
 making the code significantly more easy to read, and much smaller. Often you can get rid of entire hierarchies of conditional 
-event invocations, by adding some tiny additional amount of intelligence, into your lambda expression. Making your branching 
-invocations become completely redundant. Above for instance, if we ignore the **[\_data]** segment, we had 5 lines of code, 
-which we were able to reduce to 3 lines of code, while at the same time making our code much more readable.
+event invocations by adding some tiny additional amount of intelligence into your lambda expression - Eliminating your branching 
+invocations completely. Above for instance, if we ignore the **[.data]** segment, we had 5 lines of code, 
+which we were able to reduce to 3 lines of code, while at the same time making our code more readable.
 
-Often a lot of tasks in Hyperlambda becomes significantly smaller, and surprisingly dense in syntax. You can often get rid of 
-entire hierarchies of conditional branching, simply by adding up a couple of additional iterators to your expressions.
+Often a lot of tasks in Hyperlambda becomes significantly smaller, and surprisingly dense in syntax, compared to other programming
+languages. Things that may require hundreds, and sometimes thousands of lines of code in Java or C#, can often be done with 5-10 
+lines of Hyperlambda code.
