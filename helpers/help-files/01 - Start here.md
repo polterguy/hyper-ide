@@ -36,6 +36,9 @@ create-widgets
 
 ```
 
+**Important** - The above Hyperlambda is evaluated on the *server*, making it a much more flexible and rich environment for
+creating code that is dynamically evaluated, than that which an online JavaScript editor give you for instance.
+
 If you have [installed Hypereval](/bazar?app=hypereval) from the Bazar, and you have enabled the Hypereval plugin for Hyper IDE,
 you can also click the _"Lightning"_ button at the top of this page in your toolbar. This will allow you to copy and paste
 example code from this documentation into Hypereval, and modify the code, to further include the tactile nervous system during your 
