@@ -104,13 +104,13 @@ whatever name/type you want your argument to be possible to convert into.
 
 ### About Hyperlambda
 
-The above extension methods are actually created using Hyperlambda. Although for most practical concerns, you
-don't really have to worry about this, since for the most parts you will be creating very simple extension methods,
-simply invoking a MySQL active event. However, Hyperlambda is actually a fully fledged programming language, which
-is Turing complete, and allows you to do much more advanced stuff, than what we are doing above.
+The above extension methods are actually created using Hyperlambda. Most of the time this is not important for you, 
+since you'll probably just invoke some **[p5.mysql.xxx]** event, and return its result. However, realise that
+Hyperlambda is actually a Turning complete programming language, from which you can do a lot of really awesome
+stuff - Ranging from sending PGP encrypted emails, to invoking Google Translate.
 
 Let's create a thought experiment. Imagine that you want to to translate the description of 
-your items into Norwegian, before you return them to the client. This is in fact easily accomplished using Hyperlambda, 
+your items into Norwegian, before you return them to the client. This is easily accomplished using Hyperlambda, 
 by invoking an Active Event from Micro, which allows us to invoke Google Translate. Below is an example of doing 
 just that.
 

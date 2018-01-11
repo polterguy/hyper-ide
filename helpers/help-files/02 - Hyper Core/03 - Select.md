@@ -1,10 +1,9 @@
-
 ## Selecting items
 
 The select operation takes the following optional parameters as HTTP query parameters. Notice,
-all _"special parameter types"_, such as columns, requires square brackets surrounding their names.
+all _"special parameter types"_, such as columns, requires square brackets **[xxx]** surrounding their names.
 This is to prevent these parameters from _"clashing"_ with your generic column
-_"where"_ declarations. The `select` operation requires you to use a GET HTTP request.
+_"where"_ declarations. The `select` operation requires you to use a `GET` HTTP request.
 
 * __[columns]__ - Which columns you want to select, defaults to `*` (all columns).
 * __[order-by]__ - Which column you want to order your select query by. No default value.
@@ -22,7 +21,7 @@ its `items` table - You can accomplish that with the following URL.
 /hyper-core/mysql/todo/items/select?[columns]=description,id&[order-by]=description&[order-dir]=desc
 ```
 
-[Open this link](/hyper-core/mysql/todo/items/select?[columns]=description,id&[order-by]=description&[order-dir]=desc)
+Assuming you have followed our _"AngularJS tutorial"_, you can [open this link](/hyper-core/mysql/todo/items/select?[columns]=description,id&[order-by]=description&[order-dir]=desc)
 in a new tab to see the results of the above query towards your database.
 
 The above will return the first 10 records, but only the `description` and `id` columns, and sort your results descending by
@@ -57,6 +56,6 @@ would resemble the following.
 /hyper-core/mysql/database/table/select?firstname=like:%john%&surname=like:%hansen%&[boolean]=and
 ```
 
-The above URL would fetch only items containing both the text _"john"_ in its firstname, and the value of _"hansen"_
+The above URL would fetch only items containing both the text _"john"_ in its firstname, **AND** the value of _"hansen"_
 in its surname. More complex queries, such as join operations, and richer SQL queries, can be constructed using
 the extensibility features of the MySQL module. Which we will have a look at later.
