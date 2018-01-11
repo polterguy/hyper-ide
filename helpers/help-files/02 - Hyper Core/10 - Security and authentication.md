@@ -1,4 +1,4 @@
-## Security
+## Security and authentication
 
 Hyper Core indirectly contains highly secure and flexible authentication features to login and logout a user, towards 
 the [p5.auth](https://github.com/polterguy/phosphorusfive/tree/master/plugins/extras/p5.auth) authentication/authorization
@@ -44,7 +44,7 @@ xhr.send('username=' + username + '&password=' + password + '&persist=' + persis
 ```
 
 If you set the `persist` query parameter to true, a persistent cookie will be created on the client, making sure
-the client will be remembered according to the persistent authorisation cookie rules of Phosphorus Five. The default
+the client will be remembered according to the persistent authentication cookie rules of Phosphorus Five. The default
 value for persisting a user's credential cookie using persistent logins are `false`, implying that once the user closes
 his browser, or ends his session somehow, he will have to login again. The persistent authentication cookie
 rule of Phosphorus Five can be edited in your _"web.config"_ file, by changing the `p5.auth.credential-cookie-valid` key's
@@ -89,8 +89,8 @@ and also consumes small amounts of server resources.
 
 Hyper Core builds on top of the extendible [p5.auth project](https://github.com/polterguy/phosphorusfive/tree/master/plugins/extras/p5.auth).
 Each operation, database, and table within your database, get its own unique URL.
-Since Phosphorus Five allows you to grant or deny access to URLs according to which role your currently
-logged in user belongs to - This gives you a highly fine grained control over who are allowed to do what
+Since Phosphorus Five allows you to grant or deny access to URLs, according to which role your currently
+logged in user belongs to - This gives you fine grained control over who are allowed to do what
 in regards to your SQL operations. To allow for instance all users, including _"guest"_ visitors, to for instance 
 evaluate `select` operations towards your above `todo` database, and its `items` table - But deny everybody 
 except your _"developer"_ users to perform all other operations on the same database and table - You could create 
@@ -123,6 +123,11 @@ The default access control, unless explicitly overridden in your access control 
 to _deny_ all operations on all databases and all tables. So you'll need to explicitly grant
 access for a role, to be able to have that role do anything towards any database in your system.
 
+To create such access objects, you can watch the following video, which explains how to create
+and maintain both users and access objects on your server.
+
+https://www.youtube.com/watch?v=TLm0nuYzfoc
+
 ### Security
 
 All of the common pitfalls in regards to SQL and security are simply automatically taken care of
@@ -130,7 +135,7 @@ for you in Hyper Core. An example is SQL injection attacks, which are completely
 Another example is how it builds upon the Phosphorus Five authentication/authorization mechanisms,
 providing excellent security for you, by for instance salting and hashing passwords, and denying
 access to the authentication file, etc. All in all, Hyper Core should for all practical concerns,
-be orders of magnitudes more secure, than most things you could possibly build yourself - Assuming
+be orders of magnitudes more secure, than most things you could possibly create yourself - Assuming
 you don't do something really silly yourself, such as concatenating SQL parameters into your SQL,
 in your own extension methods, instead of using the SQL paremeter collection objects.
 Below is a list of some of the more important security features in Hyper Core.
