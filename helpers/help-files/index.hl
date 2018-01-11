@@ -7,6 +7,10 @@
 h2
   innerValue:Hyper IDE help files
 
+literal
+  element:h4
+  innerValue:Main section
+
 
 /*
  * All files at "root" of help files folder.
