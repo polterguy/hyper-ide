@@ -1,6 +1,9 @@
 ## Hello World
 
-In this chapter we are going to create our first Hyperlambda application called *"Hello World"*. By walking through this application, 
+**Notice**, if you have followed the _"Hello World"_ tutorial previously, you will already have this app in your _"/modules/"_ folder,
+at which point you can simply open up that folder, and browse its files instead.
+
+In this chapter we are going to create our first real Hyperlambda application called *"Hello World"*. By walking through this application, 
 and explaining what it does, you will be armed with the knowledge required to create your own Ajax web apps.
 First make sure you select the _"/modules/"_ folder in the file explorer to your left. Then click the _"+"_ button, which will open
 up a wizard form for you, allowing you to create a new application. Name your app _"hello-world"_", and make sure you select the _"hello-world"_
@@ -34,9 +37,12 @@ makes sure that your node becomes a child of the node above it, or an *"argument
 
 In addition, we invoke the **[p5.web.include-css-file]** event, passing in the paths to 3 CSS files. These are a part of Micro, which
 is the subject of another part of the help system - But basically Micro is an alternative to Bootstrap CSS, for those who are acquinted with
-Bootstrap.
+Bootstrap. Notice, the `@MICRO` parts is a _"system path variable"_, and will simply _"unroll"_ to `/modules/micro`, or whatever path Micro
+is installed within.
 
-Below is all the code from our _"launch.hl"_ file.
+Below is all the code from our _"launch.hl"_ file. If you want to, you can also simply click the _"flash"_ button, at the bottom of the 
+code, to evaluate this Hyperlambda directly. This allows you to see the results of the app, without having to create it. Notice, our 
+Hello World module can be found at the bottom of your page after having evaluated the code.
 
 ```hyperlambda-snippet
 /*
@@ -85,8 +91,7 @@ create-widget
                 h3
                   innerValue:Hello World
                 p
-                  innerValue:@"Here is a template for your convenience, creating a default startup module wire frame for you.
-It contains 4 files."
+                  innerValue:@"Here is a template for your convenience, creating a default startup module wire frame for you. It contains 4 files."
                 ul
                   widgets
                     li

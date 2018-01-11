@@ -214,6 +214,29 @@ create-widget
       micro.windows.info:Your widget's lambda event says hello!
 ```
 
+### Commenting Hyperlambda
+
+Notice, the above code is also commented. You can easily create comments in Hyperlambda, either by starting out your comments 
+with `/*` and ending them with `*/` - Resulting in that the Hyperlambda parser will ignore everything in between. Alternatively, 
+you can create comments by starting your lines with `//`, which makes the parser ignore the rest of the line. Comments have no 
+semantic meaning to your lambda objects after your Hyperlambda have been parsed, and are in fact completely gone, after a lambda
+object have been created out of your Hyperlambda.
+
+As a general rule of thumb, you should try to comment your own Hyperlambda well, since this makes it easier to understand for others,
+and yourself too for that matter, 6 months down the road, when you have completely forgotten your original intentions behind your
+own code. The human mind is remarkably good at forgetting things it doesn't feel the need to remember. Below is some examples of
+comments.
+
+```hyperlambda
+// This is some node, doing something cool.
+.foo
+
+/*
+ * This is another node, doing something even cooler.
+ */
+.bar
+```
+
 ### Invisible properties and Ajax events
 
 Sometimes, you might need to associate some piece of data with your widget, that you do not want to render as attributes to the client. 

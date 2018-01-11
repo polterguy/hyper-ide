@@ -26,8 +26,8 @@ you can consume this Active Event, in your own applications.
 
 **Warning**; Before you go berserk creating your own Active Events, please realize that if your web server process for some reasons is being 
 restarted - _Your Active Event will vanish_. If you want to create _persistent_ Active Events, you'll need to declare them in e.g. a Hyperlambda 
-file, and make sure this file somehow is executed, every time your web server process starts. Now you probably understand the purpose with our
-initial _"startup.hl"_ file, from our _"Hello World"_ example, which we created in one of our first chapters.
+file, and make sure this file somehow is executed, every time your web server process starts. At this point, it should probably become clear what our
+initial _"startup.hl"_ file's purpose is, from our _"Hello World"_ example, which we created in one of our first chapters.
 
 ### Parametrizing your Active Events
 
@@ -62,7 +62,7 @@ create-event:examples.foo
 Then invoke your **[examples.foo]** Active Event again. Hint, make sure you view the output while executing this code, to be able to see 
 its results.
 
-Often you only wish to return a single *"thing"* from your Active Events though, at which point you can do this, by using the **[return]** Active 
+Sometimes you only wish to return a single *"thing"* from your Active Events, at which point you can do this, by using the **[return]** Active 
 Event (yes, even the return *"keyword"* is an Active Event), and passing in whatever you wish to return, as the value of **[return]**. Below 
 is an example.
 
@@ -99,6 +99,18 @@ However, since the main argument to our invocation is an expression, this expres
 the **[\_arg]**'s value, inside of our **[examples.main-arg]** event, is a simple constant value.
 
 **Notice**, if you pass in an expression leading to multiple results, you will have multiple **[\_arg]** items inside of your event.
+
+You can also pass in references to nodes as your arguments, allowing you to gain access to these nodes from within your event. Below is an example.
+
+```hyperlambda
+create-event:examples.foo
+  set:x:/../*/_arg/#?value
+    src:Yup, we were invoked!
+_out
+examples.foo:x:/@_out
+```
+
+The above example is the closest you come to _"closure"_ in Hyperlambda.
 
 ### Hyping Hyperlambda
 
@@ -142,7 +154,11 @@ that Active Events gives you.
 
 This is also arguably the strength of Hyperlambda, since it allows you to modify existing events, taking additional arguments, without breaking existing 
 code. Compare the above to the _"interface nightmare"_ from e.g. DirectX or other statically typed programming languages and/or frameworks, which needs a 
-new version, of every single interface, every time they apply a change.
+new version, of every single interface, every time they add a feature to their components.
+
+There are several helper events in Micro which helps you reduce the implications of this problem. They are based upon _"lambda contracts"_, which allows
+you to declare which arguments your event, and/or file, and/or lambda objects in general can legally handle. Check up the documentation for Micro to see
+the details of this.
 
 ### Non-existing Active Events
 
@@ -218,22 +234,23 @@ from Hyperlambda, since the **[eval]** Active Event ignores all nodes starting w
 if you could create them. The Hyperlambda **[eval]** event, will neither attempt to raise any events having an empty name. Notice, 
 you can however create Active Events in C# starting with ".", "\_", or having an empty name "". This is often useful too in fact.
 
-The "" for Active Event, is a special event name, that can also exclusively be created from C#. This event will handle *all* Active Events, 
+The "" for Active Event, is a special Active Event, that can only be created from C#. This event will handle *all* Active Events, 
 and allows you to tap into the core Active Event *"kernel"*, and modify its behavior.
 
 Active Events starting with "." or "\_", can only be created in C#, and only consumed from C#. This allows you to create events, 
 that can only be consumed from C#, which allows you to create *"internal C# code"*, which is not intended to be consumed by 
 Hyperlambda directly. Sometimes this is useful for security reasons for instance. Phosphorus Five contains many such *"internal C# Active Events"*, 
-in its C# core, which have been hidden, to make it more difficult to *"crack"* the system, using Hyperlambda.
+in its C# core, which have been hidden, to make it more difficult to *"crack"* the system using Hyperlambda.
 
 In addition, it is not possible to create an Active Event in Hyperlambda, which already has a C# implementation, such as **[create-event]**. 
-Which would render your system close to useless in its entirety, if it was possible.
+Which would render your system close to useless in its entirety, if it was possible. If you want to exchange the implementation of any
+of the *core* events, this is easily done, but only from C# (or VB.NET or F# etc).
 
 ### Stay away from my stuff!
 
-You should also have an extremely good argument for creating Active Events starting with the name of *"p5."*, since these are intentionally 
-restricted namespaces (by convention), intended for the system itself. I also highly encourage you to *not* create Active Events that have 
-no namespace, such as for instance `create-event:foo-event`. The risk of having your event name clash with other people's event names, 
+You should also have an extremely good argument for creating Active Events starting with *"p5."*, since this is _my namespace_, 
+intended for the system itself. I also highly encourage you to *not* create Active Events that have 
+no namespace, such as for instance `create-event:foo-event`. The risk of having your event crash with other people's events, 
 is simply too great - Rendering your system's ability to collaborate with other people's code impossible.
 
 The convention I recommend, is to use something like the following.
@@ -247,8 +264,8 @@ need to break the above rules. But unless you are really certain about that you 
 
 ### Argument conventions
 
-I often encourage people to pass in lambda objects, intended for execution, by starting their names with a ".". First of all, this will 
-make the intellisense parser of the Hyperlambda code editor mark your lambda object as an *"execution object"*. Secondly, it makes such 
+I often encourage people to create lambda objects, intended for execution, by starting their names with a ".". First of all, this will 
+make the syntax highlighter parser of the Hyperlambda code editor mark your lambda object as an *"execution object"*. Secondly, it makes such 
 execution objects more easily tracked, and increases the readability of your code. So even though this is not technically a prerequisite, 
 I find this to be a useful convention.
 

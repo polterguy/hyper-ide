@@ -19,6 +19,8 @@ refers to as *"functions"* and *"methods"*. Among its defining traits, is the fa
 of arguments. In fact, they all have the same input signatures, which can be condensed down to *"a bunch of nodes"* or *"a lambda object"* 
 to be specific. They also all return the exact same stuff, which again is a _"bunch of nodes"_, or a *"lambda object"*.
 
+https://phosphorusfive.files.wordpress.com/2018/01/22hpw9.jpg
+
 ### Terms
 
 **Definition 0**; *"OOP"* is an acronym, and it means *"Object Oriented Programming"*. Its main design, is based upon the assumption, 
@@ -50,6 +52,8 @@ Things in your software should preferably be *"substitutable with other things"*
 reusable software, easily maintained and understood by others - And the system is said to have a good architecture and design. In 
 traditional programming, a software system with good architecture, is often said to be _"SOLID"_. Software guys (and gals) loves acronyms.
 
+> Good software architecture is like great poetry, explaining it is redundant
+
 ### Active Events' architecture
 
 Active Events, just so happens to drastically increase all of the above parameters. Or at the very least, make it much easier for you, 
@@ -72,6 +76,8 @@ encapsulation, polymorphism, and cohesion.
 The perfect object, according to the rules of encapsulation, has no public methods, properties, or fields. In addition, it can be 
 substituted with any other object in your system, facilitating for 100% perfect polymorphism. This just so happens to largely define 
 lambda objects.
+
+https://phosphorusfive.files.wordpress.com/2018/01/22hqeh.jpg
 
 ### How Active Events solves these problems
 
@@ -109,3 +115,7 @@ In Hyperlambda, the Liskov Substitution Principle makes absolutely no sense, and
 of asking the question; *"Is your car married?"*. In Hyperlambda, a vehicle can be a cat, a soccer field, or a piece of metal - _Without_ 
 breaking LSP. And you can easily marry any lambda object with any other lambda object. This makes it possible for you, to apply 
 whatever *"object model you feel for applying"*, to your code, making the LSP problem completely *obsolete*.
+
+### References
+
+[MSDN Magazine, Active Events, one design pattern instead of a dozen](https://msdn.microsoft.com/en-us/magazine/mt795187)

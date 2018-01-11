@@ -4,6 +4,8 @@ Arguably, among your most important tasks in an Ajax application, is the gatheri
 Below is an example. If you wish, you can simply paste the code below into your _"Hello World"_ application, from our previous chapter,
 and test it out without creating a new app. Or you can simply click the _"lightning"_ button, to evaluate it immediately.
 
+**Notice**, to close a modal window from Micro, you can simply click outside of its main surface.
+
 ```hyperlambda-snippet
 /*
  * Includes CSS for our module.
@@ -116,7 +118,9 @@ before we show this modal confirmation window, there's an invocation to **[eval-
 in our **[innerValue]** node, which is a child of our **[p]** node. Since this is a formatted string, with its formatting values pointing to 
 the results of our **[p5.web.widgets.property.get]** invocations - This means that when **[micro.widgets.modal]** is evaluated, 
 the **[innerValue]** of our **[p]** element, will be a static string, being the product of our formatting expressions, having its *"{n}"* parts, 
-exchanged with its n'th child node's result. Notice, only nodes without names, will be considered when creating such _"formated strings"_.
+exchanged with its n'th child node's result.
+
+**Notice**, only nodes without names, will be considered when creating such _"formated strings"_.
 
 The above `:x:` parts of our Hyperlambda, are in fact what we refer to as *"lambda expressions"*. These allows you to reference other nodes 
 in your lambda structure. If you have some knowledge of XPath, the similarities might be obvious.

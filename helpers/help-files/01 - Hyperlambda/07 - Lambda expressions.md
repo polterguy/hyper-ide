@@ -19,7 +19,10 @@ graph objects as an n dimensional tree structure, then lambda expressions allows
 These expressions extracts a sub-portion of your tree, and yields its results, as a new tree. Each expression, creates a new *"dimension"* 
 through your tree. Such dimensions are often referred to as *"hyperplanes"*. To make this easier to visualise, think of lambda expressions 
 as _"SQL for tree structures"_. A lambda expression creates a new tree structure, from another source tree structure. This resulting tree 
-structure can have zero, one, or more nodes in it. 
+structure can have zero, one, or more nodes in it.
+
+For the record, the above definition is completely irrelevant for your understanding of expressions, but necessary to create a formalized
+definition. They're actually quite easily understood, once you dive into them. Think of them as _"folder paths"_, if it helps.
 
 The expression itself, can contain 3 different segments, all of which are optional.
 
@@ -29,7 +32,7 @@ The expression itself, can contain 3 different segments, all of which are option
 
 All of the above segments are optional, and the shortest possible legal expression you can create, is in fact completely empty `_foo:x:`. 
 An empty expression like this, is often referred to as the *"identity expression"*, and (almost) always returns the node where it is 
-declared as a value. Hence, the expression in this code `_bar:x:`, will yield the **[\_bar]** node itself.
+declared as a value. Hence, the expression in this code `_bar:x:` will yield the **[\_bar]** node itself.
 
 The iterators of your expressions are said to be *"left associative"*, because they are evaluated in order of appearance, from left to right. 
 Hence, you start out with the identity node, and apply zero or more iterators to it, to retrieve whatever result you are interested in, 
@@ -37,7 +40,7 @@ _relative to the identity node_. There are many different types of iterators, an
 implementation. However, the most common ones, are listed in one of our appendixes at the end of this book.
 
 Each iterator reacts upon the results of its previous iterator, starting from left to right. Whenever an iterator yields a *"null result"*, 
-the rest of the expression is discarded, and the expression as a whole, will yield a *"null result"*. Each iterator starts out with a 
+the rest of the expression is discarded, and the expression as a whole will yield a *"null result"*. Each iterator starts out with a 
 forward-slash *"/"*. The first iterator in your expression, starts out with the *"identity node"* as its initial result set.
 
 Below is a piece of Hyperlambda, which demonstrates the construct. Notice, at this time, it might be beneficial for you to evaluate

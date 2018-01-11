@@ -5,13 +5,13 @@ ambiguity of P5 is one of its most interesting qualities. In this chapter, we wi
 which stores its items in the internal _"p5.data"_ database. This allows us to accommodate for future change, without breaking the rules
 of *YAGNI*.
 
-**Definition**; YAGNI means *"You Ain't Gonna Need It"*, and implies you should never implement something you'll probably never need. This 
+**Definition**; YAGNI means *"You Ain't Gonna Need It"*, and implies you should never implement something you don't need immediately. This 
 important design principle, often contradicts another important design principle of OOP - Which is that you should expect change. Hence, 
-the art of balancing YAGNI, with the design principles necessary to accommodate for future change - Often times seems like an impossible task.
+the art of balancing YAGNI, with the design principles necessary to accommodate for future change - Often seems to be an impossible task.
 
-I often refer to this oxymoron's insanity, by stating how according to the rules of *"SOLID programming"* (Google it) - The perfect type has 
-no public fields, methods or properties, cannot be instantiated, and is 100% *"encapsulated"* - Which of course translates into, that the 
-perfect class doesn't exist.
+I often refer to this oxymoron's insanity, by stating how according to the rules of *"SOLID programming"* (Google it) - The perfect class has 
+no public fields, methods, or properties, it cannot be instantiated, and is 100% *"encapsulated"* - Which of course translates into, that the 
+perfect class is the one that *doesn't exist*.
 
 ### How Hyperlambda solves this
 
@@ -19,9 +19,15 @@ With Hyperlambda, balancing this line however, becomes significantly easier. Sim
 at our disposal. Which is another design principle, often referred to as *"YALOA"*. The reasons for this is, because in P5, polymorphism 
 is *implicitly given*, for any lambda object - Due to that there are no semantic differences between any two lambda objects that can possibly 
 exist. Hence, any lambda object, is at least in theory, substitutable by any other lambda object. This results in that it becomes impossible 
-to violate the *"Liskov substitution principle"* (Google it) in Hyperlambda. In Hyperlambda, the entire Liskov Substitution Principle 
+to violate the *"Liskov Substitution Principle"* in Hyperlambda (Google it). In Hyperlambda, the entire Liskov Substitution Principle 
 hence becomes *obsolete*. The dilemma of balancing YAGNI with future potential change requirements is non-existent in Hyperlambda.
 Resulting in that with Hyperlambda, you can easily accommodate for future change, _without_ breaking YAGNI.
+
+In Hyperlambda, you can always inject another layer of lambda, in between any existing piece of lambda, and any other existing piece of
+lambda evaluating the first. This allows you to modify an existing system, having *"anything intercept anything"*. This allows you to
+change your entire system, without even removing a single lambda object, having your new logic, invoke the old logic, without any problems.
+Which of course results in that you can easily fork the system, and completely change its behavior, without removing or changing a single 
+line of code in it.
 
 With that in our mind, let's create a 100% perfectly generic CRUD database layer, that permanently solves (in theory), all our future 
 CRUD issues.
@@ -326,8 +332,7 @@ examples.data.read:examples.my-data
 ```
 
 Our above implementation of our read Active Event, can all of a sudden be parametrized. If it is parametrized, it will filter 
-away all resulting items, not having a property matching our argument. In addition to all items where this property's value 
-does not match the regular expression value we specify as a filter. Try the following for instance.
+away all resulting items, not having a property matching our parameter. Try the following for instance.
 
 ```hyperlambda
 examples.data.read:examples.my-data
@@ -375,23 +380,32 @@ ability to rapidly start creating value for your customer. While also never havi
 Some apps, might be perfectly fine with having a maximum of ~5.000 objects in their database, and hence would probably never 
 need your super scalable database design, you wasted 6 months implementing, because you *believed* you were going to need it!
 
-Sorry; **You Ain't Gonna Need It!** Hyperlambda simply more easily allows you to realise that fact.
-
 ### You're not developing an "app"
 
 Another beautiful idea, hopefully intuitively understood from our above example, is the fact that inevitably, as your solutions 
 becomes more and more popular - Other app developers will realise they can consume your components, to add value to their own apps. 
-At which point you are no longer an *"app developer"*, but in fact a *"platform vendor"*, allowing you to have others build value 
-on top of your solutions.
+At which point you are no longer an *"app developer"*, but in fact a *"platform vendor"*, allowing you to have others add value 
+on top of your solutions. And even if others don't implicitly understand that fact, then you and your colleagues will understand it
+easily, as you start out your *next* app - Since at that point, it is highly likely that you can in fact reuse 90% of everything
+you did in your *first* app!
 
-Being a platform vendor is almost one of the inevitable consequences of using P5, because no app can be perceived as being isolated 
+Being a platform developer is almost one of the implicit side-effects of using P5, because no app can be perceived as being isolated 
 from any other app, running on the same system. The reasons for this, is because while in other programming languages, creating 
 reusable software, is a tedious and difficult task - In P5, it is almost implicitly given, that whatever you create becomes reusable. 
 This is due to that all lambda objects are created as equals. The Liskov Substitution Principle, has effectively been rendered *obsolete*. 
 In P5, almost everything you can in theory create, is in practice reusable.
 
+In fact, every single _"app"_ that you can install through [the Bazar](/bazar), gives you more Active Events you can use, since
+none of them are _"apps"_, but rather built as reusable components and modules, allowing you to reuse them in your own projects.
+If you need to send a PGP encrypted email for instance, you can easily do this using the API of [Sephia Five](/bazar?app=sephia-five).
+
 Imagine if every single time you created a project, you could reuse all of its code, in all of your future projects. What would this 
 do to your productivity? Would this give you a competetive edge?
 
-With P5, you are creating *"modules"* and *"components"*, for then to *"orchestrate"* your building blocks together. P5 is all about 
-eliminating borders and reducing complexity, while increasing reusability and improving Time2Market.
+With P5, this is the inevitable result, since you are creating *"modules"* and *"components"*, for then to *"orchestrate"* these 
+modules together. P5 is all about eliminating borders, and reducing complexity, while increasing reusability and improving Time2Market.
+
+### So what this have to do with the header of this article?
+
+Well, the paradox is, that you can arguably _"fork"_ Phosphorus Five, without actually forking it. Since you can completely
+change its behaviour, by _"injecting"_ your own logic, as a _"YALOA"_, resulting in that it becomes _"fork friendly"_.

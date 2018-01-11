@@ -115,8 +115,8 @@ create-widget
 ```
 
 
-The first obvious thing you might see in the above **[onclick]** event handler, is that the **[innerValue]** argument to **[p]** widget,
-in our **[micro.widgets.modal]** invocation, is actually initially empty. Still, when our confirmation window is shown, it is perfectly 
+The first obvious thing you might see in the above **[onclick]** event handler, is that the **[innerValue]** argument to our **[p]** widget,
+in our **[micro.widgets.modal]** invocation, is actually initially *empty*. Still, when our confirmation window is shown, it is perfectly 
 able to show our full name.
 
 This is because of that our **[set]** invocation concatenates the results from our **[p5.web.widgets.property.get]** invocation, and 
@@ -124,6 +124,8 @@ prepends the text *"Hello there "* in front of the first and last name. To under
 the `{1}` parts of our **[src]** node's value, are substituted with the result of the zeroth and first nodes' children values. Since 
 these nodes are expressions pointing to the returned value from our **[p5.web.widgets.property.get]** invocation, we end up with an 
 initial greeting, followed by the user's first name and second name.
+
+**Notice**, in programming languages we always start counting at *ZERO*! Hence, the first item, becomes the _zero'th_ item in programming.
 
 The second thing you may already have noticed, is that instead of supplying a *"static ID"* to which widgets we wish to retrieve 
 the **[value]** of, we supply an expression, leading to two values; *"first_name"* and *"last_name"*. These happens to be the IDs 
@@ -145,6 +147,10 @@ this lambda, it will have a value, that we dynamically created, before we execut
 
 You can of course also create execution instructions too, with similar constructs, by dynamically changing the name of some *"future node"* 
 this way.
+
+Still confused? Watch the following video.
+
+https://www.youtube.com/watch?v=f4ZUwlbIdaE
 
 ## [add]ing things to your tree
 
@@ -226,35 +232,28 @@ create-widget
                 eval:x:/@.exe
 ```
 
-The above example, will actually dynamically _"mold"_ our lambda object, according to what you type into the textbox. If you type 
-in *"Thomas"*, it will evaluate a different lambda, according to its input, by molding the lambda object it is evaluated.
+The above example, will actually dynamically _"mold"_ your lambda object, according to what you type into the textbox. Depending
+upon what you supply in the textbox, it will **[add]** a different lambda object into its **[.exe]** lambda destination.
 
 To understand what's happening in this code, realise we're *"branching"* our lambda object, according to the return value of 
 our **[p5.web.widgets.property.get]** invocation. We will take a deeper look at the concept of *"branching"* later, but basically 
 if the value of our textbox is *"Thomas"*, it will **[add]** a different lambda into our **[.exe]** node, than it will with all
 other input values.
 
-Finally, it will invoke this **[.exe]** node, and execute it as a lambda object. Hence, what we have actually done, is to 
-dynamically create a piece of lambda, depending upon the value of our textbox, for then to execute our dynamically created lambda. 
+Finally, it will evaluate this **[.exe]** node, and execute it as a lambda object. Hence, what we have actually done, is to 
+dynamically create a lambda object, depending upon the value of our textbox - For then to evaluate our dynamically created lambda. 
 The above code is a naive example, but the concept is extremely powerful, since it allows you to dynamically create your lambda 
-objects, according to some criteria.
-
-### Commenting Hyperlambda
-
-Notice, the above code is also heavily commented. You can easily create comments in Hyperlambda, either by starting out your comments 
-with `/*` and ending them with `*/` - Resulting in that the Hyperlambda parser will ignore everything in between. Alternatively, 
-you can create comments by starting your lines with `//`, which makes the parser ignore the rest of the line. Comments have no 
-semantic meaning to your lambda objects after your Hyperlambda have been parsed, and are in fact completely gone, after a lambda
-object have been created out of your Hyperlambda.
+objects, during runtime. This results in that you can have the computer both create its own lambda objects, in addition to modify 
+existing lambda objects.
 
 ### Still confused?
 
-The above code might be challenging to visualize in the beginning, especially for experienced developers, since there are 
-no similar concepts in main stream use out there as far as I know.
-
-If you imagine Hyperlambda as HTML, and lambda as the DOM your HTML creates. Then imagining how JavaScript can change your DOM 
-dynamically, and how this becomes the equivalent of dynamically *"molding"* your lambda objects during runtime - This might create 
-a mental model you can use to visualise this more easily.
+The above code might be challenging to visualize in the beginning, especially for experienced developers for some reasons, 
+since there are no similar concepts in main stream use out there as far as I know. However, if you imagine Hyperlambda as HTML, 
+and lambda as the DOM your HTML creates. Then imagining how JavaScript can change your DOM dynamically, and how this becomes 
+the equivalent of dynamically *"molding"* your lambda objects during runtime. Then realize that the same way JavaScript can 
+dynamically _"mold"_ your DOM, Hyperlambda can dynamically mold its _"lambda"_ objects, using constructs such as _"insert"_, 
+_"add"_, _"set"_, etc. This might create a mental model you can use to visualise this more easily.
 
 ## [insert-before] and [insert-after]
 
@@ -331,7 +330,7 @@ actually want to reference - Unless you want to end up having unintentional side
 feature that allows you to *"do a lot, with a little"*. One of my favourite examples in these regards, is loading all Hyperlambda 
 files from a folder, and evaluating them in order - Which can actually be done with 4 lines of code (don't evaluate this code though).
 
-**Example of executing all Hyperlambda files in some folder**
+**Example of evaluating all Hyperlambda files in some folder**
 
 ```hyperlambda
 list-files:/foo
@@ -368,7 +367,7 @@ specification, is that a node cannot have a *"null name"*. It can however have a
 
 You should now have a basic understanding of all four *"CRUD operations"* for lambda objects. You can now dynamically create and change 
 lambda objects as you see fit. However, as we started out this chapter with, no other programming languages contains any similar 
-constructs. Hence, the largest problem you're now faced with, is creating a mental model for understanding this unique idea. Yet again, 
-an old video, but illustrating the concepts we covered in this chapter fairly thoroughly.
+constructs. Hence, the largest problem you're now faced with, is creating a mental model for understanding this unique idea.
+This is an old video, but illustrates the concepts we have covered in this chapter fairly well.
 
 https://www.youtube.com/watch?v=w7A4TcWHolk

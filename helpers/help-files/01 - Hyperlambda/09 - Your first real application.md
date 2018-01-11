@@ -11,10 +11,14 @@ we can dive into our application though, there are some concepts we'll need to c
 ### Loading and saving files
 
 In P5, there are two important events for loading and saving files. These are **[load-file]** and **[save-file]**. Before we start using 
-them though, we'll need to have a look at the folder structure of P5. The most important folder for this chapter is called *"users"*. This 
-folder will contain one folder for each user you have in your P5 installation. By default, P5 has only one user, which is your *"root"* user - 
-So typically as you start out with P5, there will only be one folder here. This folder will be the *"root"* folder. You can browse this folder
-using your folder explorer in Hyper IDE.
+them though, we'll need to have a look at the folder structure of P5.
+
+The most important folder for this chapter is called *"users"*. This folder will contain one folder for each user you have in your P5 installation. 
+By default, P5 has only one user, which is your *"root"* user - So typically as you start out with P5, there will only be one folder here. This 
+folder will be the *"root"* folder. You can browse this folder using your folder explorer in Hyper IDE. Below is a screenshot of how this
+folder looks like in my installation.
+
+https://phosphorusfive.files.wordpress.com/2018/01/users-folder-screenshot.png
 
 Inside of your user's folder, the *"root"* folder that is, you can find a *"documents"* folder. This is the equivalent of *"Your documents"* 
 in windows, or *"Home"* in Linux. This is important to understand for this chapter, since we will store our *"database"* within this folder. 
@@ -81,6 +85,7 @@ p5.web.include-css-file
  * according to the content of our "database file".
  */
 create-widget
+  parent:hyper-ide-help-content
   class:container
   oninit
 
@@ -159,9 +164,12 @@ create-widget
 
                             /*
                              * Then appending the values supplied by user for new record.
-                             * Notice, we append the entire [sys42.windows.wizard.get-values] 
-                             * node, for then to later change its name to [item].
+                             * Notice, we make sure we HTML encode these values, to prevent an adversary
+                             * from injecting malicious HTML code into our app.
                              */
+                            for-each:x:/@micro.form.serialize/*
+                              set:x:/@_dp/#?value
+                                p5.html.html-encode:x:/@_dp/#?value
                             add:x:/+/*/*
                               src:x:/@micro.form.serialize/*
                             add:x:/@.content
@@ -169,9 +177,14 @@ create-widget
                                 item
 
                             /*
-                             * Converting our [_content] node's content to Hyperlambda (string),
+                             * Converting our [.content] node's content to Hyperlambda (string),
                              * and saving it to disc.
+                             * Notice, to prevent this file from growing indefinitely, we make sure we only
+                             * save a maximum of 10 items to it.
                              */
+                            while:x:/@.content/*?count
+                              >:int:10
+                              set:x:/@.content/0
                             lambda2hyper:x:/@.content/*
                             save-file:~/documents/private/adr.hl
                               src:x:/@lambda2hyper?value
@@ -349,9 +362,9 @@ https://www.youtube.com/watch?v=KcaRyjj2w58
 
 ### [lambda2hyper], converting lambda to Hyperlambda
 
-The above **[lambda2hyper]** Active Event, which we use at line 107 in our code, simply converts a piece of lambda to a string, resembling 
+The above **[lambda2hyper]** Active Event, which we use in our code, simply converts a piece of lambda to a string, resembling 
 its Hyperlambda version. There also exists a **[hyper2lambda]** event, which does the opposite. These events are useful for transforming 
-lambda objects to strings, and vice versa - Such as when we want to save a lambda object to disc, or use it as a string for some reason. 
+lambda objects to Hyperlambda, and vice versa - Such as when we want to save a lambda object to disc, or use it as a string for some reason. 
 Both of these two events should be relatively self explaining.
 
 ### Our "wizard" window
@@ -360,6 +373,8 @@ Our **[micro.widgets.wizard]** invocation is a new construct. Its purpose is sim
 new input, or edit some existing data. It allows to declare which input you want to ask the user from, and transforms from e.g. **[text]** to
 an _"input"_ element/widget automatically. If you click the *"+"* button in your application, you can clearly see the relationship between 
 the **[micro.widgets.wizard]** node's children, and the 3 input textboxes, asking the user for a *"name"*, *"email"* and *"phone"*.
+
+Our wizard widget is documented in the Micro section of our documentation.
 
 The **[micro.form.serialize]** event, does exactly what you think it does. After invocation, it will look something like the following.
 
@@ -370,12 +385,16 @@ micro.form.serialize
   phone:98765432
 ```
 
+Also our serialize event is documented in our Micro section.
+
 After we have retrieved the values from our wizard window, we first check if there already exists a *"database file"*. This is necessary, 
 in order to make sure we actually *add* records to our data. If it does, we load this file, and add the contents of it into a 
 temporary **[.content]** node. Notice, we do this before we add the values from our newly created record into this file, to ensure the 
 last record supplied, physically becomes the last record in our file. This preserves the order of our records, according to the order 
 they were supplied by the user. Then finally, before we convert this **[.content]** node to Hyperlambda, and save it to disc, we add 
-the values from our *"wizard"* window. 
+the values from our *"wizard"* window.
+
+Our little **[while]** trick, simply ensures we only save our 10 most recent records.
 
 The last thing we do in our **[onclick]** Ajax event, is to make sure we invoke **[examples.databind-addresses]**, which is our widget 
 lambda event, that is responsible for databinding our HTML table all over again.
