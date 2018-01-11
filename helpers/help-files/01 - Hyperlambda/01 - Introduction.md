@@ -9,7 +9,7 @@ same type of computer code, it is intended to document.
 This book is not _"read only"_. In fact, you can edit this page if you want to, by scrolling to the bottom of 
 this page, and clicking the _"pencil"_ button in the bottom right corner of the page. This will open up this 
 file in Hyper IDE, allowing for you to edit it, and add your own personal notes, as you proceed through the book. 
-When you are done editing some parts of the book, you can click the _"refresh"_ button, to reload the page, into 
+When you are done editing some parts of the book, you can click the _"reload"_ button, to reload the page, into 
 the _"reader"_. This _"book"_ will also sometimes contain inline YouTube videos and images.
 
 ### Goals of the book
@@ -30,10 +30,12 @@ The book will also contains lots of information about other relevant subjects, s
 
 ### A guide to the guide
 
-The book's convention, is created carefully to allow you to understand what is being described. First of all, 
+The book's convention is created carefully to allow you to understand what is being described. First of all, 
 any property or attribute from Hyperlambda is referenced like **[foo]**, where *"foo"* assumes we are talking about
 a node's name. This convention is used whenever a node is referenced inline in the text. Emphasized and important points, 
-are written like *this*. Inline code is written like `this` and multiple lines of code is written like the following.
+are written like *this*. Inline code is written like `this`, and multiple lines of code is written like below.
+Often you can also directly evaluate the code examples, by clicking the yellow _"flash"_ button embedded inside of the
+code examples, such as the following illustrates.
 
 ```hyperlambda-snippet
 create-widget:my-widget
@@ -45,23 +47,29 @@ create-widget:my-widget
       innerValue:I was clicked!
 ```
 
-### Evaluating the code examples
+Notice, when you have evaluated the above code example, you can find its result at the bottom of your page. Click the yellow
+_"flash"_ button, and scroll to the bottom of your page to see the result.
 
-For the most parts, most coding examples are _"self contained"_, meaning you can simply copy them from
-the documentation, and paste them into for instance the Hypereval module, to immediately evaluate them and try out 
-the concepts yourself. If you have the _"Hypereval"_ plugin enabled, you can click it at the top of this 
-page (the toolbar button that resembles a _"lightning"_), copy and paste the above code into Hypereval, and click
-the _"Evaluate"_ button in Hypereval (which is the button that resembles a _"lightning"_). You can install 
-Hypereval [here](/bazar?app=hypereval). The above example is also a _"scnippet"_, which allows you to evaluate
-it directly, by clicking the _"lightning"_ button in the code editor itself. This will create a button element,
-and append it to the bottom of your page.
+### Playing with the code examples
+
+If you want to copy and paste these code examples into your own code, you will have to edit the **[parent]** argument, 
+since it is referencing a widget, which only exists as long as the help files are open - Otherwise, you might
+get _"weird exceptions"_ when evaluating the code examples in your own code.
+
+Besides from that, most code examples are _"self contained"_, meaning you can simply copy them from
+the documentation, and paste them into for instance the Hypereval module, to play around with them. 
+If you have the _"Hypereval"_ plugin enabled, you can click it at the top of this page (the toolbar button 
+that resembles a _"flash"_). Then copy and paste the above code into Hypereval, and click
+the _"Evaluate"_ button in Hypereval (which is the button that resembles a _"flash"_). You can install 
+Hypereval [here](/bazar?app=hypereval).
 
 ### External articles and references
 
-I have written several article about Hyper IDE, Phosphorus Five, and its associated technologies in several different magazines.
-Below is a short list of some of these, which you might benefit from reading.
+If you are interested in the technical implementation details of Hyperlambda, its architecture, and how it was built - Then
+you can read some of the following articles.
+
+**Warning**, they're quite technical, and not necessary for you to get started with Hyperlambda.
 
 1. [MSDN Magazine, Active Events, one design pattern instead of a dozen](https://msdn.microsoft.com/en-us/magazine/mt795187)
 2. [MSDN Magazine, make C# more dynamic with Hyperlambda](https://msdn.microsoft.com/en-us/magazine/mt809119)
 3. [MSDN Magazine, could managed AJAX put your web apps in the fast lane?](https://msdn.microsoft.com/en-us/magazine/mt826343)
-4. [DZone, How I created a web based IDE in 7 days](https://dzone.com/articles/how-i-created-a-web-based-ide-in-7-days)

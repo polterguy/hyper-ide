@@ -1,4 +1,3 @@
-
 /*
  * This is our main "landing page" for our Hyperlambda help files.
  */
@@ -59,55 +58,3 @@ container
               get-widget-property:x:/../*/_event?value
                 .file
               hyper-ide.help.display-file:x:/@get-widget-property/*/*?value
-
-literal
-  element:h4
-  innerValue:Sub sections
-
-
-/*
- * Sub-sections, these are basically folders beneath the root folder of our help system.
- */
-container
-  element:ul
-  oninit
-
-    /*
-     * Retrieving all other Hyperlambda files in the help folder.
-     */
-    list-folders:@IDE/helpers/help-files/01 - Hyperlambda/
-
-    /*
-     * Looping through each Hyperlambda file (except of course "index.hl").
-     */
-    for-each:x:/@list-folders/*
-
-      /*
-       * Figuring out filename, without extension, and removing numbering parts.
-       */
-      split:x:/@_dp/#?name
-        =:/
-      replace:x:/@split/0/-?name
-        src:regex:/[0-9]+ - /
-
-      /*
-       * Creating a list item, containing a hyperlink button, which once clicked,
-       * loads and displays the specified help file.
-       */
-      create-widget
-        parent:x:/../*/_event?value
-        element:li
-        widgets
-          a
-            href:#
-            innerValue:x:/@replace?value
-            .folder:x:/@_dp/#?name
-            onclick
-
-              /*
-               * Retrieving file name, loading and displaying file, by invoking common
-               * widget lambda event, which does the heavy lifting for us.
-               */
-              get-widget-property:x:/../*/_event?value
-                .folder
-              hyper-ide.help.display-folder:x:/@get-widget-property/*/*?value

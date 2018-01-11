@@ -21,6 +21,9 @@
 * [Font Awesome](http://fontawesome.io/) - Copyright © ? Dave Gandy
 * [Hero Patterns](http://www.heropatterns.com/) - Copyright © ? Steve Schoger
 
+All other Phosphorus Five modules, distributed through for instance the Bazar, are the sole copyright of 
+Thomas Hansen.
+
 See the above respective Open Source projects for licensing information, but in general they are all _"permissive"_ in nature,
 except iTextSharp, which is distributed under an Affero GPL license. Which implies that if you use the PDF
 featured of Posphorus Five, you'll have to explicitly link to the parts of your source code in your application
@@ -29,5 +32,5 @@ you should be safe.
 
 Phosphorus Five and Hyper IDE was only made possible due to the great and brilliant work of many others, besides myself.
 I would like to thank everyone involved in the above projects, and encourage my users to support these projects, anyways you can.
-If you want to be explicitly mentioned by name here, please send me an email at thomas@gaiasoul.com, with your full name, and
+If you want to be explicitly mentioned by name here, please send an email to thomas@gaiasoul.com, with your full name, and
 a link to some website you want me to link to here.
