@@ -1,7 +1,7 @@
 ## The fastest Hello World tutorial in the world
 
 The easiest way to get started with Hyper IDE, is to select the `/modules/` folder, for then to click
-the `+` button in your toolbar, assuming you have enabled the plugin that allows you to create a new module.
+the `+` button in your toolbar, assuming you have enabled the plugin that allows you to create new modules.
 Then name your app _"hello-world"_, and select the `hello-world` type. At which point your screen should resemble
 the following.
 
@@ -9,7 +9,7 @@ https://phosphorusfive.files.wordpress.com/2018/01/hello-world-screenshot.png
 
 Then simply click the _"Create"_ button, and you're done. If you want to try out your app,
 you can [click this link](/hello-world). Your app consists of 5 files, most of which only
-serves as a starting ground for your own app.
+serves as a starting ground for your own apps.
 
 * _"desktop.hl"_ - A _"desktop"_ icon
 * _"launch.hl"_ - Your app's launcher file
@@ -18,7 +18,7 @@ serves as a starting ground for your own app.
 * _"uninstall.hl"_ - Evaluated when your app is uninstalled
 
 The app is a _"Hyperlambda"_ web app. Hyperlambda is a programming language which is native to Phosphorus Five
-and thoroughly documented in other parts of this help system. Below is a screenshot of our result.
+and thoroughly documented in the _"Hyperlambda"_ section of this help system. Below is a screenshot of your result.
 
 https://phosphorusfive.files.wordpress.com/2018/01/hyper-ide-hello-world-screenshot.png
 
@@ -75,8 +75,7 @@ create-widget
                 h3
                   innerValue:Hello World
                 p
-                  innerValue:@"Here is a template for your convenience, creating a default startup module wire frame for you.
-It contains 4 files."
+                  innerValue:Here is a template for your convenience, creating a default startup module wire frame for you. It contains 4 files.
                 ul
                   widgets
                     li
@@ -92,12 +91,16 @@ It contains 4 files."
                 button:foo-button
                   innerValue:Click me!
                   onclick
+
+                    /*
+                     * Changes the text of your button to "Hello World".
+                     */
                     set-widget-property:foo-button
                       innerValue:Hello World
 ```
 
-The above code first includes Micro's CSS files. Micro is a grid based CSS framework, which is native to
-Phosphorus Five. In later chapters, we will dive deep into Micro.
+The above code first includes Micro's CSS files. Micro is a grid based CSS framework, that is native to
+Phosphorus Five. We will look at Micro in other parts of this documentation.
 
 After it has included Micro, it creates a `container/row/col` wireframe for us, which you'll probably recognise
 if you have done some Bootstrap CSS development. Basically this part creates a _"container"_, which contains
