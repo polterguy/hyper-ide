@@ -260,7 +260,7 @@ create-widget:hyper-ide-help-wrapper
                             button
                               #text:@"<span class=""icon-flash""></span>"
                               @class:hyper-ide-evaluate-snippet-button
-                              @onclick:@"p5.$('x_eval_{0}').raise('.onevaluate');return false;"
+                              @onclick:@"p5.$('x_eval_{0}').raise('.onevaluate');this.disabled = true;return false;"
                                 :x:/@replace?value
 
                         /*

@@ -304,5 +304,11 @@
 .hyper-ide-evaluate-snippet-button:focus {
     background:linear-gradient(#f0f000,#d5d500);
 }
+.hyper-ide-evaluate-snippet-button:disabled:hover,
+.hyper-ide-evaluate-snippet-button:disabled:active,
+.hyper-ide-evaluate-snippet-button:disabled:focus {
+    background: var(--wid-dark-col);
+}
+
 
 
