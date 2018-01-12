@@ -68,7 +68,7 @@
 /* Hyper IDE splash screen, which you see when you initially start Hyper IDE */
 .hyper-ide-splash {
     position: relative;
-    background-color: #ffffff;
+    background-color: #fdfdfd;
     margin-bottom: 0;
     height:auto;
     min-height:100%;
@@ -102,7 +102,7 @@
     margin-left: .2rem;
     margin-bottom: 0;
     background: none;
-    background-color: #fefefe;
+    background-color: #fafafa;
     font-size: .7rem;
     padding-right: 30px;
     height: 28px;
@@ -110,7 +110,7 @@
 
 .hyper-ide-editor-tab-buttons > .toggled {
     background: none;
-    background-color: #ffffff;
+    background-color: #fdfdfd;
     z-index: 1;
     font-weight: bold;
     font-style: normal;
@@ -128,7 +128,7 @@
 .hyper-ide-editor-tab-buttons > button.toggled:active,
 .hyper-ide-editor-tab-buttons > button.toggled:focus {
     background: none;
-    background-color: #ffffff;
+    background-color: #fdfdfd;
 }
 
 .hyper-ide-editor-tab-buttons > button > span.hyper-ide-close {
@@ -164,6 +164,7 @@
 /* Wraps CodeMirror instance(s) */
 .hyper-ide-codemirror-wrapper {
     height: 100%;
+    box-sizing:content-box;
 }
 
 /* CodeMirror instance, inside of editors */

@@ -1,0 +1,17 @@
+/*
+ * Create our preview HTML page plugin.
+ */
+create-event:hyper-ide.plugins.htmlmixed.preview
+  return
+    button
+      innerValue:@"<span class=""icon-eye""></span>"
+      style:"margin-bottom:0;"
+      title:Preview your HTML page in a new browser tab
+      onclick
+
+        /*
+         * Retrieves active editor's file path, and opens it up in a new tab.
+         */
+        hyper-ide.editors.get-active
+        p5.web.send-javascript:@"window.open('{0}')"
+          :x:/@hyper-ide.editors.get-active?value

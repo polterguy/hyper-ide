@@ -64,12 +64,12 @@ if
 /*
  * Including Micro, active skin, font CSS file, and main CSS file for Hyper IDE.
  */
-p5.web.include-css-file
-  @MICRO/media/main.css
-  @MICRO/media/fonts.css
-p5.web.include-css-file:@MICRO/media/skins/{0}.css
-  :x:(/@select-data/*/*/skin|/../*/.defaults/*/skin)/$?value
-p5.web.include-css-file:@IDE/media/main.css
+eval-x:x:/+/*
+micro.css.include
+  skin:x:(/@select-data/*/*/skin|/../*/.defaults/*/skin)/$?value
+hyper-ide.version
+p5.web.include-css-file:@IDE/media/main.css?v={0}
+  :x:/@hyper-ide.version?value
 
 
 
