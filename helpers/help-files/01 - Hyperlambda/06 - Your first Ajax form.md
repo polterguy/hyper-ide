@@ -30,6 +30,7 @@ create-widget
           widgets
             void:your_name
               element:input
+              type:text
               class:fill
               placeholder:Give me your name ...
             literal:your_adr

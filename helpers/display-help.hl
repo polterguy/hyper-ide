@@ -293,7 +293,19 @@ create-widget:hyper-ide-help-wrapper
                       select-data:x:/*/*/micro.codemirror.settings
                       p5.web.include-javascript-file
                         @MICRO/media/codemirror-all.min.js
-                      p5.web.include-javascript-file:@MICRO/media/codemirror/mode/hyperlambda/hyperlambda.min.js
+
+                      /*
+                       * Notice, special handling of "htmlmixed" mode, to also include XML, CSS and JavaScript.
+                       */
+                      if:x:/@.language?value
+                        =:htmlmixed
+                        p5.web.include-javascript-file:@MICRO/media/codemirror/mode/htmlmixed/htmlmixed.js
+                        p5.web.include-javascript-file:@MICRO/media/codemirror/mode/xml/xml.js
+                        p5.web.include-javascript-file:@MICRO/media/codemirror/mode/javascript/javascript.js
+                        p5.web.include-javascript-file:@MICRO/media/codemirror/mode/css/css.js
+                      else
+                        p5.web.include-javascript-file:@MICRO/media/codemirror/mode/{0}/{0}.js
+                          :x:/@.language?value
                       p5.web.include-css-file:@MICRO/media/codemirror-all.min.css
                       p5.web.include-css-file:@MICRO/media/codemirror/theme/{0}.css
                         :x:(/@select-data/*/*/theme|/@.defaults/*/theme)/$?value
