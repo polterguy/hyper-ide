@@ -107,7 +107,8 @@ create-widget
                       innerValue:Button
 ```
 
-The above code will end up being rendered like the following.
+The above code will end up being rendered like the following. **Notice**, further down we will learn how to remove the additional
+_"artifact margin"_ at the bottom of our strip.
 
 <img style="display:block;margin-left:auto;margin-right:auto;max-width:100%;" src="https://phosphorusfive.files.wordpress.com/2018/01/micro-strips-screenshot.png" />
 
@@ -125,9 +126,12 @@ of Micro, from our first chapter.
 **Notice** - All form elements, and helper elements, such as the above labels, and our checkbox wrapper,
 will have an automatic bottom margin assigned to them. Sometimes this is not what you want, such as when
 rendering strips or buttons at the bottom of some related form group. For such cases, you can simply
-add the `no-bottom-air` class, which will remove this automatic bottom margin for you. If we were to modify
-our above example for instance, to remove the bottom margin, and add a `fill` class to our strip, it would 
-look like the following.
+add the `no-bottom-inner-air` class on the **parent widget**. This will remove the bottom padding on the
+parent widget, which effectively have the same result as removing the bottom margin on all of your bottom
+widgets inside of it.
+
+If we were to modify our above example for instance, to remove the bottom margin, and add a `fill` 
+class to our strip, it would look like the following.
 
 ```hyperlambda
 /*
@@ -149,31 +153,29 @@ create-widget
           class:col
           widgets
             div
-              class:shaded air-inner bg rounded
+              class:shaded air-inner bg rounded no-bottom-inner-air
               widgets
                 div
                   class:strip fill
                   widgets
                     label
                       innerValue:Label
-                      class:no-bottom-air
                     input
                       type:search
                       placeholder:Text ...
-                      class:no-bottom-air
                     span
-                      class:no-bottom-air
                       widgets
                         input:my-checkbox
                           type:checkbox
-                          class:no-bottom-air
                     label
                       innerValue:Checkbox
                       for:my-checkbox
-                      class:no-bottom-air
                     button
                       innerValue:Button
-                      class:no-bottom-air
 ```
 
-It does unfortunately become a little bit _"verbose"_, but this is just the way it has to be.
+Which of course probably will look more like what you wanted to render.
+
+<img style="display:block;margin-left:auto;margin-right:auto;max-width:100%;" src="https://phosphorusfive.files.wordpress.com/2018/01/micro-fill-remove-bottom-margin.png" />
+
+

@@ -50,6 +50,41 @@ The above code will end up looking like the following.
 We did this simply to add some _"bling"_ to our page. These classes adds some inner padding, some shade, 
 and some rounded borders. Feel free to remove these classes if you'd like to see a more _"vanilla example"_.
 
+The above Hyperlambda will result in the following HTML.
+
+```htmlmixed
+
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8"/>
+		<title>Phosphorus Five - In the beginning there was Hyperlambda</title>
+		<base href= "http://127.0.0.1:8080/"/>
+		<link rel="stylesheet" type="text/css" href="/modules/micro/media/main.css?v=6.1" />
+		<link rel="stylesheet" type="text/css" href="/modules/micro/media/fonts.css?v=6.1" />
+		<link rel="stylesheet" type="text/css" href="/modules/micro/media/skins/serious.css?v=6.1" />
+	</head>
+	<body>
+		<form method="post" id="form1" autocomplete="off" action="/hypereval/foo">
+			<div id="cnt">
+				<div id="x06b5a1f" class="container">
+					<div id="xf908fff" class="row">
+						<div id="x365939a" class="col">
+							<div id="x0978343" class="air-inner shaded rounded">
+								<h3 id="x0dd8b8f">Hello World</h3>
+								<p id="xd86888d">Your first Micro application.</p>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+        	<input type="hidden" value="00b878d9-1f54-452d-a5ff-753aff1c2be5" name="_p5_state_key">
+		</form>
+		<script type="text/javascript" src="/WebResource.axd?d=Ufy6yfC1zFV4ty3cioS89B%2faSGflXHXj%2fYFJLUg%2bQl0%3d_R00YUo%2faPpkdKV39NjNed630ahKwWUYwVE2MIjCFRIg%3d_f&amp;t=636514357300000000"></script>
+	</body>
+</html>
+```
+
 ### Containers, rows and columns
 
 The normal container is 1120px wide. However this can be changed, by adding your own CSS selector
