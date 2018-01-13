@@ -43,7 +43,7 @@ save-file:/modules/{0}/launch.hl
 p5.web.include-css-file
   @MICRO/media/main.css
   @MICRO/media/fonts.css
-  @MICRO/media/skins/off-white.css
+  @MICRO/media/skins/serious.css
 
 
 

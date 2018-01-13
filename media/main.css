@@ -3,10 +3,6 @@
     overflow:auto;
 }
 
-.strip > label:first-child {
-    min-width: 100px;
-}
-
 .CodeMirror {
     border-radius: var(--border-radius);
 }

@@ -1,4 +1,3 @@
-
 /*
  * Desktop widget.
  */
@@ -15,5 +14,4 @@ container
           class:icon-rocket desktop-app-icon
         span
           class:desktop-app-text
-          innerValue:IDE
-                    
+          innerValue:Hyper IDE
