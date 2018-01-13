@@ -43,7 +43,7 @@ URL `/hyper-core/mysql/todo/foo/x?description=bar` - The above
 will return JSON resembling the following to your client, assuming you have two records containing the
 string _"bar"_ in their description.
 
-```json
+```javascript
 {"result":2}
 ```
 

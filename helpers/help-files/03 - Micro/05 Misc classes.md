@@ -20,5 +20,3 @@ extra classes.
 * `justify` - Justifies text
 * `capitalize` - Transforms text such that each word are Capitalized
 * `hide` - Hides an element
-
-

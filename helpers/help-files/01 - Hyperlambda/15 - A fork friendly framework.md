@@ -200,7 +200,7 @@ Notice, in our above code, we actually add a **[phone]** property to our object,
 need to change the above **[id]** argument's value, to match the ID from the results of your above read operation. When you have 
 executed the above code, you can try to use a read invocation again, to see how your object actually changed.
 
-```
+```hyperlambda
 examples.data.read:examples.my-data
 ```
 
@@ -319,7 +319,7 @@ examples.data.create:examples.my-data
 
 Then read some items, just like you did earlier.
 
-```
+```hyperlambda
 examples.data.read:examples.my-data
 ```
 
