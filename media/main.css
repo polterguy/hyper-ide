@@ -323,5 +323,5 @@
     right:1rem;
     max-width:100%;
     width:500px !important;
-    box-shadow:0 0 5px rgba(0,0,0,.5);
+    box-shadow:0 0 15px rgba(128,128,0,.7) !important;
 }

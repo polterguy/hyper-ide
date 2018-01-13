@@ -1,10 +1,10 @@
-﻿/*
+/*
  * Create our execute shell command plugin button for editor.
  */
 create-event:hyper-ide.plugins.shell.execute
   return
     button
-      innerValue:@"<span class=""icon-flash""></span>"
+      innerValue:@"<span class=""icon-terminal""></span>"
       style:"margin-bottom:0;"
       title:Execute script
       onclick

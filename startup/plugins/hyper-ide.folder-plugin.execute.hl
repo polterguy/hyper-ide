@@ -4,7 +4,7 @@
 create-event:hyper-ide.folder-plugins.execute
   return
     button
-      innerValue:@"<span class=""icon-flash""></span>"
+      innerValue:@"<span class=""icon-terminal""></span>"
       style:"margin-bottom:0;"
       title:Open terminal window
       onclick

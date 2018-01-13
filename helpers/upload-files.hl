@@ -1,4 +1,3 @@
-﻿
 /*
  * Responsible for handling upload requests.
  */
@@ -73,7 +72,7 @@ p5.web.request.parse-mime
 /*
  * Iterating through each file in request.
  */
-for-each:x:/@p5.web.request.parse-mime/*/multipart/*(!/text/=plain)
+for-each:x:/@p5.web.request.parse-mime/*/multipart/*(!/text/=plain/*/content/.)
 
   /*
    * Checking if file already exists, at which point we simply delete it.
@@ -123,4 +122,4 @@ delete-folder:~/temp/hyper-ide/
  * upload request is finished.
  */
 p5.web.session.set:hyper-ide.uploaded-files-count
-  src:x:/@p5.web.request.parse-mime/*/multipart/*(!/text/=plain)?count
+  src:x:/@p5.web.request.parse-mime/*/multipart/*(!/text/=plain/*/content/.)?count

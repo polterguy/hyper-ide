@@ -19,9 +19,9 @@ create-event:hyper-ide.folder-plugins.create-module
    */
   return
     button
-      innerValue:@"<span class=""icon-plus""></span>"
+      innerValue:@"<span class=""icon-star-full""></span>"
       style:"margin-bottom:0;"
-      title:Create new module (new project, kind of)
+      title:Create new module
       onclick
       
         /*

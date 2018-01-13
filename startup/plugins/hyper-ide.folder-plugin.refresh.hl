@@ -6,7 +6,7 @@ create-event:hyper-ide.folder-plugins.refresh
     button
       innerValue:@"<span class=""icon-spinner11""></span>"
       style:"margin-bottom:0;"
-      title:Refresh folder
+      title:Refresh folder in file explorer
       onclick
 
         /*

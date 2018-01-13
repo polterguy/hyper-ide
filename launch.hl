@@ -1160,7 +1160,7 @@ create-widget:hyper-ide-main-container
                      */
                     button:hyper-ide-bookmark-button
                       innerValue:@"<span class=""icon-bookmark""></span>"
-                      title:Bookmark
+                      title:Copy URL to current path
                       style:"margin-bottom:0;"
                       disabled
                       onclick
@@ -1173,6 +1173,14 @@ create-widget:hyper-ide-main-container
                           type:text
                           class:hyper-ide-bookmark-textbox
                           onkeydown:@"if (event.keyCode == 13 || event.keyCode == 27) {p5.$('hyper-ide-bookmark-url').raise('.onclose');return false;}"
+                          onblur
+                          
+                            /*
+                             * Simply invoking [.onclose] when widget looses focus.
+                             */
+                            p5.web.widgets.ajax-events.raise:x:/../*/_event?value
+                              .onclose
+
                           .onclose
 
                             /*
