@@ -206,6 +206,13 @@ create-widget:hyper-ide-main-container
 
 
     /*
+     * Returns true if Hyper IDE is open.
+     */
+    hyper-ide.is-open
+      return:bool:true
+
+
+    /*
      * Pingback event, invoked every n'th minute, to avoid being thrown out of session.
      *
      * This is done to avoid having user thrown out of his session, while editing files,

@@ -22,8 +22,38 @@ create-event:hyper-ide.folder-plugins.create-module
       innerValue:@"<span class=""icon-star-full""></span>"
       style:"margin-bottom:0;"
       title:Create new module
+      events
+
+        /*
+         * "API" event for allowing other parts of the system to initiate
+         * "app creation process".
+         *
+         * Requires [app-type].
+         */
+        hyper-ide._plugins.create-app
+
+          /*
+           * Sanity checking arguments.
+           */
+          micro.lambda.contract.min:x:/..
+            app-type:string
+
+          /*
+           * Simply raising [onclick] for button, for then to parametrise select
+           * drop down list, with whatever [app-type] was specified.
+           */
+          p5.web.widgets.ajax-events.raise:x:/../*/_event?value
+            onclick
+          p5.web.widgets.find-like:hyper-ide-new-module-template-type
+            value:/{0}.hl
+              :x:/../*/app-type?value
+          get-widget-property:x:/-/*/*?value
+            value
+          set-widget-property:hyper-ide-new-module-template-type
+            value:x:/@get-widget-property/*/*?value
+
       onclick
-      
+
         /*
          * Showing a modal window, asking user to supply a name for his project.
          */

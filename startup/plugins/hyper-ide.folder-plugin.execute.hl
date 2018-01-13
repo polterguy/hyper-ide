@@ -49,8 +49,7 @@ create-event:hyper-ide.folder-plugins.execute
                    * Displaying working folder as part of header.
                    */
                   set-widget-property:x:/../*/_event?value
-                    innerValue:"$ {0}"
-                      :x:/@.folder?value
+                    innerValue:x:/@.folder?value
 
               div
                 class:right air-top
