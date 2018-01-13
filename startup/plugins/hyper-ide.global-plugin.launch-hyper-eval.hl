@@ -12,6 +12,21 @@ create-event:hyper-ide.global-plugin.launch-hyper-eval
         onclick
 
           /*
+           * Toggling button.
+           */
+          micro.css.toggle:x:/../*/_event?value
+            class:toggled
+
+          /*
+           * Checking if Hypereval is already loaded, at which point we delete it from page.
+           */
+          if
+            fetch:x:/0/0?value
+              widget-exists:hypereval-main-container
+            delete-widget:hypereval-main-container
+            return
+
+          /*
            * Launching Hypereval.
            */
           micro.evaluate.file:@HYPEREVAL/launch.hl
