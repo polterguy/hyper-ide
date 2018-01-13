@@ -17,7 +17,7 @@ All parameters above are optional, and will be given _"sane defaults"_ if omitte
 select only the `description` and `id` columns, and sort descending by `description`, from your `todo` database, and 
 its `items` table - You can accomplish that with the following URL.
 
-```http
+```markdown
 /hyper-core/mysql/todo/items/select?[columns]=description,id&[order-by]=description&[order-dir]=desc
 ```
 
@@ -34,7 +34,7 @@ contain two components, separated by `:`. Below are the explanation for these co
 If you'd like to retrieve only items which have a `description` containing the string `%groceries%` for instance, 
 you could accomplish that with the following URL.
 
-```http
+```markdown
 /hyper-core/mysql/todo/items/select?description=like:%groceries%
 ```
 
@@ -44,7 +44,7 @@ Notice, if you supply multiple additional query parameters, these will be `OR`'e
 This means that the following would select all items having either the firstname containing _"john"_, or the surname 
 containing _"hansen"_.
 
-```http
+```markdown
 /hyper-core/mysql/database/table/select?firstname=like:%john%&surname=like:%hansen%
 ```
 
@@ -52,7 +52,7 @@ If you wish to use the `and` boolean operator instead, you can explicitly overri
 queries are constructed with, by adding a `[boolean]` argument, and set its value to `and`. For the above query, this
 would resemble the following.
 
-```http
+```markdown
 /hyper-core/mysql/database/table/select?firstname=like:%john%&surname=like:%hansen%&[boolean]=and
 ```
 

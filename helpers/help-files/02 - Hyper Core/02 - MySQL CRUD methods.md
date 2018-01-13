@@ -16,14 +16,14 @@ Check out the documentation for the `x` method later in this documentation for d
 
 Each of the above HTTP REST MySQL services follows the following URL format.
 
-```http
+```markdown
 /hyper-core/mysql/[database]/[table]/[operation]
 ```
 
 If you have a database called e.g. `todo`, with a table called `items`, and you want to
 perform a `select` query towards it for instance, you can use the following URL.
 
-```http
+```markdown
 /hyper-core/mysql/todo/items/select
 ```
 

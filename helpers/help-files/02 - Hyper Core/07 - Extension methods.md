@@ -9,7 +9,7 @@ of your _"/common/documents/private/hyper-core/x/"_ folder. If you have a file c
 _"foo.hl"_ inside of the previously mentioned folder, you can invoke this extension method using a URL resembling
 the following.
 
-```http
+```markdown
 /hyper-core/mysql/todo/foo/x
 ```
 
@@ -58,7 +58,7 @@ return:x:/@p5.mysql.select/*
 
 The above would return JSON resembling the following to your client.
 
-```json
+```javascript
 [{"id":2,"description":"bar"},{"id":3,"description":"hello"},
 {"id":4,"description":"foo 2"},{"id":6,"description":"bar 3"},
 {"id":7,"description":"bar 4"},{"id":9,"description":"XYS"}]
@@ -155,7 +155,7 @@ a new library type of .Net/Mono project, and add a reference to the project call
 to create a static C# method, in one of your classes, and mark it with the attribute `ActiveEvent`.
 Below is an example of some C# code that would do this for you.
 
-```csharp
+```clike
 using System;
 using p5.core;
 
@@ -189,7 +189,7 @@ return:x:/@foo-bar.my-event?value
 For the record, assuming you modified our above _"foo.hl"_ file, the URL to invoke your C# method would become
 the following `/hyper-core/mysql/todo/foo/x`, and it would return the following JSON.
 
-```json
+```javascript
 {"result":42}
 ```
 

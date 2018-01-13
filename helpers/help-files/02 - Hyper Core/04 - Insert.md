@@ -33,6 +33,6 @@ making sure you set the `Content-Type` HTTP header to `application/x-www-form-ur
 Yet again, I want to emphasize that the URLs for all server side methods, are _"intelligently created"_, according
 to the following rules.
 
-```http
+```markdown
 /hyper-core/mysql/[database]/[table]/[method]
 ```

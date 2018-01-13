@@ -1,8 +1,8 @@
 /*
- * This is our main "landing page" for our Micro help files.
+ * This is our main "landing page" for our Phosphorus Five help files.
  */
 h2
-  innerValue:Micro
+  innerValue:Phosphorus Five
 
 
 /*
@@ -15,7 +15,7 @@ container
     /*
      * Retrieving all other Hyperlambda files in the help folder.
      */
-    list-files:@IDE/helpers/help-files/04 - Micro/
+    list-files:@IDE/helpers/help-files/04 - Phosphorus Five/
       filter:.hl|.md
 
     /*

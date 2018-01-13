@@ -9,7 +9,7 @@ At which point you could create your own extension methods in for instance C# or
 for instance MongoDB or MS SQL instead (or anything really). To invoke our previously created _"foo.hl"_ file for instance, 
 without opening any MySQL databases first, we could accomplish that with the following URL.
 
-```http
+```markdown
 /hyper-core/x/foo
 ```
 

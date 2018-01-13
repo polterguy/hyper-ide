@@ -74,7 +74,7 @@ but this cookie is not accessible for the client - It is sometimes necessary to 
 the authentication status of the client. This can be done by issuing an HTTP `GET` request towards the `whoami` submodule 
 of the _"auth"_ module. This will return the username and the role of the client, if he is logged in. An example can be found below.
 
-```http
+```markdown
 /hyper-core/auth/whoami
 ```
 

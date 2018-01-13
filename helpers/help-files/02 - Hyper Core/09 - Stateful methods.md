@@ -75,7 +75,7 @@ return:x:/@p5.mysql.select/*
 If you have four items in your `items` table, containing some variation of the string _"foo"_ in them,
 and you access your above extension method, using a URL such as for instance the following.
 
-```http
+```markdown
 /hyper-core/mysql/todo/foo/x?description=foo
 ```
 
@@ -90,7 +90,7 @@ URL again, it will take 0.076 seconds. **AND** if I just slightly modify my URL,
 the following URL instead. It is still blistering fast, since the cache is looking up on a _"per object basis"_,
 and not on the HTTP request's URL.
 
-```http
+```markdown
 /hyper-core/mysql/todo/foo/x?description=foo+2
 ```
 
