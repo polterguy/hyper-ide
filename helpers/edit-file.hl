@@ -286,7 +286,7 @@ You can edit the file <em>'/hyper-ide/configuration/extension2cm-instance.hl'</e
               widgets
                 button
                   innerValue:Load file
-                  style:"padding-left:35px;padding-right:35px;"
+                  class:larger
                   onclick
 
                     /*
@@ -585,7 +585,7 @@ create-widgets
        * Save button.
        */
       button
-        style:"padding-left:35px;padding-right:35px;margin-bottom:0;"
+        style:"margin-bottom:0;"
         innerValue:@"<span class=""icon-floppy-disk""></span>"
         title:Saves your file, keyboard shortcut Alt+S
         .save-button:x:/../*/file?value

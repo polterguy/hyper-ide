@@ -7,7 +7,7 @@
  */
 container
   widgets
-    h3
+    h2
       innerValue:Coding time!
     p
       innerValue:This chapter is entirely written in Hyperlambda, and intended for you to <em>'play around'</em> with.

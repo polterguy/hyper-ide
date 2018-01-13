@@ -40,6 +40,21 @@ if
 eval-x:x:/+/**/.folder
 create-widget:hyper-ide-help-wrapper
   class:container-fullscreen hyper-ide-help
+  events
+
+    /*
+     *Simply returns true if help is visible.
+     */
+    hyper-ide.help-visible
+      return:bool:true
+
+
+    /*
+     * Closes help.
+     */
+    hyper-ide.close-help
+      delete-widget:hyper-ide-help-wrapper
+
   widgets
     div
       class:row
@@ -437,22 +452,5 @@ p5['x_{0}'].setSize('100%', 'auto');
                       get-widget-property:x:/-/*/*?value
                         .file
                       hyper-ide.help.display-file:x:/-/*/*?value
-
-                  /*
-                   * Creating our "close help" button.
-                   */
-                  create-widget
-                    parent:hyper-ide-help-wrapper
-                    element:a
-                    href:#
-                    class:hyper-ide-close-help-button
-                    innerValue:@"<span class=""icon-cross""></span>"
-                    title:Close help
-                    onclick
-
-                      /*
-                       * Deleting entire "help widget".
-                       */
-                      delete-widget:hyper-ide-help-wrapper
 
               widgets

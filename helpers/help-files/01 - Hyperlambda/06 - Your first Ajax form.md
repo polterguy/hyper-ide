@@ -116,20 +116,15 @@ onclick
 Initially we retrieve the values of our *"your_name"* input widget, and our *"your_adr"* textarea widget. This is done with our 
 two **[p5.web.widgets.property.get]** invocations. Then we show a modal confirmation window with the data supplied by the user. However, 
 before we show this modal confirmation window, there's an invocation to **[eval-x]**. This simply *"forward evaluates"* the expressions found 
-in our **[innerValue]** node, which is a child of our **[p]** node. Since this is a formatted string, with its formatting values pointing to 
-the results of our **[p5.web.widgets.property.get]** invocations - This means that when **[micro.widgets.modal]** is evaluated, 
-the **[innerValue]** of our **[p]** element, will be a static string, being the product of our formatting expressions, having its *"{n}"* parts, 
+in our p/innerValue node. Since this is a formatted string, with its formatting values pointing to the results of our p5.web.widgets.property.get
+invocations - This means that when **[micro.widgets.modal]** is evaluated, 
+the innerValue of our p element, will be a static string, being the product of our formatting expressions, having its *"{n}"* parts, 
 exchanged with its n'th child node's result.
 
-**Notice**, only nodes without names, will be considered when creating such _"formated strings"_.
+**Notice**, only nodes without names, will be considered when creating such _"formatted strings"_.
 
-The above `:x:` parts of our Hyperlambda, are in fact what we refer to as *"lambda expressions"*. These allows you to reference other nodes 
-in your lambda structure. If you have some knowledge of XPath, the similarities might be obvious.
+**Notice**, the above `:x:` parts of our Hyperlambda, are in fact what we refer to as *"lambda expressions"*. These allows you to reference other nodes 
+in your lambda structure. If you have some knowledge of XPath, the similarities might be obvious. We will diver deeper into lambda expressions
+in later chapters.
 
 The **[micro.widgets.modal]** above, is an extension widget from Micro, which will be created as we invoke **[create-widgets]** (plural form).
-
-### Lambda expressions
-
-Lambda expressions are crucial for the understanding of P5. In a later chapter, we will dive deeper into lambda expressions. However, for the
-time being, imagine them as _"pointers"_, pointing to parts of your _"lambda object"_'s nodes.
-

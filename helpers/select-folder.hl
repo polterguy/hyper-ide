@@ -158,7 +158,7 @@ create-widget:hyper-ide-active-file-object-toolbar
     button:hyper-ide-child-file
       innerValue:@"<span class=""icon-file-empty""></span>"
       title:Create a new file
-      style:"margin-bottom:0;padding-left:35px;padding-right:35px;"
+      style:"margin-bottom:0;"
       onclick
 
         /*

@@ -1008,21 +1008,75 @@ create-widget:hyper-ide-main-container
                   target:_blank
                   class:hyper-ide-file-path
                   events
+
+                    /*
+                     * Invoke to change "breadcrumb"'s text and href.
+                     */
                     hyper-ide.set-path
+
+                      /*
+                       * Setting innerValue and href.
+                       */
                       set-widget-property:x:/../*/_event?value
                         href:x:/../*/_arg?value
                         innerValue:x:/../*/_arg?value
 
+                    /*
+                     * Invoke to get "breadcrumb"'s href.
+                     */
+                    hyper-ide.get-path
+                      get-widget-property:x:/../*/_event?value
+                        href
+                      return:x:/@get-widget-property/*/*?value
+
             /*
              * Our primary toolbar.
              *
-             * Contains settings and home button, and "global" plugins.
+             * Contains login/logout, home button, and "system wide" plugins.
+             */
+            div
+              style:"float:right;"
+              widgets
+                div
+                  class:strip hyper-ide-toolbar
+                  style:"float:right;"
+                  widgets
+
+                    /*
+                     * Home button, launches desktop (or default app).
+                     */
+                    button
+                      innerValue:@"<span class=""icon-home3""></span>"
+                      title:Close Hyper IDE
+                      style:"margin-bottom:0;"
+                      onclick
+
+                        /*
+                         * Making sure we close all editors, and checking if event
+                         * returns "false", which implies we have unsaved changes,
+                         * and we need to ask user about confirmation before we allow
+                         * him to leave page.
+                         */
+                        hyper-ide.editors.close
+                          filter:/
+                          .onclosed
+
+                            /*
+                             * Redirecting user to server's root URL.
+                             */
+                            p5.web.get-root-location
+                            p5.web.set-location:x:/-?value
+
+            /*
+             * Our secondary toolbar.
+             *
+             * Contains help, settings, close all editors and "global plugins" for Hyper IDE.
              */
             div:hyper-ide-toolbars
               style:"float:right;"
               widgets
                 div
-                  class:strip toolbar hyper-ide-toolbar
+                  class:strip hyper-ide-toolbar
                   style:"float:right;"
                   widgets:plugins
 
@@ -1036,9 +1090,28 @@ create-widget:hyper-ide-main-container
                       onclick
 
                         /*
-                         * Evaluating file responsible for displaying "help files".
+                         * Toggling visibility of help files.
                          */
-                        micro.evaluate.file:@IDE/helpers/display-help.hl
+                        if
+                          hyper-ide.help-visible
+
+                          /*
+                           * Help already visible, hiding it.
+                           */
+                          hyper-ide.close-help
+
+                        else
+
+                          /*
+                           * Launching help.
+                           */
+                          micro.evaluate.file:@IDE/helpers/display-help.hl
+
+                        /*
+                         * Making sure we toggle toggled state of button.
+                         */
+                        micro.css.toggle:x:/../*/_event?value
+                          class:toggled
 
                     /*
                      * Settings button.
@@ -1083,6 +1156,44 @@ create-widget:hyper-ide-main-container
                                   checked
 
                     /*
+                     * Bookmark button.
+                     */
+                    button:hyper-ide-bookmark-button
+                      innerValue:@"<span class=""icon-bookmark""></span>"
+                      title:Bookmark
+                      style:"margin-bottom:0;"
+                      disabled
+                      onclick
+
+                        /*
+                         * Shows the URL for the current path to the user.
+                         */
+                        create-widget:hyper-ide-bookmark-url
+                          element:input
+                          type:text
+                          class:hyper-ide-bookmark-textbox
+                          onkeydown:@"if (event.keyCode == 13 || event.keyCode == 27) {p5.$('hyper-ide-bookmark-url').raise('.onclose');return false;}"
+                          .onclose
+
+                            /*
+                             * Deleting widget.
+                             */
+                            delete-widget:x:/../*/_event?value
+
+                          oninit
+
+                            /*
+                             * Figuring out the URL for current path, and selecting all text.
+                             */
+                            p5.web.get-location
+                            hyper-ide.get-path
+                            set-widget-property:x:/../*/_event?value
+                              value:{0}?path={1}
+                                :x:/@p5.web.get-location?value
+                                :x:/@hyper-ide.get-path?value
+                            micro.page.set-focus:x:/../*/_event?value
+
+                    /*
                      * Close all editors button.
                      */
                     button:hyper-ide-close-all-editors
@@ -1097,31 +1208,6 @@ create-widget:hyper-ide-main-container
                          */
                         hyper-ide.editors.close
                           filter:/
-
-                    /*
-                     * Home button, launches desktop (or default app).
-                     */
-                    button
-                      innerValue:@"<span class=""icon-home3""></span>"
-                      title:Close Hyper IDE
-                      style:"margin-bottom:0;"
-                      onclick
-
-                        /*
-                         * Making sure we close all editors, and checking if event
-                         * returns "false", which implies we have unsaved changes,
-                         * and we need to ask user about confirmation before we allow
-                         * him to leave page.
-                         */
-                        hyper-ide.editors.close
-                          filter:/
-                          .onclosed
-
-                            /*
-                             * Redirecting user to server's root URL.
-                             */
-                            p5.web.get-root-location
-                            p5.web.set-location:x:/-?value
 
     /*
      * Wrapper for actual content.
@@ -1291,6 +1377,12 @@ create-widget:hyper-ide-main-container
                        * Updating header or file/folder path.
                        */
                       hyper-ide.set-path:x:/../*/items/0?name
+
+                      /*
+                       * Making sure we enable our "bookmark button".
+                       */
+                      delete-widget-property:hyper-ide-bookmark-button
+                        disabled
 
                     catch
 

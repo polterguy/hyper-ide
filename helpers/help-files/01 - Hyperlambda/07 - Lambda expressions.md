@@ -10,7 +10,7 @@ languages out there.
 
 A lambda expression is declared with the type declaration of `:x:`. If you wish to create a lambda expression, you will have to make sure 
 your node containing your expression, resembles something like the following; `_foo:x:/iterator1/iterator2/etc...` - The `:x:` parts, makes sure the 
-Hyperlambda parser, understands that the value of the previously defined **[_foo]** node is an expression.
+Hyperlambda parser, understands that the value of the previously defined **[\_foo]** node is an expression.
 
 **Definition**; The correct scientific name for lambda expressions is; *"Hyperdimensional boolean algebraic graph object expressions"*, 
 because they allow you to use boolean algebra, to create sub graph objects, out of another graph object. This results in creating 
@@ -55,7 +55,7 @@ set:x:/@_foo?value
   src:Jo dude
 ```
 
-The above code is using the **[set]** Active Event, to change the `?value` of the first *"elder relative node"*, having the name of *"_foo"*, 
+The above code is using the **[set]** Active Event, to change the `?value` of the first *"elder relative node"*, having the name of *"\_foo"*, 
 to become *"Jo dude"*. After execution of the above Hyperlambda, your lambda object will have changed, and turned into the following;
 
 ```hyperlambda
@@ -95,13 +95,13 @@ set:x:/@_foo
 ```
 
 Notice, the **[src]** node's value above, will be automatically converted into a node, since the destination for our **[set]** is a node. 
-In general, P5 will automatically convert between types, as it needs to. Hence, the above **[src]**, will actually be handled as an inline 
+In general, P5 will automatically convert between types, as it needs to. Hence, the above src, will actually be handled as an inline 
 Hyperlambda piece of string, and converted to lambda, before applied to its destination. Notice also in the above code, that we had to 
 explicitly wrap our `_bar:howdy` value inside double quotes. This is because it contains a colon `:` in its value. If we hadn't done this, 
-the Hyperlambda parser would assume that `_bar` was a type declaration for the **[src]** node's value.
+the Hyperlambda parser would assume that `_bar` was a type declaration for the src node's value.
 
-An expression of type `?count` is read only, and cannot be used as a destination for a **[set]** invocation. It can however be used as 
-the **[src]**. Try the following code to see an example of this.
+An expression of type `?count` is read only, and cannot be used as a destination for a set invocation. It can however be used as 
+the src. Try the following code to see an example of this.
 
 ```hyperlambda
 _foo
@@ -144,10 +144,10 @@ _foo
 ```
 
 Notice, after evaluating the above Hyperlambda, only the first **[\_foo]** node will have its value changed. This is because the 
-second **[\_foo]**, inside of our **[\_bar]** node, is not an elder sibling, or direct elder relative in any ways, of the identity node 
+second \_foo, inside of our **[\_bar]** node, is not an elder sibling, or direct elder relative in any ways, of the identity node 
 of **[set]**. Hence, it is not found *"within the scope"* of our identity node, where our expression starts looking for a match.
 
-If you tried something like the following though, only the last **[\_foo]** node would have its value changed. This is because 
+If you tried something like the following though, only the last \_foo node would have its value changed. This is because 
 the *"named elder relative"* iterator, will stop iterating, once it finds its first match. This iterator always returns exactly one node, 
 or a null result if it cannot find a match.
 
@@ -188,7 +188,7 @@ The most common types are listed below;
 In our appendixes, you can find a complete reference, of all the built-in types in P5. The type system for Hyperlambda is extendible though, 
 and you can easily create your own types, by adding a couple of Active Events with special names and namespaces into your application pool.
 
-### Creating a mental mind model for expressions
+### Creating a mental model for expressions
 
 One way of realising what lambda expressions are, is to imagine them as the *"tree version of SQL"*. Where SQL allows you to extract 
 two dimensional tables and data-sets, lambda expressions allows you to extract n dimensional relational sub-trees. If you have some 

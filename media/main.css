@@ -213,13 +213,24 @@
 
 .hyper-ide-help-content {
     text-align: justify;
-    padding:5rem;
+    padding: 1rem;
 }
-
-.hyper-ide-close-help-button {
-    position:absolute;
-    top:2rem;
-    right:2rem;
+@media screen and (min-width:800px) {
+    .hyper-ide-help-content {
+        padding: 2rem 4rem 2rem 4rem;    }
+}
+@media screen and (min-width:1024px) {
+    .hyper-ide-help-content {
+        padding: 4rem 7rem 4rem 7rem;
+    }
+}
+@media screen and (min-width:1200px) {
+    .hyper-ide-help-content {
+        padding: 4rem 12rem 4rem 12rem;
+    }
+}
+.hyper-ide-help-content h3 {
+    margin-top:5rem;
 }
 
 .hyper-ide-help-index-button {
@@ -306,5 +317,11 @@
     background: var(--wid-dark-col);
 }
 
-
-
+.hyper-ide-bookmark-textbox {
+    position:absolute;
+    top:1rem;
+    right:1rem;
+    max-width:100%;
+    width:500px !important;
+    box-shadow:0 0 5px rgba(0,0,0,.5);
+}
