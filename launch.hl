@@ -40,7 +40,7 @@ if:x:/../*/url?value
  * Figuring out skin to use, and other settings.
  */
 .defaults
-  skin:serious
+  skin:off-white
   page-scroll:bool:false
 select-data:x:/*/*/micro.codemirror.settings
 
