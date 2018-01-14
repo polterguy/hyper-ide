@@ -80,7 +80,7 @@ The above Hyperlambda will result in the following HTML.
 			</div>
         	<input type="hidden" value="00b878d9-1f54-452d-a5ff-753aff1c2be5" name="_p5_state_key">
 		</form>
-		<script type="text/javascript" src="/WebResource.axd?d=Ufy6yfC1zFV4ty3cioS89B%2faSGflXHXj%2fYFJLUg%2bQl0%3d_R00YUo%2faPpkdKV39NjNed630ahKwWUYwVE2MIjCFRIg%3d_f&amp;t=636514357300000000"></script>
+		<script type="text/javascript" src="/WebResource.axd?d=Ufy6yfC1zFV4ty3cioS89B%2faSGflXHXj%2fYFJLUg%2bQl0%3d_R00YUo%2faPpkdKV39NjNed630ahKwWUYwVE2MIjCFRIg%3d_f&t=636514357300000000"></script>
 	</body>
 </html>
 ```
@@ -152,6 +152,13 @@ div
 
 The above will give you 20% _"spacing"_ to the left of your first column. You can however of course add up
 the offset selectors, also in other columns besides your first columns.
+
+### Showing overflown content
+
+Every now and then, you will end up in a position where regardless of how much you try to responsively render
+your pages, there will still be a need for horizontal scrolling, regardless of how ugly this is. For such
+needs, you can explicitly force one of your `col` elements to show its content, to avoid _"clipping"_, by
+adding the `grow` CSS class to it.
 
 ### Responsive rendering
 

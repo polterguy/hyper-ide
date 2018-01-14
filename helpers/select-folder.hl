@@ -158,7 +158,6 @@ create-widget:hyper-ide-active-file-object-toolbar
     button:hyper-ide-child-file
       innerValue:@"<span class=""icon-file-empty""></span>"
       title:Create a new file
-      style:"margin-bottom:0;"
       onclick
 
         /*
@@ -191,7 +190,6 @@ create-widget:hyper-ide-active-file-object-toolbar
                     widgets
                       button:hyper-ide-new-file-btn
                         innerValue:OK
-                        style:"margin-bottom:0;"
                         onclick
 
                           /*
@@ -256,7 +254,6 @@ create-widget:hyper-ide-active-file-object-toolbar
 
                       button
                         innerValue:Cancel
-                        style:"margin-bottom:0;"
                         onclick
 
                           /*
@@ -270,7 +267,6 @@ create-widget:hyper-ide-active-file-object-toolbar
     button:hyper-ide-child-folder
       innerValue:@"<span class=""icon-folder""></span>"
       title:Create a new folder
-      style:"margin-bottom:0;"
       onclick
 
         /*
@@ -303,7 +299,6 @@ create-widget:hyper-ide-active-file-object-toolbar
                     widgets
                       button:hyper-ide-new-folder-btn
                         innerValue:OK
-                        style:"margin-bottom:0;"
                         onclick
 
                           /*
@@ -366,7 +361,6 @@ create-widget:hyper-ide-active-file-object-toolbar
 
                       button
                         innerValue:Cancel
-                        style:"margin-bottom:0;"
                         onclick
 
                           /*
@@ -379,7 +373,6 @@ create-widget:hyper-ide-active-file-object-toolbar
      */
     button:hyper-ide-rename-folder
       innerValue:@"<span class=""icon-pencil""></span>"
-      style:"margin-bottom:0;"
       title:Renames your folder
       onclick
 
@@ -421,7 +414,6 @@ create-widget:hyper-ide-active-file-object-toolbar
                     widgets
                       button:hyper-ide-rename-folder-btn
                         innerValue:OK
-                        style:"margin-bottom:0;"
                         onclick
 
                           /*
@@ -478,7 +470,6 @@ create-widget:hyper-ide-active-file-object-toolbar
 
                       button
                         innerValue:Cancel
-                        style:"margin-bottom:0;"
                         onclick
 
                           /*
@@ -492,7 +483,6 @@ create-widget:hyper-ide-active-file-object-toolbar
     button:hyper-ide-delete-folder
       innerValue:@"<span class=""icon-bin""></span>"
       title:Deletes your folder
-      style:"margin-bottom:0;"
       onclick
 
         /*
@@ -527,7 +517,6 @@ and close all editors that are editing files inside of your folder. I need you t
                     widgets
                       button
                         innerValue:Yes
-                        style:"margin-bottom:0;"
                         oninit
 
                           /*
@@ -575,7 +564,6 @@ and close all editors that are editing files inside of your folder. I need you t
 
                       button
                         innerValue:No
-                        style:"margin-bottom:0;"
                         onclick
 
                           /*

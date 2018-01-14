@@ -5,7 +5,6 @@ create-event:hyper-ide.plugins.markdown.preview
   return
     button
       innerValue:@"<span class=""icon-eye""></span>"
-      style:"margin-bottom:0;"
       title:Preview your Markdown
       onclick
 
@@ -58,7 +57,6 @@ create-event:hyper-ide.plugins.markdown.preview
                     widgets
                       button
                         innerValue:Close
-                        style:"margin-bottom:0;"
                         onclick
 
                           /*

@@ -6,7 +6,6 @@ create-event:hyper-ide.plugins.css.minify
   return
     button
       innerValue:@"<span class=""icon-file-zip""></span>"
-      style:"margin-bottom:0;"
       title:Minifies your CSS
       onclick
 

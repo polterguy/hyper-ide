@@ -5,7 +5,6 @@ create-event:hyper-ide.plugins.hyperlambda.execute
   return
     button
       innerValue:@"<span class=""icon-play3""></span>"
-      style:"margin-bottom:0;"
       title:Execute Hyperlambda file
       onclick
 

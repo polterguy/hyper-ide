@@ -798,7 +798,6 @@ create-widget:hyper-ide-main-container
                           widgets
                             button
                               innerValue:Yes
-                              style:"margin-bottom:0;"
                               oninit
 
                                 /*
@@ -832,7 +831,6 @@ create-widget:hyper-ide-main-container
 
                             button
                               innerValue:No
-                              style:"margin-bottom:0;"
                               onclick
 
                                 /*
@@ -1055,7 +1053,6 @@ create-widget:hyper-ide-main-container
                     button
                       innerValue:@"<span class=""icon-home3""></span>"
                       title:Close Hyper IDE
-                      style:"margin-bottom:0;"
                       onclick
 
                         /*
@@ -1093,7 +1090,6 @@ create-widget:hyper-ide-main-container
                     button
                       innerValue:@"<span class=""icon-question""></span>"
                       title:Help
-                      style:"margin-bottom:0;"
                       onclick
 
                         /*
@@ -1126,7 +1122,6 @@ create-widget:hyper-ide-main-container
                     button
                       innerValue:@"<span class=""icon-cog""></span>"
                       title:Settings
-                      style:"margin-bottom:0;"
                       oninit
 
                         /*
@@ -1168,7 +1163,6 @@ create-widget:hyper-ide-main-container
                     button:hyper-ide-bookmark-button
                       innerValue:@"<span class=""icon-bookmark""></span>"
                       title:Copy URL to current path
-                      style:"margin-bottom:0;"
                       disabled
                       onclick
 
@@ -1215,7 +1209,6 @@ create-widget:hyper-ide-main-container
                       innerValue:@"<span class=""icon-cross""></span>"
                       title:Close all editors
                       disabled
-                      style:"margin-bottom:0;"
                       onclick
 
                         /*

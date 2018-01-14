@@ -5,7 +5,6 @@ create-event:hyper-ide.plugins.htmlmixed.preview
   return
     button
       innerValue:@"<span class=""icon-eye""></span>"
-      style:"margin-bottom:0;"
       title:Preview your HTML page in a new browser tab
       onclick
 

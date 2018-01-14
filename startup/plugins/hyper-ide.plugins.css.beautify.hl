@@ -5,7 +5,6 @@ create-event:hyper-ide.plugins.css.beautify
   return
     button
       innerValue:@"<span class=""icon-leaf""></span>"
-      style:"margin-bottom:0;"
       title:Beautifies your CSS
       onclick
 

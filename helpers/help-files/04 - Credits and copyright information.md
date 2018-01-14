@@ -20,6 +20,7 @@
 * [HTML Agility Pack](http://html-agility-pack.net/) - Copyright © ? Simon Mourier
 * [Font Awesome](http://fontawesome.io/) - Copyright © ? Dave Gandy
 * [Hero Patterns](http://www.heropatterns.com/) - Copyright © ? Steve Schoger
+* [Normalize CSS](github.com/necolas/normalize.css) - Copyright © ?
 
 All other Phosphorus Five modules, distributed through for instance the Bazar, are the sole copyright of 
 Thomas Hansen.

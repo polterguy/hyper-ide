@@ -7,7 +7,6 @@ create-event:hyper-ide.global-plugin.launch-hyper-eval
     return
       button
         innerValue:@"<span class=""icon-flash""></span>"
-        style:"margin-bottom:0;"
         title:Launch Hypereval
         onclick
 

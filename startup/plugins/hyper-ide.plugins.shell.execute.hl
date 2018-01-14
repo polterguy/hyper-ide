@@ -5,7 +5,6 @@ create-event:hyper-ide.plugins.shell.execute
   return
     button
       innerValue:@"<span class=""icon-terminal""></span>"
-      style:"margin-bottom:0;"
       title:Execute script
       onclick
 
@@ -126,7 +125,6 @@ create-event:hyper-ide.plugins.shell.execute
                     widgets
                       button
                         innerValue:Close
-                        style:"margin-bottom:0;"
                         oninit
 
                           /*

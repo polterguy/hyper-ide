@@ -20,7 +20,6 @@ create-event:hyper-ide.folder-plugins.create-module
   return
     button
       innerValue:@"<span class=""icon-star-full""></span>"
-      style:"margin-bottom:0;"
       title:Create new module
       events
 
@@ -156,7 +155,6 @@ Then choose a template type for your app."
                       widgets
                         button:hyper-ide-create-module-button
                           innerValue:Create
-                          style:"margin-bottom:0;"
                           onclick
 
                             /*
@@ -249,7 +247,6 @@ Then choose a template type for your app."
 
                         button
                           innerValue:Close
-                          style:"margin-bottom:0;"
                           onclick
 
                             /*

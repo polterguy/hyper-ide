@@ -103,7 +103,6 @@ since Phosphorus Five is licensed as GPLv3."
                   widgets
                     button
                       innerValue:Get licensed
-                      style:"margin-bottom:0;"
                       oninit
 
                         /*
@@ -120,7 +119,6 @@ since Phosphorus Five is licensed as GPLv3."
 
                     button
                       innerValue:Nope
-                      style:"margin-bottom:0;"
                       onclick
 
                         /*

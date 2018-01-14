@@ -585,7 +585,6 @@ create-widgets
        * Save button.
        */
       button
-        style:"margin-bottom:0;"
         innerValue:@"<span class=""icon-floppy-disk""></span>"
         title:Saves your file, keyboard shortcut Alt+S
         .save-button:x:/../*/file?value
@@ -601,7 +600,6 @@ create-widgets
        */
       button
         innerValue:@"<span class=""icon-pencil""></span>"
-        style:"margin-bottom:0;"
         title:Renames your file
         onclick
 
@@ -654,7 +652,6 @@ create-widgets
                       widgets
                         button:hyper-ide-rename-file-btn
                           innerValue:OK
-                          style:"margin-bottom:0;"
                           onclick
 
                             /*
@@ -728,7 +725,6 @@ create-widgets
 
                         button
                           innerValue:Cancel
-                          style:"margin-bottom:0;"
                           onclick
 
                             /*
@@ -742,7 +738,6 @@ create-widgets
       button
         innerValue:@"<span class=""icon-bin""></span>"
         title:Deletes your file
-        style:"margin-bottom:0;"
         onclick
 
           /*
@@ -780,7 +775,6 @@ create-widgets
                       widgets
                         button
                           innerValue:Yes
-                          style:"margin-bottom:0;"
                           oninit
 
                             /*
@@ -827,7 +821,6 @@ create-widgets
 
                         button
                           innerValue:No
-                          style:"margin-bottom:0;"
                           onclick
 
                             /*
@@ -841,7 +834,6 @@ create-widgets
       button
         innerValue:@"<span class=""icon-download2""></span>"
         title:Download file
-        style:"margin-bottom:0;"
         onclick
 
           /*
@@ -858,7 +850,6 @@ create-widgets
       button
         innerValue:@"<span class=""icon-tree""></span>"
         title:Toggle visibility of solution explorer
-        style:"margin-bottom:0;"
         .toogle-solution-explorer-button
         oninit
 
