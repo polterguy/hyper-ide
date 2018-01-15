@@ -137,16 +137,16 @@ since Phosphorus Five is licensed as GPLv3."
     p
       widgets
         span
-          innerValue:@"An ultra slick, responsive, and modularised web based Integrated Development Environment, supporting 100+ programming languages out of the box, allowing
-you to code from your phone if you wish. Hyper IDE contains strong plugin support, in addition to several different types of template projects,
-allowing you to literally start your new projects <em>'running'</em>."
+          innerValue:@"An ultra slick, super responsive, and highly modularised web based Integrated Development Environment, supporting 100+ programming languages out of the box.
+Hyper IDE contains strong plugin support, in addition to several different types of template projects,
+allowing you to literally start out your projects <em>'running'</em>."
         literal
           element:span
           oninit
             if
               license.is-valid
               set-widget-property:x:/../*/_event?value
-                innerValue:You seem to be properly licensed, and ready to create close source applications if you wish.
+                innerValue:You seem to be properly licensed, and ready to create proprietary applications if you wish.
             else
               set-widget-property:x:/../*/_event?value
                 innerValue:@"Hyper IDE is Open Source, but there also exists proprietary licensing
