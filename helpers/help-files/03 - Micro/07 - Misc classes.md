@@ -1,4 +1,3 @@
-
 ## Misc classes
 
 Micro contains several helper CSS classes for your convenience. We have already used some of these, 
@@ -10,13 +9,11 @@ extra classes.
 * `bg` - Adds a background to your widget. Which background, depends upon your skin
 * `air` - Adds an additional margin around your widget
 * `air-inner` - Adds additional padding to your widget
-* `no-bottom-inner-air` - Removed bottom padding of your widget, useful in combination with `air-inner`
 * `success` - Adds a green linear gradient to your widget
 * `warning` - Adds a red linear gradient to your widget
-* `emphasized` - Adds a linear gradient to your widget. Which color depends upon your skin
-* `center` - Centers text inside your widget
 * `left` - Left aligns text
 * `right` - Right aligns text
+* `center` - Centers text inside your widget
 * `justify` - Justifies text
 * `capitalize` - Transforms text such that each word are Capitalized
 * `hide` - Hides an element

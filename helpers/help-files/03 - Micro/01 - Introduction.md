@@ -3,6 +3,7 @@
 Micro is a microscopic CSS framework, and an Ajax widget library. Although it is built explicitly for Hyperlambda,
 and its Ajax widgets, it can still be used by itself, without any Hyperlambda in your projects.
 It is inspired by Bootstrap CSS, but builds upon a much more modern approach for its grid system (flexbox grids).
+It is also **significantly smaller in size** than Bootstrap CSS.
 
 To include it in a Hyperlambda project, you can use the following code.
 
@@ -14,7 +15,7 @@ micro.css.include
 To include it in another type of project, you can add the following code in the `head` section of your HTML file.
 
 ```htmlmixed
-<link rel='stylesheet' type='text/css' href='/modules/micro/media/main.css' />
+<link rel='stylesheet' type='text/css' href='/modules/micro/media/micro.css' />
 <link rel='stylesheet' type='text/css' href='/modules/micro/media/fonts.css' />
 <link rel='stylesheet' type='text/css' href='/modules/micro/media/skins/serious.css' />
 ```
@@ -32,3 +33,4 @@ including any skin files at all, and/or drop including the icons, if you wish to
 
 **Notice**, just because of that Phosphorus Five and Hyper IDE happens to have its own CSS framework, there
 are no reasons why you can't use your own favourite instead, such as Bootstrap or Milligram for instance.
+With Phosphorus Five and Hyperlambda you have (almost) 100% perfect control over the resulting HTML markup.

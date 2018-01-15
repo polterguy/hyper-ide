@@ -153,7 +153,6 @@ create-widgets
         widgets
           button
             innerValue:Close
-            style:"margin-bottom:0;"
             onclick
               delete-widget:all-plugins
 ```

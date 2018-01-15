@@ -213,53 +213,24 @@
 
 .hyper-ide-help-content {
     text-align: justify;
-    padding: 1rem;
 }
 @media screen and (min-width:800px) {
     .hyper-ide-help-content {
-        padding: 2rem 4rem 2rem 4rem;
+        padding: 2rem 3rem 2rem 3rem;
     }
 }
 @media screen and (min-width:1024px) {
     .hyper-ide-help-content {
-        padding: 4rem 7rem 4rem 7rem;
+        padding: 4rem 6rem 4rem 6rem;
     }
 }
 @media screen and (min-width:1200px) {
     .hyper-ide-help-content {
-        padding: 4rem 12rem 4rem 12rem;
+        padding: 4rem 11rem 4rem 11rem;
     }
 }
 .hyper-ide-help-content h3 {
     margin-top:5rem;
-}
-
-.hyper-ide-help-index-button {
-    position:absolute;
-    bottom:3rem;
-    right:2rem;
-}
-
-.hyper-ide-edit-help-file-button {
-    position:absolute;
-    bottom:3rem;
-    right:3.5rem;
-}
-
-.hyper-ide-refresh-help {
-    position:absolute;
-    bottom:3rem;
-    right:5rem;
-}
-.hyper-ide-help-next-button {
-    position:absolute;
-    bottom:3rem;
-    right:6.5rem;
-}
-.hyper-ide-help-previous-button {
-    position:absolute;
-    bottom:3rem;
-    right:8rem;
 }
 .hyper-ide-youtube-outer-wrapper {
     max-width:640px;

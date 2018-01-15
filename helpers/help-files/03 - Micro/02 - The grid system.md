@@ -7,7 +7,8 @@ create a wire frame for you.
 
 If you want to test the code in these tutorials, then the best way is to use [Hypereval](/hypereval),
 and create a new _"empty snippet"_, and save it as a _"page"_. If you do, you can click the _"preview"_ button
-to see the results of what we are going through in these tutorials.
+to see the results of what we are going through in these tutorials. If you don't have Hypereval installed,
+you can find it [in the bazar](/bazar?app=hypereval).
 
 ```hyperlambda
 /*
@@ -40,8 +41,8 @@ create-widget
 The 3 most important constructs above are the `container`, `row` and `col` CSS classes. Micro
 is built around a similar structure as Bootstrap CSS, and expects you to have a _"container"_ being
 your root element. There also exists a `container-fullscreen` alternative. Each container can have 
-as many `row` children as you wish. And each row can have as many `col` inside of it again. This is
-what creates your _"grid system"_, and will automatically layout your page accordingly.
+as many `row` children as you wish, and each row can have multiple `col` elements inside of it again. 
+This is what creates your _"grid system"_, and will automatically layout your page accordingly.
 The above code will end up looking like the following.
 
 <img style="display:block;margin-left:auto;margin-right:auto;max-width:100%;" src="https://phosphorusfive.files.wordpress.com/2018/01/micro-hello-world-screenshot-2.png" />
@@ -50,39 +51,23 @@ The above code will end up looking like the following.
 We did this simply to add some _"bling"_ to our page. These classes adds some inner padding, some shade, 
 and some rounded borders. Feel free to remove these classes if you'd like to see a more _"vanilla example"_.
 
-The above Hyperlambda will result in the following HTML.
+The above Hyperlambda will result in something resembling the following HTML.
 
 ```htmlmixed
-
-<!DOCTYPE html>
-<html>
-	<head>
-		<meta charset="utf-8"/>
-		<title>Phosphorus Five - In the beginning there was Hyperlambda</title>
-		<base href= "http://127.0.0.1:8080/"/>
-		<link rel="stylesheet" type="text/css" href="/modules/micro/media/main.css?v=6.1" />
-		<link rel="stylesheet" type="text/css" href="/modules/micro/media/fonts.css?v=6.1" />
-		<link rel="stylesheet" type="text/css" href="/modules/micro/media/skins/serious.css?v=6.1" />
-	</head>
-	<body>
-		<form method="post" id="form1" autocomplete="off" action="/hypereval/foo">
-			<div id="cnt">
-				<div id="x06b5a1f" class="container">
-					<div id="xf908fff" class="row">
-						<div id="x365939a" class="col">
-							<div id="x0978343" class="air-inner shaded rounded">
-								<h3 id="x0dd8b8f">Hello World</h3>
-								<p id="xd86888d">Your first Micro application.</p>
-							</div>
-						</div>
-					</div>
-				</div>
-			</div>
-        	<input type="hidden" value="00b878d9-1f54-452d-a5ff-753aff1c2be5" name="_p5_state_key">
-		</form>
-		<script type="text/javascript" src="/WebResource.axd?d=Ufy6yfC1zFV4ty3cioS89B%2faSGflXHXj%2fYFJLUg%2bQl0%3d_R00YUo%2faPpkdKV39NjNed630ahKwWUYwVE2MIjCFRIg%3d_f&t=636514357300000000"></script>
-	</body>
-</html>
+...
+<div id="cnt">
+  <div class="container">
+    <div class="row">
+      <div class="col">
+        <div class="air-inner shaded rounded">
+          <h3>Hello World</h3>
+          <p>Your first Micro application.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+...
 ```
 
 ### Containers, rows and columns
