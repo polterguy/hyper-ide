@@ -1,29 +1,22 @@
 /*
- * File responsible for initializing module.
+ * Startup file.
+ *
+ * Creates "path" event and evaluates all files in "/startup/" folder for module.
  */
 
 
 /*
- * Creates the "path" Active Event that points to our module's folder.
- *
- * This is done in such a way that we can install module in any folder we wish inside of 
- * the "/modules/" folder.
+ * Creates our "path" Active Event for module.
  */
-split:x:/..?name
-  =:/
-set:x:/@split/0/-
-join:x:/@split/*?name
-  sep:/
+micro.path.get-folder:x:/..?name
+trim-right:x:/@micro.path.get-folder?value
+  chars:/
 eval-x:x:/+/*
 create-event:p5.io.unroll-path.@IDE
-  return:/{0}
-    :x:/@join?value
-
-
-
+  return:x:/@trim-right?value
 
 
 /*
- * Evaluating all additional startup files.
+ * Evaluating all other startup files.
  */
 micro.evaluate.folder:@IDE/startup/

@@ -116,6 +116,14 @@ of asking the question; *"Is your car married?"*. In Hyperlambda, a vehicle can 
 breaking LSP. And you can easily marry any lambda object with any other lambda object. This makes it possible for you, to apply 
 whatever *"object model you feel for applying"*, to your code, making the LSP problem completely *obsolete*.
 
+### Active Events and C#
+
+If you're an experienced developer, you might be wondering about how these Active Events are implemented. Below is an old video
+where I demonstrate Active Events, and consumption of them, from a C# project. **Notice**, the video is a bit dated, and their API
+have changed since this video was created - But it illustrates the concept fairly well I'd say.
+
+https://www.youtube.com/watch?v=sUeRdmzRwbs&t=1s
+
 ### References
 
 [MSDN Magazine, Active Events, one design pattern instead of a dozen](https://msdn.microsoft.com/en-us/magazine/mt795187)
