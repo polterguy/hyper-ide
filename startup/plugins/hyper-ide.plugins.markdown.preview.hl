@@ -53,7 +53,6 @@ create-event:hyper-ide.plugins.markdown.preview
                 widgets
                   div
                     class:strip
-                    style:"display:inline-block;"
                     widgets
                       button
                         innerValue:Close

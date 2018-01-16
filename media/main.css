@@ -1,35 +1,36 @@
+
 .hyper-ide-container {
     padding-bottom: 0;
-    overflow:auto;
+    overflow: auto;
 }
 
+/* Making sure all CodeMirror editors get rounded borders */
 .CodeMirror {
     border-radius: var(--border-radius);
 }
 
-/* Header displaying file/folder path */
-.hyper-ide-file-path {
-    display: inline-block;
-    margin-top: 3.5rem;
-    margin-bottom: -1rem;
-    color: #a0a0e0;
-    position: absolute;
-}
-
 /* All Hyper IDE toolbars */
 .hyper-ide-toolbar {
-    display: inline-block;
     margin-left: 1rem;
-    float: right;
-    margin-top: 1rem;
-    margin-bottom: .5rem;
+    margin-bottom: 0;
 }
 
-/* Main content, minus toolbars that is */
+/* Bookmark textbox */
+.hyper-ide-bookmark-textbox {
+    position:absolute;
+    top:1rem;
+    right:1rem;
+    max-width:100%;
+    width:500px !important;
+    box-shadow:0 0 15px rgba(128,128,0,.7) !important;
+}
+
+/* Main content, which is 100% of viewport height, minus toolbars */
 .hyper-ide-content {
-    height: calc(100vh - 4.5rem);
+    height: calc(100vh - 3.5rem);
 }
 
+/* If user wants to use "page scroll" instead of editor/treeview scroll, then this class will apply */
 .hyper-ide-page-scroll .hyper-ide-content {
     height: auto;
     margin-bottom: 5rem;
@@ -38,13 +39,14 @@
 /* TreeView wrapper for browsing files (column wrapper) */
 .hyper-ide-solution-explorer-col {
     height: calc(100% - 1.5rem);
-    margin-bottom:.5rem;
+    margin-bottom: .5rem;
 }
 
 /* TreeView wrapper for browsing files (inside of column) */
 .hyper-ide-solution-explorer {
     height: 100%;
     margin-bottom: 0;
+    overflow: auto;
 }
 
 /* Actual TreeView (solution explorer) CSS class */
@@ -53,22 +55,20 @@
     height: 100%;
     margin-right: -1rem;
     padding-right: 1rem;
+    min-width: fit-content;
+    padding-bottom: 2rem;
 }
 
 /* Wrapper column around editors (and splash screen) */
 .hyper-ide-editor-col {
     height: calc(100% - 1.5rem);
-    margin-bottom:.5rem;
+    margin-bottom: .5rem;
 }
 
 /* Hyper IDE splash screen, which you see when you initially start Hyper IDE */
 .hyper-ide-splash {
-    position: relative;
-    background-color: #fbfbfb;
-    margin-bottom: 0;
-    height:auto;
-    min-height:100%;
-    margin-bottom:.5rem;
+    height: auto;
+    min-height: 100%;
 }
 
 /* "Tab control" wrapping editor (both tab buttons, and editor surface) */
@@ -150,6 +150,7 @@
     /* Set to "auto" to remove scrollbars from CodeMirror instance */
     height: calc(100% - 26px);
     margin-bottom: 0;
+    margin-top: -1px;
 }
 
 /* Making sure we modify main CodeMirror (Micro) wrapper class */
@@ -171,15 +172,15 @@
 
 /* Our animation for our UFO on our splash screen */
 @keyframes hyper-ide-ufo {
-    0% {
-        transform: rotate(-90deg) scale(0.1);
-        margin-top: -500px;
-    }
+0% {
+    transform: rotate(-90deg) scale(0.1);
+    margin-top: -500px;
+}
 
-    100% {
-        transform: rotate(0deg) scale(1);
-        margin-top: 0;
-    }
+100% {
+    transform: rotate(0deg) scale(1);
+    margin-top: 0;
+}
 }
 /* UFO styles (image on splash screen) */
 .hyper-ide-ufo {
@@ -197,6 +198,7 @@
     position: absolute;
     bottom: 0;
     right: 1rem;
+    margin-bottom:.5rem;
     color: #b0b0b0;
     font-style: italic;
     font-size: .7rem;
@@ -215,19 +217,19 @@
     text-align: justify;
 }
 @media screen and (min-width:800px) {
-    .hyper-ide-help-content {
-        padding: 2rem 3rem 2rem 3rem;
-    }
+.hyper-ide-help-content {
+    padding: 2rem 3rem 2rem 3rem;
+}
 }
 @media screen and (min-width:1024px) {
-    .hyper-ide-help-content {
-        padding: 4rem 6rem 4rem 6rem;
-    }
+.hyper-ide-help-content {
+    padding: 4rem 6rem 4rem 6rem;
+}
 }
 @media screen and (min-width:1200px) {
-    .hyper-ide-help-content {
-        padding: 4rem 11rem 4rem 11rem;
-    }
+.hyper-ide-help-content {
+    padding: 4rem 11rem 4rem 11rem;
+}
 }
 .hyper-ide-help-content h3 {
     margin-top:5rem;
@@ -287,13 +289,4 @@
 .hyper-ide-evaluate-snippet-button:disabled:active,
 .hyper-ide-evaluate-snippet-button:disabled:focus {
     background: var(--wid-dark-col);
-}
-
-.hyper-ide-bookmark-textbox {
-    position:absolute;
-    top:1rem;
-    right:1rem;
-    max-width:100%;
-    width:500px !important;
-    box-shadow:0 0 15px rgba(128,128,0,.7) !important;
 }

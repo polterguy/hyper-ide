@@ -494,15 +494,6 @@ insert-before:x:/../*/create-widgets/*/div/[0,1]/*/widgets/0/-
 
 
 /*
- * Making sure we inject our toolbar as the first in our list of toolbars.
- */
-p5.web.widgets.get-children:hyper-ide-toolbars
-
-
-
-
-
-/*
  * Helper JavaScript to make sure switching between tabs "feels" faster.
  *
  * Basically switches immediately, by updating CSS classes of active and to-become
@@ -553,9 +544,8 @@ create-widgets
    * Toolbar for saving editor's content, closing it, etc.
    */
   div
-    after:x:/@p5.web.widgets.get-children/*/0?value
-    class:strip hyper-ide-toolbar
-    style:"float:right;"
+    after:hyper-ide-toolbars
+    class:strip right hyper-ide-toolbar
     .toolbar:x:/../*/file?value
     events
 
@@ -648,7 +638,6 @@ create-widgets
                   widgets
                     div
                       class:strip
-                      style:"display:inline-block;"
                       widgets
                         button:hyper-ide-rename-file-btn
                           innerValue:OK
@@ -771,7 +760,6 @@ create-widgets
                   widgets
                     div
                       class:strip
-                      style:"display:inline-block;"
                       widgets
                         button
                           innerValue:Yes

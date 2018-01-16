@@ -99,7 +99,6 @@ since Phosphorus Five is licensed as GPLv3."
               widgets
                 div
                   class:strip
-                  style:"display:inline-block;"
                   widgets
                     button
                       innerValue:Get licensed
@@ -132,8 +131,8 @@ since Phosphorus Five is licensed as GPLv3."
                         p5.web.session.set:hyper-ide.show-license-info
                           src:bool:true
   widgets
-    h3
-      innerValue:Hyper IDE <small>{Develop anything from anywhere}</small>
+    h1
+      innerValue:Hyper IDE <small>{In the beginning there was Hyperlambda}</small>
     p
       widgets
         span
@@ -155,7 +154,7 @@ to create close source apps in Hyperlambda. <a href=""/bazar?app=license"">Read 
 
     p
       class:hyper-ide-copyright
-      innerValue:@"Copyright (c) <a target=""_blank"" href=""https://gaiasoul.com"">Thomas Hansen</a>, thomas@gaiasoul.com, license GPLv3"
+      innerValue:@"Copyright © <a target=""_blank"" href=""https://gaiasoul.com"">Thomas Hansen</a>, thomas@gaiasoul.com, license GPLv3 ++"
     img
       src:"https://phosphorusfive.files.wordpress.com/2017/12/ufo.png"
       class:hyper-ide-ufo

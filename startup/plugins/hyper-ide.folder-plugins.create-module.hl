@@ -151,7 +151,6 @@ Then choose a template type for your app."
                   widgets
                     div
                       class:strip
-                      style:"display:inline-block;"
                       widgets
                         button:hyper-ide-create-module-button
                           innerValue:Create

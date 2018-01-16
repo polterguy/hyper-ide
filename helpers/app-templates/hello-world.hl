@@ -41,7 +41,7 @@ save-file:/modules/{0}/launch.hl
  * Includes CSS for our module.
  */
 p5.web.include-css-file
-  @MICRO/media/main.css
+  @MICRO/media/micro.css
   @MICRO/media/fonts.css
   @MICRO/media/skins/serious.css
 
@@ -66,7 +66,6 @@ create-widget
               widgets
                 div
                   class:strip toolbar
-                  style:""display:inline-block;""
                   widgets
                     button
                       innerValue:@""<span class=""""icon-home3""""></span>""

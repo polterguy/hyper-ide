@@ -116,7 +116,6 @@ create-event:hyper-ide.folder-plugins.execute
                 widgets
                   div
                     class:strip
-                    style:"display:inline-block;"
                     widgets
 
                       /*

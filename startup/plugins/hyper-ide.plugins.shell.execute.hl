@@ -121,7 +121,6 @@ create-event:hyper-ide.plugins.shell.execute
                 widgets
                   div
                     class:strip
-                    style:"display:inline-block;"
                     widgets
                       button
                         innerValue:Close

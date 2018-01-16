@@ -134,22 +134,13 @@ add:x:/../*/create-widget/*/widgets
 
 
 /*
- * Making sure we inject our toolbar as the first in our list of toolbars.
- */
-p5.web.widgets.get-children:hyper-ide-toolbars
-
-
-
-
-
-/*
  * Making sure we create our "Active Object" widget.
  */
 eval-x:x:/+/**(/.value|/.folder-name)|/+/*/*/label/*/innerValue
 create-widget:hyper-ide-active-file-object-toolbar
-  after:x:/@p5.web.widgets.get-children/*/0?value
+  after:hyper-ide-toolbars
   .folder:x:/../*/folder?value
-  class:strip hyper-ide-toolbar
+  class:strip right hyper-ide-toolbar
   widgets
 
     /*
@@ -186,7 +177,6 @@ create-widget:hyper-ide-active-file-object-toolbar
                 widgets
                   div
                     class:strip
-                    style:"display:inline-block;"
                     widgets
                       button:hyper-ide-new-file-btn
                         innerValue:OK
@@ -295,7 +285,6 @@ create-widget:hyper-ide-active-file-object-toolbar
                 widgets
                   div
                     class:strip
-                    style:"display:inline-block;"
                     widgets
                       button:hyper-ide-new-folder-btn
                         innerValue:OK
@@ -410,7 +399,6 @@ create-widget:hyper-ide-active-file-object-toolbar
                 widgets
                   div
                     class:strip
-                    style:"display:inline-block;"
                     widgets
                       button:hyper-ide-rename-folder-btn
                         innerValue:OK
@@ -513,7 +501,6 @@ and close all editors that are editing files inside of your folder. I need you t
                 widgets
                   div
                     class:strip
-                    style:"display:inline-block;"
                     widgets
                       button
                         innerValue:Yes

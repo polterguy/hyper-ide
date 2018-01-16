@@ -54,6 +54,8 @@ select-data:x:/*/*/micro.codemirror.settings
 if
   fetch:x:/0/0?value
     widget-exists:hyper-ide-main-container
+  micro.windows.info:Hyper IDE is already open
+    class:micro-windows-info warning
   return
 
 
@@ -169,7 +171,6 @@ insert-before:x:/../*/create-widget/**/widgets/=plugins/0/-2
 create-widget:hyper-ide-main-container
   class:container-fullscreen hyper-ide-container{0}
     :x:/@_page-scroll?value
-  style:"padding-top:0;"
 
   /*
    * Helper Ajax events, necessary to map keyboard shortcuts, among other things.
@@ -794,7 +795,6 @@ create-widget:hyper-ide-main-container
                       widgets
                         div
                           class:strip
-                          style:"display:inline-block;"
                           widgets
                             button
                               innerValue:Yes
@@ -1002,74 +1002,38 @@ create-widget:hyper-ide-main-container
           widgets
 
             /*
-             * Wrapper for path of file object header.
-             */
-            div
-              style:"float:left;"
-              widgets
-                a
-                  href:#
-                  innerValue:
-                  target:_blank
-                  class:hyper-ide-file-path
-                  events
-
-                    /*
-                     * Invoke to change "breadcrumb"'s text and href.
-                     */
-                    hyper-ide.set-path
-
-                      /*
-                       * Setting innerValue and href.
-                       */
-                      set-widget-property:x:/../*/_event?value
-                        href:x:/../*/_arg?value
-                        innerValue:x:/../*/_arg?value
-
-                    /*
-                     * Invoke to get "breadcrumb"'s href.
-                     */
-                    hyper-ide.get-path
-                      get-widget-property:x:/../*/_event?value
-                        href
-                      return:x:/@get-widget-property/*/*?value
-
-            /*
              * Our primary toolbar.
              *
              * Contains login/logout, home button, and "system wide" plugins.
              */
             div
+              class:strip right hyper-ide-toolbar
               style:"float:right;"
               widgets
-                div
-                  class:strip hyper-ide-toolbar
-                  style:"float:right;"
-                  widgets
+
+                /*
+                 * Home button, launches desktop (or default app).
+                 */
+                button
+                  innerValue:@"<span class=""icon-home3""></span>"
+                  title:Close Hyper IDE
+                  onclick
 
                     /*
-                     * Home button, launches desktop (or default app).
+                     * Making sure we close all editors, and checking if event
+                     * returns "false", which implies we have unsaved changes,
+                     * and we need to ask user about confirmation before we allow
+                     * him to leave page.
                      */
-                    button
-                      innerValue:@"<span class=""icon-home3""></span>"
-                      title:Close Hyper IDE
-                      onclick
+                    hyper-ide.editors.close
+                      filter:/
+                      .onclosed
 
                         /*
-                         * Making sure we close all editors, and checking if event
-                         * returns "false", which implies we have unsaved changes,
-                         * and we need to ask user about confirmation before we allow
-                         * him to leave page.
+                         * Redirecting user to server's root URL.
                          */
-                        hyper-ide.editors.close
-                          filter:/
-                          .onclosed
-
-                            /*
-                             * Redirecting user to server's root URL.
-                             */
-                            p5.web.get-root-location
-                            p5.web.set-location:x:/-?value
+                        p5.web.get-root-location
+                        p5.web.set-location:x:/-?value
 
             /*
              * Our secondary toolbar.
@@ -1077,145 +1041,141 @@ create-widget:hyper-ide-main-container
              * Contains help, settings, close all editors and "global plugins" for Hyper IDE.
              */
             div:hyper-ide-toolbars
-              style:"float:right;"
-              widgets
-                div
-                  class:strip hyper-ide-toolbar
-                  style:"float:right;"
-                  widgets:plugins
+              class:strip right hyper-ide-toolbar
+              widgets:plugins
+
+                /*
+                 * Help button.
+                 */
+                button
+                  innerValue:@"<span class=""icon-question""></span>"
+                  title:Help
+                  onclick
 
                     /*
-                     * Help button.
+                     * Toggling visibility of help files.
                      */
-                    button
-                      innerValue:@"<span class=""icon-question""></span>"
-                      title:Help
-                      onclick
+                    if
+                      hyper-ide.help-visible
 
-                        /*
-                         * Toggling visibility of help files.
-                         */
-                        if
-                          hyper-ide.help-visible
+                      /*
+                       * Help already visible, hiding it.
+                       */
+                      hyper-ide.close-help
 
-                          /*
-                           * Help already visible, hiding it.
-                           */
-                          hyper-ide.close-help
+                    else
 
-                        else
-
-                          /*
-                           * Launching help.
-                           */
-                          micro.evaluate.file:@IDE/helpers/display-help.hl
-
-                        /*
-                         * Making sure we toggle toggled state of button.
-                         */
-                        micro.css.toggle:x:/../*/_event?value
-                          class:toggled
+                      /*
+                       * Launching help.
+                       */
+                      micro.evaluate.file:@IDE/helpers/display-help.hl
 
                     /*
-                     * Settings button.
+                     * Making sure we toggle toggled state of button.
                      */
-                    button
-                      innerValue:@"<span class=""icon-cog""></span>"
-                      title:Settings
+                    micro.css.toggle:x:/../*/_event?value
+                      class:toggled
+
+                /*
+                 * Settings button.
+                 */
+                button
+                  innerValue:@"<span class=""icon-cog""></span>"
+                  title:Settings
+                  oninit
+
+                    /*
+                     * Verifying user is "root", and if not, deleting the settings button,
+                     * since it among other things, allows the user to enable and disable modules,
+                     * at a global level.
+                     */
+                    whoami
+                    if:x:/-/*/role?value
+                      !=:root
+                      delete-widget:x:/../*/_event?value
+
+                  onclick
+
+                    /*
+                     * Allowing user to modify his settings.
+                     */
+                    micro.codemirror.settings
+                      checkbox
+                        info:Browser scroll
+                        title:If true, will enable the browser scroll bars when document(s) overflows the size of viewport
+                        .data-field:page-scroll
+                        oninit
+
+                          /*
+                           * Making sure we retrieve existing value.
+                           */
+                          .defaults
+                            page-scroll:bool:false
+                          select-data:x:/*/*/micro.codemirror.settings
+                          if:x:(/@select-data/*/*/page-scroll|/../*/.defaults/*/page-scroll)/$?value
+                            =:bool:true
+                            set-widget-property:x:/../*/_event?value
+                              checked
+
+                /*
+                 * Bookmark button.
+                 */
+                button:hyper-ide-bookmark-button
+                  innerValue:@"<span class=""icon-bookmark""></span>"
+                  title:Copy URL to current path
+                  disabled
+                  onclick
+
+                    /*
+                     * Shows the URL for the current path to the user.
+                     */
+                    create-widget:hyper-ide-bookmark-url
+                      element:input
+                      type:text
+                      class:hyper-ide-bookmark-textbox
+                      onkeydown:@"if (event.keyCode == 13 || event.keyCode == 27) {p5.$('hyper-ide-bookmark-url').raise('.onclose');return false;}"
+                      onblur
+
+                        /*
+                         * Simply invoking [.onclose] when widget looses focus.
+                         */
+                        p5.web.widgets.ajax-events.raise:x:/../*/_event?value
+                          .onclose
+
+                      .onclose
+
+                        /*
+                         * Deleting widget.
+                         */
+                        delete-widget:x:/../*/_event?value
+
                       oninit
 
                         /*
-                         * Verifying user is "root", and if not, deleting the settings button,
-                         * since it among other things, allows the user to enable and disable modules,
-                         * at a global level.
+                         * Figuring out the URL for current path, and selecting all text.
                          */
-                        whoami
-                        if:x:/-/*/role?value
-                          !=:root
-                          delete-widget:x:/../*/_event?value
+                        p5.web.get-location
+                        hyper-ide.editors.get-active
+                        set-widget-property:x:/../*/_event?value
+                          value:{0}?path={1}
+                            :x:/@p5.web.get-location?value
+                            :x:/@hyper-ide.editors.get-active?value
+                        micro.page.set-focus:x:/../*/_event?value
 
-                      onclick
-
-                        /*
-                         * Allowing user to modify his settings.
-                         */
-                        micro.codemirror.settings
-                          checkbox
-                            info:Browser scroll
-                            title:If true, will enable the browser scroll bars when document(s) overflows the size of viewport
-                            .data-field:page-scroll
-                            oninit
-
-                              /*
-                               * Making sure we retrieve existing value.
-                               */
-                              .defaults
-                                page-scroll:bool:false
-                              select-data:x:/*/*/micro.codemirror.settings
-                              if:x:(/@select-data/*/*/page-scroll|/../*/.defaults/*/page-scroll)/$?value
-                                =:bool:true
-                                set-widget-property:x:/../*/_event?value
-                                  checked
+                /*
+                 * Close all editors button.
+                 */
+                button:hyper-ide-close-all-editors
+                  innerValue:@"<span class=""icon-cross""></span>"
+                  title:Close all editors
+                  disabled
+                  onclick
 
                     /*
-                     * Bookmark button.
+                     * Making sure we close all editors.
                      */
-                    button:hyper-ide-bookmark-button
-                      innerValue:@"<span class=""icon-bookmark""></span>"
-                      title:Copy URL to current path
-                      disabled
-                      onclick
-
-                        /*
-                         * Shows the URL for the current path to the user.
-                         */
-                        create-widget:hyper-ide-bookmark-url
-                          element:input
-                          type:text
-                          class:hyper-ide-bookmark-textbox
-                          onkeydown:@"if (event.keyCode == 13 || event.keyCode == 27) {p5.$('hyper-ide-bookmark-url').raise('.onclose');return false;}"
-                          onblur
-                          
-                            /*
-                             * Simply invoking [.onclose] when widget looses focus.
-                             */
-                            p5.web.widgets.ajax-events.raise:x:/../*/_event?value
-                              .onclose
-
-                          .onclose
-
-                            /*
-                             * Deleting widget.
-                             */
-                            delete-widget:x:/../*/_event?value
-
-                          oninit
-
-                            /*
-                             * Figuring out the URL for current path, and selecting all text.
-                             */
-                            p5.web.get-location
-                            hyper-ide.get-path
-                            set-widget-property:x:/../*/_event?value
-                              value:{0}?path={1}
-                                :x:/@p5.web.get-location?value
-                                :x:/@hyper-ide.get-path?value
-                            micro.page.set-focus:x:/../*/_event?value
-
-                    /*
-                     * Close all editors button.
-                     */
-                    button:hyper-ide-close-all-editors
-                      innerValue:@"<span class=""icon-cross""></span>"
-                      title:Close all editors
-                      disabled
-                      onclick
-
-                        /*
-                         * Making sure we close all editors.
-                         */
-                        hyper-ide.editors.close
-                          filter:/
+                    hyper-ide.editors.close
+                      filter:/
 
     /*
      * Wrapper for actual content.
@@ -1242,7 +1202,7 @@ create-widget:hyper-ide-main-container
                  * files on his server.
                  */
                 micro.widgets.tree:hyper-ide-folder-tree-browser
-                  class:micro-tree hyper-ide-tree-view
+                  class:micro-widgets-tree hyper-ide-tree-view
                   items
                     /:/
 
@@ -1382,11 +1342,6 @@ create-widget:hyper-ide-main-container
                           file:x:/../*/items/0?name
 
                       /*
-                       * Updating header or file/folder path.
-                       */
-                      hyper-ide.set-path:x:/../*/items/0?name
-
-                      /*
                        * Making sure we enable our "bookmark button".
                        */
                       delete-widget-property:hyper-ide-bookmark-button
@@ -1437,11 +1392,6 @@ create-widget:hyper-ide-main-container
               add:x:/../*/create-widgets
                 src:x:/@load-file/*/*
               create-widgets
-
-              /*
-               * Making sure we reset file/folder path header.
-               */
-              hyper-ide.set-path:x:/../*/items/0?name
 
               /*
                * Making sure we disable our "Close all editors" button.
