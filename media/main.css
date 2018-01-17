@@ -93,24 +93,18 @@
     text-overflow: ellipsis;
     white-space: nowrap;
     position: relative;
-    color: #c0c0c0;
     font-style: italic;
     margin-left: .2rem;
     margin-bottom: 0;
-    background: none;
-    background-color: #f0f0f0;
     font-size: .7rem;
     padding-right: 30px;
     height: 28px;
 }
 
 .hyper-ide-editor-tab-buttons > .toggled {
-    background: none;
-    background-color: #fbfbfb;
     z-index: 1;
     font-weight: bold;
     font-style: normal;
-    color: #a0a0a0;
 }
 
 .hyper-ide-editor-tab-buttons > button:hover,
