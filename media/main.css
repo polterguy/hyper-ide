@@ -31,6 +31,7 @@
 /* If user wants to use "page scroll" instead of editor/treeview scroll, then this class will apply */
 .hyper-ide-page-scroll .hyper-ide-content {
     height: auto;
+    min-height: calc(100vh - 4rem);
     margin-bottom: 5rem;
 }
 
@@ -67,6 +68,7 @@
 .hyper-ide-splash {
     height: auto;
     min-height: 100%;
+    position: relative;
 }
 
 /* "Tab control" wrapping editor (both tab buttons, and editor surface) */
