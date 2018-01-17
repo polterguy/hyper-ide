@@ -172,6 +172,18 @@ if:x:/@p5.web.widgets.find/*/*?value
 
 
 /*
+ * Hiding any previously shown edit file toolbars.
+ */
+p5.web.widgets.find
+  .toolbar
+micro.css.add:x:/-/*/*?value
+  class:hide
+
+
+
+
+
+/*
  * Retrieving file extension of file, and its filename.
  */
 split:x:/../*/file?value

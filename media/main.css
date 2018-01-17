@@ -1,7 +1,5 @@
-
 .hyper-ide-container {
     padding-bottom: 0;
-    overflow: auto;
 }
 
 /* Making sure all CodeMirror editors get rounded borders */
@@ -27,7 +25,7 @@
 
 /* Main content, which is 100% of viewport height, minus toolbars */
 .hyper-ide-content {
-    height: calc(100vh - 3.5rem);
+    height: calc(100vh - 4rem);
 }
 
 /* If user wants to use "page scroll" instead of editor/treeview scroll, then this class will apply */
@@ -155,7 +153,7 @@
 
 /* Making sure we modify main CodeMirror (Micro) wrapper class */
 .micro-codemirror-wrapper {
-    height: 100%;
+    height: calc(100% + 1px);
 }
 
 /* Wraps CodeMirror instance(s) */
