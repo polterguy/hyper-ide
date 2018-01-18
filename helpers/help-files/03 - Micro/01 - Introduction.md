@@ -20,7 +20,7 @@ To include it in another type of project, you can add the following code in the 
 <link rel='stylesheet' type='text/css' href='/modules/micro/media/skins/serious.css' />
 ```
 
-Notice the **[micro.css.include]** Hyperlambda event above, will include both the main CSS file, the fonts for
+Notice the **[micro.css.include]** Hyperlambda event in out first code example will include both the main CSS file, the fonts for
 Micro, and the _"serious"_ skin. You can find all available skins in the `/modules/micro/media/skins/` folder.
 In addition to including the CSS files, it will also append an HTTP query parameter at the end of the CSS 
 inclusion tag. This query parameter will contain the version number of Micro. This helps you to avoid

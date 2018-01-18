@@ -45,7 +45,7 @@ as many `row` children as you wish, and each row can have multiple `col` element
 This is what creates your _"grid system"_, and will automatically layout your page accordingly.
 The above code will end up looking like the following.
 
-<img style="display:block;margin-left:auto;margin-right:auto;max-width:100%;" src="https://phosphorusfive.files.wordpress.com/2018/01/micro-hello-world-screenshot-2.png" />
+https://phosphorusfive.files.wordpress.com/2018/01/micro-hello-world-screenshot-2.png
 
 **Notice**, we chose to wrap our widgets inside of a div widget with the following classes `air-inner shaded rounded`.
 We did this simply to add some _"bling"_ to our page. These classes adds some inner padding, some shade, 
@@ -55,14 +55,12 @@ The above Hyperlambda will result in something resembling the following HTML.
 
 ```htmlmixed
 ...
-<div id="cnt">
-  <div class="container">
-    <div class="row">
-      <div class="col">
-        <div class="air-inner shaded rounded">
-          <h3>Hello World</h3>
-          <p>Your first Micro application.</p>
-        </div>
+<div class="container">
+  <div class="row">
+    <div class="col">
+      <div class="air-inner shaded rounded">
+        <h3>Hello World</h3>
+        <p>Your first Micro application.</p>
       </div>
     </div>
   </div>
@@ -78,7 +76,7 @@ the container nor the fullscreen container will spend more width than you have a
 browser. A row will always use the entire width inside of its container.
 
 `col` elements however, will be evenly divided inside of their containers. If you add another `col`
-in the above code for instance, then each of your columns will use 50% of the width they hava available
+in the above code for instance, then each of your columns will use 50% of the width they have available
 from their rows. You can however explicitly declare how many percent of the available width you want
 some specific column to use. Below is an example.
 
@@ -127,23 +125,16 @@ div
   class:col-20 offset-20
   widgets
     p
-      innerValue:20 percent.
+      innerValue:20 percent width, offset 20.
 div
-  class:col-60
+  class:col-50 offset-10
   widgets
     p
-      innerValue:60 percent.
+      innerValue:50 percent width, offset 10.
 ```
 
-The above will give you 20% _"spacing"_ to the left of your first column. You can however of course add up
-the offset selectors, also in other columns besides your first columns.
-
-### Showing overflown content
-
-Every now and then, you will end up in a position where regardless of how much you try to responsively render
-your pages, there will still be a need for horizontal scrolling, regardless of how ugly this is. For such
-needs, you can explicitly force one of your `col` elements to show its content, to avoid _"clipping"_, by
-adding the `grow` CSS class to it.
+The above will give you 20% _"spacing"_ to the left of your first column, and 10% spacing before your
+second column.
 
 ### Responsive rendering
 

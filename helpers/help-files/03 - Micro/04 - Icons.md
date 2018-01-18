@@ -56,12 +56,18 @@ for-each:x:@"/@html2lambda/**/\@class/""=:regex:/icon-.{1,}/""?value"
             innerValue:x:/@_dp?value
 
 /*
- * Creating a modal window, now with on "li" element for each icon from our IcoMoon set.
+ * Creating a widget wrapping each icon from IcoMoon.
  */
 create-widget
   parent:hyper-ide-help-content
+  style:"font-size:24px;"
   widgets
     ol
       widgets
 ```
+
+If you are not satisfied with the icons included in Micro by default, you can easily generate your own set
+of icons using the [IcoMoon select icons app](https://icomoon.io/app/#/select) and start out with for instance 
+Font Awesome, etc. The IcoMoon icon set includes dozens of different icon sets, you can mix as you see fit,
+and which prefectly plugs into Micro.
 
