@@ -21,6 +21,7 @@
 * [Font Awesome](http://fontawesome.io/) - Copyright © ? Dave Gandy
 * [Hero Patterns](http://www.heropatterns.com/) - Copyright © ? Steve Schoger
 * [Normalize CSS](github.com/necolas/normalize.css) - Copyright © ?
+* [CSS Beautify](https://github.com/senchalabs/cssbeautify) - Copyright © 2011 - 2013 Sencha Inc.
 
 All other Phosphorus Five modules, distributed through for instance the Bazar, are the sole copyright of 
 Thomas Hansen.
