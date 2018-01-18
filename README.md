@@ -52,7 +52,7 @@ up Hyper IDE, and start editing a handful of code files, seldom downloads more t
 Of course depending upon how large your code files are. Below is a screenshot of how 
 it looks like with multiple open tabs, and AutoCompletion suggest open (use CTRL+Space to display AutoCompletion).
 
-![screenshot](media/screenshots/screenshot-secondary.png)
+![screenshot](screenshots/screenshot-secondary.png)
 
 ## Installation (Source)
 
