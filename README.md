@@ -4,6 +4,9 @@ Hyper IDE is a web based IDE (Integrated Development Environment) that supports 
 languages out of the box. You can use it on localhost, through e.g. Visual Studio, Mono Develop or Xamarin -
 Or install it on a web server, having easily access to your code, from anywhere in the world.
 
+You can try it out online on my [test server](https://home.gaiasoul.com/hyper-ide), where you have
+write access to the _"/test/"_ folder.
+
 ![screenshot](screenshots/hyper-ide-micro-screenshot.png)
 
 ## Features
