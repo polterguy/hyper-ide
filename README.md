@@ -25,6 +25,7 @@ Or install it on a web server, having easily access to your code, from anywhere 
 * Tracking of active item in _'solution explorer'_
 * Plugin support
 * Tons of intelligent keyboard shortcuts
+* Easily skinned
 
 ## Implementation/technology
 
