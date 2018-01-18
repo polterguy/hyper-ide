@@ -3,4 +3,4 @@
  */
 create-event:hyper-ide.version
 
-  return:decimal:6.2
+  return:decimal:6.3
