@@ -66,8 +66,36 @@ create-widget
       widgets
 ```
 
+Below is an example of a strip with 3 buttons, each having their own icon.
+
+```hyperlambda
+micro.css.include
+  skin:graphite
+create-widget
+  class:container
+  widgets
+    div
+      class:strip
+      widgets
+        button
+          widgets
+            literal
+              element:span
+              class:icon-flash
+        button
+          widgets
+            literal
+              element:span
+              class:icon-home3
+        button
+          widgets
+            literal
+              element:span
+              class:icon-gift
+```
+
 If you are not satisfied with the icons included in Micro by default, you can easily generate your own set
-of icons using the [IcoMoon select icons app](https://icomoon.io/app/#/select) and start out with for instance 
+of icons using the [IcoMoon select icons app](https://icomoon.io/app/#/select), and start out with for instance 
 Font Awesome, etc. The IcoMoon icon set includes dozens of different icon sets, you can mix as you see fit,
-and which prefectly plugs into Micro.
+and which perfectly plugs into Micro.
 

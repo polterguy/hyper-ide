@@ -226,8 +226,6 @@ create-widget
                   innerValue:Btn
 ```
 
-
-
 ## Fill
 
 If you add a tiny little CSS class to our above `class:strip`, making it become `class:strip fill`,

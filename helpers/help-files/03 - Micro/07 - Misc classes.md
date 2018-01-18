@@ -15,5 +15,5 @@ extra classes.
 * `right` - Right aligns text
 * `center` - Centers text inside your widget
 * `justify` - Justifies text
-* `capitalize` - Transforms text such that each word are Capitalized
+* `capitalize` - Transforms text such that the first character is Capitalized
 * `hide` - Hides an element
