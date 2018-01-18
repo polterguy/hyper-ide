@@ -95,4 +95,104 @@ create-widget
                 micro.download.file:@MICRO/README.md
 ```
 
+### Serializing forms
 
+The **[micro.form.serialize]** serializes all form elements beneath some specified widget. It uses a fairly
+intelligent construct to create _"friendly names"_ for your form elements, based upon a hidden attribute
+called **[.data-field]**. The data-field value becomes the name of your form element values when this event
+is invoked. Below is an example of usage.
+
+```hyperlambda
+micro.css.include
+  skin:graphite
+create-widget
+  class:container
+  widgets
+    div
+      class:row
+      widgets
+        div
+          class:col-50 offset-25
+          widgets
+            div:my-form
+              class:air-inner bg shaded rounded
+              widgets
+                input
+                  type:text
+                  class:fill
+                  placeholder:Name ...
+                  .data-field:name
+                literal
+                  element:textarea
+                  placeholder:Address ...
+                  .data-field:address
+                  class:fill
+                button
+                  innerValue:Serialize
+                  onclick
+
+                    /*
+                     * Serializing our form and displaying the result in a modal window.
+                     */
+                    micro.form.serialize:my-form
+                    eval-x:x:/+/**
+                    create-widgets
+                      micro.widgets.modal
+                        widgets
+                          h3
+                            innerValue:Your values
+                          pre
+                            innerValue:x:/@micro.form.serialize
+
+```
+
+The above will result in something resembling the following.
+
+https://phosphorusfive.files.wordpress.com/2018/01/micro-serialize-screenshot.png
+
+And of course when the _"Serialize"_ button is clicked, it will resemble the following.
+
+https://phosphorusfive.files.wordpress.com/2018/01/micro-serialize-after-screenshot.png
+
+One detail in regards to select elements and radio buttons, is that these needs one additional
+attribute, due to their _"pluralistic nature"_. This attribute is called **[.data-value]**, and should
+be declared for each _"option"_ or radio input element, inside of the same radio input group.
+Below is an example of serializing a select element to illustrate this concept.
+
+```hyperlambda
+micro.css.include
+  skin:graphite
+create-widget
+  class:container
+  widgets
+    div
+      class:row
+      widgets
+        div
+          class:col-50 offset-25
+          widgets
+            div:my-form
+              class:air-inner bg shaded rounded
+              widgets
+                select
+                  .data-field:city
+                  widgets
+                    option
+                      innerValue:New York
+                      .data-value:new-york
+                    option
+                      innerValue:San Francisco
+                      .data-value:san-francisco
+                button
+                  innerValue:Serialize
+                  onclick
+                    micro.form.serialize:my-form
+                    eval-x:x:/+/**
+                    create-widgets
+                      micro.widgets.modal
+                        widgets
+                          h3
+                            innerValue:Your values
+                          pre
+                            innerValue:x:/@micro.form.serialize
+```
