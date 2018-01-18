@@ -4,7 +4,7 @@ Hyper IDE is a web based IDE (Integrated Development Environment) that supports 
 languages out of the box. You can use it on localhost, through e.g. Visual Studio, Mono Develop or Xamarin -
 Or install it on a web server, having easily access to your code, from anywhere in the world.
 
-![screenshot](media/screenshots/screenshot-main.png)
+![screenshot](screenshots/hyper-ide-micro-screenshot.png)
 
 ## Features
 
@@ -24,6 +24,7 @@ Or install it on a web server, having easily access to your code, from anywhere 
 * Error feedback, when you have a syntax error is in your code
 * Tracking of active item in _'solution explorer'_
 * Plugin support
+* Tons of intelligent keyboard shortcuts
 
 ## Implementation/technology
 
@@ -61,32 +62,8 @@ the [main Phosphorus Five source version](https://github.com/polterguy/phosphoru
 ## Installation (Binaries on Linux)
 
 [Read more here](https://github.com/polterguy/phosphorusfive/releases), but basically there's a shell script that
-automates the entire process of installing both Mono, Apache mod_mon, Phosphorus Five, and Hyper IDE
+automates the entire process of installing both Mono, Apache mod_mono, Phosphorus Five, and Hyper IDE
 on a Linux/Apache server.
-
-## Roadmap
-
-* Backup of folders (downloading as ZIP files)
-* Template support (choosing from a pre-defined set of templates when creating new files, according to file type)
-* Even better plugin support, even though today's plugin support is actually fairly good
-* Optimisiation (for instance changing tabs is sluggish)
-
-## Keyboard shortcuts
-
-Hyper IDE features tons of keyboard shortcuts. The most useful ones are as follows.
-
-* Alt+S - Saves active file
-* Alt+X - Close active editor
-* Alt+W - Open next code window (it's close to tab)
-* Alt+Q - Open previous code window
-* Cmd+F, Ctrl+F - Find (supports regex)
-* Alt+F - Find (persistent)
-* Cmd+Alt+F, Ctrl+Alt+F - Replace (supports _'replace all'_ and regex)
-* Alt+M - Maximise code editor
-* Alt+G - Go to line
-* Tab - Indent selected code one additional tab level
-* Shift+Tab - De-indent selected code one tab level
-* Ctrl+Space - Shows autocompletion window
 
 ## License options
 
