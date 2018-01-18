@@ -196,3 +196,87 @@ create-widget
                           pre
                             innerValue:x:/@micro.form.serialize
 ```
+
+### Using Google Translate
+
+The **[micro.google.translate]** Active Event is fairly self describing. It optionally takes two arguments.
+
+* __[dest-lang]__
+* __[src_lang]__
+
+Consuming it might resemble the following.
+
+```hyperlambda
+micro.css.include
+  skin:graphite
+micro.google.translate:Hello world
+  dest-lang:NB-no
+micro.windows.info:x:/-?value
+```
+
+### Setting focus to elements
+
+The **[micro.page.focus]** Active Event is fairly self describing. Pass in the ID to whatever widget
+you want to give focus to.
+
+### Micro's speech Active Events
+
+There are four basic Active Events which helps you with speech recognition and speech synthesis, these are
+as follows.
+
+* __[micro.speech.listen]__
+* __[micro.speech.speak]__
+* __[micro.speech.stop]__
+* __[micro.speech.query-voices]__
+
+To have the computer speak some sentence for instance, you can use the following code.
+
+```hyperlambda
+micro.css.include
+  skin:graphite
+create-widget
+  class:container
+  widgets
+    div
+      class:row
+      widgets
+        div
+          class:col
+          widgets
+            button
+              innerValue:Talk to me
+              onclick
+                micro.speech.speak:Hello there, my name is John Doe
+```
+
+You can optionally pass in a **[voice]** argument, which you can give a value of either a named voice, which
+you can fetch by querying the voice API on the client - Or to a language code, such as for instance _"NB-no"_.
+Try adding `voice:Alex` for instance to the above code.
+
+
+### Information "bubble" windows
+
+The **[micro.windows.info]** is a _"bubble"_ window, for displaying feedback to the user, in a non-intrusive
+way. Simply pass in whatever text you want for it to display, and optinally pas in a **[class]** argument.
+Notice, if you pass in an explicit class, you'd probably want to make sure you **also add micro-windows-info**
+to your class list, since otherwise it'll probably look weird. Below is an example.
+
+```hyperlambda
+micro.css.include
+  skin:graphite
+create-widget
+  class:container
+  widgets
+    div
+      class:row
+      widgets
+        div
+          class:col
+          widgets
+            button
+              innerValue:Click me
+              onclick
+                micro.windows.info:Hello world
+                  class:micro-windows-info success
+```
+
