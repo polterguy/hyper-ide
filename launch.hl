@@ -872,7 +872,7 @@ create-widget:hyper-ide-main-container
             /*
              * Then its toolbar.
              */
-            p5.web.widgets.find-first:hyper-ide-toolbars
+            p5.web.widgets.find-first
               .toolbar:x:/@_dp/#?name
             delete-widget:x:/@p5.web.widgets.find-first/*/*?value
 
@@ -1154,11 +1154,11 @@ create-widget:hyper-ide-main-container
                         /*
                          * Figuring out the URL for current path, and selecting all text.
                          */
-                        p5.web.get-location
+                        p5.web.get-location-url
                         hyper-ide.editors.get-active
                         set-widget-property:x:/../*/_event?value
                           value:{0}?path={1}
-                            :x:/@p5.web.get-location?value
+                            :x:/@p5.web.get-location-url?value
                             :x:/@hyper-ide.editors.get-active?value
                         micro.page.set-focus:x:/../*/_event?value
 
