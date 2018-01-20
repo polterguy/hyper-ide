@@ -964,7 +964,7 @@ create-widgets
        */
       literal
         element:span
-        class:hyper-ide-close icon-cross
+        class:hyper-ide-close icon-cross button
         title:Close editor
         role:button
         onclick

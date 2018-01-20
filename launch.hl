@@ -1154,12 +1154,13 @@ create-widget:hyper-ide-main-container
                         /*
                          * Figuring out the URL for current path, and selecting all text.
                          */
+                        micro.widgets.tree.get-selected-items:hyper-ide-folder-tree-browser
                         p5.web.get-location-url
                         hyper-ide.editors.get-active
                         set-widget-property:x:/../*/_event?value
                           value:{0}?path={1}
                             :x:/@p5.web.get-location-url?value
-                            :x:/@hyper-ide.editors.get-active?value
+                            :x:/@micro.widgets.tree.get-selected-items/0/0?name
                         micro.page.set-focus:x:/../*/_event?value
 
                 /*

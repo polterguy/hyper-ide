@@ -5,27 +5,28 @@
 /* Making sure all CodeMirror editors get rounded borders */
 .CodeMirror {
     border-radius: var(--border-radius);
+    border: solid 1px var(--border-color);
 }
 
 /* All Hyper IDE toolbars */
 .hyper-ide-toolbar {
-    margin-left: 1rem;
+    margin-left: .5rem;
     margin-bottom: 0;
 }
 
 /* Bookmark textbox */
 .hyper-ide-bookmark-textbox {
-    position:absolute;
-    top:1rem;
-    right:1rem;
-    max-width:100%;
-    width:500px !important;
-    box-shadow:0 0 15px rgba(128,128,0,.7) !important;
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    max-width: 100%;
+    width: 500px !important;
+    box-shadow: 0 0 15px rgba(128,128,0,.7) !important;
 }
 
 /* Main content, which is 100% of viewport height, minus toolbars */
 .hyper-ide-content {
-    height: calc(100vh - 4rem);
+    height: calc(100vh - 3rem - var(--form-element-padding) * 2);
 }
 
 /* If user wants to use "page scroll" instead of editor/treeview scroll, then this class will apply */
@@ -37,8 +38,8 @@
 
 /* TreeView wrapper for browsing files (column wrapper) */
 .hyper-ide-solution-explorer-col {
-    height: calc(100% - 1.5rem);
-    margin-bottom: .5rem;
+    min-height: calc(100% - var(--form-element-padding) * 2);
+    margin-bottom: 0;
 }
 
 /* TreeView wrapper for browsing files (inside of column) */
@@ -60,8 +61,8 @@
 
 /* Wrapper column around editors (and splash screen) */
 .hyper-ide-editor-col {
-    height: calc(100% - 1.5rem);
-    margin-bottom: .5rem;
+    min-height: calc(100% - var(--form-element-padding) * 2);
+    margin-bottom: 0;
 }
 
 /* Hyper IDE splash screen, which you see when you initially start Hyper IDE */
@@ -69,6 +70,7 @@
     height: auto;
     min-height: 100%;
     position: relative;
+    margin-bottom: 0;
 }
 
 /* "Tab control" wrapping editor (both tab buttons, and editor surface) */
@@ -86,7 +88,8 @@
 .hyper-ide-editor-tab-buttons > button {
     border-bottom-left-radius: 0;
     border-bottom-right-radius: 0;
-    width: 130px;
+    border-bottom: none;
+    width: 10rem;
     text-align: left;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -96,12 +99,10 @@
     margin-left: .2rem;
     margin-bottom: 0;
     font-size: .7rem;
-    padding-right: 30px;
-    height: 28px;
+    padding-right: 2rem;
     cursor: pointer;
-    background: var(--button-toggled-background);
-    background-size: 1px calc(200% + 4px);
-    background-position: 0 -1px;
+    border-bottom: none;
+    background-image: var(--button-toggled-background);
 }
 .hyper-ide-editor-tab-buttons > button:first-child {
     margin-left: var(--border-radius);
@@ -111,54 +112,36 @@
     z-index: 1;
     font-weight: bold;
     font-style: normal;
-    border-bottom: none;
-    background: var(--button-background);
-    background-size: 1px calc(200% + 4px);
-    background-position: 0 -1px;
-}
-.hyper-ide-editor-tab-buttons > button.toggled:hover,
-.hyper-ide-editor-tab-buttons > button.toggled:active,
-.hyper-ide-editor-tab-buttons > button.toggled:focus,
-.hyper-ide-editor-tab-buttons > button:hover,
-.hyper-ide-editor-tab-buttons > button:active,
-.hyper-ide-editor-tab-buttons > button:focus {
-    background-position: 0 -28px;
+    background-image: var(--button-background);
 }
 
 .hyper-ide-editor-tab-buttons > button > span.hyper-ide-close {
     position: absolute;
-    font-size: .6rem;
-    top: 4px;
-    right: 4px;
-    padding: 3px;
-    border-radius: 3px;
-    border: solid 1px var(--border-color);
-}
-
-.hyper-ide-editor-tab-buttons > button > span.hyper-ide-close:hover,
-.hyper-ide-editor-tab-buttons > button > span.hyper-ide-close:active,
-.hyper-ide-editor-tab-buttons > button > span.hyper-ide-close:focus {
-    color: #a0a0a0;
-    background-color: #e0e0e0;
+    font-size: .5rem;
+    top: calc(var(--border-radius) / 2 - .125rem);
+    right: calc(var(--border-radius) / 2 - .125rem);
+    padding: .25rem;
+    border-radius: .25rem;
+    min-width: unset;
+    width: auto;
+    height: auto;
 }
 
 /* "Tab control" content wrapper  */
 .hyper-ide-editor-tab-content {
-    /* Set to "auto" to remove scrollbars from CodeMirror instance */
-    height: calc(100% - 26px);
+    height: calc(100% - 1.7rem - 1px);
     margin-bottom: 0;
-    margin-top: -1px;
 }
 
 /* Making sure we modify main CodeMirror (Micro) wrapper class */
 .micro-codemirror-wrapper {
-    height: calc(100% + 1px);
+    height: 100%;
 }
 
 /* Wraps CodeMirror instance(s) */
 .hyper-ide-codemirror-wrapper {
     height: 100%;
-    box-sizing:content-box;
+    box-sizing: content-box;
 }
 
 /* CodeMirror instance, inside of editors */
@@ -188,25 +171,25 @@
     animation-name: hyper-ide-ufo;
     animation-duration: .5s;
     animation-fill-mode: forwards;
-    margin-bottom:2rem;
+    margin-bottom: 2rem;
 }
 
 .hyper-ide-copyright {
     position: absolute;
     bottom: 0;
     right: 1rem;
-    margin-bottom:.5rem;
+    margin-bottom: .5rem;
     font-style: italic;
     font-size: .7rem;
 }
 
 .hyper-ide-help {
-    position:relative;
+    position: relative;
 }
 
 .hyper-ide-help .CodeMirror {
-    margin-top:2rem;
-    margin-bottom:2rem;
+    margin-top: 2rem;
+    margin-bottom: 2rem;
 }
 
 .hyper-ide-help-content {
@@ -228,12 +211,12 @@
 }
 }
 .hyper-ide-help-content h3 {
-    margin-top:5rem;
+    margin-top: 5rem;
 }
 .hyper-ide-youtube-outer-wrapper {
-    max-width:640px;
-    margin-left:auto;
-    margin-right:auto;
+    max-width: 640px;
+    margin-left: auto;
+    margin-right: auto;
 }
 .hyper-ide-youtube-wrapper {
     position: relative;
@@ -242,9 +225,9 @@
     height: 0;
     margin-top: 2rem;
     margin-bottom: 2rem;
-    box-shadow:0 0 8px rgba(0,0,0,.5);
-    border-radius:5px;
-    overflow:hidden;
+    box-shadow: 0 0 8px rgba(0,0,0,.5);
+    border-radius: 5px;
+    overflow: hidden;
 }
 .hyper-ide-youtube-embed {
     border: none;
@@ -261,25 +244,25 @@
     display: block;
     margin-left: auto;
     margin-right: auto;
-    box-shadow:3px 3px 5px rgba(0,0,0,.1);
-    border-radius:5px;
+    box-shadow: 3px 3px 5px rgba(0,0,0,.1);
+    border-radius: 5px;
 }
 .hyper-ide-evaluate-snippet-button {
-    padding-left:35px;
-    padding-right:35px;
-    float:right;
-    margin-top:-4.7rem;
-    margin-bottom:0;
-    display:block;
-    z-index:999;
-    position:relative;
-    margin-right:.5rem;
-    background:linear-gradient(#ffff00,#e0e000);
+    padding-left: 35px;
+    padding-right: 35px;
+    float: right;
+    margin-top: -4.7rem;
+    margin-bottom: 0;
+    display: block;
+    z-index: 999;
+    position: relative;
+    margin-right: .5rem;
+    background: linear-gradient(#ffff00,#e0e000);
 }
 .hyper-ide-evaluate-snippet-button:hover,
 .hyper-ide-evaluate-snippet-button:active,
 .hyper-ide-evaluate-snippet-button:focus {
-    background:linear-gradient(#f0f000,#d5d500);
+    background: linear-gradient(#f0f000,#d5d500);
 }
 .hyper-ide-evaluate-snippet-button:disabled:hover,
 .hyper-ide-evaluate-snippet-button:disabled:active,
