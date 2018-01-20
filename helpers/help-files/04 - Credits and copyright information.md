@@ -24,15 +24,29 @@
 * [CSS Beautify](https://github.com/senchalabs/cssbeautify) - Copyright © 2011 - 2013 Sencha Inc.
 
 All other Phosphorus Five modules, distributed through for instance the Bazar, are the sole copyright of 
-Thomas Hansen.
+Thomas Hansen - And unless explicitly granted through an individually named _"proprietary enabling license"_, 
+all Phosphorus Five components and modules are distributed under the terms of the GPL license version 3, 
+as published by the Free Software Foundation. See the [Free Software Foundation website](https://www.fsf.org/) for details.
 
 See the above respective Open Source projects for licensing information, but in general they are all _"permissive"_ in nature,
 except iTextSharp, which is distributed under an Affero GPL license. Which implies that if you use the PDF
 featured of Posphorus Five, you'll have to explicitly link to the parts of your source code in your application
-that is using iTextSharp. If this is a problem, then simply **avoid using the PDF features in Phosphorus Five**, and
-you should be safe.
+that is using iTextSharp, or purchase a proprietary enabling license from the publishers of iTextSharp. If 
+this is a problem, then simply **avoid using the PDF features in Phosphorus Five**, and you should be safe.
 
-Phosphorus Five and Hyper IDE was only made possible due to the great and brilliant work of many others, besides myself.
-I would like to thank everyone involved in the above projects, and encourage my users to support these projects, anyways you can.
-If you want to be explicitly mentioned by name here, please send an email to thomas@gaiasoul.com, with your full name, and
-a link to some website you want me to link to here.
+In addition, I would like to say a special thank you to the following people and organisations.
+
+* My three diamonds, you know who you are
+* Jeffrey Steadfast for giving me excellent support and help when ever I got stuck in MimeKit or MailKit
+* Good Web Design (at Twitter) for giving me good advice on colours for my skins
+* Svein Daniel Solvenus for providing feedback in the early stages of the project
+* Michael Desmond and James McCaffrey for believing in me, when nobody else did
+* Trolltech for inspiring my choice of license(s)
+* Microsoft and MSDN Magazine for giving me support, and creating a brilliant programming language and platform
+* The Mono project for making my work possible
+* All my friends for literally keeping me alive, during this project, when I could not even afford to buy food, or pay my own rent, and for believing in me, when nobody else could
+* And last but not least, my beautiful and amazing _"wife"_ and partner, Lisbeth Aardal, for supporting me in a time of my life, when the word utter despair, was a much too soft of a description, for describing my status
+
+> If I have seen far, it was because I stood on the shoulders of Giants!
+
+Thank you to all of my giants <3
