@@ -1,5 +1,6 @@
+
 .hyper-ide-container {
-    padding-bottom: 0;
+    margin-bottom: 0;
 }
 
 /* Making sure all CodeMirror editors get rounded borders */
@@ -26,14 +27,15 @@
 
 /* Main content, which is 100% of viewport height, minus toolbars */
 .hyper-ide-content {
-    height: calc(100vh - 3rem - var(--form-element-padding) * 2);
+    height: calc(100vh - 3rem - var(--form-element-padding) * 2 - 1rem);
+    margin-bottom: .5rem;
 }
 
 /* If user wants to use "page scroll" instead of editor/treeview scroll, then this class will apply */
 .hyper-ide-page-scroll .hyper-ide-content {
     height: auto;
     min-height: calc(100vh - 4rem);
-    margin-bottom: 5rem;
+    margin-bottom: .5rem;
 }
 
 /* TreeView wrapper for browsing files (column wrapper) */
@@ -118,8 +120,8 @@
 .hyper-ide-editor-tab-buttons > button > span.hyper-ide-close {
     position: absolute;
     font-size: .5rem;
-    top: calc(var(--border-radius) / 2 - .125rem);
-    right: calc(var(--border-radius) / 2 - .125rem);
+    top: calc(var(--border-radius) / 2);
+    right: calc(var(--border-radius) / 2);
     padding: .25rem;
     border-radius: .25rem;
     min-width: unset;

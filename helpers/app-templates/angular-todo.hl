@@ -184,7 +184,7 @@ save-file:/modules/{0}/index.html
   <head>
     <script src='https://ajax.googleapis.com/ajax/libs/angularjs/1.6.6/angular.min.js'></script>
     <script src='/modules/{0}/controller.js'></script>
-    <link rel='stylesheet' type='text/css' href='/modules/micro/media/main.css' />
+    <link rel='stylesheet' type='text/css' href='/modules/micro/media/micro.css' />
     <link rel='stylesheet' type='text/css' href='/modules/micro/media/skins/serious.css' />
     <link rel='stylesheet' type='text/css' href='/modules/{0}/styles.css' />
   </head>
