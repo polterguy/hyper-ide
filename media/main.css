@@ -1,8 +1,4 @@
 
-.hyper-ide-container {
-    margin-bottom: 0;
-}
-
 /* Making sure all CodeMirror editors get rounded borders */
 .CodeMirror {
     border-radius: var(--border-radius);
@@ -34,8 +30,9 @@
 /* If user wants to use "page scroll" instead of editor/treeview scroll, then this class will apply */
 .hyper-ide-page-scroll .hyper-ide-content {
     height: auto;
-    min-height: calc(100vh - 4rem);
+    min-height: calc(100vh - 2rem);
     margin-bottom: .5rem;
+    overflow: auto;
 }
 
 /* TreeView wrapper for browsing files (column wrapper) */
@@ -64,7 +61,13 @@
 /* Wrapper column around editors (and splash screen) */
 .hyper-ide-editor-col {
     min-height: calc(100% - var(--form-element-padding) * 2);
+    margin-bottom: 1rem;
+}
+
+@media screen and (min-width:800px) {
+.hyper-ide-editor-col {
     margin-bottom: 0;
+}
 }
 
 /* Hyper IDE splash screen, which you see when you initially start Hyper IDE */

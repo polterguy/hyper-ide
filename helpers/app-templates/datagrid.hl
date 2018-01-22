@@ -147,13 +147,7 @@ save-file:/modules/{0}/launch.hl
 /*
  * Includes CSS for our module.
  */
-p5.web.include-css-file
-  @MICRO/media/micro.css
-  @MICRO/media/fonts.css
-  @MICRO/media/skins/serious.css
-
-
-
+micro.css.include
 
 
 /*
@@ -162,18 +156,12 @@ p5.web.include-css-file
 .columns:*
 
 
-
-
-
 /*
  * Setting page title.
  *
  * Modify the value of this invocation to change your app's title.
  */
 p5.web.page.set-title:{0}.{1} items
-
-
-
 
 
 /*
@@ -185,9 +173,6 @@ p5.mysql.connect:[{0}]
   for-each:x:/@p5.mysql.select/*/*?name
     add:x:/../*/create-widget/**/micro.widgets.grid/*/columns
       src:x:/@_dp?value
-
-
-
 
 
 /*
@@ -267,6 +252,7 @@ create-widget
                          */
                         p5.web.get-root-location
                         p5.web.set-location:x:/-?value
+
         div
           class:col-100
           widgets

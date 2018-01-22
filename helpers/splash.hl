@@ -134,6 +134,8 @@ since Phosphorus Five is licensed as GPLv3."
     h1
       innerValue:Hyper IDE <small>{In the beginning there was Hyperlambda}</small>
     p
+      innerValue:Dedicated to all of my friends who helped me when everything seemed dark.
+    p
       widgets
         span
           innerValue:@"An ultra slick, super responsive, and highly modularised web based Integrated Development Environment, supporting 100+ programming languages out of the box.
