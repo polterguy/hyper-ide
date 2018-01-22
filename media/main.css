@@ -1,4 +1,3 @@
-
 /* Making sure all CodeMirror editors get rounded borders */
 .CodeMirror {
     border-radius: var(--border-radius);
@@ -30,7 +29,7 @@
 /* If user wants to use "page scroll" instead of editor/treeview scroll, then this class will apply */
 .hyper-ide-page-scroll .hyper-ide-content {
     height: auto;
-    min-height: calc(100vh - 2rem);
+    min-height: calc(100vh - 3rem - var(--form-element-padding) * 2 - 1rem);
     margin-bottom: .5rem;
     overflow: auto;
 }
