@@ -1191,7 +1191,7 @@ create-widget:hyper-ide-main-container
          * Wrapper for our file browser, or our "solution explorer" if you wish.
          */
         div:hyper-ide-file-browser-wrapper
-          class:col-30 air-top hyper-ide-solution-explorer-col
+          class:col-30 hyper-ide-solution-explorer-col
           widgets
             container
               class:air-inner shaded rounded hyper-ide-solution-explorer
@@ -1373,7 +1373,7 @@ create-widget:hyper-ide-main-container
          * In addition to our "splash screen".
          */
         container:hyper-ide-file-editor
-          class:col-70 air-top hyper-ide-editor-col
+          class:col-70 hyper-ide-editor-col
           events
 
 

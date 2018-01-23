@@ -1,4 +1,9 @@
-/* Making sure all CodeMirror editors get rounded borders */
+html {
+    overflow: auto;
+}
+.hyper-ide-container {
+    padding-top: 0;
+}
 .CodeMirror {
     border-radius: var(--border-radius);
     border: solid 1px var(--border-color);
@@ -8,6 +13,7 @@
 .hyper-ide-toolbar {
     margin-left: .5rem;
     margin-bottom: 0;
+    margin-top: .5rem;
 }
 
 /* Bookmark textbox */
@@ -22,14 +28,19 @@
 
 /* Main content, which is 100% of viewport height, minus toolbars */
 .hyper-ide-content {
-    height: calc(100vh - 3rem - var(--form-element-padding) * 2 - 1rem);
-    margin-bottom: .5rem;
+    height: auto;
+}
+@media screen and (min-width:800px) {
+.hyper-ide-content {
+    height: calc(100vh - 2rem - var(--form-element-padding) * 2 - .5rem);
+    margin-bottom: -.5rem;
+}
 }
 
 /* If user wants to use "page scroll" instead of editor/treeview scroll, then this class will apply */
 .hyper-ide-page-scroll .hyper-ide-content {
     height: auto;
-    min-height: calc(100vh - 3rem - var(--form-element-padding) * 2 - 1rem);
+    min-height: calc(100vh - 2rem - var(--form-element-padding) * 2 - .5rem);
     margin-bottom: .5rem;
     overflow: auto;
 }
@@ -38,6 +49,7 @@
 .hyper-ide-solution-explorer-col {
     min-height: calc(100% - var(--form-element-padding) * 2);
     margin-bottom: 0;
+    margin-top: .5rem;
 }
 
 /* TreeView wrapper for browsing files (inside of column) */
@@ -60,7 +72,7 @@
 /* Wrapper column around editors (and splash screen) */
 .hyper-ide-editor-col {
     min-height: calc(100% - var(--form-element-padding) * 2);
-    margin-bottom: 1rem;
+    margin-top: .5rem;
 }
 
 @media screen and (min-width:800px) {
