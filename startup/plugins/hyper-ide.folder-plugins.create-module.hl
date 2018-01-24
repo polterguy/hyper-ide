@@ -143,7 +143,6 @@ Then choose a template type for your app."
                           parent:hyper-ide-new-module-template-settings
                           widgets
 
-                hr
                 container:hyper-ide-new-module-template-settings
 
                 div

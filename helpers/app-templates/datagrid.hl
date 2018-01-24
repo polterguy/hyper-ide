@@ -355,7 +355,7 @@ save-file:/modules/{0}/desktop.hl
  */
 container
   element:a
-  class:desktop-app shaded rounded air-inner
+  class:desktop-app button shaded
   title:This module says Hello World!
   widgets
     span
