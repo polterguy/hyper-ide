@@ -51,59 +51,56 @@ create-event:hyper-ide.folder-plugins.execute
                     innerValue:x:/@.folder?value
 
               div
-                class:right air-top
+                class:strip fill air-top
                 widgets
-                  div
-                    class:strip fill
-                    widgets
+
+                  /*
+                   * Template snippets selector.
+                   */
+                  label
+                    innerValue:Template
+                  select
+                    oninit
 
                       /*
-                       * Template snippets selector.
+                       * Listing all files in "shell-snippets" folder, and creating
+                       * one option element for each.
                        */
-                      label
-                        innerValue:Template
-                      select
-                        oninit
+                      list-files:@IDE/helpers/shell-snippets/
+                        filter:.sh
+                      for-each:x:/@list-files/*?name
+                        split:x:/@_dp?value
+                          =:/
+                          =:.
+                        create-widget
+                          element:option
+                          parent:x:/../*/_event?value
+                          innerValue:x:/@split/0/-2?name
+                          value:x:/@_dp?value
 
-                          /*
-                           * Listing all files in "shell-snippets" folder, and creating
-                           * one option element for each.
-                           */
-                          list-files:@IDE/helpers/shell-snippets/
-                            filter:.sh
-                          for-each:x:/@list-files/*?name
-                            split:x:/@_dp?value
-                              =:/
-                              =:.
-                            create-widget
-                              element:option
-                              parent:x:/../*/_event?value
-                              innerValue:x:/@split/0/-2?name
-                              value:x:/@_dp?value
+                    onchange
 
-                        onchange
+                      /*
+                       * Loading file, and setting value of CodeMirror editor.
+                       */
+                      get-widget-property:x:/../*/_event?value
+                        value
+                      load-file:x:/@get-widget-property/*/*?value
+                      replace:x:/@load-file/*?value
+                        src:`
+                        dest:\`
+                      replace:x:/@replace?value
+                        src:$
+                        dest:\$
+                      p5.web.widgets.find:hyper-ide-terminal-commands
+                        element:textarea
+                      p5.web.send-javascript:@"p5['{0}'].getDoc().setValue(`{1}`);"
+                        :x:/@p5.web.widgets.find/*/*?value
+                        :x:/@replace?value
 
-                          /*
-                           * Loading file, and setting value of CodeMirror editor.
-                           */
-                          get-widget-property:x:/../*/_event?value
-                            value
-                          load-file:x:/@get-widget-property/*/*?value
-                          replace:x:/@load-file/*?value
-                            src:`
-                            dest:\`
-                          replace:x:/@replace?value
-                            src:$
-                            dest:\$
-                          p5.web.widgets.find:hyper-ide-terminal-commands
-                            element:textarea
-                          p5.web.send-javascript:@"p5['{0}'].getDoc().setValue(`{1}`);"
-                            :x:/@p5.web.widgets.find/*/*?value
-                            :x:/@replace?value
-
-                        widgets
-                          option
-                            innerValue:Select template snippet ...
+                    widgets
+                      option
+                        innerValue:Select template snippet ...
 
               micro.widgets.codemirror:hyper-ide-terminal-commands
                 .data-field:code
