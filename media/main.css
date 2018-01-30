@@ -1,5 +1,4 @@
 html {
-    overflow: auto;
 }
 .hyper-ide-container {
     padding-top: 0;
@@ -70,6 +69,7 @@ html {
     padding-right: 1rem;
     min-width: fit-content;
     padding-bottom: 2rem;
+    margin-bottom: 0;
 }
 
 /* Wrapper column around editors (and splash screen) */
