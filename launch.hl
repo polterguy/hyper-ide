@@ -42,7 +42,7 @@ if:x:/../*/url?value
 .defaults
   skin:serious
   page-scroll:bool:false
-select-data:x:/*/*/micro.codemirror.settings
+p5.auth.my-settings.get
 
 
 
@@ -100,7 +100,7 @@ p5.web.page.add-meta-tag:meta
  * Checking if we should use page scrolling or not.
  */
 _page-scroll
-if:x:(/@select-data/*/*/page-scroll|/../*/.defaults/*/page-scroll)/$?value
+if:x:(/@p5.auth.my-settings.get/*/codemirror/*/page-scroll|/../*/.defaults/*/page-scroll)/$?value
   set:x:/@_page-scroll?value
     src:" hyper-ide-page-scroll"
 
@@ -1110,8 +1110,8 @@ create-widget:hyper-ide-main-container
                            */
                           .defaults
                             page-scroll:bool:false
-                          select-data:x:/*/*/micro.codemirror.settings
-                          if:x:(/@select-data/*/*/page-scroll|/../*/.defaults/*/page-scroll)/$?value
+                          p5.auth.my-settings.get
+                          if:x:(/@p5.auth.my-settings.get/*/codemirror/*/page-scroll|/../*/.defaults/*/page-scroll)/$?value
                             =:bool:true
                             set-widget-property:x:/../*/_event?value
                               checked

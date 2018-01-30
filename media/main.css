@@ -38,6 +38,9 @@ html {
 }
 
 /* If user wants to use "page scroll" instead of editor/treeview scroll, then this class will apply */
+.hyper-ide-page-scroll {
+    padding-bottom: 0;
+}
 .hyper-ide-page-scroll .hyper-ide-content {
     height: auto;
     min-height: calc(100vh - 2rem - var(--form-element-padding) * 2 - .5rem);

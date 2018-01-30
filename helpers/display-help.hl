@@ -307,7 +307,7 @@ create-widget:hyper-ide-help-wrapper
                           set:x:/@_dp/#/./.
                           .defaults
                             theme:phosphorus
-                          select-data:x:/*/*/micro.codemirror.settings
+                          p5.auth.my-settings.get
                           p5.web.include-javascript-file
                             @MICRO/media/codemirror-all.min.js
 
@@ -325,7 +325,7 @@ create-widget:hyper-ide-help-wrapper
                               :x:/@.language?value
                           p5.web.include-css-file:@MICRO/media/codemirror-all.min.css
                           p5.web.include-css-file:@MICRO/media/codemirror/theme/{0}.css
-                            :x:(/@select-data/*/*/theme|/@.defaults/*/theme)/$?value
+                            :x:(/@p5.auth.my-settings.get/*/codemirror/*/theme|/@.defaults/*/theme)/$?value
                           p5.web.send-javascript:@"p5['x_{0}'] = CodeMirror.fromTextArea(p5.$('x_{0}').el, {{
   mode:'{1}',
   theme:'{2}',
@@ -340,7 +340,7 @@ p5['x_{0}'].setSize('100%', 'auto');
 "
                             :x:/@replace?value
                             :x:/@.language?value
-                            :x:(/@select-data/*/*/theme|/@.defaults/*/theme)/$?value
+                            :x:(/@p5.auth.my-settings.get/*/codemirror/*/theme|/@.defaults/*/theme)/$?value
                           micro.widgets.codemirror._include-auto-complete
 
                         /*
