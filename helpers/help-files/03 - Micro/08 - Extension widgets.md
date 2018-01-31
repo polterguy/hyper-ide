@@ -8,7 +8,10 @@ for Hyperlambda and Phosphorus Five. Below is a list of some of the more importa
 * __[micro.widgets.modal]__ - A modal window type of widget
 * __[micro.widgets.tab]__ - A tab control type of widget
 
-These widgets can be used in place of any one of the core widgets from Phosphorus Five.
+These widgets can be used in place of any one of the core widgets from Phosphorus Five. If you have Hypereval installed,
+you can try out the [kitchen sink example](/hypereval/widgets-kitchen-sink) to see these widgets in practice.
+
+* [Try the kitchen sink example](/hypereval/widgets-kitchen-sink) (requires [Hypereval from the Bazar](/bazar?app=hypereval) to work)
 
 ### TreeView
 

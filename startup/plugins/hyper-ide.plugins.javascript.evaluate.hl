@@ -1,0 +1,19 @@
+/*
+ * Create our execute JavaScript file plugin button for editor.
+ */
+create-event:hyper-ide.plugins.javascript.evaluate
+  return
+    button
+      innerValue:@"<span class=""icon-play3""></span>"
+      title:Execute JavaScript file (useful for populating the AutoComplete object)
+      onclick
+
+        /*
+         * Retrieves filename for currently active editor.
+         */
+        hyper-ide.editors.get-active
+
+        /*
+         * Including it on page.
+         */
+        p5.web.include-javascript-file:x:/@hyper-ide.editors.get-active?value
