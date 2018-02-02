@@ -9,9 +9,7 @@ take control over the returned response, through events such as **[p5.web.echo]*
 To a large extent, it wraps p5.ajax, allowing you to use Active Events to create, delete and manipulate
 Ajax widgets.
 
-### Notice
-
-p5.web is built around ASP.NET WebForms, but it is also the _only part of P5_ which is referencing `System.Web`.
+**Notice** - p5.web is built around ASP.NET WebForms, but it is also the _only part of P5_ which is referencing `System.Web`.
 This implies that you can very much use Phosphorus Five in for instance a Microsoft MVC application, and probably
 also in .Net Core if you want to - Or for that matter a desktop application, or a mobile app with Xamarin Forms.
 If you choose to do this, then p5.web is the only project you cannot use. This makes Phosphorus Five also highly
