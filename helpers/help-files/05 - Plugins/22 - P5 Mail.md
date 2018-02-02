@@ -1,5 +1,5 @@
 
-## p5,mail - SMTP and PO3 support in Phosphorus Five
+## p5.mail - SMTP and PO3 support in Phosphorus Five
 
 This project contains the Active Events necessary to send and retrieve emails. It is dependent upon the project
 called p5.mime, to build and parse your MIME messages. Or rather, to be more correct, it depends upon the
@@ -7,8 +7,8 @@ Active Events existing in p5.mime, since there are no dependencies in Active Eve
 
 It contains two Active Events.
 
-* [p5.smtp.send]
-* [p5.pop3.get]
+* __[p5.smtp.send]__
+* __[p5.pop3.get]__
 
 **Notice** - There is no IMAP support in P5 at the moment.
 
