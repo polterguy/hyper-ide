@@ -276,15 +276,4 @@ html {
     z-index: 999;
     position: relative;
     margin-right: .5rem;
-    background: linear-gradient(#ffff00,#e0e000);
-}
-.hyper-ide-evaluate-snippet-button:hover,
-.hyper-ide-evaluate-snippet-button:active,
-.hyper-ide-evaluate-snippet-button:focus {
-    background: linear-gradient(#f0f000,#d5d500);
-}
-.hyper-ide-evaluate-snippet-button:disabled:hover,
-.hyper-ide-evaluate-snippet-button:disabled:active,
-.hyper-ide-evaluate-snippet-button:disabled:focus {
-    background: var(--wid-dark-col);
 }

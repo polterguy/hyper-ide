@@ -277,7 +277,7 @@ create-widget:hyper-ide-help-wrapper
                                 button
                                   #text:@"<span class=""icon-flash""></span>"
                                   @class:hyper-ide-evaluate-snippet-button
-                                  @onclick:@"p5.$('x_eval_{0}').raise('.onevaluate');this.disabled = true;return false;"
+                                  @onclick:@"p5.$('x_eval_{0}').raise('.onevaluate');return false;"
                                     :x:/@replace?value
 
                             /*
@@ -293,7 +293,10 @@ create-widget:hyper-ide-help-wrapper
                               type:hidden
                               .onevaluate
                                 .code:x:/@_dp/#?value
-                                eval:x:/-?value
+                                try
+                                  eval:x:/@.code?value
+                                catch
+                                  micro.windows.info:x:/@message?value
 
                           trim-right:x:/@_dp/#?value
                           eval-x:x:/+/*/*/*
@@ -309,7 +312,9 @@ create-widget:hyper-ide-help-wrapper
                             theme:phosphorus
                           p5.auth.my-settings.get
                           p5.web.include-javascript-file
-                            @MICRO/media/codemirror-all.min.js
+                            @MICRO/media/codemirror/lib/codemirror.js
+                            @MICRO/media/codemirror/addon/selection/mark-selection.js
+                            @MICRO/media/codemirror/addon/selection/active-line.js
 
                           /*
                            * Notice, special handling of "htmlmixed" mode, to also include XML, CSS and JavaScript.
@@ -323,7 +328,11 @@ create-widget:hyper-ide-help-wrapper
                           else
                             p5.web.include-javascript-file:@MICRO/media/codemirror/mode/{0}/{0}.js
                               :x:/@.language?value
-                          p5.web.include-css-file:@MICRO/media/codemirror-all.min.css
+                          p5.web.include-css-file
+                            @MICRO/media/codemirror/lib/codemirror.css
+                            @MICRO/media/codemirror/addon/dialog/dialog.css
+                            @MICRO/media/codemirror/addon/display/fullscreen.css
+                            @MICRO/media/codemirror/addon/hint/show-hint.css
                           p5.web.include-css-file:@MICRO/media/codemirror/theme/{0}.css
                             :x:(/@p5.auth.my-settings.get/*/codemirror/*/theme|/@.defaults/*/theme)/$?value
                           p5.web.send-javascript:@"p5['x_{0}'] = CodeMirror.fromTextArea(p5.$('x_{0}').el, {{
@@ -332,7 +341,7 @@ create-widget:hyper-ide-help-wrapper
   lineNumbers:true,
   readOnly:true,
   styleActiveLine:true,
-  path:'hyperlambda/media/codemirror/',
+  path:'/micro/media/codemirror/',
   autofocus:false,
   viewportMargin: Infinity
 }});

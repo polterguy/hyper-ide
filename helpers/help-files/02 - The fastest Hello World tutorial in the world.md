@@ -1,7 +1,7 @@
 ## The fastest Hello World tutorial in the world
 
 The easiest way to get started with Hyper IDE, is to select the `/modules/` folder, for then to click
-the `+` button in your toolbar, assuming you have enabled the plugin that allows you to create new modules.
+the _"star"_ button in your toolbar, assuming you have enabled the plugin that allows you to create new modules.
 Then name your app _"hello-world"_, and select the `hello-world` type. At which point your screen should resemble
 the following.
 
