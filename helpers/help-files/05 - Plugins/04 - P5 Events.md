@@ -1,4 +1,3 @@
-
 ## Dynamically creating Active Events in P5
 
 In Phosphorus Five, you can create static Active Events in C#, by adding the `ActiveEvent` attribute to your
@@ -100,7 +99,7 @@ is able to remember its invocation count, across multiple invocations. This is b
 
 Try to run this code.
 
-```
+```hyperlambda
 foo
 foo
 foo
@@ -112,7 +111,7 @@ the value of our **[\_static]** node above, is actually a shared resource. Synch
 to the **[\_static]** node above, can easily be done by wrapping your access to it in a **[lock]**
 lambda block, which is documented in the p5.threading project. An example is given below.
 
-```
+```hyperlambda
 create-event:foo
   _static:node:"count:int:0"
   lock:lock.foo

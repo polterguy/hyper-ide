@@ -1,4 +1,3 @@
-
 ## Creating your own plugin in C#
 
 To create a plugin for Phosphorus Five, allowing you to invoke C#/CLR code from Hyperlambda, is very easy - Simply create an Active Event,
@@ -17,7 +16,7 @@ to load up your plugin.
 
     <!-- ... rest of file ... -->
 
-    <add assembly="your-plugin" />
+    <add assembly="your-assembly" />
 
     <!-- ... rest of the file goes here ... -->
 ```
@@ -25,7 +24,7 @@ to load up your plugin.
 The above will allow Phosphorus Five to automatically load up your plugin, as your web server starts. To create a plugin, you'll need to reference
 the _"p5.core"_ project, and create a method which is marked as an `ActiveEvent`. Normally, you'd declare your method as static, at which case your
 Active Event will automatically be available from Hyperlambda as you start your web server. You can see an example of how to create an Active Event
-in C# that is named `foo.bar` below.
+in C# that is named **[foo.bar]** below.
 
 ```clike
 using p5.core;
@@ -53,7 +52,7 @@ You can invoke your Active Event from Hyperlambda, using something like the foll
 foo.bar
 ```
 
-After you evaluate tha above Hyperlambda, assuming you created the above C# Active Event, your lambda structure will resemble the following.
+After you evaluate the above Hyperlambda, assuming you created the above C# Active Event, your lambda structure will resemble the following.
 
 ```hyperlambda
 foo.bar:int:42
@@ -149,7 +148,9 @@ fancy.add2
 ```
 
 The above Hyperlambda, assuming you created the C# event, will still return `4` as the **[result]** after invocation. Notice, you can
-still pass in static values to the above **[fancy.add2]** event.
+still pass in static values to the above **[fancy.add2]** event. The `GetExChildValue` method will even automatically convert its input
+to an integer type, if you pass in a string for instance. This makes it much more _"convenient"_ to work with types in P5, since for the
+most parts, they're irrelevant from Hyperlambda.
 
 The p5.exp project also contains other helper methods, to handle expressions, and do other things from your Active Events. If
 you for instance want to support expressions leading to a node collection, you might want to have a look at the `XUtil.Iterate` method.

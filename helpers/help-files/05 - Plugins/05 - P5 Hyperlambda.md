@@ -1,4 +1,3 @@
-
 ## P5 Hyperlambda
 
 
@@ -40,7 +39,7 @@ inwards as many levels, as you wish. Below is a more complex tree structure.
 ```hyperlambda
 foo
   child1-of-foo:Its value!
-     child1-of-foos-child:JO DUDE!
+    child1-of-foos-child:JO DUDE!
   child2-of-foo:Another value
 ```
 

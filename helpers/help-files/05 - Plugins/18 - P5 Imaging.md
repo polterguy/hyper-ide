@@ -1,4 +1,3 @@
-
 ## p5.imaging - Image manipulation
 
 This folder contains Active Events that allows you to manipulate images in Phosphorus Five. Currently there are
@@ -201,6 +200,23 @@ To the left is the original, and to the right is the same image, after being col
 
 Some useful **[colorize]** matrixes can be found below.
 
+#### Sepia matrix
+
+```hyperlambda
+p5.imaging.transform:~/donald.png
+  destination:~/donald-sepia.png
+  transformations
+    colorize
+      matrix
+        _:.393,.394,.272,0,   0
+        _:.769,.686,.534,0,   0
+        _:.189,.168,.131,0,   0
+        _:0,   0,   0,   1,   0
+        _:0,   0,   0,   0,   1
+```
+
+![alt tag](https://phosphorusfive.files.wordpress.com/2018/02/donald-sepia.png)
+
 #### Doubling the intensity of red
 
 ```hyperlambda
@@ -251,23 +267,6 @@ p5.imaging.transform:~/donald.png
 ```
 
 ![alt tag](https://phosphorusfive.files.wordpress.com/2018/02/donald-semi-transparent.png)
-
-#### Sepia matrix
-
-```hyperlambda
-p5.imaging.transform:~/donald.png
-  destination:~/donald-sepia.png
-  transformations
-    colorize
-      matrix
-        _:.393,.394,.272,0,   0
-        _:.769,.686,.534,0,   0
-        _:.189,.168,.131,0,   0
-        _:0,   0,   0,   1,   0
-        _:0,   0,   0,   0,   1
-```
-
-![alt tag](https://phosphorusfive.files.wordpress.com/2018/02/donald-sepia.png)
 
 ### Converting an image
 
