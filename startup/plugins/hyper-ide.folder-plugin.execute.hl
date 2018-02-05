@@ -32,7 +32,7 @@ create-event:hyper-ide.folder-plugins.execute
         create-widgets
           micro.widgets.modal:hyper-ide-execute-modal
             widgets
-              micro.widgets.obscurer:hyper-ide-eval-shell-obscurer
+              micro.widgets.cover:hyper-ide-eval-shell-obscurer
                 style:"display:none;"
                 message:Executing your script ...
               h3

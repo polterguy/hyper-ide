@@ -1,3 +1,4 @@
+
 ## Extension widgets
 
 Although Micro is a general purpose CSS framework, it also contains several useful extension widgets
@@ -7,6 +8,7 @@ for Hyperlambda and Phosphorus Five. Below is a list of some of the more importa
 * __[micro.widgets.grid]__ - A _"datagrid"_ type of widget
 * __[micro.widgets.modal]__ - A modal window type of widget
 * __[micro.widgets.tab]__ - A tab control type of widget
+* __[micro.widgets.cover]__ - Covers the entire browser surface, preventing interaction with all other widgets
 
 These widgets can be used in place of any one of the core widgets from Phosphorus Five. If you have Hypereval installed,
 you can try out the [kitchen sink example](/hypereval/widgets-kitchen-sink) to see these widgets in practice.
@@ -273,6 +275,56 @@ The above will result in something resembling the following.
 https://phosphorusfive.files.wordpress.com/2018/01/tab-micro-screenshot.png
 
 Notice, you can combine these extension widgets any ways you see fit, to have for instance
+a treeview, inside of a tab view, which once clicked displays a modal window, etc. Feel free
+to go berserks here ...
+
+There are also other types of extension widgets in Micro. However, unless they're documented here,
+in this documentation file, they should not be considered stable and mature enough at the moment
+for you to use them in your own projects. Be warned!
+
+
+### Cover widget
+
+This widget allows you to completely hide all widgets on your page, behind a semi transparent layer,
+which prevent interaction with all other widgets on your page. It is useful if you have lenghty operations,
+which requires the user to wait until the operation is finisihed.
+
+```hyperlambda
+micro.css.include
+  skin:graphite
+create-widget
+  class:container
+  widgets
+    div
+      class:row
+      widgets
+        div
+          class:col
+          widgets
+            button
+              innerValue:Cover
+              onclick
+
+                /*
+                 * Creating a cover widget, and a timer.
+                 * When timer's lambda is evaluated, we delete the cover widget.
+                 */
+                create-widgets
+                  micro.widgets.cover:cover-widget
+                    message:Please wait for 2 seconds ...
+                micro.lambda.create-timeout
+                  milliseconds:2000
+                  onfinish
+                    delete-widget:cover-widget
+```
+
+The above will result in something resembling the following when the button is clicked.
+
+https://phosphorusfive.files.wordpress.com/2018/02/cover-widget-screenshot.png
+
+### About these widgets
+
+You can combine these extension widgets any ways you see fit, to have for instance
 a treeview, inside of a tab view, which once clicked displays a modal window, etc. Feel free
 to go berserks here ...
 
