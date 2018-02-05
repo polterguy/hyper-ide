@@ -9,6 +9,8 @@ for Hyperlambda and Phosphorus Five. Below is a list of some of the more importa
 * __[micro.widgets.tab]__ - A tab control type of widget
 * __[micro.widgets.cover]__ - Covers the entire browser surface, preventing interaction with all other widgets
 * __[micro.widgets.wizard-form]__ - A shorthand widget to create form elements
+* __[micro.widgets.stars]__ - A star rater widget
+* __[micro.widgets.codemirror]__ - A CodeMirror wrapper widget
 
 These widgets can be used in place of any one of the core widgets from Phosphorus Five. If you have Hypereval installed,
 you can try out the [kitchen sink example](/hypereval/widgets-kitchen-sink) to see these widgets in practice.
@@ -378,6 +380,91 @@ create-widget
 The above will result in something resembling the following.
 
 https://phosphorusfive.files.wordpress.com/2018/02/wizard-form-widget-screenshot.png
+
+This widget is particularly useful when combined with **[micro.form.serialize]**, since it allows for doing
+a lot, with very little code.
+
+### Star widget
+
+This widget creates a star rating widget, allowing the user to rate some object, with a one through n value.
+
+
+```hyperlambda
+micro.css.include
+create-widget
+  class:container
+  widgets
+    div
+      class:row
+      widgets
+        div
+          class:col
+          widgets
+            micro.widgets.stars:stars
+              value:2
+              max:7
+```
+
+The above will result in something resembling the following.
+
+https://phosphorusfive.files.wordpress.com/2018/02/stars-widget-screenshot.png
+
+As the user is clicking the above stars, each star will be filled, allowing the user to provide a _"star value"_
+to some object. Useful for allowing the user to provide feedback about some object. In addition to **[value]** and
+**[max]**, you can also provide a **[read-only]** argument, which if provided, will not allow the user to change
+the widget's value. All other arguments are passed in _"as is"_. The star widget also correctly handles the
+**[.data-field]** argument automatically, allowing you to easily serialize its value.
+
+### CodeMirror widget
+
+This widget creates a CodeMirror editor for you, that allows you to edit code on your page, providing syntax
+highlighting for more than 100 programming languages, in addition to autocomplete, and many more features.
+
+
+```hyperlambda
+micro.css.include
+create-widget
+  class:container
+  widgets
+    div
+      class:row
+      widgets
+        div
+          class:col
+          widgets
+            micro.widgets.codemirror
+              mode:javascript
+              value:@"
+function foo() {
+  alert('Holla senior!');
+}
+foo();"
+```
+
+The above will result in something resembling the following.
+
+https://phosphorusfive.files.wordpress.com/2018/02/codemirror-widget-screenshot.png
+
+The most important arguments to the CodeMirror widget is as follows.
+
+* __[auto-focus]__ - If true, the editor will get initial focus.
+* __[height]__ - Height in pixels, percent or any other unit for editor, e.g. _"300px"_.
+* __[mode]__ - Language mode for editor, e.g. _"htmlmixed"_, _"hyperlambda"_ or _"javascript"_, etc. Defaults to _"hyperlambda"_.
+* __[keys]__ - CodeMirror keyboard-shortcut to JavaScript callback list. E.g. `Ctrl-T:function(){alert('x');}`
+* __[value]__ - Initial value of editor.
+* __[.data-field]__ - Data field name, used when for instance serialising editor's content.
+* __[theme]__ - Optional theme override. If not given, will use the user's settings, defaulting to _"phosphorus"_.
+* __[font-size]__ - Optional font size for content. If not given, will use user's settings, defaulting to 9.25pt if no settings exists.
+* __[tab-size]__ - Optional tab size. Defaults to 2.
+
+The CodeMirror widget has 57 different themes you can select from, which you can find in the _"/micro/media/codemirror/theme/" folder_.
+If no theme is explicitly supplied, it will use the theme settings for teh currently logged in user, and if no
+such setting exists, it will default to the _"phosphorus"_ theme. The language modes are the modes supported
+by CodeMirror can be found in the _"/micro/media/codemirror/mode/"_ folder.
+
+By default, the CodeMirror widget creates keyboard shortcuts for Tab (indent code), Shift+Tab (de-indent code),
+Ctrl+Space (display autocomplete widget), Alt+F (find persistent), CMD/CTRL + F (find), CMD/CTRL + G (go to line number),
+Alt+M (maximize editor), Shift+Ctrl+F (replace), Ctrl+G (go to next occurrency during find.
 
 ### About these widgets
 
