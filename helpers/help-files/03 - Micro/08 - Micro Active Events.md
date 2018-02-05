@@ -1,4 +1,3 @@
-
 ## Micro Active Events
 
 Micro also contains a whole range of additional Active Events, solving particular tasks in your
@@ -79,7 +78,6 @@ You can test it with the following code.
 
 ```hyperlambda
 micro.css.include
-  skin:graphite
 create-widget
   class:container
   widgets
@@ -104,7 +102,6 @@ is invoked. Below is an example of usage.
 
 ```hyperlambda
 micro.css.include
-  skin:graphite
 create-widget
   class:container
   widgets
@@ -161,7 +158,6 @@ Below is an example of serializing a select element to illustrate this concept.
 
 ```hyperlambda
 micro.css.include
-  skin:graphite
 create-widget
   class:container
   widgets
@@ -201,14 +197,13 @@ create-widget
 
 The **[micro.google.translate]** Active Event is fairly self describing. It optionally takes two arguments.
 
-* __[dest-lang]__
-* __[src_lang]__
+* __[dest-lang]__ - Mandatory language you want to translate text into
+* __[src-lang]__ - If ommitted, will be automatically determined by Google Translate
 
 Consuming it might resemble the following.
 
 ```hyperlambda
 micro.css.include
-  skin:graphite
 micro.google.translate:Hello world
   dest-lang:NB-no
 micro.windows.info:x:/-?value
@@ -233,7 +228,6 @@ To have the computer speak some sentence for instance, you can use the following
 
 ```hyperlambda
 micro.css.include
-  skin:graphite
 create-widget
   class:container
   widgets
@@ -252,6 +246,67 @@ create-widget
 You can optionally pass in a **[voice]** argument, which you can give a value of either a named voice, which
 you can fetch by querying the voice API on the client - Or to a language code, such as for instance _"NB-no"_.
 Try adding `voice:Alex` for instance to the above code.
+
+Both the listen and speak events can optionally take an **[onfinish]** lambda callback, which if specified, will
+be evaluated after the operation is finished. If you pass in an onfinish lambda to the **[micro.speech.listen]**
+event, then a **[text]** argument will be passed into your lambda callback, with the text that the speech
+recognition engine was capable of recognizing. Below is an example.
+
+```hyperlambda
+micro.css.include
+create-widget
+  class:container
+  events
+
+    /*
+     * Waits for speech input, reads it out loud, and restarts the input loop.
+     */
+    examples.capture-speech
+
+      /*
+       * Listens for input.
+       */
+      micro.speech.listen
+        onfinish
+
+          /*
+           * Speaks the input with the "Karen" voice.
+           * Notice, make sure the Karen voice exists in your client, 
+           * before you try to run this example.
+           */
+          micro.speech.speak:x:/../*/text?value
+            voice:Karen
+
+          /*
+           * "Recursively" invokes self.
+           */
+          examples.capture-speech
+
+  widgets
+    div
+      class:row
+      widgets
+        div
+          class:col
+          widgets
+            button
+              innerValue:Talk to me
+              onclick
+
+                /*
+                 * Starts "input loop".
+                 */
+                examples.capture-speech
+
+            button
+              innerValue:Stop
+              onclick
+
+                /*
+                 * Stops speech engine (both speak and listen).
+                 */
+                micro.speech.stop
+```
 
 
 ### Information "bubble" windows
