@@ -683,7 +683,7 @@ create-widgets
                             /*
                              * Serializing form to figure out new name for file.
                              */
-                            micro.widgets.wizard-form.value:hyper-ide-rename-file-form
+                            micro.form.serialize:hyper-ide-rename-file-form
 
                             /*
                              * Renaming file.
@@ -691,7 +691,7 @@ create-widgets
                             move-file:x:/@.filename?value
                               dest:{0}{1}
                                 :x:/@.folder?value
-                                :x:/@micro.widgets.wizard-form.value/*/name?value
+                                :x:/@micro.form.serialize/*/name?value
 
                             /*
                              * Refreshing tree, since folder's content now has changed.
@@ -707,7 +707,7 @@ create-widgets
                              */
                             hyper-ide.set-active-filename:{0}{1}
                               :x:/@.folder?value
-                              :x:/@micro.widgets.wizard-form.value/*/name?value
+                              :x:/@micro.form.serialize/*/name?value
 
                             /*
                              * Selecting (updated) file in tree view now.
@@ -715,7 +715,7 @@ create-widgets
                             add:x:/../*/micro.widgets.tree.select-items/*/items
                               src:{0}{1}
                                 :x:/@.folder?value
-                                :x:/@micro.widgets.wizard-form.value/*/name?value
+                                :x:/@micro.form.serialize/*/name?value
                             micro.widgets.tree.select-items:hyper-ide-folder-tree-browser
                               items
 

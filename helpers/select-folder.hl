@@ -187,8 +187,8 @@ create-widget:hyper-ide-active-file-object-toolbar
                            *
                            * Notice, we only accept a-z, 0-9, ., _ and - characters.
                            */
-                          micro.widgets.wizard-form.value:hyper-ide-create-new-file-form
-                          match:x:/@micro.widgets.wizard-form.value/*/name?value
+                          micro.form.serialize:hyper-ide-create-new-file-form
+                          match:x:/@micro.form.serialize/*/name?value
                             src:regex:/^[-_a-z0-9 ]+\.{1}[-_a-z0-9\.]+$/i
                           if:x:/@match/*?count
                             =:int:0
@@ -212,7 +212,7 @@ create-widget:hyper-ide-active-file-object-toolbar
                             .folder
                           save-file:{0}{1}
                             :x:/@get-widget-property/*/*?value
-                            :x:/@micro.widgets.wizard-form.value/*/name?value
+                            :x:/@micro.form.serialize/*/name?value
                             src:
 
                           /*
@@ -233,7 +233,7 @@ create-widget:hyper-ide-active-file-object-toolbar
                           add:x:/../*/micro.widgets.tree.select-items/*/items
                             src:{0}{1}
                               :x:/@get-widget-property/*/*?value
-                              :x:/@micro.widgets.wizard-form.value/*/name?value
+                              :x:/@micro.form.serialize/*/name?value
                           micro.widgets.tree.select-items:hyper-ide-folder-tree-browser
                             items
 
@@ -297,8 +297,8 @@ create-widget:hyper-ide-active-file-object-toolbar
                            *
                            * We don't accept capital letters to avoid windows/xNix confusion in paths.
                            */
-                          micro.widgets.wizard-form.value:hyper-ide-create-new-folder-form
-                          match:x:/@micro.widgets.wizard-form.value/*/name?value
+                          micro.form.serialize:hyper-ide-create-new-folder-form
+                          match:x:/@micro.form.serialize/*/name?value
                             src:regex:/^[-_a-z0-9\ ]+$/i
                           if:x:/@match/*?count
                             =:int:0
@@ -322,7 +322,7 @@ create-widget:hyper-ide-active-file-object-toolbar
                             .folder
                           create-folder:{0}{1}/
                             :x:/@get-widget-property/*/*?value
-                            :x:/@micro.widgets.wizard-form.value/*/name?value
+                            :x:/@micro.form.serialize/*/name?value
 
                           /*
                            * Making sure we refresh our tree view.
@@ -339,7 +339,7 @@ create-widget:hyper-ide-active-file-object-toolbar
                           add:x:/../*/micro.widgets.tree.select-items/*/items
                             src:{0}{1}/
                               :x:/@get-widget-property/*/*?value
-                              :x:/@micro.widgets.wizard-form.value/*/name?value
+                              :x:/@micro.form.serialize/*/name?value
                           micro.widgets.tree.select-items:hyper-ide-folder-tree-browser
                             items
 
@@ -413,7 +413,7 @@ create-widget:hyper-ide-active-file-object-toolbar
                            * Serializing form, figuring out new name for folder,
                            * and changing its name.
                            */
-                          micro.widgets.wizard-form.value:hyper-ide-rename-folder-form
+                          micro.form.serialize:hyper-ide-rename-folder-form
                           split:x:/@.value?value
                             =:/
                           set:x:/@split/0/-
@@ -422,7 +422,7 @@ create-widget:hyper-ide-active-file-object-toolbar
                           set:x:/@join?value
                             src:/{0}/{1}/
                               :x:/@join?value
-                              :x:/@micro.widgets.wizard-form.value/*/name?value
+                              :x:/@micro.form.serialize/*/name?value
                           trim:x:/@join?value
                             chars:/
                           move-folder:x:/@.value?value

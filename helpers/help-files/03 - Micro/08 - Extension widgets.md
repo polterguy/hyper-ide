@@ -1,4 +1,3 @@
-
 ## Extension widgets
 
 Although Micro is a general purpose CSS framework, it also contains several useful extension widgets
@@ -9,6 +8,7 @@ for Hyperlambda and Phosphorus Five. Below is a list of some of the more importa
 * __[micro.widgets.modal]__ - A modal window type of widget
 * __[micro.widgets.tab]__ - A tab control type of widget
 * __[micro.widgets.cover]__ - Covers the entire browser surface, preventing interaction with all other widgets
+* __[micro.widgets.wizard-form]__ - A shorthand widget to create form elements
 
 These widgets can be used in place of any one of the core widgets from Phosphorus Five. If you have Hypereval installed,
 you can try out the [kitchen sink example](/hypereval/widgets-kitchen-sink) to see these widgets in practice.
@@ -21,7 +21,6 @@ Below is an example of a TreeView widget which traverses the folders on your ser
 
 ```hyperlambda
 micro.css.include
-  skin:graphite
 create-widget
   class:container
   widgets
@@ -67,7 +66,6 @@ do something like that, you could use the dollowing code.
 
 ```hyperlambda
 micro.css.include
-  skin:graphite
 create-widget
   class:container
   widgets
@@ -112,7 +110,6 @@ To create a _"datagrid"_ type of widget, you could do something like the followi
 
 ```hyperlambda
 micro.css.include
-  skin:graphite
 create-widget
   class:container
   widgets
@@ -157,7 +154,6 @@ Below is an example that is databinding the grid from above only as the user cli
 
 ```hyperlambda
 micro.css.include
-  skin:graphite
 create-widget
   class:container
   widgets
@@ -202,7 +198,6 @@ it on the page. Below is an example.
 
 ```hyperlambda
 micro.css.include
-  skin:graphite
 create-widget
   class:container
   widgets
@@ -243,7 +238,6 @@ related constructs together. Below is an example.
 
 ```hyperlambda
 micro.css.include
-  skin:graphite
 create-widget
   class:container
   widgets
@@ -282,7 +276,6 @@ There are also other types of extension widgets in Micro. However, unless they'r
 in this documentation file, they should not be considered stable and mature enough at the moment
 for you to use them in your own projects. Be warned!
 
-
 ### Cover widget
 
 This widget allows you to completely hide all widgets on your page, behind a semi transparent layer,
@@ -291,7 +284,6 @@ which requires the user to wait until the operation is finisihed.
 
 ```hyperlambda
 micro.css.include
-  skin:graphite
 create-widget
   class:container
   widgets
@@ -321,6 +313,71 @@ create-widget
 The above will result in something resembling the following when the button is clicked.
 
 https://phosphorusfive.files.wordpress.com/2018/02/cover-widget-screenshot.png
+
+### Wizard form
+
+This widget provides a convenient short hand for creating form input elements, such as textboxes, radio buttons, etc.
+
+
+```hyperlambda
+micro.css.include
+create-widget
+  class:container
+  widgets
+    div
+      class:row
+      widgets
+        div
+          class:col bg air-inner shaded rounded
+          widgets
+            h3
+              innerValue:Wizard form
+            micro.widgets.wizard-form:wizard-form
+              text
+                info:Name
+                .data-field:name
+              textarea
+                info:Address
+                .data-field:address
+              checkbox
+                info:Permanent
+                .data-field:permanent
+              radio-group
+                .data-field:sex
+                options
+                  male:male
+                    info:Male
+                  female:female
+                    info:Female
+              select
+                .data-field:hair
+                info:Hair
+                options
+                  Short:short
+                  Long:long
+              button
+                innerValue:Save
+                onclick
+                  micro.form.serialize:wizard-form
+                  create-widgets
+                    micro.widgets.modal:modal-widget
+                      widgets
+                        h3
+                          innerValue:Values
+                        pre
+                          innerValue:x:/@micro.form.serialize
+                        div
+                          class:right
+                          widgets
+                            button
+                              innerValue:Close
+                              onclick
+                                delete-widget:modal-widget
+```
+
+The above will result in something resembling the following.
+
+https://phosphorusfive.files.wordpress.com/2018/02/wizard-form-widget-screenshot.png
 
 ### About these widgets
 
