@@ -11,6 +11,7 @@ for Hyperlambda and Phosphorus Five. Below is a list of some of the more importa
 * __[micro.widgets.wizard-form]__ - A shorthand widget to create form elements
 * __[micro.widgets.stars]__ - A star rater widget
 * __[micro.widgets.codemirror]__ - A CodeMirror wrapper widget
+* __[micro.widgets.upload-button]__ - A button that encpasulates the process of uploading files to your server
 
 These widgets can be used in place of any one of the core widgets from Phosphorus Five. If you have Hypereval installed,
 you can try out the [kitchen sink example](/hypereval/widgets-kitchen-sink) to see these widgets in practice.
