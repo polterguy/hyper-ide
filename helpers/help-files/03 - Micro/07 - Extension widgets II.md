@@ -361,6 +361,9 @@ property, etc. Below is a screenshot of how this widget might look like, and the
 
 https://phosphorusfive.files.wordpress.com/2018/02/upload-widget-screenshot.png
 
+You can also optionally pass in a **[accept]** argument, which should be a comma separated file extension list of
+accepted file extensions, such as e.g. _".png,.jpg,.jpeg,.gif"_.
+
 **Notice** - The **[physical-file]** argument which is passed into your lambda callback, is the physical filename
 of the uploaded file on your server, while the **[original-filename]** argument, is the filename that was supplied
 by the client, and the file's original filename. It is necessary to create a unique filename on the server like we
