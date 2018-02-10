@@ -16,6 +16,7 @@ daily use of Phosphorus Five. Below is a list of some of the more important ones
 * __[micro.speech.stop]__ - Stops listening and speaking, if active
 * __[micro.speech.query-voices]__ - Queries available voices from your client
 * __[micro.windows.info]__ - Shows a small information _"bubble window"_
+* __[micro.url.get-entities]__ - Returns each folder of the URL for the current request
 
 In addition to the above Active Events, you can find some additional Active Events if you look
 at Micro's code. However, the above are the ones I consider _"stable"_ at the time of writing.
@@ -335,3 +336,18 @@ create-widget
                   class:micro-windows-info success
 ```
 
+### Retrieving URL's entities
+
+The **[micro.url.get-entities]** event will return all URL _"entities"_ for you, implying all folders
+for the current request, without any query parameters. If your URL is for instance _"/foo/bar/howdy?some=query"_, it
+will return the following.
+
+```hyperlambda
+micro.url.get-entities
+  foo
+  bar
+  howdy
+```
+
+This makes it easy for you to retrieve the different parts and sub parts of the current request's URL, without
+having to manually parse it yourself, using for instance **[split]** etc.

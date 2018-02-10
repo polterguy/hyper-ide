@@ -56,7 +56,7 @@ to the currently logged in user's _"/temp/"_ folder.
 
 ### Folder widget
 
-This widget will load up all Hyperlambda files from the specified **[folder]** and treat these files' content
+This widget will load up all Hyperlambda files from the specified **[folder]**, and/or files, and treat these files' content
 as children widgets of itself. It is useful for creating toolbars with plugins, encapsulating each toolbar item,
 into a separate file. Usage can be found below. Notice, this code doesn't evaluate without an exception, since
 you highly likely don't have the specified **[folder]** on your system.
@@ -72,7 +72,7 @@ create-widget
         div
           class:col
           widgets
-            micro.widgets.folder-plugin
+            micro.widgets.file
               class:strip right toolbar
               folder:/some-folder/in-your-system/with-a-bunch-of-hyperlambda-files/
               widgets

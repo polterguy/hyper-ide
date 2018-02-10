@@ -12,7 +12,7 @@ for Hyperlambda and Phosphorus Five. Below is a list of some of the more importa
 * __[micro.widgets.stars]__ - A star rater widget
 * __[micro.widgets.codemirror]__ - A CodeMirror wrapper widget
 * __[micro.widgets.upload-button]__ - A button that encpasulates the process of uploading files to your server
-* __[micro.widgets.folder-plugin]__ - Loads up all Hyperlambda files from specified folder, and treats them as children widgets of self
+* __[micro.widgets.file]__ - Loads up all Hyperlambda files from specified files or a single folder, and treats them as children widgets of self
 
 These widgets can be used in place of any one of the core widgets from Phosphorus Five. If you have Hypereval installed,
 you can try out the [kitchen sink example](/hypereval/widgets-kitchen-sink) to see these widgets in practice.
