@@ -21,15 +21,15 @@ create-event:hyper-ide.global-plugin.launch-hypereval
            */
           if
             fetch:x:/0/0?value
-              widget-exists:hypereval-main-container
-            delete-widget:hypereval-main-container
+              widget-exists:hypereval-hyper-ide-plugin
+            delete-widget:hypereval-hyper-ide-plugin
             return
 
           /*
            * Launching Hypereval.
            */
           create-widgets
-            container
+            container:hypereval-hyper-ide-plugin
               class:container-fullscreen
               widgets
                 div
