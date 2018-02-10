@@ -1,7 +1,7 @@
 /*
  * Create our "launch Hypereval" plugin.
  */
-create-event:hyper-ide.global-plugin.launch-hyper-eval
+create-event:hyper-ide.global-plugin.launch-hypereval
   if
     hypereval.version
     return
@@ -28,5 +28,14 @@ create-event:hyper-ide.global-plugin.launch-hyper-eval
           /*
            * Launching Hypereval.
            */
-          micro.evaluate.file:@HYPEREVAL/launch.hl
-            chrome:bool:false
+          create-widgets
+            container
+              class:container-fullscreen
+              widgets
+                div
+                  class:row
+                  widgets
+                    div
+                      class:col
+                      widgets
+                        hypereval.widgets.eval
