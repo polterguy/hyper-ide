@@ -297,6 +297,7 @@ create-widget:hyper-ide-help-wrapper
                                   eval:x:/@.code?value
                                 catch
                                   micro.windows.info:x:/@message?value
+                                    class:micro-windows-info warning
 
                           trim-right:x:/@_dp/#?value
                           eval-x:x:/+/*/*/*

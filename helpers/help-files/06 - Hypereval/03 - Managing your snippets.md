@@ -22,7 +22,7 @@ _"foo-bar"_ snippet we just created.
 https://phosphorusfive.files.wordpress.com/2018/02/hypereval-load-snippey-screenshot.png
 
 When you dynamically create snippets as we did above, you can (optionally) pass in a **[type]** argument,
-which is expected to be either _"page"_, _"snippet"_ (default) or _"startup"_.
+which is expected to be either _"page"_, _"startup"_, or _"snippet"_ (default).
 
 If you later want to evaluate the above snippet, this can easily be done with the following code.
 
@@ -31,6 +31,25 @@ If you later want to evaluate the above snippet, this can easily be done with th
  * Evaluates the snippet we created above.
  */
 hypereval.snippets.evaluate:foo-bar
+```
+
+To load the snippet you created above, you can do something resembling the following. Notice, the
+**[hypereval.snippets.load]** event will return one **[content]** node for each snippet you choose to load,
+allowing you to load multiple snippets at the same time.
+
+```hyperlambda-snippet
+/*
+ * Evaluates the snippet we created above.
+ */
+hypereval.snippets.load:foo-bar
+eval-x:x:/+/*/*/*/pre/*/innerValue
+create-widgets
+  micro.widgets.modal:samples-modal
+    widgets
+      h3
+        innerValue:Content of snippet
+      pre
+        innerValue:x:/@hypereval.snippets.load/*/content?value
 ```
 
 To delete the snippet is equally easy.
@@ -71,7 +90,7 @@ hypereval.snippets.save:foo-bar
 
 ### Creating a snippet web page
 
-If you choose to save your snippet as a _"page"_ __[type]__, then you will create a unique URL, through
+If you choose to save your snippet as a "page" __[type]__, then you will create a unique URL, through
 which you can load your page. Below is an example.
 
 ```hyperlambda-snippet
@@ -165,3 +184,123 @@ By default, the **[hypereval.snippets.search]** event will only return its first
 can easily be changed by providing a **[limit]** and an **[offset]** argument. You can also further
 parametrize your search by adding a **[type]** criteria, being either _"page"_ or _"startup"_ for
 instance.
+
+**[limit]** implies how many snippets to return, and **[offset]** is an offset integer value from the
+beginning of its result set, allowing you to easily implement paging and similar types of techniques,
+if you want to display your snippets in a datagrid or something.
+
+In addition, you can query your snippets with a **[content]** argument, implying that you snippet must
+contain the **[content]** parts in its Hyperlambda. To for instance search for all snippets containing
+the text _"create-widget"_, you could use something resembling the following.
+
+```hyperlambda-snippet
+/*
+ * Searches your snippets database
+ */
+hypereval.snippets.search
+  content:create-widget
+
+/*
+ * Displays the result of above event in a modal widget.
+ */
+eval-x:x:/+/*/*/*/pre/*/innerValue
+create-widgets
+  micro.widgets.modal:foo-bar
+    widgets
+      h3
+        innerValue:'create-widget' snippets
+      pre
+        innerValue:x:/@hypereval.snippets.search
+      div
+        class:right
+        widgets
+          button
+            innerValue:Close
+            onclick
+              delete-widget:foo-bar
+```
+
+To retrieve the first 2 snippets of **[type]** "page", you could use the following code.
+
+```hyperlambda-snippet
+/*
+ * Searches your snippets database
+ */
+hypereval.snippets.search
+  type:page
+  limit:2
+
+/*
+ * Displays the result of above event in a modal widget.
+ */
+eval-x:x:/+/*/*/*/pre/*/innerValue
+create-widgets
+  micro.widgets.modal:foo-bar
+    widgets
+      h3
+        innerValue:'page' snippets
+      pre
+        innerValue:x:/@hypereval.snippets.search
+      div
+        class:right
+        widgets
+          button
+            innerValue:Close
+            onclick
+              delete-widget:foo-bar
+```
+
+### Evaluating multiple snippets at the same time
+
+You can also evaluate multiple snippets at the same time by providing an expression to **[hypereval.snippets.evaluate]**.
+For instance, if you wish to evaluate both the _"kitchen-sink"_ and the _"page-viewer"_ snippet sequentially,
+you can pass in an expression leading to multiple results. Below is an example.
+
+```hyperlambda-snippet
+.snippets
+  widgets-kitchen-sink
+  page-viewer
+hypereval.snippets.evaluate:x:/-/*?name
+```
+
+And of course, you can combine any of these Active Events as you see fit, having the results of one becoming
+the input to another, by for instance evaluating **[hypereval.snippets.search]**, and passing in the results
+of that invocation to **[hypereval.snippets.evaluate]** or **[hypereval.snippets.load]**, etc. This allows you
+to easily combine snippets together, with very little syntax, yet still being able to accomplish a lot.
+
+You can also pass in arguments to your **[hypereval.snippets.evaluate]** invocations. Every argument you pass
+in, except **[type]** and the **[\_arg]** argument, will be added to your snippet's evaluation, allowing you
+to (almost) evaluate a snippet the same way as you would evaluate any other lambda object. Below is an example
+that creates two snippets requiring a **[text]** argument, for then to evaluate both of these snippets, passing
+in _"foo bar"_ to their evaluation.
+
+```hyperlambda-snippet
+/*
+ * Creates a snippet that simply shows an information bubble window,
+ * displaying the specified [text].
+ */
+hypereval.snippets.save:foo-bar1
+  content
+    micro.windows.info:x:/../*/text?value
+
+/*
+ * Creates a snippet that creates a paragraph with the specified [text].
+ */
+hypereval.snippets.save:foo-bar2
+  content
+    create-widget
+      element:h1
+      innerValue:x:/../*/text?value
+
+/*
+ * Evaluates both of the above snippets, passing in "Hello World" to
+ * our evaluation.
+ */
+.snippets
+  foo-bar1
+  foo-bar2
+hypereval.snippets.evaluate:x:/@.snippets/*?name
+  text:Hello World
+```
+
+

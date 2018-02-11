@@ -176,7 +176,7 @@ if:x:/@p5.web.widgets.find/*/*?value
  */
 p5.web.widgets.find
   .toolbar
-micro.css.add:x:/-/*/*?value
+micro.css.add:x:/@p5.web.widgets.find/*/*?value
   class:hide
 
 
