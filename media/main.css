@@ -213,24 +213,9 @@ html {
 
 .hyper-ide-help-content {
     text-align: justify;
-}
-@media screen and (min-width:800px) {
-.hyper-ide-help-content {
-    padding: 2rem 3rem 2rem 3rem;
-}
-}
-@media screen and (min-width:1024px) {
-.hyper-ide-help-content {
-    padding: 4rem 6rem 4rem 6rem;
-}
-}
-@media screen and (min-width:1200px) {
-.hyper-ide-help-content {
-    padding: 4rem 11rem 4rem 11rem;
-}
-}
-.hyper-ide-help-content h3 {
-    margin-top: 5rem;
+    margin-left: 2rem;
+    margin-right: 2rem;
+    margin-bottom: 5rem;
 }
 .hyper-ide-youtube-outer-wrapper {
     max-width: 640px;

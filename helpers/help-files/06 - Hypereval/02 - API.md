@@ -1,4 +1,3 @@
-
 ## Hypereval's API
 
 Hypereval has a very rich API, allowing you to automate it, or extend it as you see fit. Every single operation
@@ -13,9 +12,9 @@ somehow modify your snippets. These are probably the most important events, as t
 snippets in your own apps and/or modules, allowing for you to easily orchestrate multiple snipepts together,
 incrementally and dynamically building your apps as you see fit.
 
-* __[hypereval.snippets.evaluate]__ - Evaluate a single snippet
+* __[hypereval.snippets.evaluate]__ - Evaluate the specified snippet(s)
 * __[hypereval.snippets.search]__ - Searches your database for snippets (optionally) matching some criteria
-* __[hypereval.snippets.load]__ - Loads the specified snippet from your database
+* __[hypereval.snippets.load]__ - Loads the specified snippet(s) from your database
 * __[hypereval.snippets.save]__ - Saves a snippet to your database
 * __[hypereval.snippets.export]__ - Exports snippets from your database
 * __[hypereval.snippets.delete]__ - Deletes the specified snippet from your database

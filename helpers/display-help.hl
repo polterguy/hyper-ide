@@ -65,7 +65,70 @@ create-widget:hyper-ide-help-wrapper
             container
               class:shaded rounded air-inner
               widgets
-                div:hyper-ide-help-content
+                div
+                  class:right
+                  widgets
+                    div
+                      class:strip
+                      widgets
+                        button
+                          innerValue:@"<span class=""icon-arrow-left""></span>"
+                          onclick
+
+                            /*
+                             * Loading and displaying "index.hl" file.
+                             */
+                            hyper-ide.help.go-previous
+
+                        button
+                          innerValue:@"<span class=""icon-arrow-right""></span>"
+                          onclick
+
+                            /*
+                             * Loading and displaying "index.hl" file.
+                             */
+                            hyper-ide.help.go-next
+
+                        button
+                          innerValue:@"<span class=""icon-pencil""></span>"
+                          title:Edits the current help file
+                          onclick
+
+                            /*
+                             * Allowing user to edit the file.
+                             */
+                            p5.web.widgets.find-first:hyper-ide-help-wrapper
+                              .file
+                            get-widget-property:x:/-/*/*?value
+                              .file
+                            eval-x:x:/+/*
+                            micro.evaluate.file:@IDE/helpers/open-path.hl
+                              path:x:/@get-widget-property/*/*?value
+                            p5.web.send-javascript:@"p5.$('hyper-ide-file-editor').el.scrollIntoView ({behavior:'instant'});"
+
+                        button
+                          innerValue:@"<span class=""icon-spinner11""></span>"
+                          title:Reloads the current help file
+                          onclick
+
+                            /*
+                             * Allowing user to edit the file.
+                             */
+                            p5.web.widgets.find-first:hyper-ide-help-wrapper
+                              .file
+                            get-widget-property:x:/-/*/*?value
+                              .file
+                            hyper-ide.help.display-file:x:/-/*/*?value
+
+                        button
+                          innerValue:@"<span class=""icon-home3""></span>"
+                          onclick
+
+                            /*
+                             * Loading and displaying "index.hl" file.
+                             */
+                            hyper-ide.help.display-file:@IDE/helpers/help-files/index.hl
+                container:hyper-ide-help-content
                   class:hyper-ide-help-content
                   oninit
 
@@ -374,70 +437,3 @@ p5['x_{0}'].setSize('100%', 'auto');
                        * Scrolling browser to the top of help file contents.
                        */
                       p5.web.send-javascript:@"p5.$('hyper-ide-help-wrapper').el.scrollIntoView ({behavior:'smooth', block:'start'});"
-
-
-                  widgets
-
-                div
-                  class:right
-                  widgets
-                    div
-                      class:strip
-                      widgets
-                        button
-                          innerValue:@"<span class=""icon-arrow-left""></span>"
-                          onclick
-
-                            /*
-                             * Loading and displaying "index.hl" file.
-                             */
-                            hyper-ide.help.go-previous
-
-                        button
-                          innerValue:@"<span class=""icon-arrow-right""></span>"
-                          onclick
-
-                            /*
-                             * Loading and displaying "index.hl" file.
-                             */
-                            hyper-ide.help.go-next
-
-                        button
-                          innerValue:@"<span class=""icon-pencil""></span>"
-                          title:Edits the current help file
-                          onclick
-
-                            /*
-                             * Allowing user to edit the file.
-                             */
-                            p5.web.widgets.find-first:hyper-ide-help-wrapper
-                              .file
-                            get-widget-property:x:/-/*/*?value
-                              .file
-                            eval-x:x:/+/*
-                            micro.evaluate.file:@IDE/helpers/open-path.hl
-                              path:x:/@get-widget-property/*/*?value
-                            p5.web.send-javascript:@"p5.$('hyper-ide-file-editor').el.scrollIntoView ({behavior:'instant'});"
-
-                        button
-                          innerValue:@"<span class=""icon-spinner11""></span>"
-                          title:Reloads the current help file
-                          onclick
-
-                            /*
-                             * Allowing user to edit the file.
-                             */
-                            p5.web.widgets.find-first:hyper-ide-help-wrapper
-                              .file
-                            get-widget-property:x:/-/*/*?value
-                              .file
-                            hyper-ide.help.display-file:x:/-/*/*?value
-
-                        button
-                          innerValue:@"<span class=""icon-home3""></span>"
-                          onclick
-
-                            /*
-                             * Loading and displaying "index.hl" file.
-                             */
-                            hyper-ide.help.display-file:@IDE/helpers/help-files/index.hl
