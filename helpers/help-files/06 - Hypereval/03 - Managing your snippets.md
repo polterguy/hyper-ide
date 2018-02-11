@@ -303,4 +303,44 @@ hypereval.snippets.evaluate:x:/@.snippets/*?name
   text:Hello World
 ```
 
+### Creating extension widget snippets
 
+One of my favourites in regards to Hypereval, is the ability to easily create extension widgets, and storing
+these in your Hypereval database. This allows you to create highly dynamic and _"agile"_ extension widgets,
+that are easily consumed in your own apps and modules. Below is an example of how you could create such an
+extension widget.
+
+```hyperlambda-snippet
+hypereval.snippets.save:examples.widgets.foo
+  content
+    eval-x:x:/+/*/literal/*/innerValue
+    return
+      literal
+        style:"background-color:Yellow;"
+        element:h3
+        innerValue:x:/../*/text?value
+```
+
+Then to consume the above extension widget, you could do something resembling the following.
+
+```hyperlambda-snippet
+create-widgets
+  micro.widgets.modal:foo-bar
+    widgets
+      h3
+        innerValue:Extension widget snippet
+      hypereval.snippets.evaluate:examples.widgets.foo
+        text:Hello World!
+      div
+        class:right
+        widgets
+          button
+            innerValue:Close
+            onclick
+              delete-widget:foo-bar
+```
+
+The above allows you by properly namespacing your Hypereval extension snippets, to easily for instance
+load up a bunch of dynamically and before hand undetermined extension widgets, which you can easily add
+to, such as for instance dynamic toolbars with plugin support, etc, etc, etc. And that you can easily
+parametrize as you see fit.
