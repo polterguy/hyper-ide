@@ -39,7 +39,8 @@ allowing you to load multiple snippets at the same time.
 
 ```hyperlambda-snippet
 /*
- * Evaluates the snippet we created above.
+ * Loads the snippet we created above, and displays it
+ * in a modal window.
  */
 hypereval.snippets.load:foo-bar
 eval-x:x:/+/*/*/*/pre/*/innerValue
@@ -56,7 +57,7 @@ To delete the snippet is equally easy.
 
 ```hyperlambda-snippet
 /*
- * Evaluates the snippet we created above.
+ * Deletes the snippet we created above.
  */
 hypereval.snippets.delete:foo-bar
 ```
@@ -100,21 +101,24 @@ which you can load your page. Below is an example.
  */
 hypereval.snippets.save:foo-bar
   type:page
-  content:@"micro.css.include
-create-widgets
-  micro.widgets.modal:foo-bar
-    widgets
-      h3
-        innerValue:Foo bar
-      p
-        innerValue:Hello World
-      div
-        class:right
-        widgets
-          button
-            innerValue:Close
-            onclick
-              delete-widget:foo-bar"
+  content
+    micro.css.include
+    create-widget
+      class:container
+      widgets
+        div
+          class:row
+          widgets
+            div
+              class:col
+              widgets
+                div
+                  class:shaded rounded air-inner
+                  widgets
+                    h3
+                      innerValue:This is your page
+                    p
+                      innerValue:Some paragraph
 ```
 
 Try to evaluate the above snippet, and then open up the [following link](/hypereval/foo-bar) in

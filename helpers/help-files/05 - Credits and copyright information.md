@@ -46,7 +46,3 @@ In addition, I would like to say a special thank you to the following people and
 * The Mono project for making my work possible
 * All my friends for literally keeping me alive, during this project, when I could not even afford to buy food, or pay my own rent, and for believing in me, when nobody else could
 * And last but not least, my beautiful and amazing _"wife"_ and partner, Lisbeth Aardal, for supporting me in a time of my life, when the word utter despair, was a much too soft of a description, for describing my status
-
-> If I have seen far, it was because I stood on the shoulders of Giants!
-
-Thank you to all of my giants <3

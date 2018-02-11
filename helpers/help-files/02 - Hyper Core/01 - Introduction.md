@@ -1,6 +1,11 @@
 ## A MySQL HTTP REST based ORM library (and more)
 
-**Important**, some parts of this documentation, requires you to having followed our _"AngularJS tutorial"_, since
+Hyper Core is an HTTP REST based ORM library for MySQL and evaluating server side Hyperlambda, as a consequence
+of invoking some HTTP request. Hyper Core is mostly for developers who already knows how to create and maintain
+HTML, CSS and JavaScript based applications - And probably an easier way to create apps, unless this applies
+to you, is to use Hyperlambda directly, by creating widgets and hierarchies of such, instead of using Hyper Core.
+
+**Important** - Some parts of this documentation, requires you to having followed our _"AngularJS tutorial"_, since
 it relies upon the same database schema as that tutorial happens to create. Hence, it might be beneficial for 
 you to first go through that tutorial at the root of the documentation system, before you continue reading this.
 If you haven't already, you might see how to do that, by watching this video.

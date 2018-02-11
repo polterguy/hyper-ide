@@ -280,7 +280,7 @@ create-widget:hyper-ide-help-wrapper
                          * Making sure we transform all images linked to in paragraphs, such that they're replaced by
                          * an img HTML tag.
                          */
-                        for-each:x:@"/@html2lambda/*/p/*/#text/""=:regex:/^https{0,1}:\\/\\/.+\\.[png|jpg|jpeg|gif]/i"""
+                        for-each:x:@"/@html2lambda/*/p/*/#text/""=:regex:/^https{0,1}:\\/\\/.+\\.[png|jpg|jpeg|gif|svg]/i"""
 
                           /*
                            * Replacing entire paragraph with an image tag.
