@@ -162,7 +162,7 @@ in their names, for then to display its result in a modal window.
 /*
  * Searches your snippets database
  */
-hypereval.snippets.search:lambda
+hypereval.snippets.search:%lambda%
 
 /*
  * Displays the result of above event in a modal widget.
@@ -197,12 +197,15 @@ In addition, you can query your snippets with a **[content]** argument, implying
 contain the **[content]** parts in its Hyperlambda. To for instance search for all snippets containing
 the text _"create-widget"_, you could use something resembling the following.
 
+**Notice** - You'll need to add a '%' in both your **[content]** and **[\_arg]** criteria, to be able to
+do a wildcard match.
+
 ```hyperlambda-snippet
 /*
  * Searches your snippets database
  */
 hypereval.snippets.search
-  content:create-widget
+  content:%create-widget%
 
 /*
  * Displays the result of above event in a modal widget.
@@ -254,6 +257,8 @@ create-widgets
               delete-widget:foo-bar
 ```
 
+You can of course combine any of the above arguments to your **[hypereval.snippets.search]** invocations.
+
 ### Evaluating multiple snippets at the same time
 
 You can also evaluate multiple snippets at the same time by providing an expression to **[hypereval.snippets.evaluate]**.
@@ -276,7 +281,7 @@ You can also pass in arguments to your **[hypereval.snippets.evaluate]** invocat
 in, except **[type]** and the **[\_arg]** argument, will be added to your snippet's evaluation, allowing you
 to (almost) evaluate a snippet the same way as you would evaluate any other lambda object. Below is an example
 that creates two snippets requiring a **[text]** argument, for then to evaluate both of these snippets, passing
-in _"foo bar"_ to their evaluation.
+in _"Hello World"_ to their evaluation.
 
 ```hyperlambda-snippet
 /*
