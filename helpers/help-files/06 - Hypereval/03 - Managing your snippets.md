@@ -34,7 +34,7 @@ hypereval.snippets.evaluate:foo-bar
 ```
 
 To load the snippet you created above, you can do something resembling the following. Notice, the
-**[hypereval.snippets.load]** event will return one **[content]** node for each snippet you choose to load,
+**[hypereval.snippets.load]** event will return one node for each snippet you choose to load,
 allowing you to load multiple snippets at the same time.
 
 ```hyperlambda-snippet
@@ -50,7 +50,7 @@ create-widgets
       h3
         innerValue:Content of snippet
       pre
-        innerValue:x:/@hypereval.snippets.load/*/content?value
+        innerValue:x:/@hypereval.snippets.load/*?value
 ```
 
 To delete the snippet is equally easy.
