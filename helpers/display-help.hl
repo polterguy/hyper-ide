@@ -375,10 +375,7 @@ create-widget:hyper-ide-help-wrapper
                           .defaults
                             theme:phosphorus
                           p5.auth.my-settings.get
-                          p5.web.include-javascript-file
-                            @MICRO/media/codemirror/lib/codemirror.js
-                            @MICRO/media/codemirror/addon/selection/mark-selection.js
-                            @MICRO/media/codemirror/addon/selection/active-line.js
+                          micro.widgets.codemirror._include-javascript
 
                           /*
                            * Notice, special handling of "htmlmixed" mode, to also include XML, CSS and JavaScript.
@@ -392,11 +389,7 @@ create-widget:hyper-ide-help-wrapper
                           else
                             p5.web.include-javascript-file:@MICRO/media/codemirror/mode/{0}/{0}.js
                               :x:/@.language?value
-                          p5.web.include-css-file
-                            @MICRO/media/codemirror/lib/codemirror.css
-                            @MICRO/media/codemirror/addon/dialog/dialog.css
-                            @MICRO/media/codemirror/addon/display/fullscreen.css
-                            @MICRO/media/codemirror/addon/hint/show-hint.css
+                          micro.widgets.codemirror._include-css
                           p5.web.include-css-file:@MICRO/media/codemirror/theme/{0}.css
                             :x:(/@p5.auth.my-settings.get/*/codemirror/*/theme|/@.defaults/*/theme)/$?value
                           p5.web.send-javascript:@"p5['x_{0}'] = CodeMirror.fromTextArea(p5.$('x_{0}').el, {{

@@ -33,7 +33,7 @@ pre-existing UX.
 * __[hypereval.widgets.eval.set-code]__ - Sets the CodeMirror editor's code to __[\_arg]__ value
 * __[hypereval.widgets.eval.get-current-snippet]__ - Returns current snippet - __[type]__, __[content]__ and __[name]__
 * __[hypereval.widgets.eval.show-load-window]__ - Shows the load snippet window
-* __[hypereval.widgets.eval.show-save-window]__ - Shows the save snipet window
+* __[hypereval.widgets.eval.show-save-window]__ - Shows the save snippet window
 * __[hypereval.widgets.eval.download-current-snippet]__ - Downloads the current snippet to client
 * __[hypereval.widgets.eval.import-files]__ - Imports the specified __[files]__ zip files, and/or Hyperlambda files into your database
 * __[hypereval.widgets.eval.new-snippet]__ - Opens up the _"create new snippet"_ window, allowing user to choose to create either an empty snippet, or creating a new snippet from a list of pre-defined templates

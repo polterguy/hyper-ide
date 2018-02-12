@@ -68,3 +68,6 @@ create-widgets
             onclick
               delete-widget:sample-modal
 ```
+
+In fact, if you have installed Hypereval, you can open it up as a _"plugin"_ from Hyper IDE, by clicking the flash
+button in the top toolbar of Hyper IDE.
