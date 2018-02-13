@@ -1,7 +1,6 @@
+
 /*
- * File responsible for starting app.
- *
- * This file is evaluated when the user clicks the desktop icon.
+ * File responsible for starting Hyper IDE.
  */
 
 
@@ -9,51 +8,11 @@
 
 
 /*
- * Checking if this is an upload request.
- */
-p5.io.unroll-path:@IDE/
-split:x:/-?value
-  =:/
-if:x:/../*/url?value
-  =:/{0}/upload
-    :x:/@split/0/-?name
-
-  /*
-   * This is an upload request, making sure we let our upload file handle it,
-   * and returning early.
-   *
-   * Wrapping our attempt inside a try/catch, and returning any exception message
-   * to client.
-   */
-  try
-    micro.evaluate.file:@IDE/helpers/upload-files.hl
-  catch
-    p5.web.response.set-status-code:500
-    p5.web.echo:x:/@message?value
-  return
-
-
-
-
-
-/*
- * Figuring out skin to use, and other settings.
- */
-.defaults
-  skin:serious
-  page-scroll:bool:false
-p5.auth.my-settings.get
-
-
-
-
-
-/*
- * Checking if Hyper IDE has already been launched, at which point we return early.
+ * Checking if Hyper IDE has already been launched, at which point we
+ * warn user and return early.
  */
 if
-  fetch:x:/0/0?value
-    widget-exists:hyper-ide-main-container
+  hyper-ide.is-open
   micro.windows.info:Hyper IDE is already open
     class:micro-windows-info warning
   return
@@ -62,12 +21,33 @@ if
 
 
 
+/*
+ * Retrieving user's settings, which we need to retrieve in order to determine
+ * how to render Hyper IDE.
+ */
+.defaults
+  page-scroll:bool:false
+p5.auth.my-settings.get
+
+
+
+
+
 
 /*
- * Including Micro, active skin, font CSS file, and main CSS file for Hyper IDE.
+ * Including Micro CSS.
  */
-eval-x:x:/+/*
 micro.css.include
+
+
+
+
+
+/*
+ * Including Hyper IDE's CSS file, making sure we can refresh cache on client,
+ * every time we create a new release, to avoid having "old CSS files" 'hanging'
+ * in browser cache.
+ */
 hyper-ide.version
 p5.web.include-css-file:@IDE/media/main.css?v={0}
   :x:/@hyper-ide.version?value
@@ -77,20 +57,10 @@ p5.web.include-css-file:@IDE/media/main.css?v={0}
 
 
 /*
- * Setting title of our page.
+ * Setting title of our page, making sure we display version number of Hyper IDE.
  */
-p5.web.page.set-title:Hyper IDE
-
-
-
-
-
-/*
- * Making sure initial scale of viewport is set correctly.
- */
-p5.web.page.add-meta-tag:meta
-  name:viewport
-  content:@"width=device-width, initial-scale=1.0"
+p5.web.page.set-title:Hyper IDE {0}
+  :x:/@hyper-ide.version?value
 
 
 
@@ -99,9 +69,19 @@ p5.web.page.add-meta-tag:meta
 /*
  * Checking if we should use page scrolling or not.
  */
-_page-scroll
-if:x:(/@p5.auth.my-settings.get/*/codemirror/*/page-scroll|/../*/.defaults/*/page-scroll)/$?value
-  set:x:/@_page-scroll?value
+_root-css-additions
+if:x:(/@p5.auth.my-settings.get/*/codemirror/*/page-scroll|/@.defaults/*/page-scroll)/$?value
+  =:bool:true
+
+  /*
+   * User has configured Hyper IDE to use "page scroll".
+   *
+   * This implies that the CodeMirror editors and the folder browser will always render
+   * themselves in "auto height", not internarlly using scrollbars on their widgets,
+   * which might make sense for some - Especially if they're using a tablet or a phone
+   * as their client.
+   */
+  set:x:/@_root-css-additions?value
     src:" hyper-ide-page-scroll"
 
 
@@ -109,56 +89,11 @@ if:x:(/@p5.auth.my-settings.get/*/codemirror/*/page-scroll|/../*/.defaults/*/pag
 
 
 /*
- * Retrieving active events that will create a "global" plugin button.
- *
- * Making sure we check for the existence of a configuration file, and if it exists,
- * we turn OFF everything not explicitly turned on in that file.
- */
-vocabulary:~hyper-ide.global-plugin.
-if
-  fetch:x:/0/0?value
-    file-exists:@IDE/configuration/plugins.hl
-  load-file:@IDE/configuration/plugins.hl
-  for-each:x:/@vocabulary/*
-    if:x:/@load-file/*/*/{0}
-      :x:/@_dp/#?value
-      not
-      set:x:/@_dp/#
-
-
-
-
-
-/*
- * Adding all plugin active events into [.plugins] below.
- */
-.plugins
-  return:x:/../*/*
-for-each:x:/@vocabulary/*?value
-  insert-before:x:/@.plugins/0/-
-    src:x:/@_dp?value
-
-
-
-
-
-/*
- * Evaluating [.plugins] lambda, which will invoke all plugin button events for us,
- * and return its result.
- */
-eval:x:/@.plugins
-
-
-
-
-
-/*
- * Adding the results of above plugin creation logic into our toolbar widget.
- *
- * Notice, the above [eval] will return the results of all plugin active events.
+ * Adding all "global" plugins.
  */
 insert-before:x:/../*/create-widget/**/widgets/=plugins/0/-2
-  src:x:/@eval/*
+  micro.evaluate.file:@IDE/helpers/get-plugins.hl
+    type:hyper-ide.global-plugin
 
 
 
@@ -169,7 +104,7 @@ insert-before:x:/../*/create-widget/**/widgets/=plugins/0/-2
  */
 create-widget:hyper-ide-main-container
   class:container-fullscreen hyper-ide-container{0}
-    :x:/@_page-scroll?value
+    :x:/@_root-css-additions?value
 
   /*
    * Helper Ajax events, necessary to map keyboard shortcuts, among other things.
@@ -230,6 +165,54 @@ create-widget:hyper-ide-main-container
         milliseconds:600000
         onfinish
           hyper-ide._pingback
+
+
+    /*
+     * Returns the path for the currently selected folder, if any.
+     */
+    hyper-ide.get-active-folder
+
+      /*
+       * Retrieving treeview's selecte item, and verifying it's a folder.
+       */
+      micro.widgets.tree.get-selected-items:hyper-ide-folder-tree-browser
+      if
+        ends-with:x:/@micro.widgets.tree.get-selected-items/*/*?name
+          src:/
+
+        /*
+         * Currently selected item is a folder.
+         */
+        return:x:/@micro.widgets.tree.get-selected-items/*/*?name
+
+
+    /*
+     * Refreshes the currently active folder, if any.
+     */
+    hyper-ide.refresh-folder
+
+      /*
+       * Refreshing folder explorer.
+       */
+      hyper-ide.get-active-folder
+      if:x:/@hyper-ide.get-active-folder?value
+
+        /*
+         * There's a folder currently selected.
+         */
+        add:x:/+/*/items
+          src:x:/@hyper-ide.get-active-folder?value
+        micro.widgets.tree.refresh-items:hyper-ide-folder-tree-browser
+          force-expand:bool:true
+          items
+
+      else
+
+        /*
+         * No folder currently selected, warning user.
+         */
+        micro.windows.info:You have not selected a folder
+          class:micro-windows-info warning
 
 
     /*

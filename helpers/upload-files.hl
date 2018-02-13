@@ -1,3 +1,4 @@
+
 /*
  * Responsible for handling upload requests.
  */
@@ -7,63 +8,29 @@
 
 
 /*
- * Verifying user is logged in as root.
+ * Sanity checking arguments.
  */
-whoami
-if:x:/@whoami/*/role?value
-  !=:root
-
-  /*
-   * User is not logged in as root.
-   */
-  throw:You don't have permissions to do this
+micro.lambda.contract.min:x:/..
+  files
 
 
 
 
 
 /*
- * User is allowed to upload files to server.
- *
- * Checking if temp folder for module exists, and if not, creating it.
- * Notice, creating a temp folder might look a little weird, considering we could
- * simply parse the MIME request with the destination folder as the output.
- * However, since the destination folder is a part of the MIME message also,
- * we don't know the destination folder, before we have parsed our MIME body.
- *
- * Hence, we'll need this little intermediate step, storing our files inside of
- * our temp folder, before we can move them to their actual destination.
+ * Retrieving selected folder, and making sure user has selected a folder.
  */
-if
-  fetch:x:/0/0?value
-    folder-exists:~/temp/hyper-ide/
+hyper-ide.get-active-folder
+if:x:/-?value
   not
 
   /*
-   * Creating Magic menu temp folder.
+   * Oops, user hasn't selected a folder.
+   * Warning user and returning early.
    */
-  create-folder:~/temp/hyper-ide/
-
-else
-
-  /*
-   * Temp folder for module already exists, making sure we empty it.
-   */
-  list-files:~/temp/hyper-ide/
-  delete-file:x:/@list-files/*?name
-  list-folder:~/temp/hyper-ide/
-  delete-folder:x:/@list-folder/*?name
-
-
-
-
-
-/*
- * Parsing MIME request, using our Hyper IDE temp folder as output folder.
- */
-p5.web.request.parse-mime
-  attachment-folder:~/temp/hyper-ide/
-  attachment-folder-no-prefix:false
+  micro.windows.info:You must select a folder to be able to upload files
+    class:micro-windows-info warning
+  return
 
 
 
@@ -72,10 +39,10 @@ p5.web.request.parse-mime
 /*
  * Iterating through each file in request.
  */
-for-each:x:/@p5.web.request.parse-mime/*/multipart/*(!/text/=plain/*/content/.)
+for-each:x:/../*/files/*
 
   /*
-   * Checking if file already exists, at which point we simply delete it.
+   * Checking if file already exists from before, at which point we delete it.
    *
    * This makes sure an upload request will always overwrite existing files with
    * the same name(s).
@@ -83,43 +50,40 @@ for-each:x:/@p5.web.request.parse-mime/*/multipart/*(!/text/=plain/*/content/.)
   if
     fetch:x:/0/0?value
       file-exists:{0}{1}
-        :x:/@p5.web.request.parse-mime/*/multipart/*/text/=plain/*/content?value
-        :x:/@_dp/#/*/filename?value
+        :x:/@hyper-ide.get-active-folder?value
+        :x:/@_dp/#/*/original-filename?value
 
     /*
      * Destination file already exists, making sure we delete it.
      */
     delete-file:{0}{1}
-      :x:/@p5.web.request.parse-mime/*/multipart/*/text/=plain/*/content?value
-      :x:/@_dp/#/*/filename?value
+      :x:/@hyper-ide.get-active-folder?value
+      :x:/@_dp/#/*/original-filename?value
 
   /*
-   * Moving file from temp folder to destination.
+   * Moving file from temporary folder to destination folder.
    */
-  move-file:{0}{1}
-    :x:/@_dp/#/*/filename/*/folder?value
-    :x:/@_dp/#/*/filename?value
-    :x:/@p5.web.request.parse-mime/**/filename/[0,1]?value
-    dest:x:/@p5.web.request.parse-mime/*/multipart/*/text/=plain/*/content?value
+  move-file:x:/@_dp/#?value
+    dest:{0}{1}
+      :x:/@hyper-ide.get-active-folder?value
+      :x:/@_dp/#/*/original-filename?value
 
 
 
 
 
 /*
- * Deleting temp folder.
+ * Refresh our destination folder.
  */
-delete-folder:~/temp/hyper-ide/
+hyper-ide.refresh-folder
 
 
 
 
 
 /*
- * Storing the number of files that was uploaded in our session.
- *
- * This is done such that we can give user some friendly feedback after our
- * upload request is finished.
+ * Providing some feedback to user.
  */
-p5.web.session.set:hyper-ide.uploaded-files-count
-  src:x:/@p5.web.request.parse-mime/*/multipart/*(!/text/=plain/*/content/.)?count
+micro.windows.info:{0} files successfully uploaded
+  :x:/../*/files/*?count
+  class:micro-windows-info success

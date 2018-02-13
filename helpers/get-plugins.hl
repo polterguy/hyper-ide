@@ -1,0 +1,87 @@
+
+/*
+ * Returns all existing plugins that is enabled in installation.
+ * Expects [type] being type of plugins to retrieve.
+ */
+
+
+
+
+
+/*
+ * Sanity checking invocation.
+ */
+micro.lambda.contract.min:x:/..
+  type:string
+
+
+
+
+
+/*
+ * Retrieving active events that will create "global" plugin buttons.
+ *
+ * Making sure we check for the existence of a configuration file, and if it exists,
+ * we turn OFF everything not explicitly turned on in that file.
+ */
+vocabulary:~{0}.
+  :x:/../*/type?value
+if
+  fetch:x:/0/0?value
+    file-exists:@IDE/configuration/plugins.hl
+  load-file:@IDE/configuration/plugins.hl
+
+  /*
+   * Removing all plugins not explicitly mentioned in plugin configuration file.
+   */
+  for-each:x:/@vocabulary/*
+
+    /*
+     * Checking if currently iterated plugin is explicitly turned ON in
+     * configuration file.
+     */
+    if:x:/@load-file/*/*/{0}
+      :x:/@_dp/#?value
+      not
+
+      /*
+       * Currently iterated plugin was not explicitly mentioned in plugin
+       * configuration file.
+       */
+      set:x:/@_dp/#
+
+
+
+
+
+/*
+ * Adding all plugin active events into [.plugins] lambda object below, such that
+ * we can easily evaluate all plugin events, which are expected to return some
+ * sort of widget(s) which we append into toolbar for Hyper IDE.
+ */
+.plugins
+  return:x:/../*/*
+for-each:x:/@vocabulary/*?value
+  insert-before:x:/@.plugins/0/-
+    src:x:/@_dp?value
+
+
+
+
+
+/*
+ * Evaluating [.plugins] lambda, which will invoke all plugin button events for us,
+ * and return its result.
+ */
+eval:x:/@.plugins
+
+
+
+
+
+/*
+ * Returning all plugins to caller.
+ */
+add:x:/+
+  src:x:/@eval/*
+return

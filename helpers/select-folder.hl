@@ -561,43 +561,17 @@ and close all editors that are editing files inside of your folder. I need you t
     /*
      * Upload file button.
      */
-    button:hyper-ide-upload-file
-      innerValue:@"<span class=""icon-upload2""></span>"
+    micro.widgets.upload-button:hyper-ide-upload-file
       title:Upload a file
-      style:"margin-bottom:0;"
-      onclick:@"p5.$('hyper-ide-upload-file-input').el.click();return false;"
-
-    /*
-     * Hidden upload file dialog.
-     */
-    input:hyper-ide-upload-file-input
-      type:file
       multiple
-      style:@"opacity:0 !important;position:absolute !important;width:0;height:0;z-index:-1;top:-5000px;left:0;"
-      onchange:@"p5.hyper_ide_upload_files(this.files);"
-      .onrefresh
+      .onupload
 
         /*
-         * Forward evaluated above.
+         * Evaluating file responsible for handling our upload.
          */
-        .folder-name:x:/../*/folder?value
-
-        /*
-         * Refresh our destination folder.
-         */
-        add:x:/../*/micro.widgets.tree.refresh-items/*/items
-          src:x:/@.folder-name?value
-        micro.widgets.tree.refresh-items:hyper-ide-folder-tree-browser
-          force-expand:bool:true
-          items
-
-        /*
-         * Giving user some feedback
-         */
-        p5.web.session.get:hyper-ide.uploaded-files-count
-        micro.windows.info:{0} file(s) uploaded successfully
-          :x:/@p5.web.session.get/*?value
-          class:micro-windows-info success
+        add:x:/+
+          src:x:/../*/files
+        micro.evaluate.file:@IDE/helpers/upload-files.hl
 
       oninit
 
