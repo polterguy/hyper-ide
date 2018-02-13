@@ -1,6 +1,6 @@
 
 /*
- * Sanity check.
+ * Sanity checking invocation.
  */
 micro.lambda.contract.min:x:/..
   editor:string
@@ -10,48 +10,68 @@ micro.lambda.contract.min:x:/..
 
 
 /*
- * Finding editor's "dirty" hidden field.
+ * Checking if supplied [editor] argument was a filepath, at which point we
+ * change it to become its widget ID.
  */
-p5.web.widgets.find-first:hyper-ide-editor-tab-editors
-  .editor:x:/../*/editor?value
+if
+  starts-with:x:/../*/editor?value
+    src:/
+
+  /*
+   * Specified [editor] argument was a filepath argument, changing it to become
+   * editor's ID instead.
+   */
+  p5.web.widgets.find-first:hyper-ide-editor-tab-editors
+    .editor:x:/../*/editor?value
+  set:x:/../*/editor?value
+    src:x:/@p5.web.widgets.find-first/*/*?value
 
 
 
 
 
 /*
- * Verifying editor exists.
+ * Finding dirty input element for editor.
+ */
+p5.web.widgets.find-first:x:/../*/editor?value
+  element:input
+  type:hidden
+
+
+
+
+
+/*
+ * Verifying specified [editor] argument actually was an editor.
  */
 if:x:/@p5.web.widgets.find-first/*/*?value
+  not
 
   /*
-   * Editor exists.
+   * Specified [editor] argument was not a CodeMirror editor.
    */
-  p5.web.widgets.find-first:x:/-/*/*?value
-    element:input
-    type:hidden
+  micro.windows.info:No such editor
+    class:micro-windows-info warning
+  return
+
+
+
+
+
+/*
+ * Getting value of dirty input element.
+ */
+get-widget-property:x:/@p5.web.widgets.find-first/*/*?value
+  value
+if:x:/-/*/*?value
+  =:dirty
 
   /*
-   * Checking if editor is dirty.
+   * Active editor is dirty.
    */
-  get-widget-property:x:/-/*/*?value
-    value
-  if:x:/-/*/*?value
-    =:dirty
+  return:bool:true
 
-    /*
-     * Editor is dirty, returning true to caller.
-     */
-    return:bool:true
-
-  /*
-   * Editor is not dirty, returning false to caller.
-   */
-  return:bool:false
-
-else
-
-  /*
-   * Oops, no such editor.
-   */
-  throw:No such editor
+/*
+ * Active editor is not dirty.
+ */
+return:bool:false

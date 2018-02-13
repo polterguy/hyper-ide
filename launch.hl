@@ -285,25 +285,30 @@ create-widget:hyper-ide-main-container
 
 
     /*
-     * Removes the "dirty" flag for specified [_arg] editor.
+     * Removes the "dirty" flag for active editor.
      */
-    hyper-ide.editors.set-editor-clean-flag
-      eval-x:x:/+/*
-      micro.evaluate.file:@IDE/helpers/lambda-events/hyper-ide.editors.set-editor-clean-flag.hl
-        editor:x:/../*/_arg?value
+    hyper-ide.editors.set-active-editor-clean-flag
+      micro.evaluate.file:@IDE/helpers/lambda-events/hyper-ide.editors.set-active-editor-clean-flag.hl
 
 
     /*
      * Adds the "dirty" flag for specified [_arg] editor.
      */
-    hyper-ide.editors.set-editor-dirty-flag
-      eval-x:x:/+/*
-      micro.evaluate.file:@IDE/helpers/lambda-events/hyper-ide.editors.set-editor-dirty-flag.hl
-        editor:x:/../*/_arg?value
+    hyper-ide.editors.set-active-editor-dirty-flag
+      micro.evaluate.file:@IDE/helpers/lambda-events/hyper-ide.editors.set-active-editor-dirty-flag.hl
 
 
     /*
      * Returns true if current editor is dirty.
+     */
+    hyper-ide.editors.get-active-editor-is-dirty
+      micro.evaluate.file:@IDE/helpers/lambda-events/hyper-ide.editors.get-active-editor-is-dirty.hl
+      return:x:/-?value
+
+
+    /*
+     * Returns true if [_arg] editor is dirty.
+     * [_arg] canbe either editor ID or filepath.
      */
     hyper-ide.editors.get-editor-is-dirty
       eval-x:x:/+/*
@@ -324,6 +329,7 @@ create-widget:hyper-ide-main-container
      *
      * Will close all editors that have filenames starting with the specified [filter] path.
      * If [exact] is boolean "true", it will only delete the editor with the exact name of [filter].
+     * The default value for [filter] if not provided is "/", implying all editors will be closed.
      *
      * Useful for closing multiple editors, such as when a folder is deleted or something, in addition
      * to (of course) closing only a single editor (by setting exact to true).
@@ -346,7 +352,7 @@ create-widget:hyper-ide-main-container
   widgets
 
     /*
-     * Wrapper for our top toolbar and our "header" (which contains the file/folder-path).
+     * Wrapper for all toolbars.
      */
     div:hyper-ide-toolbar-wrapper
       class:row
@@ -375,6 +381,8 @@ create-widget:hyper-ide-main-container
               class:strip right hyper-ide-toolbar
               folder:@IDE/helpers/toolbars/secondary-toolbar/
               widgets:plugins
+
+
 
     /*
      * Wrapper for actual content.

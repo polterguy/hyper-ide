@@ -1,6 +1,6 @@
 
 /*
- * Finding textarea and returning its innerValue.
+ * Finding CodeMirror editor and returning its code.
  */
 hyper-ide.editors.get-active-editor-id
 

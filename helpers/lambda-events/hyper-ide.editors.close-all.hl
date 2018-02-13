@@ -2,10 +2,19 @@
 /*
  * Sanity checking arguments.
  */
-micro.lambda.contract.min:x:/..
-  filter:string
 micro.lambda.contract.optional:x:/..
   exact:bool
+  filter:string
+
+
+
+
+
+/*
+ * Defaults.
+ */
+.defaults
+  filter:/
 
 
 
@@ -13,7 +22,9 @@ micro.lambda.contract.optional:x:/..
 
 /*
  * Retrieving all open editors, and checking that there actually are any
- * open editors, and if not, returning early since there's nothing to do.
+ * open editors, and if not, returning early since there's nothing to do,
+ * making sure we evaluate any (optional) lambda callbacks provided by caller,
+ * which caller wants to have evaluated after closing all operation is done.
  */
 hyper-ide.editors.get-open-editors
 if:x:/@hyper-ide.editors.get-open-editors/*?count
@@ -50,7 +61,7 @@ for-each:x:/@hyper-ide.editors.get-open-editors/*
    */
   if
     starts-with:x:/@_dp/#?name
-      src:x:/../*/filter?value
+      src:x:(/../*/filter|/@.defaults/*/filter)/$?value
 
     /*
      * Checking if we need an exact match.
@@ -58,7 +69,7 @@ for-each:x:/@hyper-ide.editors.get-open-editors/*
     if:x:/../*/exact?value
       =:bool:true
       and:x:/@_dp/#?name
-        !=:x:/../*/filter?value
+        !=:x:(/../*/filter|/@.defaults/*/filter)/$?value
 
       /*
        * Caller wanted an exact match, and this was not an exact match.
@@ -71,13 +82,12 @@ for-each:x:/@hyper-ide.editors.get-open-editors/*
      */
     if
       hyper-ide.editors.get-editor-is-dirty:x:/@_dp/#?name
+      =:bool:true
 
       /*
-       * Editor is dirty, and [force] was not set to true, hence asking user to
-       * confirm that he wants to actually close the editor, giving him the
-       * option of saving its content first.
-       *
-       * Making sure we only show one dialog though.
+       * Editor is dirty, hence asking user to confirm that he wants to
+       * actually close the editor, giving him the option of saving its
+       * content first.
        */
       if
         fetch:x:/0/0?value
@@ -121,7 +131,7 @@ for-each:x:/@hyper-ide.editors.get-open-editors/*
                            * Saves given editor, and reinvokes self.
                            */
                           .file:x:/@_dp/#?name
-                          .filter:x:/../*/filter?value
+                          .filter:x:(/../*/filter|/@.defaults/*/filter)/$?value
                           .onclosed
                           hyper-ide.editors.save-active-editor:x:/@.file?value
 
@@ -147,9 +157,9 @@ for-each:x:/@hyper-ide.editors.get-open-editors/*
                            * Reinvokes self after having set editor to "clean".
                            */
                           .file:x:/@_dp/#?name
-                          .filter:x:/../*/filter?value
+                          .filter:x:(/../*/filter|/@.defaults/*/filter)/$?value
                           .onclosed
-                          hyper-ide.editors.set-editor-clean-flag:x:/@.file?value
+                          hyper-ide.editors.set-active-editor-clean-flag
 
                           /*
                            * Deleting modal widget, before we invoke "self".
@@ -277,7 +287,7 @@ else-if:x:/@hyper-ide.editors.get-open-editors/*?count
    * need to make sure our active editor becomes selected in our tree, due
    * to what occurs when deletion of a folder occurs, etc.
    */
-  hyper-ide.editors.set-active-editor:@hyper-ide.editors.get-open-editors/0?name
+  hyper-ide.editors.set-active-editor:x:/@hyper-ide.editors.get-open-editors/0?name
 
 
 

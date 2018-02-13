@@ -1,0 +1,42 @@
+
+/*
+ * Retrieving active editor.
+ */
+hyper-ide.editors.get-active-editor-id
+
+
+
+
+
+/*
+ * Verifying editor exists.
+ */
+if:x:/@hyper-ide.editors.get-active-editor-id?value
+
+  /*
+   * There is an active editor.
+   */
+  p5.web.widgets.find-first:x:/@hyper-ide.editors.get-active-editor-id?value
+    element:input
+    type:hidden
+  get-widget-property:x:/-/*/*?value
+    value
+  if:x:/-/*/*?value
+    =:dirty
+
+    /*
+     * Active editor is dirty.
+     */
+    return:bool:true
+
+  /*
+   * Active editor is not dirty.
+   */
+  return:bool:false
+
+else
+
+  /*
+   * Oops, no such editor.
+   */
+  throw:No active editor

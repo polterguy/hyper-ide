@@ -1,42 +1,42 @@
 
 /*
- * Avoiding having exceptions leave event.
+ * Saving active editor.
+ *
+ * First retrieving active editor, of any.
  */
-try
+hyper-ide.editors.get-active-editor-filepath
+
+
+
+
+
+/*
+ * Verifying there is an active editor.
+ */
+if:x:/@hyper-ide.editors.get-active-editor-filepath?value
 
   /*
-   * Retriving filename.
+   * There is a currently active editor, saving its content.
    */
-  hyper-ide.editors.get-active-editor-filepath
+  hyper-ide.editors.get-active-editor-code
+  save-file:x:/@hyper-ide.editors.get-active-editor-filepath?value
+    src:x:/@hyper-ide.editors.get-active-editor-code?value
 
   /*
-   * Checking if above invocation returned something.
+   * Making sure we update its "clean flag".
    */
-  if:x:/@hyper-ide.editors.get-active-editor-filepath?value
-
-    /*
-     * Saving editor, and providing some feedback to user.
-     */
-    hyper-ide.editors.save:x:/@hyper-ide.editors.get-active-editor-filepath?value
-    micro.windows.info:File was saved
-      class:micro-windows-info success
-
-    /*
-     * Returning success to caller.
-     */
-    return:bool:true
-
-  else
-
-    /*
-     * Oops, no active editor.
-     */
-    throw:No active editor
-
-catch
+  hyper-ide.editors.set-active-editor-clean-flag
 
   /*
-   * Displaying a friendly message to user.
+   * Providing some feedback to user.
    */
-  micro.windows.info:You don't have permissions to modify that file
+  micro.windows.info:Your code was successfully saved
+    class:micro-windows-info success
+
+else
+
+  /*
+   * No active editor, notifying user
+   */
+  micro.windows.info:There are no active editors
     class:micro-windows-info warning
