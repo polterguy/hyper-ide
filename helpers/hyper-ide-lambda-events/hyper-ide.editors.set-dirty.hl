@@ -1,0 +1,41 @@
+
+/*
+ * Sanity check.
+ */
+micro.lambda.contract.min:x:/..
+  editor:string
+
+
+
+
+
+/*
+ * Finding editor's hidden "dirty" field.
+ */
+p5.web.widgets.find-first:hyper-ide-editor-tab-editors
+  .editor:x:/../*/editor?value
+
+
+
+
+
+/*
+ * Verifying editor actually exists.
+ */
+if:x:/@p5.web.widgets.find-first/*/*?value
+
+  /*
+   * Editor exists.
+   */
+  p5.web.widgets.find-first:x:/-/*/*?value
+    element:input
+    type:hidden
+  set-widget-property:x:/-/*/*?value
+    value:dirty
+
+else
+
+  /*
+   * Oops, no such editor.
+   */
+  throw:No such editor

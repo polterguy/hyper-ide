@@ -1,0 +1,27 @@
+
+/*
+ * Finding textarea and returning its innerValue.
+ */
+hyper-ide.editors.get-active-id
+
+
+
+
+
+/*
+ * Checking if above invocation returned anything.
+ */
+if:x:/@hyper-ide.editors.get-active-id?value
+
+  /*
+   * Retrieves active editor's code, and returning it to caller.
+   */
+  micro.widgets.codemirror.get-value:x:/@hyper-ide.editors.get-active-id?value
+  return:x:/@micro.widgets.codemirror.get-value/*?value
+
+else
+
+  /*
+   * Oops, no active editor.
+   */
+  throw:No active editor

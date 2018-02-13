@@ -1,0 +1,42 @@
+
+/*
+ * Avoiding having exceptions leave event.
+ */
+try
+
+  /*
+   * Retriving filename.
+   */
+  hyper-ide.editors.get-active
+
+  /*
+   * Checking if above invocation returned something.
+   */
+  if:x:/@hyper-ide.editors.get-active?value
+
+    /*
+     * Saving editor, and providing some feedback to user.
+     */
+    hyper-ide.editors.save:x:/@hyper-ide.editors.get-active?value
+    micro.windows.info:File was saved
+      class:micro-windows-info success
+
+    /*
+     * Returning success to caller.
+     */
+    return:bool:true
+
+  else
+
+    /*
+     * Oops, no active editor.
+     */
+    throw:No active editor
+
+catch
+
+  /*
+   * Displaying a friendly message to user.
+   */
+  micro.windows.info:You don't have permissions to modify that file
+    class:micro-windows-info warning

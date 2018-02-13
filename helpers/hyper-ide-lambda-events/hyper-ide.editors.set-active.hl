@@ -1,0 +1,50 @@
+
+/*
+ * Sanity checking arguments.
+ */
+micro.lambda.contract.min:x:/..
+  editor:string
+
+
+
+
+
+/*
+ * Retrieving all open editors.
+ */
+hyper-ide.editors.get-open
+
+
+
+
+
+/*
+ * Verifying specified [editor] is found amongst open editors.
+ */
+if:x:@"/@hyper-ide.editors.get-open/*/""{0}"""
+  :x:/../*/editor?value
+
+  /*
+   * Editor passed in as [editor] was found.
+   *
+   * For simplicity reasons, we simply select tree view item associated
+   * with editor, since this will map up everything automatically for us.
+   */
+  add:x:/+/*/items
+    src:x:/../*/editor?value
+  micro.widgets.tree.select-items:hyper-ide-folder-tree-browser
+    items
+
+  /*
+   * Making sure we scroll our selected tree view item into view.
+   */
+  p5.web.widgets.find-first-like:hyper-ide-folder-tree-browser
+    class:tree-selected
+  p5.web.send-javascript:@"p5.$('{0}').el.scrollIntoView ({{behavior:'smooth'}});"
+    :x:/@p5.web.widgets.find-first-like/*/*?value
+
+  /*
+   * Returning true to caller, indicating that we had success in setting
+   * the current editor.
+   */
+  return:bool:true

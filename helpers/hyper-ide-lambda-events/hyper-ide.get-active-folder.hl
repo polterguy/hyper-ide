@@ -1,0 +1,21 @@
+
+/*
+ * Retrieving treeview's selected item, and verifying it's a folder.
+ */
+micro.widgets.tree.get-selected-items:hyper-ide-folder-tree-browser
+
+
+
+
+
+/*
+ * Verifying corrently active treeview item actually is a folder.
+ */
+if
+  ends-with:x:/@micro.widgets.tree.get-selected-items/*/*?name
+    src:/
+
+  /*
+   * Currently selected item is a folder.
+   */
+  return:x:/@micro.widgets.tree.get-selected-items/*/*?name

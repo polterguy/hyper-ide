@@ -1,0 +1,33 @@
+
+/*
+ * Refreshing folder explorer's currently activated folder.
+ *
+ * First retrieving selected treeview item
+ */
+hyper-ide.get-active-folder
+
+
+
+
+
+/*
+ * Then verifying that currently selected treeview item actually is a folder.
+ */
+if:x:/@hyper-ide.get-active-folder?value
+
+  /*
+   * There's a folder currently selected.
+   */
+  add:x:/+/*/items
+    src:x:/@hyper-ide.get-active-folder?value
+  micro.widgets.tree.refresh-items:hyper-ide-folder-tree-browser
+    force-expand:bool:true
+    items
+
+else
+
+  /*
+   * No folder currently selected, warning user.
+   */
+  micro.windows.info:No folder is currently selected
+    class:micro-windows-info warning

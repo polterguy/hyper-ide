@@ -1,0 +1,21 @@
+
+/*
+ * Finding all activate buttons for all editors, and returning their filenames.
+ */
+p5.web.widgets.find:hyper-ide-editor-tab-buttons
+  .activate
+get-widget-property:x:/@p5.web.widgets.find/*/*?value
+  .activate
+
+
+
+
+
+/*
+ * Iterating through all filenames returned above, and making sure we return
+ * them to caller.
+ */
+for-each:x:/@get-widget-property/*/*?value
+  add:x:/../*/return
+    src:x:/@_dp?value
+return

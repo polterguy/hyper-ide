@@ -1,0 +1,40 @@
+
+/*
+ * Sanity check.
+ */
+micro.lambda.contract.min:x:/..
+  editor:string
+
+
+
+
+
+/*
+ * Getting editor's content.
+ */
+hyper-ide.editors.get-code:x:/../*/editor?value
+
+
+
+
+
+/*
+ * Saving editor's content.
+ */
+save-file:x:/../*/editor?value
+  src:x:/@hyper-ide.editors.get-code?value
+
+
+
+
+
+/*
+ * Resetting editor's "dirty flag".
+ */
+p5.web.widgets.find-first:hyper-ide-editor-tab-editors
+  .editor:x:/../*/editor?value
+p5.web.widgets.find-first:x:/-/*/*?value
+  element:input
+  type:hidden
+set-widget-property:x:/-/*/*?value
+  value:clean

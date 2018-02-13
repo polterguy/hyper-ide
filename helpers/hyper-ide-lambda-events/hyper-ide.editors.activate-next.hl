@@ -1,0 +1,30 @@
+
+/*
+ * Finding all "activate buttons".
+ */
+p5.web.widgets.find:hyper-ide-editor-tab-buttons
+  .activate
+
+
+
+
+
+/*
+ * Checking if are more than one button, and if there are, making sure we
+ * "click" the next button in our chain.
+ */
+if:x:/@p5.web.widgets.find/*/*?count
+  >:int:1
+
+  /*
+   * Raising the "onclick" event for the activate button that is after the currently active one.
+   */
+  get-widget-property:x:/@p5.web.widgets.find/*/*?value
+    class
+  p5.web.widgets.ajax-events.raise:x:/@get-widget-property/*/*(/=~toggled)/./+?name
+    .onclick
+
+  /*
+   * Returning success to caller.
+   */
+  return:bool:true
