@@ -38,11 +38,8 @@ In addition, I would like to say a special thank you to the following people and
 
 * My three diamonds, you know who you are
 * Jeffrey Steadfast for giving me excellent support and help when ever I got stuck in MimeKit or MailKit
-* Good Web Design (at Twitter) for giving me good advice on colours for my skins
 * Svein Daniel Solvenus for providing feedback in the early stages of the project
-* Michael Desmond and James McCaffrey for believing in me, when nobody else did
-* Trolltech for inspiring my choice of license(s)
-* Microsoft and MSDN Magazine for giving me support, and creating a brilliant programming language and platform
+* Michael Desmond and James McCaffrey for allowing me to write three articles at MSDN Magazine
 * The Mono project for making my work possible
-* All my friends for literally keeping me alive, during this project, when I could not even afford to buy food, or pay my own rent, and for believing in me, when nobody else could
+* All my friends for literally keeping me alive, during this project, when I could not even afford to buy food, or pay my own rent, and for believing in me, when nobody else would
 * And last but not least, my beautiful and amazing _"wife"_ and partner, Lisbeth Aardal, for supporting me in a time of my life, when the word utter despair, was a much too soft of a description, for describing my status

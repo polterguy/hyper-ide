@@ -53,10 +53,7 @@ and create a modal confirmation window.
 /*
  * Includes CSS for our module.
  */
-p5.web.include-css-file
-  @MICRO/media/main.css
-  @MICRO/media/fonts.css
-  @MICRO/media/skins/serious.css
+micro.css.include
 
 /*
  * Creating main wire frame for module.
@@ -160,10 +157,7 @@ The **[add]** event, allows you to append new children into other nodes. However
 /*
  * Includes CSS for our module.
  */
-p5.web.include-css-file
-  @MICRO/media/main.css
-  @MICRO/media/fonts.css
-  @MICRO/media/skins/serious.css
+micro.css.include
 
 /*
  * Creating main wire frame for module.

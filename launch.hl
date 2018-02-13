@@ -333,6 +333,9 @@ create-widget:hyper-ide-main-container
      *
      * Useful for closing multiple editors, such as when a folder is deleted or something, in addition
      * to (of course) closing only a single editor (by setting exact to true).
+     *
+     * Notice, if one of your open editors have unsaved changes, the user will be warned, and
+     * asked if he wants to save his changes (or not).
      */
     hyper-ide.editors.close-all
       .signal
