@@ -17,7 +17,8 @@ create-event:hyper-ide.global-plugin.launch-hypereval
             class:toggled
 
           /*
-           * Checking if Hypereval is already loaded, at which point we delete it from page.
+           * Checking if Hypereval is already loaded, at which point we delete it from page,
+           * and return early.
            */
           if
             fetch:x:/0/0?value
@@ -28,14 +29,19 @@ create-event:hyper-ide.global-plugin.launch-hypereval
           /*
            * Launching Hypereval.
            */
-          create-widgets
-            container:hypereval-hyper-ide-plugin
-              class:container-fullscreen
-              widgets
-                div
-                  class:row
-                  widgets
-                    div
-                      class:col
-                      widgets
-                        hypereval.widgets.eval
+          create-widget:hypereval-hyper-ide-plugin
+            class:container-fullscreen
+            widgets
+              div
+                class:row
+                widgets
+                  div
+                    class:col
+                    widgets
+                      hypereval.widgets.eval
+                        auto-focus:false
+
+          /*
+           * Srolling Hypereval into view.
+           */
+          p5.web.send-javascript:@"p5.$('hypereval-hyper-ide-plugin').el.scrollIntoView ({behavior:'smooth'});"

@@ -27,7 +27,7 @@ return
     value:x:/../*/content?value
     auto-focus:true
     mode:hyperlambda
-    .keys
+    keys
       Alt-S:@"p5.$('hyper-ide-main-container').raise('.onsave');"
       Alt-X:@"p5.$('hyper-ide-main-container').raise('.onclose');"
       Alt-W:@"p5.$('hyper-ide-main-container').raise('.onnext');"

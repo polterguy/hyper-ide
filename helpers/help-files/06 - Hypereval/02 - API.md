@@ -37,3 +37,13 @@ pre-existing UX.
 * __[hypereval.widgets.eval.download-current-snippet]__ - Downloads the current snippet to client
 * __[hypereval.widgets.eval.import-files]__ - Imports the specified __[files]__ zip files, and/or Hyperlambda files into your database
 * __[hypereval.widgets.eval.new-snippet]__ - Opens up the _"create new snippet"_ window, allowing user to choose to create either an empty snippet, or creating a new snippet from a list of pre-defined templates
+* __[hypereval.widgets.eval.evaluate]__ - Evaluates whatever is in the CodeMirror editor
+* __[hypereval.widgets.eval.preview]__ - Previews currently loaded _"page"_ snippet in a new browser tab. Only works if current snippet is of type _"page"_
+* __[hypereval.widgets.eval.toggle-output]__ - Toggles visibility of output widget
+* __[hypereval.widgets.eval.show-delete-window]__ - Deletes currently loaded snippet, asking user to confirm deletion first
+
+### Event sinks
+
+The **[hypereval.widgets-eval]** event will raise an Active Event every time its content has been programmatically
+changed, due to saving or loading a new snippet for instance. If you are interested in _"listening in"_ on this
+event, feel free to subscribe to it by for instance creating your own widget lambda event, and name it **[hypereval.widgets.eval.active-snippet-changed]**.

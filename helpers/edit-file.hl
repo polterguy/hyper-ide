@@ -267,11 +267,11 @@ else
             :x:/@split/0/-?name
           value:x:/@load-file/*?value
           auto-focus:true
-          .keys
-            Alt-S:@"p5.$('hyper-ide-main-container').raise('.onsave');"
-            Alt-X:@"p5.$('hyper-ide-main-container').raise('.onclose');"
-            Alt-W:@"p5.$('hyper-ide-main-container').raise('.onnext');"
-            Alt-Q:@"p5.$('hyper-ide-main-container').raise('.onprevious');"
+          keys
+            Alt-S:p5.$('hyper-ide-main-container').raise('.onsave');
+            Alt-X:p5.$('hyper-ide-main-container').raise('.onclose');
+            Alt-W:p5.$('hyper-ide-main-container').raise('.onnext');
+            Alt-Q:p5.$('hyper-ide-main-container').raise('.onprevious');
 
   else
 
@@ -334,11 +334,11 @@ You can edit the file <em>'/hyper-ide/configuration/extension2cm-instance.hl'</e
                         mode:markdown
                         value:x:/@load-file/*?value
                         auto-focus:true
-                        .keys
-                          Alt-S:@"p5.$('hyper-ide-main-container').raise('.onsave');"
-                          Alt-X:@"p5.$('hyper-ide-main-container').raise('.onclose');"
-                          Alt-W:@"p5.$('hyper-ide-main-container').raise('.onnext');"
-                          Alt-Q:@"p5.$('hyper-ide-main-container').raise('.onprevious');"
+                        keys
+                          Alt-S:p5.$('hyper-ide-main-container').raise('.onsave');
+                          Alt-X:p5.$('hyper-ide-main-container').raise('.onclose');
+                          Alt-W:p5.$('hyper-ide-main-container').raise('.onnext');
+                          Alt-Q:p5.$('hyper-ide-main-container').raise('.onprevious');
 
 
 
