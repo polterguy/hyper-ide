@@ -20,8 +20,10 @@ micro.lambda.contract.min:x:/..
 /*
  * Retrieving selected folder, and making sure user has selected a folder.
  */
-hyper-ide.get-active-folder
-if:x:/-?value
+hyper-ide.folder-explorer.get-active-item
+if
+  ends-with:x:/@hyper-ide.folder-explorer.get-active-item?value
+    src:/
   not
 
   /*
@@ -50,14 +52,14 @@ for-each:x:/../*/files/*
   if
     fetch:x:/0/0?value
       file-exists:{0}{1}
-        :x:/@hyper-ide.get-active-folder?value
+        :x:/@hyper-ide.folder-explorer.get-active-item?value
         :x:/@_dp/#/*/original-filename?value
 
     /*
      * Destination file already exists, making sure we delete it.
      */
     delete-file:{0}{1}
-      :x:/@hyper-ide.get-active-folder?value
+      :x:/@hyper-ide.folder-explorer.get-active-item?value
       :x:/@_dp/#/*/original-filename?value
 
   /*
@@ -65,7 +67,7 @@ for-each:x:/../*/files/*
    */
   move-file:x:/@_dp/#?value
     dest:{0}{1}
-      :x:/@hyper-ide.get-active-folder?value
+      :x:/@hyper-ide.folder-explorer.get-active-item?value
       :x:/@_dp/#/*/original-filename?value
 
 
@@ -75,7 +77,7 @@ for-each:x:/../*/files/*
 /*
  * Refresh our destination folder.
  */
-hyper-ide.refresh-folder
+hyper-ide.folder-explorer.refresh-active-folder
 
 
 

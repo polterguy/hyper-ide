@@ -1,0 +1,32 @@
+
+/*
+ * Help button.
+ */
+button
+  innerValue:@"<span class=""icon-question""></span>"
+  title:Help
+  onclick
+
+    /*
+     * Toggling visibility of help files.
+     */
+    if
+      hyper-ide.help-visible
+
+      /*
+       * Help already visible, hiding it.
+       */
+      hyper-ide.close-help
+
+    else
+
+      /*
+       * Launching help.
+       */
+      micro.evaluate.file:@IDE/helpers/display-help.hl
+
+    /*
+     * Making sure we toggle toggled state of button.
+     */
+    micro.css.toggle:x:/../*/_event?value
+      class:toggled

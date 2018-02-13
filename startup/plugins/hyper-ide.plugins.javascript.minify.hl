@@ -16,9 +16,9 @@ create-event:hyper-ide.plugins.javascript.minify
          * Notice, we also calculate length of both original version and minified version,
          * to give user some feedback about how many percent/KB of the code was eliminated.
          */
-        hyper-ide.editors.get-active-code
-        length:x:/@hyper-ide.editors.get-active-code?value
-        p5.web.javascript.minify:x:/@hyper-ide.editors.get-active-code?value
+        hyper-ide.editors.get-active-editor-code
+        length:x:/@hyper-ide.editors.get-active-editor-code?value
+        p5.web.javascript.minify:x:/@hyper-ide.editors.get-active-editor-code?value
         length:x:/@p5.web.javascript.minify/*?value
 
         /*
@@ -38,7 +38,7 @@ create-event:hyper-ide.plugins.javascript.minify
         /*
          * Updating code.
          */
-        hyper-ide.editors.set-active-code:x:/@p5.web.javascript.minify/*?value
+        hyper-ide.editors.set-active-editor-code:x:/@p5.web.javascript.minify/*?value
 
         /*
          * Notifying user, making sure we inform him of how many percent of the code was removed.

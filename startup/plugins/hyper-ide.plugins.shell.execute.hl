@@ -11,7 +11,7 @@ create-event:hyper-ide.plugins.shell.execute
         /*
          * Retrieves editor's content.
          */
-        hyper-ide.editors.get-active-code
+        hyper-ide.editors.get-active-editor-code
 
         /*
          * Creates a temporary file, containing the current code from the active 
@@ -32,7 +32,7 @@ create-event:hyper-ide.plugins.shell.execute
           /*
            * Replacing CR/LF before we save file.
            */
-          p5.system.platform.normalize-string:x:/@hyper-ide.editors.get-active-code?value
+          p5.system.platform.normalize-string:x:/@hyper-ide.editors.get-active-editor-code?value
           save-file:~/temp/temp-bash.sh
             src:x:/@p5.system.platform.normalize-string?value
 
@@ -42,7 +42,7 @@ create-event:hyper-ide.plugins.shell.execute
            * Saving file with CR/LF as new line characters.
            */
           save-file:~/temp/temp-bash.sh
-            src:x:/@hyper-ide.editors.get-active-code?value
+            src:x:/@hyper-ide.editors.get-active-editor-code?value
 
         /*
          * Then making sure we wrap our execution inside of a try/catch block,
@@ -58,8 +58,8 @@ create-event:hyper-ide.plugins.shell.execute
            * Figuring out "working folder", which is the folder where the original
            * file can be found.
            */
-          hyper-ide.editors.get-active
-          split:x:/@hyper-ide.editors.get-active?value
+          hyper-ide.editors.get-active-editor-filepath
+          split:x:/@hyper-ide.editors.get-active-editor-filepath?value
             =:/
           set:x:/@split/0/-
           join:x:/@split/*?name

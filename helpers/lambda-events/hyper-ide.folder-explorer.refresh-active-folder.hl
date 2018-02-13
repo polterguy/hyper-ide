@@ -4,7 +4,7 @@
  *
  * First retrieving selected treeview item
  */
-hyper-ide.get-active-folder
+hyper-ide.folder-explorer.get-active-item
 
 
 
@@ -13,16 +13,23 @@ hyper-ide.get-active-folder
 /*
  * Then verifying that currently selected treeview item actually is a folder.
  */
-if:x:/@hyper-ide.get-active-folder?value
+if
+  ends-with:x:/@hyper-ide.folder-explorer.get-active-item?value
+    src:/
 
   /*
    * There's a folder currently selected.
    */
   add:x:/+/*/items
-    src:x:/@hyper-ide.get-active-folder?value
+    src:x:/@hyper-ide.folder-explorer.get-active-item?value
   micro.widgets.tree.refresh-items:hyper-ide-folder-tree-browser
     force-expand:bool:true
     items
+
+  /*
+   * Returning success to caller.
+   */
+  return:bool:true
 
 else
 

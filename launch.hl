@@ -62,7 +62,7 @@ p5.web.include-css-file:@IDE/media/main.css?v={0}
 /*
  * Setting title of our page, making sure we display version number of Hyper IDE.
  */
-p5.web.page.set-title:Hyper IDE {0}
+p5.web.page.set-title:Hyper IDE version {0}
   :x:/@hyper-ide.version?value
 
 
@@ -95,7 +95,7 @@ if:x:(/@p5.auth.my-settings.get/*/codemirror/*/page-scroll|/@.defaults/*/page-sc
 /*
  * Adding all "global" plugins.
  */
-insert-before:x:/../*/create-widget/**/widgets/=plugins/0/-2
+add:x:/../*/create-widget/**/widgets/=plugins
   micro.evaluate.file:@IDE/helpers/get-plugins.hl
     type:hyper-ide.global-plugin
 
@@ -104,7 +104,7 @@ insert-before:x:/../*/create-widget/**/widgets/=plugins/0/-2
 
 
 /*
- * Creating main Hyper IDE container.
+ * Creating main Hyper IDE container widget.
  */
 create-widget:hyper-ide-main-container
   class:container-fullscreen hyper-ide-container{0}
@@ -112,14 +112,14 @@ create-widget:hyper-ide-main-container
 
 
   /*
-   * Helper Ajax events, necessary to map keyboard shortcuts, among other things.
+   * Helper Ajax events, necessary to map keyboard shortcuts.
    */
   .onsave
 
     /*
      * Saving active editor's content.
      */
-    hyper-ide.editors.save-active
+    hyper-ide.editors.save-active-editor
 
 
   .onclose
@@ -127,7 +127,7 @@ create-widget:hyper-ide-main-container
     /*
      * Closing active editor.
      */
-    hyper-ide.editors.close-active
+    hyper-ide.editors.close-active-editor
 
 
   .onprevious
@@ -135,7 +135,7 @@ create-widget:hyper-ide-main-container
     /*
      * Activating "previous editor" in chain of open editors.
      */
-    hyper-ide.editors.activate-previous
+    hyper-ide.editors.activate-previous-editor
 
 
   .onnext
@@ -143,7 +143,7 @@ create-widget:hyper-ide-main-container
     /*
      * Activating "next editor" in chain of open editors.
      */
-    hyper-ide.editors.activate-next
+    hyper-ide.editors.activate-next-editor
 
 
   events
@@ -170,7 +170,7 @@ create-widget:hyper-ide-main-container
      * the session, to avoid having automatic destruction of session occur after 20
      * minutes of inactivity.
      */
-    hyper-ide._pingback
+    hyper-ide._pingback-session-keep-alive
 
       /*
        * Pingbacking server 10 minutes from now.
@@ -183,56 +183,61 @@ create-widget:hyper-ide-main-container
            * Simply creating a new pingback, which will re-touch our session object
            * on the server 10 minutes from now.
            */
-          hyper-ide._pingback
+          hyper-ide._pingback-session-keep-alive
 
 
     /*
-     * Returns the path for the currently selected folder, if any.
+     * Returns the path for the currently selected item, if any.
      */
-    hyper-ide.get-active-folder
-      micro.evaluate.file:@IDE/helpers/hyper-ide-lambda-events/hyper-ide.get-active-folder.hl
-      return:x:/-?value
+    hyper-ide.folder-explorer.get-active-item
+
+      /*
+       * Returning treeview's selected item.
+       */
+      micro.widgets.tree.get-selected-items:hyper-ide-folder-tree-browser
+      return:x:/@micro.widgets.tree.get-selected-items/*/*?name
 
 
     /*
      * Refreshes the currently active folder, if any.
      */
-    hyper-ide.refresh-folder
-      micro.evaluate.file:@IDE/helpers/hyper-ide-lambda-events/hyper-ide.refresh-folder.hl
+    hyper-ide.folder-explorer.refresh-active-folder
+      micro.evaluate.file:@IDE/helpers/lambda-events/hyper-ide.folder-explorer.refresh-active-folder.hl
+      return:x:/-?value
 
 
     /*
      * Returns file paths for all open editors.
      */
-    hyper-ide.editors.get-open
-      micro.evaluate.file:@IDE/helpers/hyper-ide-lambda-events/hyper-ide.editors.get-open.hl
+    hyper-ide.editors.get-open-editors
+      micro.evaluate.file:@IDE/helpers/lambda-events/hyper-ide.editors.get-open-editors.hl
       return:x:/-/*
 
 
     /*
      * Returns ID for active editor, if any.
      */
-    hyper-ide.editors.get-active-id
-      micro.evaluate.file:@IDE/helpers/hyper-ide-lambda-events/hyper-ide.editors.get-active-id.hl
+    hyper-ide.editors.get-active-editor-id
+      micro.evaluate.file:@IDE/helpers/lambda-events/hyper-ide.editors.get-active-editor-id.hl
       return:x:/-?value
 
 
     /*
      * Returns file path for active editor, if any.
      */
-    hyper-ide.editors.get-active
-      micro.evaluate.file:@IDE/helpers/hyper-ide-lambda-events/hyper-ide.editors.get-active.hl
+    hyper-ide.editors.get-active-editor-filepath
+      micro.evaluate.file:@IDE/helpers/lambda-events/hyper-ide.editors.get-active-editor-filepath.hl
       return:x:/-?value
 
 
     /*
      * Sets the active editor.
      *
-     * Pass in [_arg] being filename of editor to activate.
+     * Pass in [_arg] being either filename or ID of editor to activate.
      */
-    hyper-ide.editors.set-active
+    hyper-ide.editors.set-active-editor
       eval-x:x:/+/*
-      micro.evaluate.file:@IDE/helpers/hyper-ide-lambda-events/hyper-ide.editors.set-active.hl
+      micro.evaluate.file:@IDE/helpers/lambda-events/hyper-ide.editors.set-active-editor.hl
         editor:x:/../*/_arg?value
       return:x:/-?value
 
@@ -240,99 +245,69 @@ create-widget:hyper-ide-main-container
     /*
      * Activating previous editor in chain.
      */
-    hyper-ide.editors.activate-previous
-      micro.evaluate.file:@IDE/helpers/hyper-ide-lambda-events/hyper-ide.editors.activate-previous.hl
+    hyper-ide.editors.activate-previous-editor
+      micro.evaluate.file:@IDE/helpers/lambda-events/hyper-ide.editors.activate-previous-editor.hl
       return:x:/-?value
 
 
     /*
      * Activating next editor in chain.
      */
-    hyper-ide.editors.activate-next
-      micro.evaluate.file:@IDE/helpers/hyper-ide-lambda-events/hyper-ide.editors.activate-next.hl
+    hyper-ide.editors.activate-next-editor
+      micro.evaluate.file:@IDE/helpers/lambda-events/hyper-ide.editors.activate-next-editor.hl
       return:x:/-?value
 
 
     /*
      * Returns code for currently active editor.
      */
-    hyper-ide.editors.get-active-code
-      micro.evaluate.file:@IDE/helpers/hyper-ide-lambda-events/hyper-ide.editors.get-active-code.hl
+    hyper-ide.editors.get-active-editor-code
+      micro.evaluate.file:@IDE/helpers/lambda-events/hyper-ide.editors.get-active-editor-code.hl
       return:x:/-?value
 
 
     /*
      * Sets code for currently active editor.
      */
-    hyper-ide.editors.set-active-code
+    hyper-ide.editors.set-active-editor-code
       eval-x:x:/+/*
-      micro.evaluate.file:@IDE/helpers/hyper-ide-lambda-events/hyper-ide.editors.set-active-code.hl
+      micro.evaluate.file:@IDE/helpers/lambda-events/hyper-ide.editors.set-active-editor-code.hl
         code:x:/../*/_arg?value
       return:x:/-?value
 
 
     /*
-     * Returns code for specified [_arg] editor.
-     */
-    hyper-ide.editors.get-code
-      eval-x:x:/+/*
-      micro.evaluate.file:@IDE/helpers/hyper-ide-lambda-events/hyper-ide.editors.get-code.hl
-        editor:x:/../*/_arg?value
-      return:x:/-?value
-
-
-    /*
-     * Sets the code for specified [_arg] editor.
-     * Pass in new code as [content].
-     */
-    hyper-ide.editors.set-code
-      eval-x:x:/+/*
-      micro.evaluate.file:@IDE/helpers/hyper-ide-lambda-events/hyper-ide.editors.set-code.hl
-        editor:x:/../*/_arg?value
-        code:x:/../*/content?value
-
-
-    /*
-     * Saves specified [_arg] editor's content.
-     */
-    hyper-ide.editors.save
-      eval-x:x:/+/*
-      micro.evaluate.file:@IDE/helpers/hyper-ide-lambda-events/hyper-ide.editors.save.hl
-        editor:x:/../*/_arg?value
-
-
-    /*
      * Saves active editor's content.
      */
-    hyper-ide.editors.save-active
-      micro.evaluate.file:@IDE/helpers/hyper-ide-lambda-events/hyper-ide.editors.save-active.hl
+    hyper-ide.editors.save-active-editor
+      micro.evaluate.file:@IDE/helpers/lambda-events/hyper-ide.editors.save-active-editor.hl
       return:x:/-?value
 
 
     /*
      * Removes the "dirty" flag for specified [_arg] editor.
      */
-    hyper-ide.editors.set-clean
+    hyper-ide.editors.set-editor-clean-flag
       eval-x:x:/+/*
-      micro.evaluate.file:@IDE/helpers/hyper-ide-lambda-events/hyper-ide.editors.set-clean.hl
+      micro.evaluate.file:@IDE/helpers/lambda-events/hyper-ide.editors.set-editor-clean-flag.hl
         editor:x:/../*/_arg?value
 
 
     /*
      * Adds the "dirty" flag for specified [_arg] editor.
      */
-    hyper-ide.editors.set-dirty
+    hyper-ide.editors.set-editor-dirty-flag
       eval-x:x:/+/*
-      micro.evaluate.file:@IDE/helpers/hyper-ide-lambda-events/hyper-ide.editors.set-dirty.hl
+      micro.evaluate.file:@IDE/helpers/lambda-events/hyper-ide.editors.set-editor-dirty-flag.hl
         editor:x:/../*/_arg?value
 
 
     /*
      * Returns true if current editor is dirty.
      */
-    hyper-ide.editors.is-dirty
+    hyper-ide.editors.get-editor-is-dirty
       eval-x:x:/+/*
-      micro.evaluate.file:@IDE/helpers/hyper-ide-lambda-events/hyper-ide.editors.is-dirty.hl
+      micro.evaluate.file:@IDE/helpers/lambda-events/hyper-ide.editors.get-editor-is-dirty.hl
         editor:x:/../*/_arg?value
       return:x:/-?value
 
@@ -340,8 +315,8 @@ create-widget:hyper-ide-main-container
     /*
      * Close active editor.
      */
-    hyper-ide.editors.close-active
-      micro.evaluate.file:@IDE/helpers/hyper-ide-lambda-events/hyper-ide.editors.close-active.hl
+    hyper-ide.editors.close-active-editor
+      micro.evaluate.file:@IDE/helpers/lambda-events/hyper-ide.editors.close-active-editor.hl
 
 
     /*
@@ -353,11 +328,11 @@ create-widget:hyper-ide-main-container
      * Useful for closing multiple editors, such as when a folder is deleted or something, in addition
      * to (of course) closing only a single editor (by setting exact to true).
      */
-    hyper-ide.editors.close
+    hyper-ide.editors.close-all
       .signal
       add:x:/+
         src:x:/@.signal/--/<-
-      micro.evaluate.file:@IDE/helpers/hyper-ide-lambda-events/hyper-ide.editors.close.hl
+      micro.evaluate.file:@IDE/helpers/lambda-events/hyper-ide.editors.close-all.hl
       return:x:/-?value
 
 
@@ -366,7 +341,7 @@ create-widget:hyper-ide-main-container
     /*
      * Starting "pingback loop", to make sure we stay inside of session.
      */
-    hyper-ide._pingback
+    hyper-ide._pingback-session-keep-alive
 
   widgets
 
@@ -383,368 +358,47 @@ create-widget:hyper-ide-main-container
             /*
              * Our primary toolbar.
              *
-             * Contains login/logout, home button, and "system wide" plugins.
+             * Contains home button, and system wide (Phosphorus Five) global
+             * plugins.
              */
-            div
+            micro.widgets.file
               class:strip right hyper-ide-toolbar
-              style:"float:right;"
-              widgets
-
-                /*
-                 * Home button, launches desktop (or default app).
-                 */
-                button
-                  innerValue:@"<span class=""icon-home3""></span>"
-                  title:Close Hyper IDE
-                  onclick
-
-                    /*
-                     * Making sure we close all editors, and checking if event
-                     * returns "false", which implies we have unsaved changes,
-                     * and we need to ask user about confirmation before we allow
-                     * him to leave page.
-                     */
-                    hyper-ide.editors.close
-                      filter:/
-                      .onclosed
-
-                        /*
-                         * Redirecting user to server's root URL.
-                         */
-                        p5.web.get-root-location
-                        p5.web.set-location:x:/-?value
+              folder:@IDE/helpers/toolbars/main-toolbar/
 
             /*
              * Our secondary toolbar.
              *
-             * Contains help, settings, close all editors and "global plugins" for Hyper IDE.
+             * Contains help button, settings button, close all editors button,
+             * and "global plugins" for Hyper IDE.
              */
-            div:hyper-ide-toolbars
+            micro.widgets.file:hyper-ide-toolbars
               class:strip right hyper-ide-toolbar
+              folder:@IDE/helpers/toolbars/secondary-toolbar/
               widgets:plugins
-
-                /*
-                 * Help button.
-                 */
-                button
-                  innerValue:@"<span class=""icon-question""></span>"
-                  title:Help
-                  onclick
-
-                    /*
-                     * Toggling visibility of help files.
-                     */
-                    if
-                      hyper-ide.help-visible
-
-                      /*
-                       * Help already visible, hiding it.
-                       */
-                      hyper-ide.close-help
-
-                    else
-
-                      /*
-                       * Launching help.
-                       */
-                      micro.evaluate.file:@IDE/helpers/display-help.hl
-
-                    /*
-                     * Making sure we toggle toggled state of button.
-                     */
-                    micro.css.toggle:x:/../*/_event?value
-                      class:toggled
-
-                /*
-                 * Settings button.
-                 */
-                button
-                  innerValue:@"<span class=""icon-cog""></span>"
-                  title:Settings
-                  oninit
-
-                    /*
-                     * Verifying user is "root", and if not, deleting the settings button,
-                     * since it among other things, allows the user to enable and disable modules,
-                     * at a global level.
-                     */
-                    whoami
-                    if:x:/-/*/role?value
-                      !=:root
-                      delete-widget:x:/../*/_event?value
-
-                  onclick
-
-                    /*
-                     * Allowing user to modify his settings.
-                     */
-                    micro.codemirror.settings
-                      checkbox
-                        info:Browser scroll
-                        title:If true, will enable the browser scroll bars when document(s) overflows the size of viewport
-                        .data-field:page-scroll
-                        oninit
-
-                          /*
-                           * Making sure we retrieve existing value.
-                           */
-                          .defaults
-                            page-scroll:bool:false
-                          p5.auth.my-settings.get
-                          if:x:(/@p5.auth.my-settings.get/*/codemirror/*/page-scroll|/../*/.defaults/*/page-scroll)/$?value
-                            =:bool:true
-                            set-widget-property:x:/../*/_event?value
-                              checked
-
-                /*
-                 * Bookmark button.
-                 */
-                button:hyper-ide-bookmark-button
-                  innerValue:@"<span class=""icon-bookmark""></span>"
-                  title:Copy URL to current path
-                  disabled
-                  onclick
-
-                    /*
-                     * Shows the URL for the current path to the user.
-                     */
-                    create-widget:hyper-ide-bookmark-url
-                      element:input
-                      type:text
-                      class:hyper-ide-bookmark-textbox
-                      onkeydown:@"if (event.keyCode == 13 || event.keyCode == 27) {p5.$('hyper-ide-bookmark-url').raise('.onclose');return false;}"
-                      onblur
-
-                        /*
-                         * Simply invoking [.onclose] when widget looses focus.
-                         */
-                        p5.web.widgets.ajax-events.raise:x:/../*/_event?value
-                          .onclose
-
-                      .onclose
-
-                        /*
-                         * Deleting widget.
-                         */
-                        delete-widget:x:/../*/_event?value
-
-                      oninit
-
-                        /*
-                         * Figuring out the URL for current path, and selecting all text.
-                         */
-                        micro.widgets.tree.get-selected-items:hyper-ide-folder-tree-browser
-                        p5.web.get-location-url
-                        hyper-ide.editors.get-active
-                        set-widget-property:x:/../*/_event?value
-                          value:{0}?path={1}
-                            :x:/@p5.web.get-location-url?value
-                            :x:/@micro.widgets.tree.get-selected-items/0/0?name
-                        micro.page.set-focus:x:/../*/_event?value
-
-                /*
-                 * Close all editors button.
-                 */
-                button:hyper-ide-close-all-editors
-                  innerValue:@"<span class=""icon-cross""></span>"
-                  title:Close all editors
-                  disabled
-                  onclick
-
-                    /*
-                     * Making sure we close all editors.
-                     */
-                    hyper-ide.editors.close
-                      filter:/
 
     /*
      * Wrapper for actual content.
      *
-     * This is where our editors are put, and our "solution explorer" tree view, 
-     * among other things.
+     * This is where our editors and our folder explorer tree view can be found.
      */
     div:hyper-ide-content-wrapper
       class:row hyper-ide-content
       widgets
 
         /*
-         * Wrapper for our file browser, or our "solution explorer" if you wish.
+         * Wrapper for our folder explorer.
          */
         div:hyper-ide-file-browser-wrapper
           class:col-30 hyper-ide-solution-explorer-col
           widgets
-            container
+
+            /*
+             * Our actual folder explorer
+             */
+            micro.widgets.file
               class:air-inner shaded rounded hyper-ide-solution-explorer
-              widgets
-
-                /*
-                 * Our TreeView that actually allows the user to browse 
-                 * files on his server.
-                 */
-                micro.widgets.tree:hyper-ide-folder-tree-browser
-                  class:micro-widgets-tree hyper-ide-tree-view
-                  items
-                    /:/
-
-                  oninit
-
-                    /*
-                     * Expanding root item.
-                     */
-                    micro.widgets.tree.toggle-items:hyper-ide-folder-tree-browser
-                      items
-                        /
-
-                  /*
-                   * Callback invoked when TreeView wants more items.
-                   */
-                  .onexpand
-
-                    /*
-                     * Making sure we wrap our stuff inside of a try/catch block,
-                     * since this will prevent the default exception handler from
-                     * being evaluated, in case user tries to access file objects
-                     * he does not have permission to access.
-                     */
-                    try
-
-                      /*
-                       * We need to track whether or not an exception occurs, from
-                       * our [.onexpand], and into our [.onselect]. We do this by setting
-                       * a "signal" viewstate value if an exception occurs.
-                       *
-                       * However, we need to default its value to empty, in case
-                       * no exception occurs.
-                       */
-                      p5.web.viewstate.set:hyper-ide.no-select
-
-                      /*
-                       * Checking if this is a request for a folder.
-                       */
-                      if
-                        ends-with:x:/../*/_item-id?value
-                          src:/
-
-                        /*
-                         * Invoking file responsible for actually retrieving files
-                         * and folders structure, and returning items to caller.
-                         */
-                        eval-x:x:/+/*
-                        micro.evaluate.file:@IDE/helpers/get-file-objects.hl
-                          folder:x:/../*/_item-id?value
-                        add:x:/..if/*/return/*/items
-                          src:x:/@micro.evaluate.file/*
-                        return
-                          items
-
-                    catch
-
-                      /*
-                       * Giving user some feedback, and making sure we delete any
-                       * additional toolbars that was created.
-                       */
-                      micro.windows.info:x:/@message?value
-                        class:micro-windows-info warning
-                      if
-                        fetch:x:/0/0?value
-                          widget-exists:hyper-ide-active-file-object-toolbar
-                        delete-widget:hyper-ide-active-file-object-toolbar
-
-                      /*
-                       * Making sure we don't try to select item in any ways 
-                       * further down in file.
-                       */
-                      p5.web.viewstate.set:hyper-ide.no-select
-                        src:bool:true
-
-                  /*
-                   * Callback invoked when an item ise selected.
-                   */
-                  .onselect
-
-                    /*
-                     * Checking if we had an exception while invoking our [.onexpand],
-                     * at which point we don't evaluate this lambda.
-                     */
-                    p5.web.viewstate.get:hyper-ide.no-select
-                    if:x:/-/*?value
-
-                      /*
-                       * Re-setting exception signal and returning early.
-                       */
-                      p5.web.viewstate.set:hyper-ide.no-select
-                      return
-
-                    /*
-                     * Making sure we wrap our stuff inside of a try/catch block,
-                     * since this will prevent the default exception handler from
-                     * being evaluated, in case user tries to access file objects
-                     * he does not have permission to access.
-                     */
-                    try
-
-                      /*
-                       * Checking if this is a de-select invocation.
-                       */
-                      if:x:/../*/items/*?count
-                        =:int:0
-
-                        /*
-                         * De-select invocation.
-                         */
-                        return
-
-                      /*
-                       * Checking if this is a request for a folder or a file.
-                       */
-                      if
-                        ends-with:x:/../*/items/0?name
-                          src:/
-
-                        /*
-                         * Request for folder.
-                         *
-                         * Invoking file responsible for selecting the folder.
-                         */
-                        eval-x:x:/+/*
-                        micro.evaluate.file:@IDE/helpers/select-folder.hl
-                          folder:x:/../*/items/0?name
-
-                      else
-
-                        /*
-                         * Request for file.
-                         *
-                         * Invoking file responsible for selecting the file.
-                         */
-                        eval-x:x:/+/*
-                        micro.evaluate.file:@IDE/helpers/edit-file.hl
-                          file:x:/../*/items/0?name
-
-                      /*
-                       * Making sure we enable our "bookmark button".
-                       */
-                      delete-widget-property:hyper-ide-bookmark-button
-                        disabled
-
-                    catch
-
-                      /*
-                       * Giving user some feedback, and making sure we delete any
-                       * additional toolbars that was created.
-                       */
-                      micro.windows.info:x:/@message?value
-                        class:micro-windows-info warning
-                      if
-                        fetch:x:/0/0?value
-                          widget-exists:hyper-ide-active-file-object-toolbar
-                        delete-widget:hyper-ide-active-file-object-toolbar
-
-                      /*
-                       * Returning false to let caller know we don't want to invoke
-                       * our [.onexpand] lambda callback.
-                       */
-                      return:bool:false
+              files
+                @IDE/helpers/folder-explorer.hl
 
         /*
          * Wrapper for our file editor.

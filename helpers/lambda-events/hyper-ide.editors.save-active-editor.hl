@@ -7,17 +7,17 @@ try
   /*
    * Retriving filename.
    */
-  hyper-ide.editors.get-active
+  hyper-ide.editors.get-active-editor-filepath
 
   /*
    * Checking if above invocation returned something.
    */
-  if:x:/@hyper-ide.editors.get-active?value
+  if:x:/@hyper-ide.editors.get-active-editor-filepath?value
 
     /*
      * Saving editor, and providing some feedback to user.
      */
-    hyper-ide.editors.save:x:/@hyper-ide.editors.get-active?value
+    hyper-ide.editors.save:x:/@hyper-ide.editors.get-active-editor-filepath?value
     micro.windows.info:File was saved
       class:micro-windows-info success
 

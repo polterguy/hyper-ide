@@ -12,7 +12,7 @@ micro.lambda.contract.min:x:/..
  * First finding active editor's textarea, and updating it, in case
  * other parts of our code tries to retrieve it during the current request.
  */
-hyper-ide.editors.get-active-id
+hyper-ide.editors.get-active-editor-id
 
 
 
@@ -22,13 +22,13 @@ hyper-ide.editors.get-active-id
  * Checking if above invocation returned anything, at which point we
  * update editor's content.
  */
-if:x:/@hyper-ide.editors.get-active-id?value
+if:x:/@hyper-ide.editors.get-active-editor-id?value
 
   /*
    * Updating value of CodeMirror instance on client side.
    */
   eval-x:x:/+/*
-  micro.widgets.codemirror.set-value:x:/@hyper-ide.editors.get-active-id?value
+  micro.widgets.codemirror.set-value:x:/@hyper-ide.editors.get-active-editor-id?value
     content:x:/../*/code?value
 
   /*

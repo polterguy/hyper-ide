@@ -1,0 +1,15 @@
+
+/*
+ * Close all editors button.
+ */
+button:hyper-ide-close-all-editors
+  innerValue:@"<span class=""icon-cross""></span>"
+  title:Close all editors
+  disabled
+  onclick
+
+    /*
+     * Making sure we close all editors.
+     */
+    hyper-ide.editors.close-all
+      filter:/

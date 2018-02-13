@@ -2,7 +2,7 @@
 /*
  * Finding textarea and returning its innerValue.
  */
-hyper-ide.editors.get-active-id
+hyper-ide.editors.get-active-editor-id
 
 
 
@@ -11,12 +11,12 @@ hyper-ide.editors.get-active-id
 /*
  * Checking if above invocation returned anything.
  */
-if:x:/@hyper-ide.editors.get-active-id?value
+if:x:/@hyper-ide.editors.get-active-editor-id?value
 
   /*
    * Retrieves active editor's code, and returning it to caller.
    */
-  micro.widgets.codemirror.get-value:x:/@hyper-ide.editors.get-active-id?value
+  micro.widgets.codemirror.get-value:x:/@hyper-ide.editors.get-active-editor-id?value
   return:x:/@micro.widgets.codemirror.get-value/*?value
 
 else

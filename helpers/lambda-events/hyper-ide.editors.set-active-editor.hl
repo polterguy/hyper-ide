@@ -12,7 +12,35 @@ micro.lambda.contract.min:x:/..
 /*
  * Retrieving all open editors.
  */
-hyper-ide.editors.get-open
+hyper-ide.editors.get-open-editors
+
+
+
+
+
+/*
+ * Checking if specified [editor] argument is a filepath.
+ */
+if
+  starts-with:x:/../*/editor?value
+    src:/
+  not
+
+  /*
+   * Specified [editor] argument is not a filepath, assuming it's the ID of our
+   * CodeMirror editor, hence retrieving CodeMirror editor's filepath, which can
+   * be found in CodeMirror editor's parent widgets [.editor] attribute.
+   */
+  p5.web.widgets.get-parent:x:/../*/editor?value
+  get-widget-property:x:/-/*/*?value
+    .editor
+
+  /*
+   * Updating [editor] argument to reflect filepath of editor caller
+   * wants to activate.
+   */
+  set:x:/../*/editor?value
+    src:x:/@get-widget-property/*/*?value
 
 
 
@@ -21,7 +49,7 @@ hyper-ide.editors.get-open
 /*
  * Verifying specified [editor] is found amongst open editors.
  */
-if:x:@"/@hyper-ide.editors.get-open/*/""{0}"""
+if:x:@"/@hyper-ide.editors.get-open-editors/*/""{0}"""
   :x:/../*/editor?value
 
   /*

@@ -2,7 +2,7 @@
 /*
  * Retrieving active editor, and closing it.
  */
-hyper-ide.editors.get-active
+hyper-ide.editors.get-active-editor-filepath
 if:x:/-?value
   not
 
@@ -20,6 +20,6 @@ if:x:/-?value
  * [exact] to make sure only active editor is closed.
  */
 eval-x:x:/+/*
-hyper-ide.editors.close
-  filter:x:/@hyper-ide.editors.get-active?value
+hyper-ide.editors.close-all
+  filter:x:/@hyper-ide.editors.get-active-editor-filepath?value
   exact:bool:true

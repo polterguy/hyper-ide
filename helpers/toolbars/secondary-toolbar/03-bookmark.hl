@@ -1,0 +1,46 @@
+
+/*
+ * Bookmark button.
+ */
+button:hyper-ide-bookmark-button
+  innerValue:@"<span class=""icon-bookmark""></span>"
+  title:Copy URL to current path
+  disabled
+  onclick
+
+    /*
+     * Shows the URL for the current path to the user.
+     */
+    create-widget:hyper-ide-bookmark-url
+      element:input
+      type:text
+      class:hyper-ide-bookmark-textbox
+      onkeydown:@"if (event.keyCode == 13 || event.keyCode == 27) {p5.$('hyper-ide-bookmark-url').raise('.onclose');return false;}"
+      onblur
+
+        /*
+         * Simply invoking [.onclose] when widget looses focus.
+         */
+        p5.web.widgets.ajax-events.raise:x:/../*/_event?value
+          .onclose
+
+      .onclose
+
+        /*
+         * Deleting widget.
+         */
+        delete-widget:x:/../*/_event?value
+
+      oninit
+
+        /*
+         * Figuring out the URL for current path, and selecting all text.
+         */
+        micro.widgets.tree.get-selected-items:hyper-ide-folder-tree-browser
+        p5.web.get-location-url
+        hyper-ide.editors.get-active-editor-filepath
+        set-widget-property:x:/../*/_event?value
+          value:{0}?path={1}
+            :x:/@p5.web.get-location-url?value
+            :x:/@micro.widgets.tree.get-selected-items/0/0?name
+        micro.page.set-focus:x:/../*/_event?value

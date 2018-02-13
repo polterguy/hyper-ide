@@ -1,0 +1,168 @@
+/*
+ * Our TreeView that actually allows the user to browse 
+ * files on his server.
+ */
+micro.widgets.tree:hyper-ide-folder-tree-browser
+  class:micro-widgets-tree hyper-ide-tree-view
+  items
+    /:/
+
+  oninit
+
+    /*
+     * Expanding root item.
+     */
+    micro.widgets.tree.toggle-items:hyper-ide-folder-tree-browser
+      items
+        /
+
+  /*
+   * Callback invoked when TreeView wants more items.
+   */
+  .onexpand
+
+    /*
+     * Making sure we wrap our stuff inside of a try/catch block,
+     * since this will prevent the default exception handler from
+     * being evaluated, in case user tries to access file objects
+     * he does not have permission to access.
+     */
+    try
+
+      /*
+       * We need to track whether or not an exception occurs, from
+       * our [.onexpand], and into our [.onselect]. We do this by setting
+       * a "signal" viewstate value if an exception occurs.
+       *
+       * However, we need to default its value to empty, in case
+       * no exception occurs.
+       */
+      p5.web.viewstate.set:hyper-ide.no-select
+
+      /*
+       * Checking if this is a request for a folder.
+       */
+      if
+        ends-with:x:/../*/_item-id?value
+          src:/
+
+        /*
+         * Invoking file responsible for actually retrieving files
+         * and folders structure, and returning items to caller.
+         */
+        eval-x:x:/+/*
+        micro.evaluate.file:@IDE/helpers/get-file-objects.hl
+          folder:x:/../*/_item-id?value
+        add:x:/..if/*/return/*/items
+          src:x:/@micro.evaluate.file/*
+        return
+          items
+
+    catch
+
+      /*
+       * Giving user some feedback, and making sure we delete any
+       * additional toolbars that was created.
+       */
+      micro.windows.info:x:/@message?value
+        class:micro-windows-info warning
+      if
+        fetch:x:/0/0?value
+          widget-exists:hyper-ide-active-file-object-toolbar
+        delete-widget:hyper-ide-active-file-object-toolbar
+
+      /*
+       * Making sure we don't try to select item in any ways 
+       * further down in file.
+       */
+      p5.web.viewstate.set:hyper-ide.no-select
+        src:bool:true
+
+  /*
+   * Callback invoked when an item ise selected.
+   */
+  .onselect
+
+    /*
+     * Checking if we had an exception while invoking our [.onexpand],
+     * at which point we don't evaluate this lambda.
+     */
+    p5.web.viewstate.get:hyper-ide.no-select
+    if:x:/-/*?value
+
+      /*
+       * Re-setting exception signal and returning early.
+       */
+      p5.web.viewstate.set:hyper-ide.no-select
+      return
+
+    /*
+     * Making sure we wrap our stuff inside of a try/catch block,
+     * since this will prevent the default exception handler from
+     * being evaluated, in case user tries to access file objects
+     * he does not have permission to access.
+     */
+    try
+
+      /*
+       * Checking if this is a de-select invocation.
+       */
+      if:x:/../*/items/*?count
+        =:int:0
+
+        /*
+         * De-select invocation.
+         */
+        return
+
+      /*
+       * Checking if this is a request for a folder or a file.
+       */
+      if
+        ends-with:x:/../*/items/0?name
+          src:/
+
+        /*
+         * Request for folder.
+         *
+         * Invoking file responsible for selecting the folder.
+         */
+        eval-x:x:/+/*
+        micro.evaluate.file:@IDE/helpers/select-folder.hl
+          folder:x:/../*/items/0?name
+
+      else
+
+        /*
+         * Request for file.
+         *
+         * Invoking file responsible for selecting the file.
+         */
+        eval-x:x:/+/*
+        micro.evaluate.file:@IDE/helpers/edit-file.hl
+          file:x:/../*/items/0?name
+
+      /*
+       * Making sure we enable our "bookmark button".
+       */
+      delete-widget-property:hyper-ide-bookmark-button
+        disabled
+
+    catch
+
+      /*
+       * Giving user some feedback, and making sure we delete any
+       * additional toolbars that was created.
+       */
+      micro.windows.info:x:/@message?value
+        class:micro-windows-info warning
+      if
+        fetch:x:/0/0?value
+          widget-exists:hyper-ide-active-file-object-toolbar
+        delete-widget:hyper-ide-active-file-object-toolbar
+
+      /*
+       * Returning false to let caller know we don't want to invoke
+       * our [.onexpand] lambda callback.
+       */
+      return:bool:false

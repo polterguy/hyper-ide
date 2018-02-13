@@ -1,0 +1,41 @@
+
+/*
+ * Settings button.
+ */
+button
+  innerValue:@"<span class=""icon-cog""></span>"
+  title:Settings
+  oninit
+
+    /*
+     * Verifying user is "root", and if not, deleting the settings button,
+     * since it among other things, allows the user to enable and disable modules,
+     * at a global level.
+     */
+    whoami
+    if:x:/-/*/role?value
+      !=:root
+      delete-widget:x:/../*/_event?value
+
+  onclick
+
+    /*
+     * Allowing user to modify his settings.
+     */
+    micro.codemirror.settings
+      checkbox
+        info:Browser scroll
+        title:If true, will enable the browser scroll bars when document(s) overflows the size of viewport
+        .data-field:page-scroll
+        oninit
+
+          /*
+           * Making sure we retrieve existing value.
+           */
+          .defaults
+            page-scroll:bool:false
+          p5.auth.my-settings.get
+          if:x:(/@p5.auth.my-settings.get/*/codemirror/*/page-scroll|/../*/.defaults/*/page-scroll)/$?value
+            =:bool:true
+            set-widget-property:x:/../*/_event?value
+              checked

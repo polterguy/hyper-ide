@@ -15,8 +15,8 @@ micro.lambda.contract.optional:x:/..
  * Retrieving all open editors, and checking that there actually are any
  * open editors, and if not, returning early since there's nothing to do.
  */
-hyper-ide.editors.get-open
-if:x:/@hyper-ide.editors.get-open/*?count
+hyper-ide.editors.get-open-editors
+if:x:/@hyper-ide.editors.get-open-editors/*?count
   =:int:0
 
   /*
@@ -34,7 +34,7 @@ if:x:/@hyper-ide.editors.get-open/*?count
  * not during lambda.
  */
 .active-deleted:bool:false
-hyper-ide.editors.get-active
+hyper-ide.editors.get-active-editor-filepath
 
 
 
@@ -43,7 +43,7 @@ hyper-ide.editors.get-active
 /*
  * Iterating through all open editors.
  */
-for-each:x:/@hyper-ide.editors.get-open/*
+for-each:x:/@hyper-ide.editors.get-open-editors/*
 
   /*
    * Checking if currently iterated editor is a match for our [filter] condition.
@@ -70,7 +70,7 @@ for-each:x:/@hyper-ide.editors.get-open/*
      * Checking if currently iterated editor is dirty.
      */
     if
-      hyper-ide.editors.is-dirty:x:/@_dp/#?name
+      hyper-ide.editors.get-editor-is-dirty:x:/@_dp/#?name
 
       /*
        * Editor is dirty, and [force] was not set to true, hence asking user to
@@ -87,7 +87,7 @@ for-each:x:/@hyper-ide.editors.get-open/*
         /*
          * Asking user to confirm that he wants to have editor closed.
          */
-        hyper-ide.editors.set-active:x:/@_dp/#?name
+        hyper-ide.editors.set-active-editor:x:/@_dp/#?name
         add:x:/+2/**/.onclosed
           src:x:/../*/.onclosed/*
         eval-x:x:/+/*/*/*/p/*/innerValue|/+/**(/.filter|/.file)
@@ -123,7 +123,7 @@ for-each:x:/@hyper-ide.editors.get-open/*
                           .file:x:/@_dp/#?name
                           .filter:x:/../*/filter?value
                           .onclosed
-                          hyper-ide.editors.save:x:/@.file?value
+                          hyper-ide.editors.save-active-editor:x:/@.file?value
 
                           /*
                            * Deleting modal widget, and giving user some feedback,
@@ -132,10 +132,10 @@ for-each:x:/@hyper-ide.editors.get-open/*
                           delete-widget:hyper-ide-unsaved-changes-modal
                           micro.windows.info:File successfully saved
                             class:micro-windows-info success
-                          add:x:/../*/hyper-ide.editors.close
+                          add:x:/../*/hyper-ide.editors.close-all
                             src:x:/@.onclosed
                           eval-x:x:/+/*
-                          hyper-ide.editors.close
+                          hyper-ide.editors.close-all
                             filter:x:/@.filter?value
 
                       button
@@ -149,16 +149,16 @@ for-each:x:/@hyper-ide.editors.get-open/*
                           .file:x:/@_dp/#?name
                           .filter:x:/../*/filter?value
                           .onclosed
-                          hyper-ide.editors.set-clean:x:/@.file?value
+                          hyper-ide.editors.set-editor-clean-flag:x:/@.file?value
 
                           /*
                            * Deleting modal widget, before we invoke "self".
                            */
                           delete-widget:hyper-ide-unsaved-changes-modal
-                          add:x:/../*/hyper-ide.editors.close
+                          add:x:/../*/hyper-ide.editors.close-all
                             src:x:/@.onclosed
                           eval-x:x:/+/*
-                          hyper-ide.editors.close
+                          hyper-ide.editors.close-all
                             filter:x:/@.filter?value
 
     else
@@ -189,7 +189,7 @@ for-each:x:/@hyper-ide.editors.get-open/*
        * Checking if currently closed editor was the active editor.
        */
       if:x:/@_dp/#?name
-        =:x:/@hyper-ide.editors.get-active?value
+        =:x:/@hyper-ide.editors.get-active-editor-filepath?value
 
         /*
          * Tracking the fact that our active editor was closed.
@@ -239,13 +239,13 @@ if:x:/@.active-deleted?value
   /*
    * Checking if there are anymore editors left.
    */
-  if:x:/@hyper-ide.editors.get-open/*?count
+  if:x:/@hyper-ide.editors.get-open-editors/*?count
     >:int:0
 
     /*
      * Setting the first available editor as our active editor.
      */
-    hyper-ide.editors.set-active::x:/@hyper-ide.editors.get-open/0?name
+    hyper-ide.editors.set-active-editor:x:/@hyper-ide.editors.get-open-editors/0?name
 
   else
 
@@ -269,7 +269,7 @@ if:x:/@.active-deleted?value
     micro.css.add:hyper-ide-file-editor
       class:col-70
 
-else-if:x:/@hyper-ide.editors.get-open/*?count
+else-if:x:/@hyper-ide.editors.get-open-editors/*?count
   >:int:0
 
   /*
@@ -277,7 +277,7 @@ else-if:x:/@hyper-ide.editors.get-open/*?count
    * need to make sure our active editor becomes selected in our tree, due
    * to what occurs when deletion of a folder occurs, etc.
    */
-  hyper-ide.editors.set-active:@hyper-ide.editors.get-open/0?name
+  hyper-ide.editors.set-active-editor:@hyper-ide.editors.get-open-editors/0?name
 
 
 

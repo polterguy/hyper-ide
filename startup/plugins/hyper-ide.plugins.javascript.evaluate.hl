@@ -11,9 +11,9 @@ create-event:hyper-ide.plugins.javascript.evaluate
         /*
          * Retrieves filename for currently active editor.
          */
-        hyper-ide.editors.get-active
+        hyper-ide.editors.get-active-editor-filepath
 
         /*
          * Including it on page.
          */
-        p5.web.include-javascript-file:x:/@hyper-ide.editors.get-active?value
+        p5.web.include-javascript-file:x:/@hyper-ide.editors.get-active-editor-filepath?value
