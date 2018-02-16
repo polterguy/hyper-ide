@@ -1,0 +1,49 @@
+
+/*
+ * Retrieving active editor.
+ */
+hyper-ide.active-editor.get-id
+
+
+
+
+
+/*
+ * Verifying editor exists.
+ */
+if:x:/@hyper-ide.active-editor.get-id?value
+
+  /*
+   * There is an active editor.
+   */
+  p5.web.widgets.find-first:x:/@hyper-ide.active-editor.get-id?value
+    element:input
+    type:hidden
+
+  /*
+   * Checking if editor is clean.
+   */
+  get-widget-property:x:/@p5.web.widgets.find-first/*/*?value
+    value
+  if:x:/-/*/*?value
+    =:clean
+
+    /*
+     * Editor is clean.
+     */
+    return:bool:true
+
+  else
+
+    /*
+     * Editor is dirty.
+     */
+    return:bool:false
+
+else
+
+  /*
+   * Oops, no such editor.
+   */
+  micro.windows.info:No active editor
+    class:micro-windows-info warning

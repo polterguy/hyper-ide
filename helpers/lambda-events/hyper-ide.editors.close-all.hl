@@ -22,9 +22,7 @@ micro.lambda.contract.optional:x:/..
 
 /*
  * Retrieving all open editors, and checking that there actually are any
- * open editors, and if not, returning early since there's nothing to do,
- * making sure we evaluate any (optional) lambda callbacks provided by caller,
- * which caller wants to have evaluated after closing all operation is done.
+ * open editors, and if not, returning early.
  */
 hyper-ide.editors.get-open-editors
 if:x:/@hyper-ide.editors.get-open-editors/*?count
@@ -33,7 +31,6 @@ if:x:/@hyper-ide.editors.get-open-editors/*?count
   /*
    * No open editors, returning early to avoid evaluating the rest of our lambda.
    */
-  eval:x:/../*/.onclosed
   return
 
 
@@ -44,8 +41,7 @@ if:x:/@hyper-ide.editors.get-open-editors/*?count
  * Retrieving active editor, since we'll need to track if it was closed or
  * not during lambda.
  */
-.active-deleted:bool:false
-hyper-ide.editors.get-active-editor-filepath
+hyper-ide.folder-explorer.get-active-item
 
 
 
@@ -77,162 +73,33 @@ for-each:x:/@hyper-ide.editors.get-open-editors/*
       continue
 
     /*
-     * Current editor is a match, making sure we delete it.
-     * Checking if currently iterated editor is dirty.
+     * Deleting actual editor.
      */
-    if
-      hyper-ide.editors.get-editor-is-dirty:x:/@_dp/#?name
-      =:bool:true
+    p5.web.widgets.find-first:hyper-ide-editor-tab-editors
+      .editor:x:/@_dp/#?name
+    delete-widget:x:/@p5.web.widgets.find-first/*/*?value
 
-      /*
-       * Editor is dirty, hence asking user to confirm that he wants to
-       * actually close the editor, giving him the option of saving its
-       * content first.
-       */
-      if
-        fetch:x:/0/0?value
-          widget-exists:hyper-ide-unsaved-changes-modal
-        not
+    /*
+     * Then its activate button.
+     */
+    p5.web.widgets.find-first:hyper-ide-editor-tab-buttons
+      .activate:x:/@_dp/#?name
+    delete-widget:x:/@p5.web.widgets.find-first/*/*?value
 
-        /*
-         * Asking user to confirm that he wants to have editor closed.
-         */
-        hyper-ide.editors.set-active-editor:x:/@_dp/#?name
-        add:x:/+2/**/.onclosed
-          src:x:/../*/.onclosed/*
-        eval-x:x:/+/*/*/*/p/*/innerValue|/+/**(/.filter|/.file)
-        create-widgets
-          micro.widgets.modal:hyper-ide-unsaved-changes-modal
-            widgets
-              h3
-                innerValue:Unsaved content
-              p
-                innerValue:<code>{0}</code> contains unsaved data. Do you wish to save it before closing your editor?
-                  :x:/@_dp/#?name
-              div
-                class:right
-                widgets
-                  div
-                    class:strip
-                    widgets
-                      button
-                        innerValue:Yes
-                        oninit
+    /*
+     * Then its toolbar.
+     */
+    p5.web.widgets.find-first
+      .toolbar:x:/@_dp/#?name
+    delete-widget:x:/@p5.web.widgets.find-first/*/*?value
 
-                          /*
-                           * Making sure our "Yes" button gets initial focus.
-                           */
-                          micro.page.set-focus:x:/../*/_event?value
-
-                        onclick
-
-                          /*
-                           * Forward evaluated above.
-                           * Saves given editor, and reinvokes self.
-                           */
-                          .file:x:/@_dp/#?name
-                          .filter:x:(/../*/filter|/@.defaults/*/filter)/$?value
-                          .onclosed
-                          hyper-ide.editors.save-active-editor:x:/@.file?value
-
-                          /*
-                           * Deleting modal widget, and giving user some feedback,
-                           * before we invoke "self".
-                           */
-                          delete-widget:hyper-ide-unsaved-changes-modal
-                          micro.windows.info:File successfully saved
-                            class:micro-windows-info success
-                          add:x:/../*/hyper-ide.editors.close-all
-                            src:x:/@.onclosed
-                          eval-x:x:/+/*
-                          hyper-ide.editors.close-all
-                            filter:x:/@.filter?value
-
-                      button
-                        innerValue:No
-                        onclick
-
-                          /*
-                           * Forward evaluated above.
-                           * Reinvokes self after having set editor to "clean".
-                           */
-                          .file:x:/@_dp/#?name
-                          .filter:x:(/../*/filter|/@.defaults/*/filter)/$?value
-                          .onclosed
-                          hyper-ide.editors.set-active-editor-clean-flag
-
-                          /*
-                           * Deleting modal widget, before we invoke "self".
-                           */
-                          delete-widget:hyper-ide-unsaved-changes-modal
-                          add:x:/../*/hyper-ide.editors.close-all
-                            src:x:/@.onclosed
-                          eval-x:x:/+/*
-                          hyper-ide.editors.close-all
-                            filter:x:/@.filter?value
-
-    else
-
-      /*
-       * Editor is not dirty.
-       * Deleting actual editor.
-       */
-      p5.web.widgets.find-first:hyper-ide-editor-tab-editors
-        .editor:x:/@_dp/#?name
-      delete-widget:x:/@p5.web.widgets.find-first/*/*?value
-
-      /*
-       * Then its activate button.
-       */
-      p5.web.widgets.find-first:hyper-ide-editor-tab-buttons
-        .activate:x:/@_dp/#?name
-      delete-widget:x:/@p5.web.widgets.find-first/*/*?value
-
-      /*
-       * Then its toolbar.
-       */
-      p5.web.widgets.find-first
-        .toolbar:x:/@_dp/#?name
-      delete-widget:x:/@p5.web.widgets.find-first/*/*?value
-
-      /*
-       * Checking if currently closed editor was the active editor.
-       */
-      if:x:/@_dp/#?name
-        =:x:/@hyper-ide.editors.get-active-editor-filepath?value
-
-        /*
-         * Tracking the fact that our active editor was closed.
-         */
-        set:x:/@.active-deleted?value
-          src:bool:true
-
-        /*
-         * Notice, when the active editor is deleted, we'll also need to check
-         * if the file object toolbar was created for our active editor, and
-         * if it was, we'll need to delete it too.
-         */
-        if
-          fetch:x:/0/0?value
-            widget-exists:hyper-ide-active-file-object-toolbar
-          get-widget-property:hyper-ide-active-file-object-toolbar
-            .file
-          if:x:/@get-widget-property/*/*?value
-            =:x:/@_dp/#?name
-
-            /*
-             * Current active file object toolbar was created for the active editor,
-             * hence making sure we delete it.
-             */
-            delete-widget:hyper-ide-active-file-object-toolbar
-
-      /*
-       * Removing currently iterated editor from our list of editors.
-       *
-       * This is done such that we end up with a list of available editors,
-       * after we have closed all editors caller wants to close.
-       */
-      set:x:/@_dp/#
+    /*
+     * Removing currently iterated editor from our list of editors.
+     *
+     * This is done such that we end up with a list of available editors,
+     * after we have closed all editors caller wants to close.
+     */
+    set:x:/@_dp/#
 
 
 
@@ -243,8 +110,13 @@ for-each:x:/@hyper-ide.editors.get-open-editors/*
  * either load up another editor, or load our splash screen, depending 
  * upon whether or not there are anymore editors left in our collection.
  */
-if:x:/@.active-deleted?value
-  =:bool:true
+if:x:/@hyper-ide.folder-explorer.get-active-item?value
+  =:x:(/../*/filter|/@.defaults/*/filter)/$?value
+  or
+    starts-with:x:/@hyper-ide.folder-explorer.get-active-item?value
+      src:x:(/../*/filter|/@.defaults/*/filter)/$?value
+    and:x:/../*/exact?value.bool
+      !=:bool:true
 
   /*
    * Checking if there are anymore editors left.
@@ -261,7 +133,7 @@ if:x:/@.active-deleted?value
 
     /*
      * No more editors, deleting editor wrapper, and loading our 
-     * splash screen, making sure we also un-select any selected tree 
+     * splash screen, making sure we also de-select any selected tree 
      * view items.
      */
     delete-widget:hyper-ide-editor-tab

@@ -1,11 +1,11 @@
 
 /*
- * Finding all activate buttons for all editors, and returning their filenames.
+ * Finding all editors, and retrieving their filenames.
  */
-p5.web.widgets.find:hyper-ide-editor-tab-buttons
-  .activate
+p5.web.widgets.find:hyper-ide-editor-tab-editors
+  .editor
 get-widget-property:x:/@p5.web.widgets.find/*/*?value
-  .activate
+  .editor
 
 
 
@@ -13,9 +13,60 @@ get-widget-property:x:/@p5.web.widgets.find/*/*?value
 
 /*
  * Iterating through all filenames returned above, and making sure we return
- * them to caller.
+ * them to caller, adding the [clean] flag for each of them in the process.
  */
-for-each:x:/@get-widget-property/*/*?value
+for-each:x:/@get-widget-property/*/*
+
+  /*
+   * Adding currently iterated editor to [return] below.
+   */
   add:x:/../*/return
-    src:x:/@_dp?value
+    src:x:/@_dp/#?value
+
+  /*
+   * Retrieving the "clean" flag for currently iterated editor.
+   */
+  p5.web.widgets.find-first:x:/@_dp/#/.?name
+    element:input
+    type:hidden
+
+  /*
+   * Adding [id] for currently iterated editor.
+   */
+  eval-x:x:/+/*/*
+  add:x:/../*/return/0/-
+    src
+      id:x:/@_dp/#/.?name
+
+  /*
+   * Checking if currently iterated editor is clean.
+   */
+  get-widget-property:x:/@p5.web.widgets.find-first/*/*?value
+    value
+  if:x:/@get-widget-property/*/*?value
+    =:clean
+
+    /*
+     * Editor is clean.
+     */
+    add:x:/../*/return/0/-
+      src
+        clean:bool:true
+
+  else
+
+    /*
+     * Editor is dirty.
+     */
+    add:x:/../*/return/0/-
+      src
+        clean:bool:false
+
+
+
+
+
+/*
+ * Returning editors to caller.
+ */
 return

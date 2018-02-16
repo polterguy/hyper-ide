@@ -1,0 +1,147 @@
+
+/*
+ * Activating editor for specified [file], assuming it's already open in a
+ * non-active editor.
+ */
+
+
+
+
+
+/*
+ * Sanity checking arguments.
+ */
+micro.lambda.contract.min:x:/..
+  file:string
+
+
+
+
+
+/*
+ * Verifying that the editor caller is trying to activate is not the editor that
+ * already is activated.
+ */
+p5.web.widgets.find-first:hyper-ide-editor-tab-buttons
+  .activate:x:/../*/file?value
+get-widget-property:x:/@p5.web.widgets.find-first/*/*?value
+  class
+if:x:/@get-widget-property/*/*?value
+  ~:toggled
+
+  /*
+   * Editor is already activated, returning early, signaling "not activated"
+   * to caller.
+   */
+  return:bool:false
+
+
+
+
+
+/*
+ * Making sure correct activate button becomes toggled.
+ * This is done by making sure we remove the "toggled" class from all
+ * activate buttons, except the one caller is trying to activate.
+ *
+ * First finding the activate button that is currently toggled, and deleting
+ * its "toggled" class.
+ */
+p5.web.widgets.find-first-like:hyper-ide-editor-tab-buttons
+  .activate
+  class:toggled
+
+
+
+
+
+/*
+ * Deleting the "toggled" class for the currently activated activate button.
+ */
+micro.css.delete:x:/@p5.web.widgets.find-first-like/*/*?value
+  class:toggled
+
+
+
+
+
+/*
+ * Then adding the "toggled" class to it to the activate button for editor
+ * caller wants to activate.
+ */
+micro.css.add:x:/../*/p5.web.widgets.find-first/[0,1]/*/*?value
+  class:toggled
+
+
+
+
+
+/*
+ * Then making sure the correct editor becomes visible.
+ *
+ * First we find the currently visible editor, and make it invisible.
+ */
+p5.web.widgets.find-first-like:hyper-ide-editor-tab-editors
+  .editor
+  class:visible
+micro.css.toggle:x:/@p5.web.widgets.find-first-like/*/*?value
+  class:visible hide
+
+
+
+
+
+/*
+ * Then finding the editor caller wants to activate, and setting it to visible.
+ */
+p5.web.widgets.find-first:hyper-ide-editor-tab-editors
+  .editor:x:/../*/file?value
+micro.css.toggle:x:/@p5.web.widgets.find-first/*/*?value
+  class:hide visible
+
+
+
+
+
+/*
+ * Then making sure we disable all editors, except the one caller wants activate,
+ * which we enable.
+ *
+ * This is done to avoid having disabled editors send their code on each Ajax request,
+ * reducing the bandwidth consumption in general.
+ */
+p5.web.widgets.find-first:x:/@p5.web.widgets.find-first-like/*/*?value
+  element:textarea
+set-widget-property:x:/@p5.web.widgets.find-first/*/*?value
+  disabled
+p5.web.widgets.find-first:x:/@p5.web.widgets.find-first/@p5.web.widgets.find-first/*/*?value
+  element:textarea
+delete-widget-property:x:/@p5.web.widgets.find-first/*/*?value
+  disabled
+
+
+
+
+
+/*
+ * Then making sure correct toolbar becomes visible.
+ *
+ * First finding toolbar we should hide.
+ */
+p5.web.widgets.find-first-like:hyper-ide-toolbar-wrapper
+  .toolbar
+  class:visible
+micro.css.toggle:x:/@p5.web.widgets.find-first-like/*/*?value
+  class:hide visible
+
+
+
+
+
+/*
+ * Then finding the toolbar we should show and displaying it.
+ */
+p5.web.widgets.find-first-like:hyper-ide-toolbar-wrapper
+  .toolbar:x:/../*/file?value
+micro.css.toggle:x:/@p5.web.widgets.find-first-like/*/*?value
+  class:hide visible

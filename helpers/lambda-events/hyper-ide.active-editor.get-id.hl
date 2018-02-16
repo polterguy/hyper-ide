@@ -1,0 +1,23 @@
+
+/*
+ * Finding visible editor.
+ */
+p5.web.widgets.find-first-like:hyper-ide-editor-tab-editors
+  .editor
+  class:visible
+
+
+
+
+
+/*
+ * Verifying above invocation returned something.
+ */
+if:x:/@p5.web.widgets.find-first-like/*/*?value
+
+  /*
+   * Returning ID of CodeMirror wrapper to caller.
+   */
+  p5.web.widgets.find-first-like:x:/@p5.web.widgets.find-first-like/*/*?value
+    class:micro-codemirror-wrapper
+  return:x:/-/*/*?value

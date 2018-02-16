@@ -4,7 +4,7 @@
  *
  * First retrieving active editor, of any.
  */
-hyper-ide.editors.get-active-editor-filepath
+hyper-ide.active-editor.get-filepath
 
 
 
@@ -13,25 +13,30 @@ hyper-ide.editors.get-active-editor-filepath
 /*
  * Verifying there is an active editor.
  */
-if:x:/@hyper-ide.editors.get-active-editor-filepath?value
+if:x:/@hyper-ide.active-editor.get-filepath?value
 
   /*
    * There is a currently active editor, saving its content.
    */
-  hyper-ide.editors.get-active-editor-code
-  save-file:x:/@hyper-ide.editors.get-active-editor-filepath?value
-    src:x:/@hyper-ide.editors.get-active-editor-code?value
+  hyper-ide.active-editor.get-code
+  save-file:x:/@hyper-ide.active-editor.get-filepath?value
+    src:x:/@hyper-ide.active-editor.get-code?value
 
   /*
    * Making sure we update its "clean flag".
    */
-  hyper-ide.editors.set-active-editor-clean-flag
+  hyper-ide.active-editor.set-clean:bool:true
 
   /*
    * Providing some feedback to user.
    */
   micro.windows.info:Your code was successfully saved
     class:micro-windows-info success
+
+  /*
+   * Returning success to caller.
+   */
+  return:bool:true
 
 else
 
@@ -40,3 +45,8 @@ else
    */
   micro.windows.info:There are no active editors
     class:micro-windows-info warning
+
+  /*
+   * Returning failure to caller.
+   */
+  return:bool:false

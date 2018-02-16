@@ -1,0 +1,68 @@
+
+/*
+ * Retrieving active editor.
+ */
+hyper-ide.active-editor.get-id
+
+
+
+
+
+/*
+ * Sanity checking invocation.
+ */
+micro.lambda.contract.min:x:/..
+  clean:bool
+
+
+
+
+
+/*
+ * Verifying editor exists.
+ */
+if:x:/@hyper-ide.active-editor.get-id?value
+
+  /*
+   * There is an active editor.
+   */
+  p5.web.widgets.find-first:x:/@hyper-ide.active-editor.get-id?value
+    element:input
+    type:hidden
+
+  /*
+   * Checking if caller want to set the clean flag, or set it to dirty.
+   */
+  if:x:/../*/clean?value
+
+    /*
+     * Setting editor to clean.
+     */
+    set-widget-property:x:/@p5.web.widgets.find-first/*/*?value
+      value:clean
+
+  else
+
+    /*
+     * Setting editor to dirty.
+     */
+    set-widget-property:x:/@p5.web.widgets.find-first/*/*?value
+      value:dirty
+
+  /*
+   * Returning success to caller.
+   */
+  return:bool:true
+
+else
+
+  /*
+   * Oops, no such editor.
+   */
+  micro.windows.info:No active editor
+    class:micro-windows-info warning
+
+  /*
+   * Returning failure to caller.
+   */
+  return:bool:false

@@ -1,0 +1,23 @@
+
+/*
+ * Finding visible editor.
+ */
+p5.web.widgets.find-first-like:hyper-ide-editor-tab-editors
+  .editor
+  class:visible
+
+
+
+
+
+/*
+ * Checking that above invocation actually returned something.
+ */
+if:x:/@p5.web.widgets.find-first-like/*/*?value
+
+  /*
+   * Returning filepath of active editor to caller.
+   */
+  get-widget-property:x:/@p5.web.widgets.find-first-like/*/*?value
+    .editor
+  return:x:/-/*/*?value

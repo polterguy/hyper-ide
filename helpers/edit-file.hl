@@ -1,3 +1,4 @@
+
 /*
  * Edits the specified [file], using some sort of CodeMirror editor, or whatever
  * is available.
@@ -35,132 +36,19 @@ if
 
 
 /*
- * Checking if file is already open, at which point we reuse existing editor, to
- * avoid reloading file, and loosing any potential changes.
+ * Checking if file is already open, at which point we simply activate existing
+ * editor.
  */
 p5.web.widgets.find:hyper-ide-editor-tab-buttons
   .activate:x:/../*/file?value
 if:x:/@p5.web.widgets.find/*/*?value
 
   /*
-   * File is already open, activating editor, and returning early.
-   *
-   * First making sure correct tab control button becomes toggled.
-   * This is done by making sure we remove the "toggled" class from all
-   * activate buttons, except the one caller is trying to activate.
-   *
-   * First finding all activate buttons.
+   * Editor for file is already open, activating editor, and returning early.
    */
-  p5.web.widgets.find:hyper-ide-editor-tab-buttons
-    .activate
-
-  /*
-   * Then removing the one caller is trying to activate from our above invocation.
-   */
-  set:x:@"/@p5.web.widgets.find/*/*/""={0}"""
-    :x:/../*/p5.web.widgets.find/[0,1]/*/*?value
-
-  /*
-   * Then deleting the "toggled" CSS class from all editors in above list.
-   */
-  micro.css.delete:x:/@p5.web.widgets.find/*/*?value
-    class:toggled
-
-  /*
-   * Then adding the "toggled" class to the activate button caller is activating.
-   */
-  micro.css.add:x:/../*/p5.web.widgets.find/[0,1]/*/*?value
-    class:toggled
-
-  /*
-   * Then making sure correct editor becomes visible.
-   *
-   * Notice, we'll need to make all editors' here invisible, except the one caller
-   * is trying to activate. Hence, first we find editor user is trying to activate.
-   */
-  p5.web.widgets.find:hyper-ide-editor-tab-editors
-    .editor:x:/../*/file?value
-
-  /*
-   * Then finding all editors.
-   */
-  p5.web.widgets.find:hyper-ide-editor-tab-editors
-    .editor
-
-  /*
-   * Then removing the editor user is trying to activate from list of all editors
-   * that we retrieved above.
-   */
-  set:x:@"/@p5.web.widgets.find/*/*/""={0}"""
-    :x:/@p5.web.widgets.find/@p5.web.widgets.find/*/*?value
-
-  /*
-   * Making all editors invisible, except the one caller is trying to make visible.
-   */
-  micro.css.add:x:/@p5.web.widgets.find/*/*?value
-    class:hide
-
-  /*
-   * Then making the editor caller is trying to show become visible.
-   *
-   * But first we must make sure the editor actually exists.
-   */
-  micro.css.delete:x:/@p5.web.widgets.find/@p5.web.widgets.find/*/*?value
-    class:hide
-
-  /*
-   * Then making sure we disable all editors, except the one caller wants activate,
-   * which we enable.
-   */
-  p5.web.widgets.find:x:/@p5.web.widgets.find/*/*?value
-    element:textarea
-  if:x:/-/*/*?value
-    set-widget-property:x:/@p5.web.widgets.find/*/*?value
-      disabled
-  p5.web.widgets.find:x:/@p5.web.widgets.find/@p5.web.widgets.find/@p5.web.widgets.find/*/*?value
-    element:textarea
-  if:x:/-/*/*?value
-    delete-widget-property:x:/@p5.web.widgets.find/*/*?value
-      disabled
-
-    /*
-     * Making sure we give focus to recently shown CodeMirror instance.
-     */
-    p5.web.send-javascript:@"p5['{0}'].focus();"
-      :x:/@p5.web.widgets.find/*/*?value
-
-  /*
-   * Then making sure correct toolbar becomes visible.
-   *
-   * First finding toolbar we should show.
-   */
-  p5.web.widgets.find
-    .toolbar:x:/../*/file?value
-
-  /*
-   * Then finding all toolbars.
-   */
-  p5.web.widgets.find
-    .toolbar
-
-  /*
-   * Then removing the toolbar user is trying to activate from list of all editors
-   * that we retrieved above.
-   */
-  set:x:@"/@p5.web.widgets.find/*/*/""={0}"""
-    :x:/@p5.web.widgets.find/@p5.web.widgets.find/*/*?value
-
-  /*
-   * Making all toolbars invisible, except the one caller is trying to make visible.
-   */
-  micro.css.add:x:/@p5.web.widgets.find/*/*?value
-    class:hide
-
-  /*
-   * Then making the toolbar caller is trying to show become visible.
-   */
-  micro.css.delete:x:/@p5.web.widgets.find/@p5.web.widgets.find/*/*?value
-    class:hide
+  eval-x:x:/+/*
+  micro.evaluate.file:@IDE/helpers/activate-editor.hl
+    file:x:/../*/file?value
 
   /*
    * Returning early to abort evaluation of the rest of our lambda (file).
@@ -174,40 +62,41 @@ if:x:/@p5.web.widgets.find/*/*?value
 /*
  * Hiding any previously shown edit file toolbars.
  */
-p5.web.widgets.find
+p5.web.widgets.find-first-like:hyper-ide-toolbar-wrapper
   .toolbar
-micro.css.add:x:/@p5.web.widgets.find/*/*?value
-  class:hide
+  class:visible
+micro.css.toggle:x:/@p5.web.widgets.find-first-like/*/*?value
+  class:hide visible
 
 
 
 
 
 /*
- * Retrieving file extension of file, and its filename.
+ * Making sure we load correct editor according to file extension.
+ *
+ * First loading file extension to CM mode mapping file.
+ * This file contains a bunch of file extensions, that are "mapped" towards
+ * CodeMirror modes.
+ *
+ * Hence, we load the file, do a loopkup for our file extension, at which point
+ * we end up with a CodeMirror mode.
+ *
+ * First we retrieve file extension of file, and load our CodeMirror mapping file.
  */
 split:x:/../*/file?value
-  =:/
-split:x:/-/0/-?name
   =:.
+load-file:@IDE/configuration/extension2cm-instance.hl
 
 
 
 
 
 /*
- * Retrieving editor for file type, according to file's extension, making sure we
- * pass in file's content.
- *
- * First checking if a specialised editor exists.
+ * Checking if mode exists for file extension.
  */
-.editor-instance
-if:x:/@split/*?count
-  >:int:1
-  and
-    fetch:x:/0/0?value
-      file-exists:@IDE/helpers/editors/{0}.hl
-        :x:/@split/0/-?name
+if:x:/@load-file/*/*/{0}
+  :x:/@split/0/-?name
 
   /*
    * Loading file, such that we can pass its content into our editor instance.
@@ -218,127 +107,31 @@ if:x:/@split/*?count
     convert:false
 
   /*
-   * Specialised editor exists, loading it by evaluating its file, and adding
-   * the returned arguments into above [.editor-instance] lambda.
+   * CodeMirror mode for file's extension exists.
+   *
+   * Adding CodeMirror editor with correct mode to our [widgets] collection below.
    */
-  eval-x:x:/+/*/*/content
-  add:x:/@.editor-instance
-    micro.evaluate.file:@IDE/helpers/editors/{0}.hl
-      :x:/@split/0/-?name
-      content:x:/@load-file/*?value
+  eval-x:x:/+/*/*/*
+  add:x:/../*/create-widgets/*/div/*/widgets/=editor
+    src
+      micro.widgets.codemirror
+        .data-field:content
+        mode:x:/@load-file/@load-file/*/*/{0}?value
+          :x:/@split/0/-?name
+        value:x:/@load-file/*?value
+        auto-focus:true
+        keys
+          Alt-S:p5.$('hyper-ide-main-container').raise('.onsave');
+          Alt-X:p5.$('hyper-ide-main-container').raise('.onclose');
+          Alt-W:p5.$('hyper-ide-main-container').raise('.onnext');
+          Alt-Q:p5.$('hyper-ide-main-container').raise('.onprevious');
 
 else
 
   /*
-   * Trying to use one of the standard CodeMirror editors.
-   *
-   * First loading file extension to CM mode mapping file.
-   * This file contains a bunch of file extensions, that are "mapped" towards
-   * CodeMirror modes.
-   *
-   * Hence, we load the file, do a loopkup for our file extension, at which point
-   * we end up with a CodeMirror mode.
+   * No editor exists, returning early.
    */
-  load-file:@IDE/configuration/extension2cm-instance.hl
-
-  /*
-   * Checking if specified mode exists.
-   */
-  if:x:/@load-file/*/*/{0}
-    :x:/@split/0/-?name
-
-    /*
-     * Loading file, such that we can pass its content into our editor instance.
-     *
-     * Making sure we do not convert the file.
-     */
-    load-file:x:/../*/file?value
-      convert:false
-
-    /*
-     * CodeMirror mode for file's extension exists.
-     */
-    eval-x:x:/+/*/*/*
-    add:x:/@.editor-instance
-      src
-        micro.widgets.codemirror
-          .data-field:content
-          mode:x:/@load-file/@load-file/*/*/{0}?value
-            :x:/@split/0/-?name
-          value:x:/@load-file/*?value
-          auto-focus:true
-          keys
-            Alt-S:p5.$('hyper-ide-main-container').raise('.onsave');
-            Alt-X:p5.$('hyper-ide-main-container').raise('.onclose');
-            Alt-W:p5.$('hyper-ide-main-container').raise('.onnext');
-            Alt-Q:p5.$('hyper-ide-main-container').raise('.onprevious');
-
-  else
-
-    /*
-     * No editor exists, returning early, warning user first
-     */
-    add:x:/../*/create-widgets/**/.save-button/.
-      src:disabled
-    add:x:/@.editor-instance
-      src
-        div
-          class:micro-codemirror-wrapper air-inner
-          style:"border:solid 1px #e0e0e0;background:#ffffff;margin-top:-1px;position:relative;"
-          .not-loaded
-          widgets
-            h3
-              innerValue:Unknown file type
-            p
-              innerValue:@"This file does not have a default mapping for an editor type in Hyper IDE. If you wish, we could try to still load your file, 
-assuming it is a text file of some sort, using the markdown editor? Notice, you can still rename the file, delete it, and so on, without loading it up into your editor.
-You can edit the file <em>'/hyper-ide/configuration/extension2cm-instance.hl'</em> to associate file extensions with CodeMirror modes."
-            div
-              style:"position:absolute;bottom:0;right:0;margin-right:2rem;"
-              widgets
-                button
-                  innerValue:Load file
-                  class:larger
-                  onclick
-
-                    /*
-                     * Enabling save button.
-                     */
-                    p5.web.widgets.find-first-ancestor:x:/../*/_event?value
-                      .editor
-                    get-widget-property:x:/-/*/*?value
-                      .editor
-                    p5.web.widgets.find
-                      .save-button:x:/@get-widget-property/*/*?value
-                      disabled
-                    delete-widget-property:x:/-/*/*?value
-                      disabled
-
-                    /*
-                     * Deleting this warning.
-                     */
-                    p5.web.widgets.find-first-ancestor:x:/../*/_event?value
-                      .not-loaded
-                    p5.web.widgets.get-parent:x:/@p5.web.widgets.find-first-ancestor/*/*?value
-                    delete-widget:x:/@p5.web.widgets.find-first-ancestor/*/*?value
-
-                    /*
-                     * Loading our file, and creating our editor instance.
-                     */
-                    load-file:x:/../*/get-widget-property/[0,1]/*/*?value
-                      convert:false
-                    create-widgets
-                      micro.widgets.codemirror
-                        parent:x:/@p5.web.widgets.get-parent/*/*?value
-                        .data-field:content
-                        mode:markdown
-                        value:x:/@load-file/*?value
-                        auto-focus:true
-                        keys
-                          Alt-S:p5.$('hyper-ide-main-container').raise('.onsave');
-                          Alt-X:p5.$('hyper-ide-main-container').raise('.onclose');
-                          Alt-W:p5.$('hyper-ide-main-container').raise('.onnext');
-                          Alt-Q:p5.$('hyper-ide-main-container').raise('.onprevious');
+  return
 
 
 
@@ -388,22 +181,25 @@ if
  * This is the toolbar that contains "Save" button, "Close" button, and plugin
  * buttons, etc.
  */
-p5.web.widgets.find
+p5.web.widgets.find-first-like
   .toolbar
-micro.css.add:x:/@p5.web.widgets.find/*/*?value
-  class:hide
+  class:visible
+micro.css.toggle:x:/@p5.web.widgets.find-first-like/*/*?value
+  class:hide visible
 
 
 
 
 
 /*
- * Making sure we hide any previously created editors.
+ * Making sure we hide any previously created editors, in addition to disabling
+ * their textarea to preserve bandwidth.
  */
-p5.web.widgets.find:hyper-ide-file-editor
+p5.web.widgets.find-first-like:hyper-ide-file-editor
   .editor
-micro.css.add:x:/@p5.web.widgets.find/*/*?value
-  class:hide
+  class:visible
+micro.css.toggle:x:/@p5.web.widgets.find-first-like/*/*?value
+  class:hide visible
 
 
 
@@ -413,20 +209,10 @@ micro.css.add:x:/@p5.web.widgets.find/*/*?value
  * Notice, to prevent editor's content being serialised back from client upon
  * consecutive Ajax requests, we disable the editor's textarea
  */
-p5.web.widgets.find:x:/@p5.web.widgets.find/*/*?value
+p5.web.widgets.find-first:x:/@p5.web.widgets.find-first-like/*/*?value
   element:textarea
-set-widget-property:x:/@p5.web.widgets.find/*/*?value
+set-widget-property:x:/@p5.web.widgets.find-first/*/*?value
   disabled
-
-
-
-
-
-/*
- * Adding actual editor to [create-widgets] invocation below.
- */
-add:x:/../*/create-widgets/*/div/*/widgets/=editor
-  src:x:/@.editor-instance/*
 
 
 
@@ -435,9 +221,10 @@ add:x:/../*/create-widgets/*/div/*/widgets/=editor
 /*
  * "Un-toggling" all previously created tab buttons.
  */
-p5.web.widgets.find:hyper-ide-editor-tab-buttons
+p5.web.widgets.find-first-like:hyper-ide-editor-tab-buttons
   .activate
-micro.css.delete:x:/-/*/*?value
+  class:toggled
+micro.css.toggle:x:/-/*/*?value
   class:toggled
 
 
@@ -445,61 +232,14 @@ micro.css.delete:x:/-/*/*?value
 
 
 /*
- * Retrieving active events that will create a plugin button for our current CM mode.
- *
- * Making sure we check for the existence of a configuration file, and if it exists,
- * we turn OFF everything not explicitly turned on in that file.
- *
- * This allows an installation to simply create a configuration file, which will turn
- * OFF all plugins, and then explicitly grant access to whatever plugins they want to
- * turn ON. If no configuration file exists, we turn ON all plugins by default.
- */
-vocabulary:~hyper-ide.plugins.{0}.
-  :x:/@.editor-instance/*/*/mode?value
-if
-  fetch:x:/0/0?value
-    file-exists:@IDE/configuration/plugins.hl
-  load-file:@IDE/configuration/plugins.hl
-  for-each:x:/@vocabulary/*
-    if:x:/@load-file/*/*/{0}
-      :x:/@_dp/#?value
-      not
-      set:x:/@_dp/#
-
-
-
-
-
-/*
- * Adding all plugin active events for current mode into [.plugins] below.
- */
-.plugins
-  return:x:/../*/*
-for-each:x:/@vocabulary/*?value
-  insert-before:x:/@.plugins/0/-
-    src:x:/@_dp?value
-
-
-
-
-
-/*
- * Evaluating [.plugins] lambda, which will invoke all plugin button events for us,
- * and return its result.
- */
-eval:x:/@.plugins
-
-
-
-
-
-/*
- * Adding the results of above plugin creation logic into our toolbar widget.
- *
- * Notice, the above [eval] will return the results of all plugin active events.
+ * Adding all file specific plugins.
  */
 insert-before:x:/../*/create-widgets/*/div/[0,1]/*/widgets/0/-
-  src:x:/@eval/*
+  eval-x:x:/+/*
+  micro.evaluate.file:@IDE/helpers/get-plugins.hl
+    type:hyper-ide.plugins.{0}
+      :x:/@load-file/*/*/{0}
+        :x:/@split/0/-?name
 
 
 
@@ -524,7 +264,7 @@ p5.hyper_ide_show_editor = function (ed) {
     }}
     all[idx].className = 'hyper-ide-codemirror-wrapper hide';
   }}
-  cur.className = 'hyper-ide-codemirror-wrapper';
+  cur.className = 'hyper-ide-codemirror-wrapper visible';
   p5.$(ed.id).raise('.onclick');
   return false;
 }"
@@ -544,6 +284,16 @@ delete-widget-property:hyper-ide-close-all-editors
 
 
 /*
+ * Figuring out filename of file, without its folder.
+ */
+split:x:/../*/file?value
+  =:/
+
+
+
+
+
+/*
  * Creating our widgets.
  *
  * We create one "tab control button", then we add one editor into "tab control editors",
@@ -557,7 +307,7 @@ create-widgets
    */
   div
     after:hyper-ide-toolbars
-    class:strip right hyper-ide-toolbar
+    class:strip right hyper-ide-toolbar visible
     .toolbar:x:/../*/file?value
     events
 
@@ -595,7 +345,7 @@ create-widgets
           /*
            * Invoking event responsible for saving file.
            */
-          hyper-ide.editors.save-active-editor
+          hyper-ide.active-editor.save
 
       /*
        * Renames file.
@@ -879,7 +629,7 @@ create-widgets
            * In addition, we toggle "col-70" and "col" for our editor wrapper.
            */
           micro.css.toggle:hyper-ide-file-browser-wrapper
-            class:hide
+            class:hide visible
           p5.web.widgets.find
             .toogle-solution-explorer-button
           micro.css.toggle:x:/-/*/*?value
@@ -957,7 +707,7 @@ create-widgets
 
     widgets
       span
-        innerValue:x:/../*/split/[0,1]/0/-?name
+        innerValue:x:/@split/0/-?name
 
       /*
        * Close editor button.
@@ -986,7 +736,7 @@ create-widgets
    */
   div
     parent:hyper-ide-editor-tab-editors
-    class:hyper-ide-codemirror-wrapper
+    class:hyper-ide-codemirror-wrapper visible
     .editor:x:/../*/file?value
     data-editor:x:/../*/file?value
     events

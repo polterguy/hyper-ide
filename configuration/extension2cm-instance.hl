@@ -1,6 +1,7 @@
 /*
  * Maps file extensions to CodeMirror modes.
  */
+hl:hyperlambda
 groovy:groovy
 go:go
 ini:properties

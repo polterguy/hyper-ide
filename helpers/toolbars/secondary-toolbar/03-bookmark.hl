@@ -38,7 +38,7 @@ button:hyper-ide-bookmark-button
          */
         micro.widgets.tree.get-selected-items:hyper-ide-folder-tree-browser
         p5.web.get-location-url
-        hyper-ide.editors.get-active-editor-filepath
+        hyper-ide.folder-explorer.get-active-editor-filepath
         set-widget-property:x:/../*/_event?value
           value:{0}?path={1}
             :x:/@p5.web.get-location-url?value

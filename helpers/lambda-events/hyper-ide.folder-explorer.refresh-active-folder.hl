@@ -2,7 +2,7 @@
 /*
  * Refreshing folder explorer's currently activated folder.
  *
- * First retrieving selected treeview item
+ * First retrieving selected treeview item.
  */
 hyper-ide.folder-explorer.get-active-item
 
@@ -23,7 +23,6 @@ if
   add:x:/+/*/items
     src:x:/@hyper-ide.folder-explorer.get-active-item?value
   micro.widgets.tree.refresh-items:hyper-ide-folder-tree-browser
-    force-expand:bool:true
     items
 
   /*
@@ -38,3 +37,8 @@ else
    */
   micro.windows.info:No folder is currently selected
     class:micro-windows-info warning
+
+  /*
+   * Returning failure to caller.
+   */
+  return:bool:false

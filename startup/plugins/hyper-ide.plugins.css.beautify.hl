@@ -13,13 +13,13 @@ create-event:hyper-ide.plugins.css.beautify
          *
          * First finding active editor.
          */
-        hyper-ide.editors.get-active-editor-id
+        hyper-ide.active-editor.get-id
 
         /*
          * Then finding active editor's textarea widget, which is necessary to
          * be able to reference CodeMirror instance on client side.
          */
-        p5.web.widgets.find-first:x:/@hyper-ide.editors.get-active-editor-id?value
+        p5.web.widgets.find-first:x:/@hyper-ide.active-editor.get-id?value
           element:textarea
 
         /*

@@ -10,16 +10,8 @@ micro.lambda.contract.min:x:/..
 
 
 /*
- * Retrieving all open editors.
- */
-hyper-ide.editors.get-open-editors
-
-
-
-
-
-/*
- * Checking if specified [editor] argument is a filepath.
+ * Checking if specified [editor] argument is a filepath, and if not, making
+ * sure we turn it into a filepath.
  */
 if
   starts-with:x:/../*/editor?value
@@ -31,8 +23,7 @@ if
    * CodeMirror editor, hence retrieving CodeMirror editor's filepath, which can
    * be found in CodeMirror editor's parent widgets [.editor] attribute.
    */
-  p5.web.widgets.get-parent:x:/../*/editor?value
-  get-widget-property:x:/-/*/*?value
+  get-widget-property:x:/../*/editor?value
     .editor
 
   /*
@@ -47,10 +38,37 @@ if
 
 
 /*
- * Verifying specified [editor] is found amongst open editors.
+ * Checking if [editor] is already active, at which point we simply return early.
  */
-if:x:@"/@hyper-ide.editors.get-open-editors/*/""{0}"""
-  :x:/../*/editor?value
+if
+  hyper-ide.active-editor.get-filepath
+  =:x:/../*/editor?value
+
+  /*
+   * Nothing to do here, simply returning early, warning user first though.
+   */
+  micro.windows.info:Editor is already active
+    class:micro-windows-info warning
+  return
+
+
+
+
+
+/*
+ * Retrieving activate button for editor.
+ */
+p5.web.widgets.find-first:hyper-ide-editor-tab-editors
+  .editor:x:/../*/editor?value
+
+
+
+
+
+/*
+ * Verifying specified [editor] exists.
+ */
+if:x:/@p5.web.widgets.find-first/*/*?value
 
   /*
    * Editor passed in as [editor] was found.
@@ -72,7 +90,19 @@ if:x:@"/@hyper-ide.editors.get-open-editors/*/""{0}"""
     :x:/@p5.web.widgets.find-first-like/*/*?value
 
   /*
-   * Returning true to caller, indicating that we had success in setting
-   * the current editor.
+   * Returning success to caller.
    */
   return:bool:true
+
+else
+
+  /*
+   * No such editor.
+   */
+  micro.windows.info:No such editor
+    class:micro-windows-info warning
+
+  /*
+   * Returning failure to caller.
+   */
+  return:bool:false

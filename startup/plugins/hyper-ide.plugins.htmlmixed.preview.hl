@@ -11,6 +11,6 @@ create-event:hyper-ide.plugins.htmlmixed.preview
         /*
          * Retrieves active editor's file path, and opens it up in a new tab.
          */
-        hyper-ide.editors.get-active-editor-filepath
+        hyper-ide.active-editor.get-filepath
         p5.web.send-javascript:@"window.open('{0}')"
-          :x:/@hyper-ide.editors.get-active-editor-filepath?value
+          :x:/@hyper-ide.active-editor.get-filepath?value
