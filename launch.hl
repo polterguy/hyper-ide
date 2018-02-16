@@ -285,8 +285,15 @@ create-widget:hyper-ide-main-container
 
     /*
      * Close active editor.
+     * Add [force] and set its value to "true" to force closing, even if editor is dirty.
+     * Unless you add [force], the event will not close the active editor if it is dirty,
+     * but rather warn the user with a modal widget that the editor is dirty, and ask
+     * him if he really wants to close it anyway.
      */
     hyper-ide.active-editor.close
+      .signal
+      add:x:/+
+        src:x:/@.signal/--/<-
       micro.evaluate.file:@IDE/helpers/lambda-events/hyper-ide.active-editor.close.hl
       return:x:/-?value
 
