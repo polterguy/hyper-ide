@@ -1,10 +1,20 @@
 
 /*
+ * Separates arguments from the rest of our lambda.
+ */
+.signal
+
+
+
+
+
+/*
  * Sanity checking arguments.
  */
 micro.lambda.contract.optional:x:/..
   exact:bool
   filter:string
+  force:bool
 
 
 
@@ -31,7 +41,9 @@ if:x:/@hyper-ide.editors.get-open-editors/*?count
   /*
    * No open editors, returning early to avoid evaluating the rest of our lambda.
    */
-  return
+  micro.windows.info:There are no open editors
+    class:micro-windows-info warning
+  return:bool:false
 
 
 
@@ -39,9 +51,27 @@ if:x:/@hyper-ide.editors.get-open-editors/*?count
 
 /*
  * Retrieving active editor, since we'll need to track if it was closed or
- * not during lambda.
+ * not during our lambda evaluation.
  */
 hyper-ide.folder-explorer.get-active-item
+
+
+
+
+
+/*
+ * Used to track dirty editors we are not closing.
+ */
+.dirty
+
+
+
+
+
+/*
+ * Used to track if active editor is closed.
+ */
+_active-deleted:bool:false
 
 
 
@@ -55,22 +85,43 @@ for-each:x:/@hyper-ide.editors.get-open-editors/*
   /*
    * Checking if currently iterated editor is a match for our [filter] condition.
    */
-  if
-    starts-with:x:/@_dp/#?name
-      src:x:(/../*/filter|/@.defaults/*/filter)/$?value
+  if:x:/@_dp/#?name
+    =:x:(/../*/filter|/@.defaults/*/filter)/$?value
+    or:x:/../*/exact?value.bool
+      !=:bool:true
+      and
+        starts-with:x:/@_dp/#?name
+          src:x:(/../*/filter|/@.defaults/*/filter)/$?value
 
     /*
-     * Checking if we need an exact match.
+     * Checking if currently iterated editor is dirty, and [force] is not true.
      */
-    if:x:/../*/exact?value
-      =:bool:true
-      and:x:/@_dp/#?name
-        !=:x:(/../*/filter|/@.defaults/*/filter)/$?value
+    if:x:/@_dp/#/*/clean?value
+      =:bool:false
+      and:x:/../*/force?value.bool
+        !=:bool:true
 
       /*
-       * Caller wanted an exact match, and this was not an exact match.
+       * Currently iterated editor is dirty, and user did not want to [force] closing,
+       * hence we do not close it, but store the editor in our [.dirty] list, and
+       * continue our iteration.
        */
+      add:x:/@.dirty
+        src::x:/@_dp/#?name
       continue
+
+    /*
+     * Checking if this was our active editor.
+     */
+    if:x:/@_dp/#?name
+      =:x:/@hyper-ide.folder-explorer.get-active-item?value
+
+      /*
+       * This is our active editor, making sure we track the fact that it
+       * was closed.
+       */
+      set:x:/@_active-deleted?value
+        src:bool:true
 
     /*
      * Deleting actual editor.
@@ -97,7 +148,8 @@ for-each:x:/@hyper-ide.editors.get-open-editors/*
      * Removing currently iterated editor from our list of editors.
      *
      * This is done such that we end up with a list of available editors,
-     * after we have closed all editors caller wants to close.
+     * after we have closed all editors caller wants to close, which (might) be
+     * used to determine which editor we should activate, if any.
      */
     set:x:/@_dp/#
 
@@ -106,35 +158,96 @@ for-each:x:/@hyper-ide.editors.get-open-editors/*
 
 
 /*
- * Checking if active editor was deleted, and if it was, we'll need to
- * either load up another editor, or load our splash screen, depending 
- * upon whether or not there are anymore editors left in our collection.
+ * Checking if there was dirty editors, that were not closed, and if so,
+ * showing a modal widget, warning user, asking him if he really wants to
+ * close these editors, setting the last dirty editor to active, and returning
+ * early to avoid evaluation of the rest of our lambda.
  */
-if:x:/@hyper-ide.folder-explorer.get-active-item?value
-  =:x:(/../*/filter|/@.defaults/*/filter)/$?value
-  or
-    starts-with:x:/@hyper-ide.folder-explorer.get-active-item?value
-      src:x:(/../*/filter|/@.defaults/*/filter)/$?value
-    and:x:/../*/exact?value.bool
-      !=:bool:true
+if:x:/@.dirty/*
 
   /*
+   * Dirty editors exists, and they were not closed, even though caller
+   * requested to have these editors closed.
+   *
+   * Hence, we display a modal window to caller, allowing him to force closing,
+   * sets the last dirty editor to active, and return early, to avoid evaluating
+   * the rest of our lambda.
+   *
+   * First passing in all arguments to our "recursive" invocation.
+   */
+  add:x:/+/**/hyper-ide.editors.close-all
+    src:x:/@.signal/--/<-
+  create-widgets
+    micro.widgets.modal:hyper-ide-dirty-editors-modal
+      widgets
+        h3
+          innerValue:You have unsaved changes
+        p
+          innerValue:Some of your editors have unsaved changes, are you sure you want to close these? If you do, your changes will not be saved.
+        div
+          class:right strip
+          widgets
+            button
+              innerValue:Yes
+              oninit
+
+                /*
+                 * Setting initial focus to "Yes" button.
+                 */
+                micro.page.set-focus:x:/../*/_event?value
+
+              onclick
+
+                /*
+                 * Invoking "self" with [force] argument, deleting modal widget first.
+                 */
+                delete-widget:hyper-ide-dirty-editors-modal
+                hyper-ide.editors.close-all
+                  force:bool:true
+
+            button
+              innerValue:No
+              onclick
+
+                /*
+                 * Simply deleting modal widget.
+                 */
+                delete-widget:hyper-ide-dirty-editors-modal
+
+  /*
+   * Setting the last dirty editor to active, and returning "failure" to caller.
+   */
+  hyper-ide.editors.set-active-editor:x:/@.dirty/0/-?name
+  return:bool:false
+
+
+
+
+
+/*
+ * Checking if active editor was deleted, and if it was, we'll need to
+ * either load up another editor, or load our splash screen, depending 
+ * upon whether or not there are anymore available editors.
+ */
+if:x:/@_active-deleted?value
+
+  /*
+   * Active editor was closed.
+   *
    * Checking if there are anymore editors left.
    */
   if:x:/@hyper-ide.editors.get-open-editors/*?count
     >:int:0
 
     /*
-     * Setting the first available editor as our active editor.
+     * Setting the last available editor as our active editor.
      */
-    hyper-ide.editors.set-active-editor:x:/@hyper-ide.editors.get-open-editors/0?name
+    hyper-ide.editors.set-active-editor:x:/@hyper-ide.editors.get-open-editors/0/-?name
 
   else
 
     /*
-     * No more editors, deleting editor wrapper, and loading our 
-     * splash screen, making sure we also de-select any selected tree 
-     * view items.
+     * No more editors, deleting editor wrapper, and loading our splash screen.
      */
     delete-widget:hyper-ide-editor-tab
     hyper-ide.load-splash
@@ -151,35 +264,11 @@ if:x:/@hyper-ide.folder-explorer.get-active-item?value
     micro.css.add:hyper-ide-file-editor
       class:col-70
 
-else-if:x:/@hyper-ide.editors.get-open-editors/*?count
-  >:int:0
-
-  /*
-   * Regardless of whether or not the active editor was deleted, we might 
-   * need to make sure our active editor becomes selected in our tree, due
-   * to what occurs when deletion of a folder occurs, etc.
-   */
-  hyper-ide.editors.set-active-editor:x:/@hyper-ide.editors.get-open-editors/0?name
-
 
 
 
 
 /*
- * Checking if we have unsaved changes, and if so, returning false, otherwise
- * returning true.
+ * Returning "success" to caller.
  */
-if
-  fetch:x:/0/0?value
-    widget-exists:hyper-ide-unsaved-changes-modal
-  return:bool:false
-
-
-
-
-
-/*
- * Evaluating any optional [.onclose] lambda callbacks.
- */
-eval:x:/../*/.onclosed
 return:bool:true

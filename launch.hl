@@ -341,14 +341,23 @@ create-widget:hyper-ide-main-container
 
 
     /*
-     * Close editors.
+     * Close all editors, or editors matching specified [filter].
      *
-     * Will close all editors that have filenames starting with the specified [filter] path.
+     * Will close all editors that have filenames starting with the (optional) [filter].
      * If [exact] is boolean "true", it will only delete the editor with the exact name of [filter].
-     * The default value for [filter] if not provided is "/", implying all editors will be closed.
      *
-     * Useful for closing multiple editors, such as when a folder is deleted or something, in addition
-     * to (of course) closing only a single editor (by setting exact to true).
+     * The default value for [filter] is "/", and the default value for [exact]
+     * is "false", implying that all editors will be closed.
+     *
+     * Notice, no editors with unsaved changes will be closed.
+     * If some of the editors matching your [filter] have unsaved changes, the user
+     * will be warned, and asked if he really wants to close these without saving.
+     *
+     * Optionally supply [force] and set its value to boolean true, to force the closing of
+     * editors with unsaved changes, without warning the user.
+     *
+     * Useful for closing multiple editors, such as when a folder is deleted, in addition
+     * to (of course) closing only a single editor by setting [exact] to true.
      */
     hyper-ide.editors.close-all
       .signal

@@ -32,68 +32,6 @@ if:x:/-?value
 
 
 /*
- * Checking if caller did not supply a [force] argument, and if the currently active
- * editor is dirty, at which point we warn user with a modal window, and asks him
- * if he really wants to close the editor anyway.
- */
-if:x:/../*/force?value.bool
-  !=:bool:true
-  and
-    hyper-ide.active-editor.get-clean
-    !=:bool:true
-
-  /*
-   * Currently active editor is dirty, and caller did not provide a [force] argument.
-   * Hence, we warn user with a modal widget, and ask him if he really wants to close
-   * the active editor anyway.
-   */
-  create-widgets
-    micro.widgets.modal:hyper-ide-close-active-editor-modal
-      widgets
-        h3
-          innerValue:Warning!
-        p
-          innerValue:You have unsaved changes, closing the editor will discard these changes. Do you still wish to proceed?
-        div
-          class:strip right
-          widgets
-            button
-              innerValue:Yes
-              oninit
-
-                /*
-                 * Setting initial focus to "Yes" button.
-                 */
-                micro.page.set-focus:x:/../*/_event?value
-
-              onclick
-
-                /*
-                 * Invoking "self" with [force] argument, deleting modal widget first.
-                 */
-                delete-widget:hyper-ide-close-active-editor-modal
-                hyper-ide.active-editor.close
-                  force:bool:true
-
-            button
-              innerValue:No
-              onclick
-
-                /*
-                 * Simply deleting modal widget.
-                 */
-                delete-widget:hyper-ide-close-active-editor-modal
-
-  /*
-   * Returning early to abort evaluating the rest of our lambda.
-   */
-  return:bool:false
-
-
-
-
-
-/*
  * To stay "DRY", we invoke event that closes multiple editors, passing in
  * [exact] to make sure only active editor is closed.
  */
@@ -109,4 +47,4 @@ hyper-ide.editors.close-all
 /*
  * Returning success to caller.
  */
-return:bool:true
+return:x:/@hyper-ide.editors.close-all?value
