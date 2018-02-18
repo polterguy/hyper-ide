@@ -273,11 +273,6 @@ if:x:/@_active-deleted?value
     hyper-ide.load-splash
 
     /*
-     * Raising our folder changed event.
-     */
-    hyper-ide.folder-explorer.item-changed
-
-    /*
      * Checking if active item in folder explorer is a file, and if it is, we make
      * sure we de-select it.
      */
@@ -292,6 +287,12 @@ if:x:/@_active-deleted?value
        */
       micro.widgets.tree.select-items:hyper-ide-folder-tree-browser
         items
+
+    /*
+     * Raising our folder changed event.
+     */
+    hyper-ide.folder-explorer.get-active-item
+    hyper-ide.folder-explorer.item-changed:x:/@hyper-ide.folder-explorer.get-active-item?value
 
 
 
