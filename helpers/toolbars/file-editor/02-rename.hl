@@ -1,0 +1,137 @@
+
+/*
+ * Renames file.
+ */
+button
+  innerValue:@"<span class=""icon-pencil""></span>"
+  title:Renames your file
+  onclick
+
+    /*
+     * Renaming file.
+     * First retrieving file name.
+     */
+    p5.web.widgets.get-parent:x:/../*/_event?value
+    get-widget-property:x:/-/*/*?value
+      .toolbar
+
+    /*
+     * Then passing filename into modal widget.
+     */
+    eval-x:x:/+/**/.filename
+    create-widgets
+      micro.widgets.modal:hyper-ide-confirm-rename-file
+        widgets
+          h3
+            innerValue:New name
+          micro.widgets.wizard-form:hyper-ide-rename-file-form
+            text:hyper-ide-new-file-name
+              info:Name
+              .data-field:name
+              placeholder:New name for your file ...
+              onkeydown:@"if (event.keyCode == 13) {p5.$('hyper-ide-rename-file-btn').raise('onclick');return false;}"
+              oninit
+
+                /*
+                 * Forward evaluated above.
+                 */
+                .filename:x:/../*/get-widget-property/*/*?value
+                split:x:/-?value
+                  =:/
+
+                /*
+                 * Setting initial focus to "Yes" button, and setting 
+                 * initial value to old name.
+                 */
+                set-widget-property:x:/../*/_event?value
+                  value:x:/@split/0/-?name
+                micro.page.set-focus:x:/../*/_event?value
+
+          div
+            class:right
+            widgets
+              div
+                class:strip
+                widgets
+                  button:hyper-ide-rename-file-btn
+                    innerValue:OK
+                    onclick
+
+                      /*
+                       * Forward evaluated above.
+                       */
+                      .filename:x:/../*/get-widget-property/*/*?value
+
+                      /*
+                       * Finding file's folder name.
+                       *
+                       * Making sure we get it in canonised form.
+                       */
+                      .folder
+                      split:x:/@.filename?value
+                        =:/
+                      set:x:/@split/0/-
+                      join:x:/@split/*?name
+                        sep:/
+                      set:x:/@join?value
+                        src:/{0}/
+                          :x:/@join?value
+                      trim-left:x:/@join?value
+                        chars:/
+                      set:x:/@.folder?value
+                        src:/{0}
+                          :x:/@trim-left?value
+
+                      /*
+                       * Serializing form to figure out new name for file.
+                       */
+                      micro.form.serialize:hyper-ide-rename-file-form
+
+                      /*
+                       * Renaming file.
+                       */
+                      move-file:x:/@.filename?value
+                        dest:{0}{1}
+                          :x:/@.folder?value
+                          :x:/@micro.form.serialize/*/name?value
+
+                      /*
+                       * Refreshing tree, since folder's content now has changed.
+                       */
+                      add:x:/../*/micro.widgets.tree.refresh-items/*/items
+                        src:x:/@.folder?value
+                      micro.widgets.tree.refresh-items:hyper-ide-folder-tree-browser
+                        force-expand:bool:true
+                        items
+
+                      /*
+                       * Changes name of active file.
+                       */
+                      hyper-ide.set-active-filename:{0}{1}
+                        :x:/@.folder?value
+                        :x:/@micro.form.serialize/*/name?value
+
+                      /*
+                       * Selecting (updated) file in tree view now.
+                       */
+                      add:x:/../*/micro.widgets.tree.select-items/*/items
+                        src:{0}{1}
+                          :x:/@.folder?value
+                          :x:/@micro.form.serialize/*/name?value
+                      micro.widgets.tree.select-items:hyper-ide-folder-tree-browser
+                        items
+
+                      /*
+                       * Deleting modal widget, and giving user some feedback.
+                       */
+                      delete-widget:hyper-ide-confirm-rename-file
+
+                  button
+                    innerValue:Cancel
+                    onclick
+
+                      /*
+                       * Simply deleting modal widget.
+                       */
+                      delete-widget:hyper-ide-confirm-rename-file
+    

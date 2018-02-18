@@ -1,0 +1,95 @@
+
+/*
+ * Deletes file.
+ */
+button
+  innerValue:@"<span class=""icon-bin""></span>"
+  title:Deletes your file
+  onclick
+
+    /*
+     * Deleting file.
+     * First retrieving file name.
+     */
+    p5.web.widgets.get-parent:x:/../*/_event?value
+    get-widget-property:x:/-/*/*?value
+      .toolbar
+
+    /*
+     * Then passing filename into modal widget.
+     */
+    eval-x:x:/+/**/.filename
+    create-widgets
+      micro.widgets.modal:hyper-ide-confirm-delete-file
+        widgets
+          h3
+            innerValue:Confirm deletion
+          literal
+            element:p
+            style:"float:left;font-size:5rem;margin-right:.5rem;"
+            class:icon-bin
+          p
+            innerValue:@"Are you sure you want to delete the <code>{0}</code> file? I need you to confirm this action before I allow you to do this."
+              :x:/@get-widget-property/*/*?value
+          p
+            innerValue:@"<strong>Warning, this action is permanent!</strong>"
+          div
+            class:right
+            widgets
+              div
+                class:strip
+                widgets
+                  button
+                    innerValue:Yes
+                    oninit
+
+                      /*
+                       * Setting initial focus to "Yes" button.
+                       */
+                      micro.page.set-focus:x:/../*/_event?value
+
+                    onclick
+
+                      /*
+                       * Forward evaluated above.
+                       */
+                      .filename:x:/../*/get-widget-property/*/*?value
+
+                      /*
+                       * Deleting actual file.
+                       */
+                      delete-file:x:/@.filename?value
+
+                      /*
+                       * Deleting selected item from tree.
+                       *
+                       * Notice, selected tree view item will always be the file or folder 
+                       * user is trying to delete, since selecting a tree view item, 
+                       * changes the active file object edited.
+                       */
+                      micro.widgets.tree.get-selected-items:hyper-ide-folder-tree-browser
+                      add:x:/../*/micro.widgets.tree.delete-items
+                        src:x:/@micro.widgets.tree.get-selected-items/*
+                      micro.widgets.tree.delete-items:hyper-ide-folder-tree-browser
+
+                      /*
+                       * Making sure we close all editor for file.
+                       */
+                      eval-x:x:/+/*
+                      hyper-ide.editors.close-all
+                        filter:x:/@.filename?value
+                        exact:bool:true
+
+                      /*
+                       * Deleting modal window.
+                       */
+                      delete-widget:hyper-ide-confirm-delete-file
+
+                  button
+                    innerValue:No
+                    onclick
+
+                      /*
+                       * Simply deleting modal widget.
+                       */
+                      delete-widget:hyper-ide-confirm-delete-file

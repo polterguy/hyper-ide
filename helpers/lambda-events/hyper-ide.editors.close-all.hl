@@ -53,7 +53,7 @@ if:x:/@hyper-ide.editors.get-open-editors/*?count
  * Retrieving active editor, since we'll need to track if it was closed or
  * not during our lambda evaluation.
  */
-hyper-ide.folder-explorer.get-active-item
+hyper-ide.active-editor.get-filepath
 
 
 
@@ -114,7 +114,7 @@ for-each:x:/@hyper-ide.editors.get-open-editors/*
      * Checking if this was our active editor.
      */
     if:x:/@_dp/#?name
-      =:x:/@hyper-ide.folder-explorer.get-active-item?value
+      =:x:/@hyper-ide.active-editor.get-filepath?value
 
       /*
        * This is our active editor, making sure we track the fact that it
@@ -134,7 +134,7 @@ for-each:x:/@hyper-ide.editors.get-open-editors/*
      * Then its activate button.
      */
     p5.web.widgets.find-first:hyper-ide-editor-tab-buttons
-      .activate:x:/@_dp/#?name
+      data-activate:x:/@_dp/#?name
     delete-widget:x:/@p5.web.widgets.find-first/*/*?value
 
     /*
@@ -188,7 +188,7 @@ if:x:/@.dirty/*
           class:right strip
           widgets
             button
-              innerValue:Yes
+              innerValue:Close
               oninit
 
                 /*
@@ -215,9 +215,19 @@ if:x:/@.dirty/*
                 delete-widget:hyper-ide-dirty-editors-modal
 
   /*
-   * Setting the last dirty editor to active, and returning "failure" to caller.
+   * Checking if we need to activate our last dirty editor.
    */
-  hyper-ide.editors.set-active-editor:x:/@.dirty/0/-?name
+  if:x:/@hyper-ide.active-editor.get-filepath?value
+    !=::x:/@.dirty/0/-?name
+
+    /*
+     * We need to set our last dirty editor to active.
+     */
+    hyper-ide.editors.set-active-editor:x:/@.dirty/0/-?name
+
+  /*
+   * Returning "failure" to caller.
+   */
   return:bool:false
 
 
@@ -251,8 +261,22 @@ if:x:/@_active-deleted?value
      */
     delete-widget:hyper-ide-editor-tab
     hyper-ide.load-splash
-    micro.widgets.tree.select-items:hyper-ide-folder-tree-browser
-      items
+
+    /*
+     * Checking if active item in folder explorer is a file, and if it is, we make
+     * sure we de-select it.
+     */
+    hyper-ide.folder-explorer.get-active-item
+    if
+      ends-with:x:/@hyper-ide.folder-explorer.get-active-item?value
+        src:/
+      not
+
+      /*
+       * Active folder explorer item is a file, hence we de-select it.
+       */
+      micro.widgets.tree.select-items:hyper-ide-folder-tree-browser
+        items
 
 
 

@@ -23,15 +23,14 @@ micro.lambda.contract.min:x:/..
  * already is activated.
  */
 p5.web.widgets.find-first:hyper-ide-editor-tab-buttons
-  .activate:x:/../*/file?value
+  data-activate:x:/../*/file?value
 get-widget-property:x:/@p5.web.widgets.find-first/*/*?value
   class
 if:x:/@get-widget-property/*/*?value
   ~:toggled
 
   /*
-   * Editor is already activated, returning early, signaling "not activated"
-   * to caller.
+   * Editor is already activated, returning early, signaling "failure" to caller.
    */
   return:bool:false
 
@@ -48,7 +47,7 @@ if:x:/@get-widget-property/*/*?value
  * its "toggled" class.
  */
 p5.web.widgets.find-first-like:hyper-ide-editor-tab-buttons
-  .activate
+  data-activate
   class:toggled
 
 
@@ -104,8 +103,7 @@ micro.css.toggle:x:/@p5.web.widgets.find-first/*/*?value
 
 
 /*
- * Then making sure we disable all editors, except the one caller wants activate,
- * which we enable.
+ * Then making sure we disable all non-active editors.
  *
  * This is done to avoid having disabled editors send their code on each Ajax request,
  * reducing the bandwidth consumption in general.
@@ -114,6 +112,14 @@ p5.web.widgets.find-first:x:/@p5.web.widgets.find-first-like/*/*?value
   element:textarea
 set-widget-property:x:/@p5.web.widgets.find-first/*/*?value
   disabled
+
+
+
+
+
+/*
+ * Then making sure we enable the currently activated editor.
+ */
 p5.web.widgets.find-first:x:/@p5.web.widgets.find-first/@p5.web.widgets.find-first/*/*?value
   element:textarea
 delete-widget-property:x:/@p5.web.widgets.find-first/*/*?value
@@ -141,7 +147,7 @@ micro.css.toggle:x:/@p5.web.widgets.find-first-like/*/*?value
 /*
  * Then finding the toolbar we should show and displaying it.
  */
-p5.web.widgets.find-first-like:hyper-ide-toolbar-wrapper
+p5.web.widgets.find-first:hyper-ide-toolbar-wrapper
   .toolbar:x:/../*/file?value
-micro.css.toggle:x:/@p5.web.widgets.find-first-like/*/*?value
+micro.css.toggle:x:/@p5.web.widgets.find-first/*/*?value
   class:hide visible

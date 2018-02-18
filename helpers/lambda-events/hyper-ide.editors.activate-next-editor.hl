@@ -3,7 +3,7 @@
  * Finding all "activate buttons".
  */
 p5.web.widgets.find:hyper-ide-editor-tab-buttons
-  .activate
+  data-activate
 
 
 
