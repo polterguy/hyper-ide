@@ -63,9 +63,8 @@ button
                       /*
                        * Deleting selected item from tree.
                        *
-                       * Notice, selected tree view item will always be the file or folder 
-                       * user is trying to delete, since selecting a tree view item, 
-                       * changes the active file object edited.
+                       * Notice, selected tree view item will always be the file
+                       * user is trying to delete.
                        */
                       micro.widgets.tree.get-selected-items:hyper-ide-folder-tree-browser
                       add:x:/../*/micro.widgets.tree.delete-items
@@ -73,7 +72,7 @@ button
                       micro.widgets.tree.delete-items:hyper-ide-folder-tree-browser
 
                       /*
-                       * Making sure we close all editor for file.
+                       * Making sure we close editor for file.
                        */
                       eval-x:x:/+/*
                       hyper-ide.editors.close-all

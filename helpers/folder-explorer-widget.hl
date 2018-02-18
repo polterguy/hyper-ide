@@ -51,7 +51,7 @@ micro.widgets.tree:hyper-ide-folder-tree-browser
          * and folders structure, and returning items to caller.
          */
         eval-x:x:/+/*
-        micro.evaluate.file:@IDE/helpers/get-file-objects.hl
+        micro.evaluate.file:@IDE/helpers/get-folder-explorer-objects.hl
           folder:x:/../*/_item-id?value
         add:x:/..if/*/return/*/items
           src:x:/@micro.evaluate.file/*

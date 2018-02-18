@@ -431,7 +431,7 @@ create-widget:hyper-ide-main-container
             micro.widgets.file
               class:air-inner shaded rounded hyper-ide-solution-explorer
               files
-                @IDE/helpers/folder-explorer.hl
+                @IDE/helpers/folder-explorer-widget.hl
 
         /*
          * Wrapper for our file editor.
@@ -452,7 +452,7 @@ create-widget:hyper-ide-main-container
               /*
                * Creating our initial "splash" screen.
                */
-              load-file:@IDE/helpers/splash.hl
+              load-file:@IDE/helpers/splash-screen-widget.hl
               add:x:/@load-file/*/*
                 src
                   parent:hyper-ide-file-editor
@@ -485,5 +485,5 @@ create-widget:hyper-ide-main-container
 p5.web.query.get:path
 if:x:/@p5.web.query.get/*?value
   eval-x:x:/+/*
-  micro.evaluate.file:@IDE/helpers/open-path.hl
+  micro.evaluate.file:@IDE/helpers/expand-folder-explorer-path.hl
     path:x:/@p5.web.query.get/*?value
