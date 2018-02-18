@@ -1,0 +1,108 @@
+
+/*
+ * Create new file button.
+ */
+button
+  innerValue:@"<span class=""icon-file-empty""></span>"
+  title:Create a new file
+  onclick
+
+    /*
+     * Creating new file, asking user for name for his new file.
+     */
+    create-widgets
+      micro.widgets.modal:hyper-ide-create-new-file-modal
+        widgets
+          h3
+            innerValue:Name of new file
+          micro.widgets.wizard-form:hyper-ide-create-new-file-form
+            text:hyper-ide-new-file-name
+              info:Name
+              .data-field:name
+              placeholder:Name for your new file ...
+              onkeydown:@"if (event.keyCode == 13) {p5.$('hyper-ide-new-file-btn').raise('onclick');return false;}"
+              oninit
+
+                /*
+                 * Setting initial focus to "Yes" button.
+                 */
+                micro.page.set-focus:x:/../*/_event?value
+
+          div
+            class:right
+            widgets
+              div
+                class:strip
+                widgets
+                  button:hyper-ide-new-file-btn
+                    innerValue:OK
+                    onclick
+
+                      /*
+                       * Serializing form data and sanity checking name of new file.
+                       *
+                       * Notice, we only accept a-z, 0-9, ., _ and - characters.
+                       */
+                      micro.form.serialize:hyper-ide-create-new-file-form
+                      match:x:/@micro.form.serialize/*/name?value
+                        src:regex:/^[-_a-z0-9 ]+\.{1}[-_a-z0-9\.]+$/i
+                      if:x:/@match/*?count
+                        =:int:0
+                        or:x:/@match/0?name
+                          =:
+
+                        /*
+                         * Not a legal name for a file.
+                         */
+                        micro.css.add:hyper-ide-new-file-name
+                          class:error
+                        micro.windows.info:Only use a-z, ., _, - and 0-9 in your name
+                          class:micro-windows-info warning
+                        micro.page.set-focus:hyper-ide-new-file-name
+                        return
+
+                      /*
+                       * Creating our new file as a sub file of currently selected folder.
+                       */
+                      get-widget-property:hyper-ide-active-folder-toolbar
+                        .folder
+                      save-file:{0}{1}
+                        :x:/@get-widget-property/*/*?value
+                        :x:/@micro.form.serialize/*/name?value
+                        src:
+
+                      /*
+                       * Making sure we refresh our tree view.
+                       */
+                      add:x:/../*/micro.widgets.tree.refresh-items/*/items
+                        src:x:/@get-widget-property/*/*?value
+                      micro.widgets.tree.refresh-items:hyper-ide-folder-tree-browser
+                        force-expand:true
+                        items
+
+                      /*
+                       * Making sure we select our newly created file, and open
+                       * it for editing.
+                       *
+                       * Notice, this is done by selecting the same tree node twice.
+                       */
+                      add:x:/../*/micro.widgets.tree.select-items/*/items
+                        src:{0}{1}
+                          :x:/@get-widget-property/*/*?value
+                          :x:/@micro.form.serialize/*/name?value
+                      micro.widgets.tree.select-items:hyper-ide-folder-tree-browser
+                        items
+
+                      /*
+                       * Deleting modal widget, and giving user some feedback.
+                       */
+                      delete-widget:hyper-ide-create-new-file-modal
+
+                  button
+                    innerValue:Cancel
+                    onclick
+
+                      /*
+                       * Simply deleting modal widget
+                       */
+                      delete-widget:hyper-ide-create-new-file-modal

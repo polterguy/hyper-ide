@@ -1,0 +1,233 @@
+
+/*
+ * Deletes active file or folder button.
+ */
+button
+  innerValue:@"<span class=""icon-bin""></span>"
+  title:Deletes file or folder
+  disabled
+  events
+
+    /*
+     * Sink invoked when active item in folder explorer has been changed.
+     */
+    hyper-ide.folder-explorer.item-changed
+
+      /*
+       * Checking if there is a selected item.
+       */
+      if:x:/../*/_arg?value
+
+        /*
+         * Enabling button.
+         */
+        delete-widget-property:x:/../*/_event?value
+          disabled
+
+      else
+
+        /*
+         * Disabling button since there is no active item in folder explorer.
+         */
+        set-widget-property:x:/../*/_event?value
+          disabled
+
+    /*
+     * Deletes a file.
+     */
+    hyper-ide._delete-file
+
+      /*
+       * Retrieving file name.
+       */
+      hyper-ide.folder-explorer.get-active-item
+
+      /*
+       * Then passing filename into modal widget.
+       */
+      eval-x:x:/+/**/.filename
+      create-widgets
+        micro.widgets.modal:hyper-ide-confirm-delete-file
+          widgets
+            h3
+              innerValue:Confirm deletion
+            literal
+              element:p
+              style:"float:left;font-size:5rem;margin-right:.5rem;"
+              class:icon-bin
+            p
+              innerValue:@"Are you sure you want to delete the <code>{0}</code> file? I need you to confirm this action before I allow you to do this."
+                :x:/@hyper-ide.folder-explorer.get-active-item?value
+            p
+              innerValue:@"<strong>Warning, this action is permanent!</strong>"
+            div
+              class:right
+              widgets
+                div
+                  class:strip
+                  widgets
+                    button
+                      innerValue:Yes
+                      oninit
+
+                        /*
+                         * Setting initial focus to "Yes" button.
+                         */
+                        micro.page.set-focus:x:/../*/_event?value
+
+                      onclick
+
+                        /*
+                         * Forward evaluated above.
+                         */
+                        .filename:x:/../*/hyper-ide.folder-explorer.get-active-item?value
+
+                        /*
+                         * Deleting actual file.
+                         */
+                        delete-file:x:/@.filename?value
+
+                        /*
+                         * Deleting selected item from tree.
+                         *
+                         * Notice, selected tree view item will always be the file
+                         * user is trying to delete.
+                         */
+                        micro.widgets.tree.get-selected-items:hyper-ide-folder-tree-browser
+                        add:x:/../*/micro.widgets.tree.delete-items
+                          src:x:/@micro.widgets.tree.get-selected-items/*
+                        micro.widgets.tree.delete-items:hyper-ide-folder-tree-browser
+
+                        /*
+                         * Making sure we close editor for file.
+                         */
+                        eval-x:x:/+/*
+                        hyper-ide.editors.close-all
+                          filter:x:/@.filename?value
+                          exact:bool:true
+
+                        /*
+                         * Deleting modal window.
+                         */
+                        delete-widget:hyper-ide-confirm-delete-file
+
+                    button
+                      innerValue:No
+                      onclick
+
+                        /*
+                         * Simply deleting modal widget.
+                         */
+                        delete-widget:hyper-ide-confirm-delete-file
+
+    /*
+     * Deletes a folder.
+     */
+    hyper-ide._delete-folder
+
+      /*
+       * Retrieving folder name.
+       */
+      hyper-ide.folder-explorer.get-active-item
+
+      /*
+       * Deleting folder, asking user to confirm the action.
+       */
+      create-widgets
+        micro.widgets.modal:hyper-ide-confirm-delete-folder
+          widgets
+            h3
+              innerValue:Confirm deletion
+            literal
+              element:p
+              style:"float:left;font-size:5rem;margin-right:.5rem;"
+              class:icon-bin
+            p
+              innerValue:@"Are you sure you want to delete the <code>{0}</code> folder? This will delete all files and sub-folders, 
+and close all editors that are editing files inside of your folder. I need you to confirm this action before I allow you to do this."
+                :x:/@hyper-ide.folder-explorer.get-active-item?value
+            p
+              innerValue:@"<strong>Warning, this action is permanent!</strong>"
+            div
+              class:right
+              widgets
+                div
+                  class:strip
+                  widgets
+                    button
+                      innerValue:Yes
+                      oninit
+
+                        /*
+                         * Setting initial focus to "Yes" button.
+                         */
+                        micro.page.set-focus:x:/../*/_event?value
+
+                      onclick
+
+                        /*
+                         * Figuring out which folder user is trying to delete.
+                         */
+                        get-widget-property:hyper-ide-active-folder-toolbar
+                          .folder
+
+                        /*
+                         * Deleting actual folder.
+                         */
+                        delete-folder:x:/@get-widget-property/*/*?value
+
+                        /*
+                         * Deleting selected item from tree.
+                         *
+                         * Notice, selected tree view item will always be the file or folder 
+                         * user is trying to delete, since selecting a tree node, 
+                         * changes the active file object edited.
+                         */
+                        micro.widgets.tree.get-selected-items:hyper-ide-folder-tree-browser
+                        add:x:/../*/micro.widgets.tree.delete-items
+                          src:x:/@micro.widgets.tree.get-selected-items/*
+                        micro.widgets.tree.delete-items:hyper-ide-folder-tree-browser
+
+                        /*
+                         * Making sure we close all editors that are editing files beneath
+                         * currently deleted folder.
+                         */
+                        eval-x:x:/+/*
+                        hyper-ide.editors.close-all
+                          filter:x:/@get-widget-property/*/*?value
+
+                        /*
+                         * Deleting modal window.
+                         */
+                        delete-widget:hyper-ide-confirm-delete-folder
+
+                    button
+                      innerValue:No
+                      onclick
+
+                        /*
+                         * Simply deleting modal widget.
+                         */
+                        delete-widget:hyper-ide-confirm-delete-folder
+
+  onclick
+
+    /*
+     * Checking if user is trying to delete a file, or a folder.
+     */
+    hyper-ide.folder-explorer.get-active-item
+    if
+      ends-with:x:/@hyper-ide.folder-explorer.get-active-item?value
+        src:/
+
+      /*
+       * Deletes a folder.
+       */
+      hyper-ide._delete-folder
+
+    else
+
+      /*
+       * Deletes a file.
+       */
+      hyper-ide._delete-file

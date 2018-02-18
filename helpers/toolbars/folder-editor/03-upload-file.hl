@@ -1,0 +1,15 @@
+
+/*
+ * Upload file button.
+ */
+micro.widgets.upload-button
+  title:Upload a file
+  multiple
+  .onupload
+
+    /*
+     * Evaluating file responsible for handling our upload.
+     */
+    add:x:/+
+      src:x:/../*/files
+    micro.evaluate.file:@IDE/helpers/upload-files.hl

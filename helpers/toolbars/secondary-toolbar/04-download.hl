@@ -1,0 +1,39 @@
+
+/*
+ * Downloads file.
+ */
+button
+  innerValue:@"<span class=""icon-download2""></span>"
+  title:Download file
+  disabled
+  events
+
+    /*
+     * Sink invoked when active item in folder explorer has been changed.
+     */
+    hyper-ide.folder-explorer.item-changed
+      if
+        ends-with:x:/../*/_arg?value
+          src:/
+
+        /*
+         * Disabling button.
+         */
+        set-widget-property:x:/../*/_event?value
+          disabled
+
+      else
+
+        /*
+         * Enabling button.
+         */
+        delete-widget-property:x:/../*/_event?value
+          disabled
+
+  onclick
+
+    /*
+     * Downloading file.
+     */
+    hyper-ide.folder-explorer.get-active-item
+    micro.download.file:x:/@hyper-ide.folder-explorer.get-active-item?value

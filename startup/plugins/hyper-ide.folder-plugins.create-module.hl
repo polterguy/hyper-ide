@@ -10,7 +10,8 @@ create-event:hyper-ide.folder-plugins.create-module
    *
    * This is to prevent this plugin to be visible in any other folders than our "/modules/" folder.
    */
-  if:x:/../*/folder?value
+  hyper-ide.folder-explorer.get-active-item
+  if:x:/@hyper-ide.folder-explorer.get-active-item?value
     !=:/modules/
     return
 

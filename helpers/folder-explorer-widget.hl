@@ -68,8 +68,8 @@ micro.widgets.tree:hyper-ide-folder-tree-browser
         class:micro-windows-info warning
       if
         fetch:x:/0/0?value
-          widget-exists:hyper-ide-active-file-object-toolbar
-        delete-widget:hyper-ide-active-file-object-toolbar
+          widget-exists:hyper-ide-active-folder-toolbar
+        delete-widget:hyper-ide-active-folder-toolbar
 
       /*
        * Making sure we don't try to select item in any ways 
@@ -143,10 +143,9 @@ micro.widgets.tree:hyper-ide-folder-tree-browser
           file:x:/../*/items/0?name
 
       /*
-       * Making sure we enable our "bookmark button".
+       * Raising the folder explorer "active event changed" event.
        */
-      delete-widget-property:hyper-ide-bookmark-button
-        disabled
+      hyper-ide.folder-explorer.item-changed:x:/../*/items/0?name
 
     catch
 
@@ -158,8 +157,8 @@ micro.widgets.tree:hyper-ide-folder-tree-browser
         class:micro-windows-info warning
       if
         fetch:x:/0/0?value
-          widget-exists:hyper-ide-active-file-object-toolbar
-        delete-widget:hyper-ide-active-file-object-toolbar
+          widget-exists:hyper-ide-active-folder-toolbar
+        delete-widget:hyper-ide-active-folder-toolbar
 
       /*
        * Returning false to let caller know we don't want to invoke

@@ -2,10 +2,23 @@
 /*
  * Bookmark button.
  */
-button:hyper-ide-bookmark-button
+button
   innerValue:@"<span class=""icon-bookmark""></span>"
   title:Copy URL to current path
   disabled
+  events
+
+    /*
+     * Sink invoked when active item in folder explorer has been changed.
+     */
+    hyper-ide.folder-explorer.item-changed
+
+      /*
+       * Enabling button.
+       */
+      delete-widget-property:x:/../*/_event?value
+        disabled
+
   onclick
 
     /*
@@ -36,11 +49,10 @@ button:hyper-ide-bookmark-button
         /*
          * Figuring out the URL for current path, and selecting all text.
          */
-        micro.widgets.tree.get-selected-items:hyper-ide-folder-tree-browser
+        hyper-ide.folder-explorer.get-active-item
         p5.web.get-location-url
-        hyper-ide.folder-explorer.get-active-editor-filepath
         set-widget-property:x:/../*/_event?value
           value:{0}?path={1}
             :x:/@p5.web.get-location-url?value
-            :x:/@micro.widgets.tree.get-selected-items/0/0?name
+            :x:/@hyper-ide.folder-explorer.get-active-item?value
         micro.page.set-focus:x:/../*/_event?value
