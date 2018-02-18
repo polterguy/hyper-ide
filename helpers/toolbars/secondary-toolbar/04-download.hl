@@ -12,22 +12,28 @@ button
      * Sink invoked when active item in folder explorer has been changed.
      */
     hyper-ide.folder-explorer.item-changed
-      if
-        ends-with:x:/../*/_arg?value
-          src:/
 
-        /*
-         * Disabling button.
-         */
-        set-widget-property:x:/../*/_event?value
-          disabled
-
-      else
+      /*
+       * Checking if there is a selected item.
+       */
+      if:x:/../*/_arg?value
+        and
+          ends-with:x:/../*/_arg?value
+            src:/
+          not
 
         /*
          * Enabling button.
          */
         delete-widget-property:x:/../*/_event?value
+          disabled
+
+      else
+
+        /*
+         * Disabling button since there is no active item in folder explorer.
+         */
+        set-widget-property:x:/../*/_event?value
           disabled
 
   onclick

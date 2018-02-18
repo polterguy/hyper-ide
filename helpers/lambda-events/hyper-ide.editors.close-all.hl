@@ -225,6 +225,11 @@ if:x:/@.dirty/*
      */
     hyper-ide.editors.set-active-editor:x:/@.dirty/0/-?name
 
+    /*
+     * Raising our folder changed event.
+     */
+    hyper-ide.folder-explorer.item-changed:x:/@.dirty/0/-?name
+
   /*
    * Returning "failure" to caller.
    */
@@ -254,6 +259,11 @@ if:x:/@_active-deleted?value
      */
     hyper-ide.editors.set-active-editor:x:/@hyper-ide.editors.get-open-editors/0/-?name
 
+    /*
+     * Raising our folder changed event.
+     */
+    hyper-ide.folder-explorer.item-changed:x:/@hyper-ide.editors.get-open-editors/0/-?name
+
   else
 
     /*
@@ -261,6 +271,11 @@ if:x:/@_active-deleted?value
      */
     delete-widget:hyper-ide-editor-tab
     hyper-ide.load-splash
+
+    /*
+     * Raising our folder changed event.
+     */
+    hyper-ide.folder-explorer.item-changed
 
     /*
      * Checking if active item in folder explorer is a file, and if it is, we make

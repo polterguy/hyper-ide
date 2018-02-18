@@ -14,10 +14,23 @@ button
     hyper-ide.folder-explorer.item-changed
 
       /*
-       * Enabling button.
+       * Checking if there is a selected item.
        */
-      delete-widget-property:x:/../*/_event?value
-        disabled
+      if:x:/../*/_arg?value
+
+        /*
+         * Enabling button.
+         */
+        delete-widget-property:x:/../*/_event?value
+          disabled
+
+      else
+
+        /*
+         * Disabling button since there is no active item in folder explorer.
+         */
+        set-widget-property:x:/../*/_event?value
+          disabled
 
   onclick
 
