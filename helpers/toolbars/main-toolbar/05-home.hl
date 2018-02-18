@@ -13,12 +13,5 @@ button
      * and we need to ask user about confirmation before we allow
      * him to leave page.
      */
-    hyper-ide.editors.close-all
-      filter:/
-      .onclosed
-
-        /*
-         * Redirecting user to server's root URL.
-         */
-        p5.web.get-root-location
-        p5.web.set-location:x:/-?value
+    p5.web.get-root-location
+    p5.web.set-location:x:/-?value

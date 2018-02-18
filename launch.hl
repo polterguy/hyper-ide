@@ -394,6 +394,7 @@ create-widget:hyper-ide-main-container
              */
             micro.widgets.file
               class:strip right hyper-ide-toolbar
+              widgets:plugins
               folder:@IDE/helpers/toolbars/main-toolbar/
 
             /*
@@ -405,7 +406,6 @@ create-widget:hyper-ide-main-container
             micro.widgets.file:hyper-ide-toolbars
               class:strip right hyper-ide-toolbar
               folder:@IDE/helpers/toolbars/secondary-toolbar/
-              widgets:plugins
 
 
 
