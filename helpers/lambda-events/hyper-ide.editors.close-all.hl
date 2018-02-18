@@ -254,16 +254,6 @@ if:x:/@_active-deleted?value
     micro.widgets.tree.select-items:hyper-ide-folder-tree-browser
       items
 
-    /*
-     * Making sure we show our solution explorer, if it is hidden.
-     */
-    micro.css.delete:hyper-ide-file-browser-wrapper
-      class:hide
-    micro.css.delete:hyper-ide-file-editor
-      class:col
-    micro.css.add:hyper-ide-file-editor
-      class:col-70
-
 
 
 

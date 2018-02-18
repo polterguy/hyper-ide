@@ -1,0 +1,43 @@
+
+/*
+ * Toggling visibility of folder explorer.
+ */
+button
+  innerValue:@"<span class=""icon-tree""></span>"
+  title:Toggle visibility of folder explorer
+  .toogle-solution-explorer-button
+  oninit
+
+    /*
+     * Checking of "solution explorer" is visible, and if it is, making
+     * sure button is initially created with the "toggled" class.
+     */
+    get-widget-property:hyper-ide-file-browser-wrapper
+      class
+    if:x:/@get-widget-property/*/*/=~hide
+      not
+
+      /*
+       * Solution explorer is visible.
+       *
+       * Hence, we make sure our "toggle solution explorer" button becomes toggled.
+       */
+      micro.css.add:x:/../*/_event?value
+        class:toggled
+
+  onclick
+
+    /*
+     * Toggling "hide" class for solution explorer, and "toggled" class
+     * for the currently clicked button.
+     *
+     * In addition, we toggle "col-70" and "col" for our editor wrapper.
+     */
+    micro.css.toggle:hyper-ide-file-browser-wrapper
+      class:hide visible
+    p5.web.widgets.find
+      .toogle-solution-explorer-button
+    micro.css.toggle:x:/-/*/*?value
+      class:toggled
+    micro.css.toggle:hyper-ide-file-editor
+      class:col-70 col
