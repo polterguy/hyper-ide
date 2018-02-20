@@ -332,7 +332,7 @@ create-widget
                       /*
                        * Databinding our grid.
                        */
-                      micro.widgets.grid.databind::x:/../*/_event?value
+                      micro.widgets.grid.databind:x:/../*/_event?value
                       return:bool:true
 "
     :x:/../*/database?value

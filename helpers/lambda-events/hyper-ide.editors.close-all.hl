@@ -107,7 +107,7 @@ for-each:x:/@hyper-ide.editors.get-open-editors/*
        * continue our iteration.
        */
       add:x:/@.dirty
-        src::x:/@_dp/#?name
+        src:x:/@_dp/#?name
       continue
 
     /*
@@ -122,6 +122,13 @@ for-each:x:/@hyper-ide.editors.get-open-editors/*
        */
       set:x:/@_active-deleted?value
         src:bool:true
+
+    /*
+     * This is where the actual deletion of our editor is done.
+     *
+     * We'll need to delete the editor's toolbar, activate tab view button,
+     * and actual editor.
+     */
 
     /*
      * Deleting actual editor.
@@ -173,7 +180,9 @@ if:x:/@.dirty/*
    * sets the last dirty editor to active, and return early, to avoid evaluating
    * the rest of our lambda.
    *
-   * First passing in all arguments to our "recursive" invocation.
+   * First passing in all arguments to our "recursive" invocation, to make sure
+   * we get our [exact] and [filter] arguments correctly mapped up in our second
+   * invocation.
    */
   add:x:/+/**/hyper-ide.editors.close-all
     src:x:/@.signal/--/<-
@@ -218,17 +227,12 @@ if:x:/@.dirty/*
    * Checking if we need to activate our last dirty editor.
    */
   if:x:/@hyper-ide.active-editor.get-filepath?value
-    !=::x:/@.dirty/0/-?name
+    !=:x:/@.dirty/0/-?name
 
     /*
      * We need to set our last dirty editor to active.
      */
     hyper-ide.editors.set-active-editor:x:/@.dirty/0/-?name
-
-    /*
-     * Raising our folder changed event.
-     */
-    hyper-ide.folder-explorer.item-changed:x:/@.dirty/0/-?name
 
   /*
    * Returning "failure" to caller.
@@ -259,11 +263,6 @@ if:x:/@_active-deleted?value
      */
     hyper-ide.editors.set-active-editor:x:/@hyper-ide.editors.get-open-editors/0/-?name
 
-    /*
-     * Raising our folder changed event.
-     */
-    hyper-ide.folder-explorer.item-changed:x:/@hyper-ide.editors.get-open-editors/0/-?name
-
   else
 
     /*
@@ -285,14 +284,7 @@ if:x:/@_active-deleted?value
       /*
        * Active folder explorer item is a file, hence we de-select it.
        */
-      micro.widgets.tree.select-items:hyper-ide-folder-tree-browser
-        items
-
-    /*
-     * Raising our folder changed event.
-     */
-    hyper-ide.folder-explorer.get-active-item
-    hyper-ide.folder-explorer.item-changed:x:/@hyper-ide.folder-explorer.get-active-item?value
+      hyper-ide.folder-explorer.set-active-item
 
 
 

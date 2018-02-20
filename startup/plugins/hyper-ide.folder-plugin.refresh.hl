@@ -9,18 +9,6 @@ create-event:hyper-ide.folder-plugins.refresh
       onclick
 
         /*
-         * Retrieving current folder.
+         * Refreshing active folder.
          */
-        p5.web.widgets.find-first-ancestor:x:/../*/_event?value
-          .folder
-        get-widget-property:x:/-/*/*?value
-          .folder
-
-        /*
-         * Refreshing tree.
-         */
-        add:x:/../*/micro.widgets.tree.refresh-items/*/items
-          src:x:/@get-widget-property/*/*?value
-        micro.widgets.tree.refresh-items:hyper-ide-folder-tree-browser
-          force-expand:bool:true
-          items
+        hyper-ide.folder-explorer.refresh-active-folder

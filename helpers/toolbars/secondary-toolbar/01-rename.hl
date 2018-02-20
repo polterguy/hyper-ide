@@ -112,24 +112,9 @@ button
                         /*
                          * Refreshing tree, and de-selecting folder.
                          */
-                        join:x:/@split/*?name
-                          sep:/
-                        set:x:/@join?value
-                          src:/{0}/
-                            :x:/@join?value
-                        trim-left:x:/@join?value
-                          chars:/
-                        add:x:/../*/micro.widgets.tree.refresh-items/*/items
-                          src:/{0}
-                            :x:/@trim-left?value
-                        micro.widgets.tree.refresh-items:hyper-ide-folder-tree-browser
-                          force-expand:bool:true
-                          items
-                        add:x:/../*/micro.widgets.tree.select-items/*/items
-                          src:/{0}/
-                            :x:/@trim?value
-                        micro.widgets.tree.select-items:hyper-ide-folder-tree-browser
-                          items
+                        hyper-ide.folder-explorer.refresh-active-folder
+                        hyper-ide.folder-explorer.set-active-item:/{0}/
+                          :x:/@trim?value
 
                         /*
                          * Deleting modal widget, and giving user some feedback.
@@ -238,28 +223,14 @@ button
                         /*
                          * Refreshing tree, since folder's content now has changed.
                          */
-                        add:x:/../*/micro.widgets.tree.refresh-items/*/items
-                          src:x:/@.folder?value
-                        micro.widgets.tree.refresh-items:hyper-ide-folder-tree-browser
-                          force-expand:bool:true
-                          items
+                        hyper-ide.folder-explorer.refresh-active-folder
 
                         /*
                          * Changes name of active file.
                          */
-                        hyper-ide.set-active-filename:{0}{1}
+                        hyper-ide.folder-explorer.set-active-item:{0}{1}
                           :x:/@.folder?value
                           :x:/@micro.form.serialize/*/name?value
-
-                        /*
-                         * Selecting (updated) file in tree view now.
-                         */
-                        add:x:/../*/micro.widgets.tree.select-items/*/items
-                          src:{0}{1}
-                            :x:/@.folder?value
-                            :x:/@micro.form.serialize/*/name?value
-                        micro.widgets.tree.select-items:hyper-ide-folder-tree-browser
-                          items
 
                         /*
                          * Deleting modal widget, and giving user some feedback.

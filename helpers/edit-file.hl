@@ -394,13 +394,6 @@ create-widgets
        * Activating editor, and verifying invocation was a success.
        */
       hyper-ide.editors.set-active-editor:x:/@get-widget-property/*/*?value
-      if:x:/-?value
-
-        /*
-         * Making sure we scroll tree view item into view.
-         */
-        p5.web.widgets.find-first-like:hyper-ide-folder-tree-browser
-          class:tree-selected
 
     widgets
       span

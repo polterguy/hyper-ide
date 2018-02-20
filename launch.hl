@@ -62,8 +62,7 @@ p5.web.include-css-file:@IDE/media/main.css?v={0}
 /*
  * Setting title of our page, making sure we display version number of Hyper IDE.
  */
-p5.web.page.set-title:Hyper IDE version {0}
-  :x:/@hyper-ide.version?value
+p5.web.page.set-title:Hyper IDE version
 
 
 
@@ -112,7 +111,7 @@ create-widget:hyper-ide-main-container
 
 
   /*
-   * Helper Ajax events, necessary to map keyboard shortcuts.
+   * Helper Ajax events, necessary to have keyboard shortcuts correctly mapped.
    */
   .onsave
 
@@ -210,6 +209,25 @@ create-widget:hyper-ide-main-container
 
 
     /*
+     * Sets the active folder explorer item to the [_arg] argument.
+     */
+    hyper-ide.folder-explorer.set-active-item
+
+      /*
+       * Returning treeview's selected item' filepath.
+       */
+      add:x:/+/*
+        src:x:/../*/_arg?value
+      micro.widgets.tree.select-items:hyper-ide-folder-tree-browser
+        items
+
+      /*
+       * Raising our folder explorer item changed event.
+       */
+      hyper-ide.folder-explorer.item-changed:x:/../*/_arg?value
+
+
+    /*
      * Refreshes the currently active folder, if a folder is active in our
      * folder explorer.
      */
@@ -260,8 +278,8 @@ create-widget:hyper-ide-main-container
     /*
      * Returns the "clean" flag for active editor, if any.
      */
-    hyper-ide.active-editor.get-clean
-      micro.evaluate.file:@IDE/helpers/lambda-events/hyper-ide.active-editor.get-clean.hl
+    hyper-ide.active-editor.is-clean
+      micro.evaluate.file:@IDE/helpers/lambda-events/hyper-ide.active-editor.is-clean.hl
       return:x:/-?value
 
 
@@ -315,7 +333,7 @@ create-widget:hyper-ide-main-container
     /*
      * Sets the active editor.
      *
-     * Pass in [_arg] being either filename or ID of editor to activate.
+     * Pass in [_arg] being either filename or CodeMirror ID of editor to activate.
      */
     hyper-ide.editors.set-active-editor
       eval-x:x:/+/*

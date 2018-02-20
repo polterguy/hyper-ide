@@ -11,7 +11,7 @@ p5.web.widgets.find-first-like:hyper-ide-editor-tab-editors
 
 
 /*
- * Checking that above invocation actually returned something.
+ * Checking that the above invocation actually returned something.
  */
 if:x:/@p5.web.widgets.find-first-like/*/*?value
 

@@ -71,7 +71,4 @@ for-each:x:/@split/@split/*?name
 /*
  * Making sure we select our final ressulting item
  */
-add:x:/+/*/items
-  src:x:/../*/path?value
-micro.widgets.tree.select-items:hyper-ide-folder-tree-browser
-  items
+hyper-ide.folder-explorer.set-active-item:x:/../*/path?value

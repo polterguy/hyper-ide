@@ -74,11 +74,7 @@ button
                       /*
                        * Making sure we refresh our tree view.
                        */
-                      add:x:/../*/micro.widgets.tree.refresh-items/*/items
-                        src:x:/@get-widget-property/*/*?value
-                      micro.widgets.tree.refresh-items:hyper-ide-folder-tree-browser
-                        force-expand:true
-                        items
+                      hyper-ide.folder-explorer.refresh-active-folder
 
                       /*
                        * Making sure we select our newly created file, and open
@@ -86,12 +82,9 @@ button
                        *
                        * Notice, this is done by selecting the same tree node twice.
                        */
-                      add:x:/../*/micro.widgets.tree.select-items/*/items
-                        src:{0}{1}
-                          :x:/@get-widget-property/*/*?value
-                          :x:/@micro.form.serialize/*/name?value
-                      micro.widgets.tree.select-items:hyper-ide-folder-tree-browser
-                        items
+                      hyper-ide.folder-explorer.set-active-item:{0}{1}
+                        :x:/@get-widget-property/*/*?value
+                        :x:/@micro.form.serialize/*/name?value
 
                       /*
                        * Deleting modal widget, and giving user some feedback.

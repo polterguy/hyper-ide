@@ -17,12 +17,13 @@ if:x:/@p5.web.widgets.find/*/*?count
   >:int:1
 
   /*
-   * Raising the "onclick" event for the activate button that is after the currently active one.
+   * Activating the next editor in chain of open editors.
    */
   get-widget-property:x:/@p5.web.widgets.find/*/*?value
     class
-  p5.web.widgets.ajax-events.raise:x:/@get-widget-property/*/*(/=~toggled)/./+?name
-    .onclick
+  get-widget-property:x:/@get-widget-property/*/*(/=~toggled)/./+?name
+    data-activate
+  hyper-ide.editors.set-active-editor:x:/@get-widget-property/*/*?value
 
   /*
    * Returning success to caller.

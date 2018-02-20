@@ -30,6 +30,29 @@ if:x:/@get-widget-property/*/*?value
   ~:toggled
 
   /*
+   * Editor is already active, but there might be another active folder explorer
+   * item, at which point we still need to make the editor's toolbar visible.
+   */
+  if
+    hyper-ide.active-editor.get-filepath
+    !=
+      hyper-ide.folder-explorer.get-active-item
+
+    /*
+     * Although editor is already active, we still need to make its toolbar
+     * visible.
+     */
+    p5.web.widgets.find-first-like:hyper-ide-toolbar-wrapper
+      .toolbar:x:/../*/file?value
+    micro.css.toggle:x:/@p5.web.widgets.find-first-like/*/*?value
+      class:hide visible
+
+    /*
+     * Returning success to caller.
+     */
+    return:bool:true
+
+  /*
    * Editor is already activated, returning early, signaling "failure" to caller.
    */
   return:bool:false
