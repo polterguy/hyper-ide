@@ -102,7 +102,7 @@ create-widget:hyper-ide-help-wrapper
                             get-widget-property:x:/-/*/*?value
                               .file
                             eval-x:x:/+/*
-                            micro.evaluate.file:@IDE/helpers/expand-folder-explorer-path.hl
+                            micro.evaluate.file:@IDE/helpers/folder-explorer/expand-folder-explorer-path.hl
                               path:x:/@get-widget-property/*/*?value
                             p5.web.send-javascript:@"p5.$('hyper-ide-file-editor').el.scrollIntoView ({behavior:'instant'});"
 

@@ -23,7 +23,7 @@ micro.lambda.contract.min:x:/..
  * already is activated.
  */
 p5.web.widgets.find-first:hyper-ide-editor-tab-buttons
-  data-activate:x:/../*/file?value
+  .activate:x:/../*/file?value
 get-widget-property:x:/@p5.web.widgets.find-first/*/*?value
   class
 if:x:/@get-widget-property/*/*?value
@@ -70,7 +70,7 @@ if:x:/@get-widget-property/*/*?value
  * its "toggled" class.
  */
 p5.web.widgets.find-first-like:hyper-ide-editor-tab-buttons
-  data-activate
+  .activate
   class:toggled
 
 

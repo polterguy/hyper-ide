@@ -48,7 +48,7 @@ if
  * editor.
  */
 p5.web.widgets.find:hyper-ide-editor-tab-buttons
-  data-activate:x:/../*/file?value
+  .activate:x:/../*/file?value
 if:x:/@p5.web.widgets.find/*/*?value
 
   /*

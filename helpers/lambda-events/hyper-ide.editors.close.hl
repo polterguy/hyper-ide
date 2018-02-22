@@ -141,7 +141,7 @@ for-each:x:/@hyper-ide.editors.get-open-editors/*
      * Then its activate button.
      */
     p5.web.widgets.find-first:hyper-ide-editor-tab-buttons
-      data-activate:x:/@_dp/#?name
+      .activate:x:/@_dp/#?name
     delete-widget:x:/@p5.web.widgets.find-first/*/*?value
 
     /*

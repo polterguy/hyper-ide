@@ -451,7 +451,7 @@ create-widget:hyper-ide-main-container
             micro.widgets.file
               class:air-inner shaded rounded hyper-ide-solution-explorer
               files
-                @IDE/helpers/folder-explorer-widget.hl
+                @IDE/helpers/folder-explorer/folder-explorer-widget.hl
 
         /*
          * Wrapper for our file editor.
@@ -498,5 +498,5 @@ create-widget:hyper-ide-main-container
 p5.web.query.get:path
 if:x:/@p5.web.query.get/*?value
   eval-x:x:/+/*
-  micro.evaluate.file:@IDE/helpers/expand-folder-explorer-path.hl
+  micro.evaluate.file:@IDE/helpers/folder-explorer/expand-folder-explorer-path.hl
     path:x:/@p5.web.query.get/*?value

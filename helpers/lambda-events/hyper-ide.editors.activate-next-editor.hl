@@ -3,7 +3,7 @@
  * Finding all "activate buttons".
  */
 p5.web.widgets.find:hyper-ide-editor-tab-buttons
-  data-activate
+  .activate
 
 
 
@@ -22,7 +22,7 @@ if:x:/@p5.web.widgets.find/*/*?count
   get-widget-property:x:/@p5.web.widgets.find/*/*?value
     class
   get-widget-property:x:/@get-widget-property/*/*(/=~toggled)/./+?name
-    data-activate
+    .activate
   hyper-ide.editors.set-active-editor:x:/@get-widget-property/*/*?value
 
   /*
