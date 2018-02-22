@@ -36,7 +36,7 @@ if:x:/-?value
  * [exact] to make sure only active editor is closed.
  */
 eval-x:x:/+/*/filter
-hyper-ide.editors.close-all
+hyper-ide.editors.close
   filter:x:/@hyper-ide.active-editor.get-filepath?value
   exact:bool:true
 
@@ -47,4 +47,4 @@ hyper-ide.editors.close-all
 /*
  * Returning success to caller.
  */
-return:x:/@hyper-ide.editors.close-all?value
+return:x:/@hyper-ide.editors.close?value

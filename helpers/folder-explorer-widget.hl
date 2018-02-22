@@ -139,7 +139,7 @@ micro.widgets.tree:hyper-ide-folder-tree-browser
          * Invoking file responsible for selecting the file.
          */
         eval-x:x:/+/*
-        micro.evaluate.file:@IDE/helpers/edit-file.hl
+        micro.evaluate.file:@IDE/helpers/select-file.hl
           file:x:/../*/items/0?name
 
       /*

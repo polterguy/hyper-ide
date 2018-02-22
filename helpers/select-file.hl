@@ -1,0 +1,68 @@
+
+/*
+ * Invoked when user clicks a file in folder explorer.
+ */
+
+
+
+
+
+/*
+ * Signal node to separate arguments from the rest of our lambda.
+ */
+.signal
+
+
+
+
+
+/*
+ * Sanity checking arguments.
+ */
+micro.lambda.contract.min:x:/..
+  file:string
+
+
+
+
+
+/*
+ * Deleting any previously created edit active folder object toolbars.
+ */
+if
+  fetch:x:/0/0?value
+    widget-exists:hyper-ide-active-folder-toolbar
+
+  /*
+   * A folder is currently edited, deleting active file object toolbar for
+   * the folder that is edited.
+   */
+  delete-widget:hyper-ide-active-folder-toolbar
+
+
+
+
+
+/*
+ * Checking if file is already open, at which point we simply activate existing
+ * editor.
+ */
+p5.web.widgets.find:hyper-ide-editor-tab-buttons
+  data-activate:x:/../*/file?value
+if:x:/@p5.web.widgets.find/*/*?value
+
+  /*
+   * Editor for file is already open, activating editor, and returning early.
+   */
+  eval-x:x:/+/*
+  micro.evaluate.file:@IDE/helpers/activate-editor.hl
+    file:x:/../*/file?value
+
+else
+
+  /*
+   * Editing file.
+   */
+  add:x:/+
+    src:x:/@.signal/--/<-
+  micro.evaluate.file:@IDE/helpers/edit-file.hl

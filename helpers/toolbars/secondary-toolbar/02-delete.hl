@@ -102,7 +102,7 @@ button
                          * Making sure we close editor for file.
                          */
                         eval-x:x:/+/*
-                        hyper-ide.editors.close-all
+                        hyper-ide.editors.close
                           filter:x:/@.filename?value
                           exact:bool:true
 
@@ -193,7 +193,7 @@ and close all editors that are editing files inside of your folder. I need you t
                          * currently deleted folder.
                          */
                         eval-x:x:/+/*
-                        hyper-ide.editors.close-all
+                        hyper-ide.editors.close
                           filter:x:/@get-widget-property/*/*?value
 
                         /*

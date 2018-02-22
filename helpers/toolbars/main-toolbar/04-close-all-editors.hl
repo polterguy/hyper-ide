@@ -2,14 +2,42 @@
 /*
  * Close all editors button.
  */
-button:hyper-ide-close-all-editors
+button
   innerValue:@"<span class=""icon-cross""></span>"
   title:Close all editors
   disabled
+  events
+
+
+    /*
+     * Raised when a file is to be edited.
+     * We simply enable the close all button here.
+     */
+    hyper-ide.on-file-edited
+
+      /*
+       * Enabling our "close all editors" button.
+       */
+      delete-widget-property:x:/../*/_event?value
+        disabled
+
+
+    /*
+     * Raised when a no file is edited.
+     */
+    hyper-ide.on-all-editors-closed
+
+      /*
+       * Disabling our "close all editors" button.
+       */
+      set-widget-property:x:/../*/_event?value
+        disabled
+
+
   onclick
 
     /*
      * Making sure we close all editors.
      */
-    hyper-ide.editors.close-all
+    hyper-ide.editors.close
       filter:/

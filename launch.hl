@@ -267,6 +267,7 @@ create-widget:hyper-ide-main-container
 
     /*
      * Sets code for currently active editor.
+     * Pass in new code for editor as [_arg].
      */
     hyper-ide.active-editor.set-code
       eval-x:x:/+/*
@@ -284,7 +285,8 @@ create-widget:hyper-ide-main-container
 
 
     /*
-     * Removes the "clean" flag for active editor.
+     * Sets or removes the "clean" flag for active editor.
+     * Pass in "true" as [_arg] to make editor clean, and "false" to make it dirty.
      */
     hyper-ide.active-editor.set-clean
       eval:x:/+/*
@@ -302,9 +304,9 @@ create-widget:hyper-ide-main-container
 
 
     /*
-     * Close active editor.
-     * Add [force] and set its value to "true" to force closing, even if editor is dirty.
-     * Unless you add [force], the event will not close the active editor if it is dirty,
+     * Closes active editor.
+     *
+     * Unless you add [force] as "true", the event will not close the active editor if it is dirty,
      * but rather warn the user with a modal widget that the editor is dirty, and ask
      * him if he really wants to close it anyway.
      */
@@ -377,11 +379,11 @@ create-widget:hyper-ide-main-container
      * Useful for closing multiple editors, such as when a folder is deleted, in addition
      * to (of course) closing only a single editor by setting [exact] to true.
      */
-    hyper-ide.editors.close-all
+    hyper-ide.editors.close
       .signal
       add:x:/+
         src:x:/@.signal/--/<-
-      micro.evaluate.file:@IDE/helpers/lambda-events/hyper-ide.editors.close-all.hl
+      micro.evaluate.file:@IDE/helpers/lambda-events/hyper-ide.editors.close.hl
       return:x:/-?value
 
 
@@ -465,7 +467,7 @@ create-widget:hyper-ide-main-container
             /*
              * Loads up "splash screen".
              */
-            hyper-ide.load-splash
+            hyper-ide._load-splash
 
               /*
                * Creating our initial "splash" screen.
@@ -478,19 +480,12 @@ create-widget:hyper-ide-main-container
                 src:x:/@load-file/*/*
               create-widgets
 
-              /*
-               * Making sure we disable our "Close all editors" button.
-               */
-              set-widget-property:hyper-ide-close-all-editors
-                disabled
-
-
           oninit
 
             /*
              * Creating initial "splash" screen.
              */
-            hyper-ide.load-splash
+            hyper-ide._load-splash
 
 
 

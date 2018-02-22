@@ -8,64 +8,15 @@
 
 
 /*
- * Sanity checking arguments.
- */
-micro.lambda.contract.min:x:/..
-  file:string
-
-
-
-
-
-/*
- * Deleting any previously created edit active file object toolbars.
- */
-if
-  fetch:x:/0/0?value
-    widget-exists:hyper-ide-active-folder-toolbar
-
-  /*
-   * A folder is currently edited, deleting active file object toolbar for
-   * the folder that is edited.
-   */
-  delete-widget:hyper-ide-active-folder-toolbar
-
-
-
-
-
-/*
- * Checking if file is already open, at which point we simply activate existing
- * editor.
- */
-p5.web.widgets.find:hyper-ide-editor-tab-buttons
-  data-activate:x:/../*/file?value
-if:x:/@p5.web.widgets.find/*/*?value
-
-  /*
-   * Editor for file is already open, activating editor, and returning early.
-   */
-  eval-x:x:/+/*
-  micro.evaluate.file:@IDE/helpers/activate-editor.hl
-    file:x:/../*/file?value
-
-  /*
-   * Returning early to abort evaluation of the rest of our lambda (file).
-   */
-  return
-
-
-
-
-
-/*
  * Hiding any previously shown edit file toolbars.
  */
 p5.web.widgets.find-first-like:hyper-ide-toolbar-wrapper
   .toolbar
   class:visible
-micro.css.toggle:x:/@p5.web.widgets.find-first-like/*/*?value
-  class:hide visible
+micro.css.delete:x:/@p5.web.widgets.find-first-like/*/*?value
+  class:visible
+micro.css.add:x:/@p5.web.widgets.find-first-like/*/*?value
+  class:hide
 
 
 
@@ -80,11 +31,7 @@ micro.css.toggle:x:/@p5.web.widgets.find-first-like/*/*?value
  *
  * Hence, we load the file, do a loopkup for our file extension, at which point
  * we end up with a CodeMirror mode.
- *
- * First we retrieve file extension of file, and load our CodeMirror mapping file.
  */
-split:x:/../*/file?value
-  =:.
 load-file:@IDE/configuration/extension2cm-instance.hl
 
 
@@ -93,7 +40,11 @@ load-file:@IDE/configuration/extension2cm-instance.hl
 
 /*
  * Checking if mode exists for file extension.
+ *
+ * First figuring our file extension of file caller wants to edit.
  */
+split:x:/../*/file?value
+  =:.
 if:x:/@load-file/*/*/{0}
   :x:/@split/0/-?name
 
@@ -176,15 +127,14 @@ if
 
 /*
  * Making sure we hide any previously created file toolbars.
- *
- * This is the toolbar that contains "Save" button, "Close" button, and plugin
- * buttons, etc.
  */
 p5.web.widgets.find-first-like
   .toolbar
   class:visible
-micro.css.toggle:x:/@p5.web.widgets.find-first-like/*/*?value
-  class:hide visible
+micro.css.delete:x:/@p5.web.widgets.find-first-like/*/*?value
+  class:visible
+micro.css.add:x:/@p5.web.widgets.find-first-like/*/*?value
+  class:hide
 
 
 
@@ -196,8 +146,10 @@ micro.css.toggle:x:/@p5.web.widgets.find-first-like/*/*?value
 p5.web.widgets.find-first-like:hyper-ide-file-editor
   .editor
   class:visible
-micro.css.toggle:x:/@p5.web.widgets.find-first-like/*/*?value
-  class:hide visible
+micro.css.delete:x:/@p5.web.widgets.find-first-like/*/*?value
+  class:visible
+micro.css.add:x:/@p5.web.widgets.find-first-like/*/*?value
+  class:hide
 
 
 
@@ -220,7 +172,7 @@ set-widget-property:x:/@p5.web.widgets.find-first/*/*?value
 
 
 /*
- * "Un-toggling" all previously created tab buttons.
+ * "Un-toggling" existing toggled tab button.
  */
 p5.web.widgets.find-first-like:hyper-ide-editor-tab-buttons
   data-activate
@@ -247,44 +199,6 @@ add:x:/../*/create-widgets/**/micro.widgets.file/*/widgets
 
 
 /*
- * Helper JavaScript to make sure switching between tabs "feels" faster.
- *
- * Basically switches immediately, by updating CSS classes of active and to-become
- * active editor, before invoking server-side method to do "hard work".
- */
-p5.web.include-javascript:@"
-p5.hyper_ide_show_editor = function (ed) {
-  ed = p5.$(ed).el;
-  ed.className = 'toggled';
-  var all = document.querySelectorAll('[data-editor]');
-  var file = ed.getAttribute('data-activate');
-  var cur = document.querySelectorAll('[data-editor=""' + file + '""]')[0];
-  for(var idx = 0; idx < all.length; idx++) {{
-    if (all[idx].id == ed.id) {{
-      continue;
-    }}
-    all[idx].className = 'hyper-ide-codemirror-wrapper hide';
-  }}
-  cur.className = 'hyper-ide-codemirror-wrapper visible';
-  p5.$(ed.id).raise('.onclick');
-  return false;
-}"
-
-
-
-
-
-/*
- * Making sure we enable our "Close all editors" button.
- */
-delete-widget-property:hyper-ide-close-all-editors
-  disabled
-
-
-
-
-
-/*
  * Figuring out filename of file, without its folder.
  */
 split:x:/../*/file?value
@@ -302,6 +216,7 @@ split:x:/../*/file?value
  * all plugins for current mode.
  */
 create-widgets
+
 
   /*
    * Toolbar for saving editor's content, closing it, etc.
@@ -335,6 +250,7 @@ create-widgets
 
     widgets
 
+
   /*
    * Activate tab/editor button.
    */
@@ -343,15 +259,6 @@ create-widgets
     class:hyper-ide-activate-tab-button toggled
     data-activate:x:/../*/file?value
     title:x:/../*/file?value
-    oninit
-
-      /*
-       * Making sure we wire up onclick eventhandler for widget.
-       */
-      set-widget-property:x:/../*/_event?value
-        onclick:@"return p5.hyper_ide_show_editor ('{0}');"
-          :x:/../*/_event?value
-
     events
 
 
@@ -382,7 +289,7 @@ create-widgets
           data-value:x:/../*/_arg?value
           title:x:/../*/_arg?value
 
-    .onclick
+    onclick
 
       /*
        * Getting filename for editor.
@@ -416,8 +323,9 @@ create-widgets
           get-widget-property:x:/-/*/*?value
             data-activate
           eval-x:x:/+/*
-          hyper-ide.editors.close-all
+          hyper-ide.editors.close
             filter:x:/@get-widget-property/*/*?value
+
 
   /*
    * Actual editor for file.
@@ -430,6 +338,7 @@ create-widgets
     .editor:x:/../*/file?value
     data-editor:x:/../*/file?value
     events
+
 
       /*
        * Invoked when for some reasons active file changes name.
@@ -451,4 +360,14 @@ create-widgets
         set-widget-property:x:/../*/_event?value
           .editor:x:/../*/_arg?value
 
+
     widgets:editor
+
+
+
+
+
+/*
+ * Raising our "file edited" event.
+ */
+hyper-ide.on-file-edited

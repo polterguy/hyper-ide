@@ -184,7 +184,7 @@ if:x:/@.dirty/*
    * we get our [exact] and [filter] arguments correctly mapped up in our second
    * invocation.
    */
-  add:x:/+/**/hyper-ide.editors.close-all
+  add:x:/+/**/hyper-ide.editors.close
     src:x:/@.signal/--/<-
   create-widgets
     micro.widgets.modal:hyper-ide-dirty-editors-modal
@@ -211,7 +211,7 @@ if:x:/@.dirty/*
                  * Invoking "self" with [force] argument, deleting modal widget first.
                  */
                 delete-widget:hyper-ide-dirty-editors-modal
-                hyper-ide.editors.close-all
+                hyper-ide.editors.close
                   force:bool:true
 
             button
@@ -269,7 +269,12 @@ if:x:/@_active-deleted?value
      * No more editors, deleting editor wrapper, and loading our splash screen.
      */
     delete-widget:hyper-ide-editor-tab
-    hyper-ide.load-splash
+    hyper-ide._load-splash
+
+    /*
+     * Raising our "all editors closed" event.
+     */
+    hyper-ide.on-all-editors-closed
 
     /*
      * Checking if active item in folder explorer is a file, and if it is, we make
