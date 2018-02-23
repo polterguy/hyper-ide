@@ -150,6 +150,14 @@ create-event:hyper-ide.widgets.ide
             items
 
           /*
+           * Making sure we scroll our selected tree view item into view.
+           */
+          p5.web.widgets.find-first-like:hyper-ide-folder-tree-browser
+            class:tree-selected
+          p5.web.send-javascript:@"p5.$('{0}').el.scrollIntoView ({{behavior:'smooth'}});"
+            :x:/@p5.web.widgets.find-first-like/*/*?value
+
+          /*
            * Raising our folder explorer item changed event.
            */
           hyper-ide.folder-explorer.item-changed:x:/../*/_arg?value

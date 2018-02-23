@@ -9,11 +9,39 @@ micro.lambda.contract.min:x:/..
   path:string
 
 
+
+
+
+/*
+ * Checking if item is already open, at which point we simply activate it,
+ * and return early.
+ */
+p5.web.widgets.find-first:hyper-ide-editor-tab-buttons
+  .activate:x:/../*/path?value
+if:x:/@p5.web.widgets.find-first/*/*?value
+
+  /*
+   * Fiven [path] is a file, and it is already being edited.
+   * Hence, simply activating existing editor, and returning early.
+   */
+  get-widget-property:x:/@p5.web.widgets.find-first/*/*?value
+    .activate
+  hyper-ide.folder-explorer.set-active-item:x:/@get-widget-property/*/*?value
+  return
+
+
+
+
+
+
 /*
  * These two next ones will contain the folder, and the file name (if any).
  */
 .folder
 .file
+
+
+
 
 
 /*
@@ -22,6 +50,9 @@ micro.lambda.contract.min:x:/..
  */
 split:x:/../*/path?value
   =:/
+
+
+
 
 
 /*
@@ -40,6 +71,9 @@ if:x:/@split/*?count
   set:x:/@.file?value
     src:x:/@split/@split/0/-?name
   set:x:/@split/@split/0/-
+
+
+
 
 
 /*
@@ -68,7 +102,22 @@ for-each:x:/@split/@split/*?name
     items
 
 
+
+
+
 /*
- * Making sure we select our final ressulting item
+ * Making sure we select our final resulting item
  */
 hyper-ide.folder-explorer.set-active-item:x:/../*/path?value
+
+
+
+
+
+/*
+ * Scrolling item into view.
+ */
+p5.web.widgets.find-first-like:hyper-ide-folder-tree-browser
+  class:tree-selected
+p5.web.send-javascript:@"p5.$('{0}').el.scrollIntoView ({{behavior:'smooth'}});"
+  :x:/@p5.web.widgets.find-first-like/*/*?value
