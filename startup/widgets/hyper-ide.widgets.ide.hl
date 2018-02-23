@@ -1,0 +1,430 @@
+
+/*
+ * File responsible for creating main Hyper IDE widget.
+ */
+create-event:hyper-ide.widgets.ide
+
+  /*
+   * Signal node to separated arguments from the rest of our lambda.
+   */
+  .signal
+
+  /*
+   * Checking if Hyper IDE has already been launched, at which point we
+   * throw an exception.
+   */
+  if
+    hyper-ide.is-open
+    throw:Hyper IDE is already open
+
+  /*
+   * Retrieving user's settings, which we need to retrieve in order to determine
+   * how to render Hyper IDE.
+   */
+  .defaults
+    page-scroll:bool:false
+  p5.auth.my-settings.get
+
+  /*
+   * Including Micro CSS.
+   */
+  micro.css.include
+
+  /*
+   * Including Hyper IDE's CSS file, making sure we can refresh cache on client,
+   * every time we create a new release, to avoid having "old CSS files" 'hanging'
+   * in browser cache.
+   *
+   * We do this by applying an HTTP query parameter to our CSS inclusion element on
+   * the client.
+   */
+  hyper-ide.version
+  p5.web.include-css-file:@IDE/media/main.css?v={0}
+    :x:/@hyper-ide.version?value
+
+  /*
+   * Checking if we should use page scrolling or not, and if so, making sure we
+   * change Hyper IDE's root element's CSS class accordingly.
+   */
+  _css-addons
+  if:x:(/@p5.auth.my-settings.get/*/codemirror/*/page-scroll|/@.defaults/*/page-scroll)/$?value
+    =:bool:true
+
+    /*
+     * User has configured Hyper IDE to use "page scroll".
+     *
+     * This implies that the CodeMirror editors and the folder browser will always render
+     * themselves in "auto height", not using scrollbars on their actual widgets,
+     * which might make sense for some users - Especially if they're using a tablet or
+     * a phone as their client.
+     */
+    set:x:/@_css-addons?value
+      src:" hyper-ide-page-scroll"
+
+  /*
+   * Adding all "global" plugins.
+   */
+  add:x:/../*/return/**/widgets/=plugins
+    micro.evaluate.file:@IDE/helpers/get-plugins.hl
+      type:hyper-ide.global-plugin
+
+  /*
+   * Adding arguments.
+   */
+  add:x:/../*/return/*/container
+    src:x:/@.signal/--/<-(!/class)
+
+  /*
+   * Returning main Hyper IDE container widget.
+   */
+  eval-x:x:/+/*/*/class
+  return
+    container:hyper-ide-main-container
+      class:{0}{1}
+        :x:/../*/class?value
+        :x:/@_css-addons?value
+
+
+      /*
+       * Helper Ajax events, necessary to have keyboard shortcuts correctly mapped.
+       */
+      .onsave
+
+        /*
+         * Saving active editor's content.
+         */
+        hyper-ide.active-editor.save
+
+
+      .onclose
+
+        /*
+         * Closing active editor.
+         */
+        hyper-ide.active-editor.close
+
+
+      .onprevious
+
+        /*
+         * Activating "previous editor" in chain of open editors.
+         */
+        hyper-ide.editors.activate-previous-editor
+
+
+      .onnext
+
+        /*
+         * Activating "next editor" in chain of open editors.
+         */
+        hyper-ide.editors.activate-next-editor
+
+
+      events
+
+
+        /*
+         * General lambda events for Hyper IDE.
+         */
+
+
+        /*
+         * Returns true if Hyper IDE is open.
+         */
+        hyper-ide.is-open
+
+          /*
+           * Simply returning boolean true to caller, since (obviously) Hyper IDE is open.
+           */
+          return:bool:true
+
+
+        /*
+         * Folder explorer lambda events.
+         */
+
+
+        /*
+         * Returns the ID for the currently selected folder explorer widget, if any.
+         * Notice, this ID is also the path of the item that is selected.
+         */
+        hyper-ide.folder-explorer.get-active-item
+
+          /*
+           * Returning treeview's selected item' filepath.
+           */
+          micro.widgets.tree.get-selected-items:hyper-ide-folder-tree-browser
+          return:x:/@micro.widgets.tree.get-selected-items/*/*?name
+
+
+        /*
+         * Sets the active folder explorer item to the [_arg] argument.
+         */
+        hyper-ide.folder-explorer.set-active-item
+
+          /*
+           * Returning treeview's selected item' filepath.
+           */
+          add:x:/+/*
+            src:x:/../*/_arg?value
+          micro.widgets.tree.select-items:hyper-ide-folder-tree-browser
+            items
+
+          /*
+           * Raising our folder explorer item changed event.
+           */
+          hyper-ide.folder-explorer.item-changed:x:/../*/_arg?value
+
+
+        /*
+         * Refreshes the currently active folder, if a folder is active in our
+         * folder explorer.
+         */
+        hyper-ide.folder-explorer.refresh-active-folder
+          micro.evaluate.file:@IDE/helpers/lambda-events/hyper-ide.folder-explorer.refresh-active-folder.hl
+          return:x:/-?value
+
+
+        /*
+         * Lambda events for currently active editor in Hyper IDE.
+         */
+
+
+        /*
+         * Returns file path for active editor, if any.
+         */
+        hyper-ide.active-editor.get-filepath
+          micro.evaluate.file:@IDE/helpers/lambda-events/hyper-ide.active-editor.get-filepath.hl
+          return:x:/-?value
+
+
+        /*
+         * Returns ID for active editor, if any.
+         */
+        hyper-ide.active-editor.get-id
+          micro.evaluate.file:@IDE/helpers/lambda-events/hyper-ide.active-editor.get-id.hl
+          return:x:/-?value
+
+
+        /*
+         * Returns code for currently active editor.
+         */
+        hyper-ide.active-editor.get-code
+          micro.evaluate.file:@IDE/helpers/lambda-events/hyper-ide.active-editor.get-code.hl
+          return:x:/-?value
+
+
+        /*
+         * Sets code for currently active editor.
+         * Pass in new code for editor as [_arg].
+         */
+        hyper-ide.active-editor.set-code
+          eval-x:x:/+/*
+          micro.evaluate.file:@IDE/helpers/lambda-events/hyper-ide.active-editor.set-code.hl
+            code:x:/../*/_arg?value
+          return:x:/-?value
+
+
+        /*
+         * Returns the "clean" flag for active editor, if any.
+         */
+        hyper-ide.active-editor.is-clean
+          micro.evaluate.file:@IDE/helpers/lambda-events/hyper-ide.active-editor.is-clean.hl
+          return:x:/-?value
+
+
+        /*
+         * Sets or removes the "clean" flag for active editor.
+         * Pass in "true" as [_arg] to make editor clean, and "false" to make it dirty.
+         */
+        hyper-ide.active-editor.set-clean
+          eval:x:/+/*
+          micro.evaluate.file:@IDE/helpers/lambda-events/hyper-ide.active-editor.set-clean.hl
+            clean:x:/../*/_arg?value
+          return:x:/-?value
+
+
+        /*
+         * Saves active editor's content.
+         */
+        hyper-ide.active-editor.save
+          micro.evaluate.file:@IDE/helpers/lambda-events/hyper-ide.active-editor.save.hl
+          return:x:/-?value
+
+
+        /*
+         * Closes active editor.
+         *
+         * Unless you add [force] as "true", the event will not close the active editor if it is dirty,
+         * but rather warn the user with a modal widget that the editor is dirty, and ask
+         * him if he really wants to close it anyway.
+         */
+        hyper-ide.active-editor.close
+          .signal
+          add:x:/+
+            src:x:/@.signal/--/<-
+          micro.evaluate.file:@IDE/helpers/lambda-events/hyper-ide.active-editor.close.hl
+          return:x:/-?value
+
+
+        /*
+         * Editor lambda events for all editors in Hyper IDE.
+         */
+
+
+        /*
+         * Returns file paths for all open editors, in addition to a [clean] argument,
+         * and an [id] argument for each editor.
+         */
+        hyper-ide.editors.get-open-editors
+          micro.evaluate.file:@IDE/helpers/lambda-events/hyper-ide.editors.get-open-editors.hl
+          return:x:/-/*
+
+
+        /*
+         * Sets the active editor.
+         *
+         * Pass in [_arg] being either filename or CodeMirror ID of editor to activate.
+         */
+        hyper-ide.editors.set-active-editor
+          eval-x:x:/+/*
+          micro.evaluate.file:@IDE/helpers/lambda-events/hyper-ide.editors.set-active-editor.hl
+            editor:x:/../*/_arg?value
+          return:x:/-?value
+
+
+        /*
+         * Activating previous editor in chain.
+         */
+        hyper-ide.editors.activate-previous-editor
+          micro.evaluate.file:@IDE/helpers/lambda-events/hyper-ide.editors.activate-previous-editor.hl
+          return:x:/-?value
+
+
+        /*
+         * Activating next editor in chain.
+         */
+        hyper-ide.editors.activate-next-editor
+          micro.evaluate.file:@IDE/helpers/lambda-events/hyper-ide.editors.activate-next-editor.hl
+          return:x:/-?value
+
+
+        /*
+         * Close all editors, or editors matching specified [filter].
+         *
+         * Will close all editors that have filenames starting with the (optional) [filter].
+         * If [exact] is boolean "true", it will only delete the editor with the exact name of [filter].
+         *
+         * The default value for [filter] is "/", and the default value for [exact]
+         * is "false", implying that all editors will be closed.
+         *
+         * Notice, no editors with unsaved changes will be closed.
+         * If some of the editors matching your [filter] have unsaved changes, the user
+         * will be warned, and asked if he really wants to close these without saving.
+         *
+         * Optionally supply [force] and set its value to boolean true, to force the closing of
+         * editors with unsaved changes, without warning the user.
+         *
+         * Useful for closing multiple editors, such as when a folder is deleted, in addition
+         * to (of course) closing only a single editor by setting [exact] to true.
+         */
+        hyper-ide.editors.close
+          .signal
+          add:x:/+
+            src:x:/@.signal/--/<-
+          micro.evaluate.file:@IDE/helpers/lambda-events/hyper-ide.editors.close.hl
+          return:x:/-?value
+
+
+      widgets
+
+        /*
+         * Wrapper for all toolbars.
+         */
+        div:hyper-ide-toolbar-wrapper
+          class:row
+          widgets
+            div
+              class:col-100
+              widgets
+
+                /*
+                 * Our primary toolbar.
+                 *
+                 * Contains home button, and system wide (Phosphorus Five) global
+                 * plugins.
+                 */
+                micro.widgets.file
+                  class:strip right hyper-ide-toolbar
+                  widgets:plugins
+                  folder:@IDE/helpers/toolbars/main-toolbar/
+
+                /*
+                 * Our secondary toolbar.
+                 *
+                 * Contains help button, settings button, close all editors button,
+                 * and "global plugins" for Hyper IDE.
+                 */
+                micro.widgets.file:hyper-ide-toolbars
+                  class:strip right hyper-ide-toolbar
+                  folder:@IDE/helpers/toolbars/secondary-toolbar/
+
+
+
+        /*
+         * Wrapper for actual content.
+         *
+         * This is where our editors and our folder explorer tree view can be found.
+         */
+        div:hyper-ide-content-wrapper
+          class:row hyper-ide-content
+          widgets
+
+            /*
+             * Wrapper for our folder explorer.
+             */
+            div:hyper-ide-file-browser-wrapper
+              class:col-30 hyper-ide-solution-explorer-col
+              widgets
+
+                /*
+                 * Our actual folder explorer
+                 */
+                micro.widgets.file
+                  class:air-inner shaded rounded hyper-ide-solution-explorer
+                  files
+                    @IDE/helpers/folder-explorer/folder-explorer-widget.hl
+
+            /*
+             * Wrapper for our file editor.
+             *
+             * This is where our actual CodeMirror file editors' ends up.
+             * In addition to our "splash screen".
+             */
+            container:hyper-ide-file-editor
+              class:col-70 hyper-ide-editor-col
+              events
+
+
+                /*
+                 * Loads up "splash screen".
+                 */
+                hyper-ide._load-splash
+
+                  /*
+                   * Creating our initial "splash" screen.
+                   */
+                  load-file:@IDE/helpers/splash-screen-widget.hl
+                  add:x:/@load-file/*/*
+                    src
+                      parent:hyper-ide-file-editor
+                  add:x:/../*/create-widgets
+                    src:x:/@load-file/*/*
+                  create-widgets
+
+              oninit
+
+                /*
+                 * Creating initial "splash" screen.
+                 */
+                hyper-ide._load-splash
