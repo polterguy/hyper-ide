@@ -103,7 +103,7 @@ create-event:hyper-ide.widgets.ide
 
 
         /*
-         * Expands to the specified path.
+         * Expands folder explorer to the specified [path] and selects item.
          *
          * Will edit the item if it is a file.
          */
