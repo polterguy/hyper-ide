@@ -79,47 +79,10 @@ create-event:hyper-ide.widgets.ide
    */
   eval-x:x:/+/*/*/class
   return
-    container:hyper-ide-main-container
+    container
       class:{0}{1}
         :x:/../*/class?value
         :x:/@_css-addons?value
-
-
-      /*
-       * Helper Ajax events, necessary to have keyboard shortcuts correctly mapped.
-       */
-      .onsave
-
-        /*
-         * Saving active editor's content.
-         */
-        hyper-ide.active-editor.save
-
-
-      .onclose
-
-        /*
-         * Closing active editor.
-         */
-        hyper-ide.active-editor.close
-
-
-      .onprevious
-
-        /*
-         * Activating "previous editor" in chain of open editors.
-         */
-        hyper-ide.editors.activate-previous-editor
-
-
-      .onnext
-
-        /*
-         * Activating "next editor" in chain of open editors.
-         */
-        hyper-ide.editors.activate-next-editor
-
-
       events
 
 
@@ -137,6 +100,22 @@ create-event:hyper-ide.widgets.ide
            * Simply returning boolean true to caller, since (obviously) Hyper IDE is open.
            */
           return:bool:true
+
+
+        /*
+         * Expands to the specified path.
+         *
+         * Will edit the item if it is a file.
+         */
+        hyper-ide.folder-explorer.select-path
+
+          /*
+           * Evluating file implementing event.
+           */
+          .signal
+          add:x:/+
+            src:x:/@.signal/--/<-
+          micro.evaluate.file:@IDE/helpers/folder-explorer/expand-folder-explorer-path.hl
 
 
         /*
@@ -403,6 +382,43 @@ create-event:hyper-ide.widgets.ide
              */
             container:hyper-ide-file-editor
               class:col-70 hyper-ide-editor-col
+
+
+              /*
+               * Helper Ajax events, necessary to have keyboard shortcuts correctly mapped.
+               */
+              .onsave
+
+                /*
+                 * Saving active editor's content.
+                 */
+                hyper-ide.active-editor.save
+
+
+              .onclose
+
+                /*
+                 * Closing active editor.
+                 */
+                hyper-ide.active-editor.close
+
+
+              .onprevious
+
+                /*
+                 * Activating "previous editor" in chain of open editors.
+                 */
+                hyper-ide.editors.activate-previous-editor
+
+
+              .onnext
+
+                /*
+                 * Activating "next editor" in chain of open editors.
+                 */
+                hyper-ide.editors.activate-next-editor
+
+
               events
 
 

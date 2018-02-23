@@ -34,5 +34,5 @@ create-widgets
 p5.web.query.get:path
 if:x:/@p5.web.query.get/*?value
   eval-x:x:/+/*
-  micro.evaluate.file:@IDE/helpers/folder-explorer/expand-folder-explorer-path.hl
+  hyper-ide.folder-explorer.select-path
     path:x:/@p5.web.query.get/*?value
