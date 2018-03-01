@@ -1,4 +1,3 @@
-
 /*
  * File responsible for creating main Hyper IDE widget.
  */
@@ -24,23 +23,6 @@ create-event:hyper-ide.widgets.ide
   .defaults
     page-scroll:bool:false
   p5.auth.my-settings.get
-
-  /*
-   * Including Micro CSS.
-   */
-  micro.css.include
-
-  /*
-   * Including Hyper IDE's CSS file, making sure we can refresh cache on client,
-   * every time we create a new release, to avoid having "old CSS files" 'hanging'
-   * in browser cache.
-   *
-   * We do this by applying an HTTP query parameter to our CSS inclusion element on
-   * the client.
-   */
-  hyper-ide.version
-  p5.web.include-css-file:@IDE/media/main.css?v={0}
-    :x:/@hyper-ide.version?value
 
   /*
    * Checking if we should use page scrolling or not, and if so, making sure we
