@@ -8,10 +8,7 @@ button
   onclick
 
     /*
-     * Making sure we close all editors, and checking if event
-     * returns "false", which implies we have unsaved changes,
-     * and we need to ask user about confirmation before we allow
-     * him to leave page.
+     * Relocating to main app.
      */
     p5.web.get-root-location
     p5.web.set-location:x:/-?value
