@@ -20,7 +20,7 @@ button
               info:Name
               .data-field:name
               placeholder:Name for your new file ...
-              onkeydown:@"if (event.keyCode == 13) {p5.$('hyper-ide-new-file-btn').raise('onclick');return false;}"
+              onkeydown:@"if (event.keyCode == 13) {p5.$('hyper-ide-new-file-btn').raise('onclick');return false;} else if (event.keyCode == 27) {p5.$('hyper-ide-new-file-cancel').raise('onclick');return false;}"
               oninit
 
                 /*
@@ -91,7 +91,7 @@ button
                        */
                       delete-widget:hyper-ide-create-new-file-modal
 
-                  button
+                  button:hyper-ide-new-file-cancel
                     innerValue:Cancel
                     onclick
 

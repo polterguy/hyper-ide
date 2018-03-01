@@ -20,7 +20,7 @@ button
               info:Name
               .data-field:name
               placeholder:Name for your new folder ...
-              onkeydown:@"if (event.keyCode == 13) {p5.$('hyper-ide-new-folder-btn').raise('onclick');return false;}"
+              onkeydown:@"if (event.keyCode == 13) {p5.$('hyper-ide-new-folder-btn').raise('onclick');return false;} else if (event.keyCode == 27) {p5.$('hyper-ide-new-folder-cancel').raise('onclick');return false;}"
               oninit
 
                 /*
@@ -89,7 +89,7 @@ button
                        */
                       delete-widget:hyper-ide-create-new-folder-modal
 
-                  button
+                  button:hyper-ide-new-folder-cancel
                     innerValue:Cancel
                     onclick
 

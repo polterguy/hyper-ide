@@ -104,7 +104,7 @@ else
   /*
    * No such editor.
    */
-  micro.windows.info:No such editor
+  micro.windows.info:No such open editor
     class:micro-windows-info warning
 
   /*

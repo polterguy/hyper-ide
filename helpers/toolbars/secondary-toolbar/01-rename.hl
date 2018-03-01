@@ -58,7 +58,7 @@ button
                 info:Name
                 .data-field:name
                 placeholder:New name for your folder ...
-                onkeydown:@"if (event.keyCode == 13) {p5.$('hyper-ide-rename-folder-btn').raise('onclick');return false;}"
+                onkeydown:@"if (event.keyCode == 13) {p5.$('hyper-ide-rename-folder-btn').raise('onclick');return false;} else if (event.keyCode == 27) {p5.$('hyper-ide-rename-cancel').raise('onclick');return false;}"
                 oninit
 
                   /*
@@ -121,7 +121,7 @@ button
                          */
                         delete-widget:hyper-ide-confirm-rename-folder
 
-                    button
+                    button:hyper-ide-rename-cancel
                       innerValue:Cancel
                       onclick
 
@@ -154,7 +154,7 @@ button
                 info:Name
                 .data-field:name
                 placeholder:New name for your file ...
-                onkeydown:@"if (event.keyCode == 13) {p5.$('hyper-ide-rename-file-btn').raise('onclick');return false;}"
+                onkeydown:@"if (event.keyCode == 13) {p5.$('hyper-ide-rename-folder-btn').raise('onclick');return false;} else if (event.keyCode == 27) {p5.$('hyper-ide-rename-cancel').raise('onclick');return false;}"
                 oninit
 
                   /*
@@ -237,7 +237,7 @@ button
                          */
                         delete-widget:hyper-ide-confirm-rename-file
 
-                    button
+                    button:hyper-ide-rename-cancel
                       innerValue:Cancel
                       onclick
 
