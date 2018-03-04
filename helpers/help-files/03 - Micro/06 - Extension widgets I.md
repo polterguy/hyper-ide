@@ -104,9 +104,10 @@ create-widget
                   items
 ```
 
-The above is 28 lines of code. Creating something similar yourself, would easily require hundreds, if
-not thousands of lines of code - Depending upon which programming language you'd use. So the benefits
-of these extension widget are probably obvious.
+The **[micro.widgets.tree]** widget can also be rendered in _"menu mode"_, which is useful if you want to create
+an hierarchical navbar type of widget. If you want to do this, you can override its default **[class]** property,
+and set its CSS class to `micro-widgets-tree micro-widgets-tree-navbar`. This will create a responsive navbar/menu
+widget, instead of a tree view widget.
 
 ### The datagrid
 
