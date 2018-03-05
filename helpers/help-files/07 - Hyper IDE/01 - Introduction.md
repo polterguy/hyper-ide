@@ -1,4 +1,3 @@
-
 ## Introduction to Hyper IDE
 
 Hyper IDE is a web based integrated development environment. Even though it's main purpose is to allow for easily
@@ -21,6 +20,10 @@ As you select a file in the file explorer, Hyper IDE will find the correct CodeM
 extension of your file. The mapping between file extensions and CodeMirror modes, can be found
 in your `/hyper-ide/configuration/extension2cm-instance.hl` file, and you can edit this file to add support for
 additional file extensions, and/or CodeMirror modes.
+
+Unless you have explicitly disabled the _"bookmark"_ plugin, you can also retrieve the URL to the currently
+selected item from your file explorer, which might be a folder, or a file, which allows you to bookmark files
+and folders, or send them to colleagues as URLs.
 
 ### The Toolbar
 
@@ -61,7 +64,8 @@ Below is a list of these keyboard shortcuts.
 * __Cx+Shift+Z__ - Redo
 
 **Notice**, on a Mac OS X computer, you'll have to use the **CMD** key where it says _"Cx"_ above, while on other
-types of systems, you must use the **CTRL** key.
+types of systems, you must use the **CTRL** key. In addition to the above explicit keyboard shortcuts, most modal widgets
+can be closed with the _"Escape"_ key and the _"OK"_ button will be clicked with the Carriage Return key.
 
 ### Settings
 
@@ -114,3 +118,12 @@ create-widgets
             onclick
               delete-widget:all-plugins
 ```
+
+### Responsiveness
+
+Although Hyper IDE is remarkably responsive, at least compared to Visual Studio, it is a web based IDE. This for obvious
+reasons have some benefits, and other disadvantages. One of the disadvantages is that if you expand a huge amount of
+folders in your file explorer, and also edits a lot of files at the same time - You might feel that Hyper IDE starts
+acting sluggishly and slow. If Hyper IDE starts acting slow on you, then you might benefit from saving your work,
+and reloading your page, to make sure you have less active widgets on your page. Typically, you probably wouldn't want
+to edit more than a handful of files at the same time, since this would make it start being less responsive.
