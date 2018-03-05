@@ -1,8 +1,8 @@
 /*
- * This is our main "landing page" for our Hypereval help files.
+ * This is our main "landing page" for our Hyper IDE help files.
  */
 h2
-  innerValue:Hypereval
+  innerValue:Hyper IDE
 
 
 /*

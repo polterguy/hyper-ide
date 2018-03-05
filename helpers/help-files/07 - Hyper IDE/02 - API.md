@@ -141,7 +141,9 @@ inside [this folder](hyper-ide?path=/modules/hyper-ide/helpers/shell-snippets/).
 the user can select from as he clicks the _"Open terminal window"_ plugin button for a folder.
 
 Such snippets can be shell commands that checks in your code to a Term Service server for instance, or starts
-a build process.
+a build process. Below is a screenshot of which snippets are available out of the box.
+
+https://phosphorusfive.files.wordpress.com/2018/03/shell-snippets-screenshot.png
 
 **Notice**, if you add such shell snippets extensions, you should take care of not loosing your files
 as you upgrade Hyper IDE and/or Phosphorus Five.
@@ -152,6 +154,26 @@ Also the documentation is extendible, and allows you to easily add your own docu
 files are expected to be found in the _"/modules/hyper-ide/helpers/help-files/"_ folder. This allows you to
 seemlessly document your own extensions, modules or apps, such that your documentation integrates perfectly
 with the existing documentation for Hyper IDE and all other modules.
+
+You can create your own documentation as either Markdown files, and/or Hyperlambda files, which allows
+you to create your documentation as an interactive system of rich files, which encapsulates and/or automates
+your system, and ways you see fit. If you create a Markdown file (.md), you can also inject snippets of code.
+If you inject a Hyperlambda snippet, you can also optionally choose to allow for your reader to evaluate
+the snippet inline, on his server, by setting the code mode to `hyperlambda-snippet`. If you click the
+pencil icon at the top of the documentation widget, and view the code for the current file for instance,
+you can see an example of the latter below.
+
+```hyperlambda-snippet
+/*
+ * Displays in information "bubble" window.
+ */
+micro.windows.info:Foo bar
+```
+
+To include YouTube videos, and or full-width images, simply add the URL to your video/image inline, in its
+own paragraph, in your Markdown file, such as the following is an example of.
+
+https://www.youtube.com/watch?v=mWFitx9py80
 
 **Notice**, if you add such documentation extensions, you should take care of not loosing your files
 as you upgrade Hyper IDE and/or Phosphorus Five.
