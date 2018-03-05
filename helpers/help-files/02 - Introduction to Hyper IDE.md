@@ -56,9 +56,9 @@ overwrite your changes.
 ### The file explorer
 
 To the left at the top of your page, you can find a tree view widget. This will display all the files on your server, 
-and allow you to select and open files for editing. The first time you click a folder in the tree view, it will 
+and allow you to select and open files for editing. The first time you click a folder in the tree view, it will
 automatically expand the folder, and display its sub-folders and files. If you choose to explicitly close
-the folder later, by clicking the plus sign, you will have to click the plus sign again to expand it.
+the folder later, by clicking the folder icon, you will have to click the folder icon again to expand it.
 
 As you select a file in the file explorer, Hyper IDE will find the correct CodeMirror mode, according to the file 
 extension of your file. The mapping between file extensions and CodeMirror modes, can be found 
@@ -109,11 +109,12 @@ types of systems, you must use the **CTRL** key.
 ### Settings
 
 Hyper IDE comes with 57 themes out of the box. These are for the most parts themes that are distributed with
-CodeMirror, and allows you to change the background color, font size, etc, of your CodeMirror editor. In addition there
-are several skins in Hyper IDE. These skins are skins from Micro, and can be found in the `/modules/micro/media/skins/`
-folder, and you can probably easily figure out how to create your own skin and/or theme if you're not happy with the
-default ones. You can access the settings by clicking the _"cog"_ in your toolbar. Below is a video demonstrating
-how these different settings works.
+CodeMirror, and allows you to change the background color, font size, etc, of your CodeMirror editor. In addition
+Hyper IDE will use your default Phosphorus Five skin, which allows you to change its Micro skin by changing the
+skin that your Phosphorus Five installation is using by default. These skins are skins from Micro,
+and can be found in the `/modules/micro/media/skins/` folder, and you can probably easily figure out how to
+create your own skin and/or theme if you're not happy with the default ones. You can access the settings by
+clicking the _"cog"_ in your toolbar. Below is a video demonstrating how these different settings works.
 
 https://www.youtube.com/watch?v=SLNkQm9HC2s
 

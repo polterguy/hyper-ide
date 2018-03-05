@@ -1,3 +1,4 @@
+
 /*
  * File responsible for creating main Hyper IDE widget.
  */
@@ -92,12 +93,11 @@ create-event:hyper-ide.widgets.ide
         hyper-ide.folder-explorer.select-path
 
           /*
-           * Evluating file implementing event.
+           * Evaluating file implementing event.
            */
-          .signal
-          add:x:/+
-            src:x:/@.signal/--/<-
+          eval-x:x:/+/*
           micro.evaluate.file:@IDE/helpers/folder-explorer/expand-folder-explorer-path.hl
+            path:x:/../*/_arg?value
 
 
         /*
