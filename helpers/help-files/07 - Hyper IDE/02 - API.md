@@ -129,6 +129,12 @@ needs to interact with, as he creates a new module.
 As the user creates a new module, your new module template file, will be evaluated with a **[name]** argument,
 which is the name of the template he chose to create. In addition, all additional **[.settings]** widget's values
 will be passed in, allowing you to retrieve these additional settings, as the user supplied them during creation.
+Below is a screenshot of how the process of creating such a new template module might appear to the end user.
+
+https://phosphorusfive.files.wordpress.com/2018/03/new-module-screenshot.png
+
+Such template projects might provide a valuable addon to avoid having to repeat repetetive tasks which
+are for some reasons necessary to create boiler plate code for, every time you create a new module.
 
 **Notice**, if you add such template new module extensions, you should take care of not loosing your files
 as you upgrade Hyper IDE and/or Phosphorus Five.
@@ -141,7 +147,8 @@ inside [this folder](hyper-ide?path=/modules/hyper-ide/helpers/shell-snippets/).
 the user can select from as he clicks the _"Open terminal window"_ plugin button for a folder.
 
 Such snippets can be shell commands that checks in your code to a Term Service server for instance, or starts
-a build process. Below is a screenshot of which snippets are available out of the box.
+a build process. All such shell snippets will be executed from within the context of the currently selected
+folder from your file explorer. Below is a screenshot of which snippets are available out of the box.
 
 https://phosphorusfive.files.wordpress.com/2018/03/shell-snippets-screenshot.png
 
