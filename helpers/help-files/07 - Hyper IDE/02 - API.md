@@ -22,6 +22,10 @@ of all Active Events that are available when Hyper IDE is open.
 * __[hyper-ide.editors.activate-next-editor]__ - Activates the next available editor
 * __[hyper-ide.editors.close]__ - Closes one or more editors. Pass in **[filter]** being a file/folder path which will declare which editors it will close, and **[exact]** being boolean true, if you only want to close the editor with the exact matching **[filter]** path
 
+Notice that Hyper IDE will also raise the **[hyper-ide.folder-explorer.item-changed]** Active Event when the file
+explorer's active item has been changed. The new item selected in the file explorer, will be available as **[\_arg]**
+from within your lambda event.
+
 ### Creating plugins for Hyper IDE
 
 Hyper IDE easily allows you to create your own plugins. These plugins can be global plugins, at which point
@@ -110,4 +114,56 @@ By explicitly choosing to not load Hyper IDE's CSS file, this allows you to over
 editor, to customise its appearance, by creating your own CSS file(s), and change its content. Notice, you can
 only instantiate Hyper IDE once on your page. Hence, make sure you check to see if it's already open, before you
 create your extension widget. Evaluating the above code while Hyper IDE is already open, will raise an exception.
+
+### Template project types
+
+If you select the _"/modules/"_ folder, you'll see a _"create new module"_ plugin. By default, there are only a
+handful of different project types here, such as _"hello-world"_, _"datagrid"_ and _"angular-todo"_. However,
+these are simple template file, which you can extend yourself, with your own module types. To create your own
+template module types, create a new file encapsulating your template in your _"/modules/hyper-ide/helpers/app-template/"_
+folder. Such template projects can also require additional settings from the user. This can be seen in
+[this file](hyper-ide?path=/modules/hyper-ide/helpers/app-templates/datagrid.hl) for instance, which has a
+**[.settings]** segment, which is expected to be a lambda object, containing additional widgets, the user
+needs to interact with, as he creates a new module.
+
+As the user creates a new module, your new module template file, will be evaluated with a **[name]** argument,
+which is the name of the template he chose to create. In addition, all additional **[.settings]** widget's values
+will be passed in, allowing you to retrieve these additional settings, as the user supplied them during creation.
+
+**Notice**, if you add such template new module extensions, you should take care of not loosing your files
+as you upgrade Hyper IDE and/or Phosphorus Five.
+
+### Adding your own shell snippets
+
+You can also extend Hyper IDE with custom shell snippets, which allows you to evaluate some piece of bash
+code, from within the context of a folder. This is done by adding your shell bash file
+inside [this folder](hyper-ide?path=/modules/hyper-ide/helpers/shell-snippets/). These are the shell snippets
+the user can select from as he clicks the _"Open terminal window"_ plugin button for a folder.
+
+Such snippets can be shell commands that checks in your code to a Term Service server for instance, or starts
+a build process.
+
+**Notice**, if you add such shell snippets extensions, you should take care of not loosing your files
+as you upgrade Hyper IDE and/or Phosphorus Five.
+
+### Extending the documentation for Hyper IDE
+
+Also the documentation is extendible, and allows you to easily add your own documentation. All documentation
+files are expected to be found in the _"/modules/hyper-ide/helpers/help-files/"_ folder. This allows you to
+seemlessly document your own extensions, modules or apps, such that your documentation integrates perfectly
+with the existing documentation for Hyper IDE and all other modules.
+
+**Notice**, if you add such documentation extensions, you should take care of not loosing your files
+as you upgrade Hyper IDE and/or Phosphorus Five.
+
+### Extending the general toolbars
+
+Even though you'd probably most of the times want to create specific file types of extension toolbar buttons,
+you can also modify the default toolbar buttons, by adding your button/widget into the correct folder
+inside of [this folder](/hyper-ide?path=/modules/hyper-ide/helpers/toolbars/). Here you can see all the different
+toolbar sections, encapsulated inside of their correct folders, allowing you to globally extend your toolbar
+as you see fit.
+
+**Notice**, if you add such toolbar extensions, you should take care of not loosing your files
+as you upgrade Hyper IDE and/or Phosphorus Five.
 

@@ -1,11 +1,9 @@
-
 /*
  * Save button.
  */
 button
   innerValue:@"<span class=""icon-floppy-disk""></span>"
   title:Saves your file, keyboard shortcut Alt+S
-  .save-button:x:/../*/file?value
   onclick
 
     /*
