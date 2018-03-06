@@ -1,4 +1,3 @@
-
 /*
  * Renaming file or folder button.
  */
@@ -154,7 +153,7 @@ button
                 info:Name
                 .data-field:name
                 placeholder:New name for your file ...
-                onkeydown:@"if (event.keyCode == 13) {p5.$('hyper-ide-rename-folder-btn').raise('onclick');return false;} else if (event.keyCode == 27) {p5.$('hyper-ide-rename-cancel').raise('onclick');return false;}"
+                onkeydown:@"if (event.keyCode == 13) {p5.$('hyper-ide-rename-file-btn').raise('onclick');return false;} else if (event.keyCode == 27) {p5.$('hyper-ide-rename-cancel').raise('onclick');return false;}"
                 oninit
 
                   /*
@@ -185,7 +184,7 @@ button
                         /*
                          * Forward evaluated above.
                          */
-                        .filename:x:/../*/get-widget-property/*/*?value
+                        .filename:x:/../*/hyper-ide.folder-explorer.get-active-item?value
 
                         /*
                          * Finding file's folder name.
@@ -223,11 +222,22 @@ button
                         /*
                          * Refreshing tree, since folder's content now has changed.
                          */
+                        hyper-ide.folder-explorer.set-active-item:x:/@.folder?value
                         hyper-ide.folder-explorer.refresh-active-folder
+
+                        /*
+                         * Updating item in editor.
+                         */
+                        hyper-ide.set-active-filename:{0}{1}
+                          :x:/@.folder?value
+                          :x:/@micro.form.serialize/*/name?value
 
                         /*
                          * Changes name of active file.
                          */
+                        hyper-ide.editors.set-active-editor:{0}{1}
+                          :x:/@.folder?value
+                          :x:/@micro.form.serialize/*/name?value
                         hyper-ide.folder-explorer.set-active-item:{0}{1}
                           :x:/@.folder?value
                           :x:/@micro.form.serialize/*/name?value
