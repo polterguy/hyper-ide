@@ -2,7 +2,7 @@
 
 Camphora Five is a CRUD app generator that allows you to create apps declaratively, to collect and edit lists
 of information. Although it is very powerful, and allows you to create your own views in Hyperlambda - It doesn't
-require you to know any programming to create basic apps. In such a way, it arguably resembles Microsoft Excel
+require you to know any programming to create basic CRUD apps. In such a way, it arguably resembles Microsoft Excel
 or Access. Below is a screenshot of Camphora Five.
 
 https://phosphorusfive.files.wordpress.com/2018/03/camphora-five-screenshot.png

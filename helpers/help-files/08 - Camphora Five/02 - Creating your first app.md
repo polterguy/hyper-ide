@@ -52,3 +52,12 @@ https://phosphorusfive.files.wordpress.com/2018/03/camphora-five-hudden-column-s
 As you can see in the above screenshot, the _"address"_ field is no longer visible in the main _"datagrid"_ view,
 but still possible to edit when having chosen to edit a specific item. This allows you to create a CRUD app with
 dozens of columns, but still only display the most important columns in your _"datagrid"_ view.
+
+### Responsive CRUD apps
+
+In general, your CRUD apps will be _"responsive"_. This implies that they'll also perfectly work on your
+smart phone, tablet, and other types of devices capable of rendering HTML. However, since a phone typically
+doesn't have the same resolution as a computer system, this might have consequences for the number of columns
+you want to display in the grid portions of your apps. This allows you to easily collect data using your phone,
+while you're out working on some project, gathering data - For then to later export your data to any other type
+of system, that can somehow handle CSV files.

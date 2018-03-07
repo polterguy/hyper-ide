@@ -155,6 +155,13 @@ https://phosphorusfive.files.wordpress.com/2018/03/shell-snippets-screenshot.png
 **Notice**, if you add such shell snippets extensions, you should take care of not loosing your files
 as you upgrade Hyper IDE and/or Phosphorus Five.
 
+**Notice** - Instead of adding your own template shell snippets, you can also directly execute a _".sh"_ file.
+This allows you to create for instance compiler scripts, and similar types of scripts, as an integral part
+of your projects, for then to evaluate them directly by opening up the file, and evaluating it due to
+the _"execute shell snippet file"_ plugin, that's distributed directly out of the box with Hyper IDE. You can
+also easily create your own plugin, which doesn't have to be a part of Hyper IDE, but which creates a plugin
+Active Event to evaluate _".bat"_ files, if you're on a windows system.
+
 ### Extending the documentation for Hyper IDE
 
 Also the documentation is extendible, and allows you to easily add your own documentation. All documentation

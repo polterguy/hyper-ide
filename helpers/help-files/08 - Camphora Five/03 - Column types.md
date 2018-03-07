@@ -1,6 +1,6 @@
 ## Column types
 
-There are several different types of columns you can choose to use when creating your fields. Below is a complete
+There are several different types of columns you can choose from when creating your fields. Below is a complete
 list, and their most important traits explained.
 
 * __Singleline text__ - A single line text type of field
@@ -13,12 +13,12 @@ list, and their most important traits explained.
 
 Some of the above field types have unique traits, such as for instance the _"Multiline text"_ type of field, which
 allows the user to actually provide Markdown, and/or #hash_tags, to easily allow for filtering items, and displaying
-content with rich formatting. Below is a screenshot of how an item with both Markdown content, and a hashtag might
-appear for you, both during editing, and during viewing the item in the datagrid.
+content with rich formatting. Below is a screenshot of how a Multiline text item with both Markdown content,
+and a hashtag might appear for you, both during editing, and during viewing the item in the datagrid.
 
 https://phosphorusfive.files.wordpress.com/2018/03/camphora-five-markdown-has-tags-screenshot.png
 
-Hashtags allows you to provide integral filtering capacity, as a part pf your item's Multiline content, which
+Hashtags allows you to provide integral filtering capacity, as a part of your item's Multiline content, which
 might be useful for categorising your items, and easily later retrieve items according to their multiline text
 content. If you click the hashtag in your multiline text content, Camphora Five will filter your items, and
 only display items containing that specific hashtag. The syntax for Markdown is really beyond the scope of
@@ -29,3 +29,18 @@ basic formatting, as an integral part of your item's content.
 
 The _"Date/time created"_ field type, is not really an input field, and cannot be changed - But rather serves
 to track at what exact date and time your item was created.
+
+### Select and radiobutton items
+
+These items allows the user to select a value from a pre-defined list of options. When you create such items,
+the field type definition will split in two, and expect you to supply a comma separated list of pre-defined
+values, from which the end user can select from, as he is creating new items, or editing existing items.
+An example of such a field could for instance be _"sex"_, containing a comma separated list of the following
+values; `male,female`. When the user is creating or editing an item, he will have to choose from only _"female"_
+or _"male"_ as his value for that specific column. The screenshot above illustrates this fairly well, since
+it contains a _"Radiobutton"_ type of field, which asks the user to supply the value for the _"sex"_ column.
+
+These types of columns also allows the user to filter items during _"gridview"_, by only items matching
+the specified value. This can be done by simply clicking for instance a _"female"_ value in your datagrid.
+This will automatically populate your filter textbox, with the value necessary to filter your items, by only
+items matching the specified value, for only the specified column.
