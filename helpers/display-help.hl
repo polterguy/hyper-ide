@@ -1,7 +1,7 @@
 /*
  * File responsible for displaying help.
  *
- * Notice, these help files are in general terms created a Hyperlambda files, to 
+ * Notice, these help files are in general terms created a Hyperlambda files, to
  * make them "interactive", such that they can contain macros, and other things,
  * that somehow modifies the state of Hyper IDE, or in any other ways "interact"
  * with Hyper IDE.
@@ -43,7 +43,7 @@ create-widget:hyper-ide-help-wrapper
   events
 
     /*
-     *Simply returns true if help is visible.
+     * Simply returns true if help is visible.
      */
     hyper-ide.help-visible
       return:bool:true
@@ -128,6 +128,7 @@ create-widget:hyper-ide-help-wrapper
                              * Loading and displaying "index.hl" file.
                              */
                             hyper-ide.help.display-file:@IDE/helpers/help-files/index.hl
+
                 container:hyper-ide-help-content
                   class:hyper-ide-help-content
                   oninit

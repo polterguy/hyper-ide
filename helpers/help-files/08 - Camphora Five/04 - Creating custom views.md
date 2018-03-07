@@ -37,4 +37,16 @@ In fact, you don't even need to access your database at all from within your vie
 a _"settings"_ view for instance, or a _"help"_ view, etc, etc, etc.
 
 For details about Hyperlambda, and how to create such custom views, please check out the parts of the
-documentation that encapsulates the Hyperlambda parts.
+documentation that encapsulates the Hyperlambda parts. To directly open up the Hyperlambda help section,
+you can evaluate the Hyperlambda below.
+
+```hyperlambda-snippet
+/*
+ * Launches the "Hyperlambda" help files section.
+ *
+ * Click the "Flash" button in the bottom right corner to evaluate
+ * this Hyperlambda, and open up the Hyperlambda help files.
+ */
+hyper-ide.help.display
+  folder:@IDE/helpers/help-files/01 - Hyperlambda/
+```

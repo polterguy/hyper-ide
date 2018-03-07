@@ -21,6 +21,7 @@ of all Active Events that are available when Hyper IDE is open.
 * __[hyper-ide.editors.activate-previous-editor]__ - Activates the previous available editor
 * __[hyper-ide.editors.activate-next-editor]__ - Activates the next available editor
 * __[hyper-ide.editors.close]__ - Closes one or more editors. Pass in **[filter]** being a file/folder path which will declare which editors it will close, and **[exact]** being boolean true, if you only want to close the editor with the exact matching **[filter]** path
+* __[hyper-ide.help.display]__ - Displays the help files for Hyper IDE. Optionally pass in **[folder]** to open a specific section of the help files.
 
 Notice that Hyper IDE will also raise the **[hyper-ide.folder-explorer.item-changed]** Active Event when the file
 explorer's active item has been changed. The new item selected in the file explorer, will be available as **[\_arg]**
