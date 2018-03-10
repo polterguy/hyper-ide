@@ -53,6 +53,17 @@ As you can see in the above screenshot, the _"address"_ field is no longer visib
 but still possible to edit when having chosen to edit a specific item. This allows you to create a CRUD app with
 dozens of columns, but still only display the most important columns in your _"datagrid"_ view.
 
+### Editing your app
+
+You can also edit your app, without generating it, and save your edits for later, still without generating your
+app. If you wish to do this, you can save your app in the meantime by clicking the save button. This will save
+your app's _"declaration"_, without generating it. You can also clone an existing app. This might be useful if you have a complex app, with lots of _"Views"_, and
+you'll need to copy your app for some reasons.
+
+Your app declarations are actually simply Hyperlambda files, which you can find in your user's home folder. However,
+be careful if you edit these files, since if the the file's content becomes invalid, you can no longer generate
+your app.
+
 ### Responsive CRUD apps
 
 In general, your CRUD apps will be _"responsive"_. This implies that they'll also perfectly work on your
