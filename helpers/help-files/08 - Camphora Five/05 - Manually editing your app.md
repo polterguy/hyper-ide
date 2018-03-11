@@ -14,6 +14,10 @@ allows you to see all the possible icons you can use for your app. If you want t
 you can evaluate the snippet below, for then to edit your app's _"desktop.hl"_ file, and change the parts
 of your `class` property that declares which icon to use.
 
+T.H. Rose Home Cloud, Inc. can also help you edit your app, or create custom apps entirely from scratch for you,
+if you require additional features, or custom apps. This is a service we charge for. Feel free to
+send us an email at thomas@gaiasoul.com if you want to hear more about these types of services.
+
 ```hyperlambda-snippet
 /*
  * Loading HTML example file for IcoMoon.
@@ -22,7 +26,7 @@ load-file:"/modules/micro/media/fonts-demo.html"
 
 /*
  * Semantically iterating each "icon-x" class from HTML document retrieved above,
- * and adding one "li" element for each into our [create-widget] invocation below.
+ * and adding one "li" element for each into our [create-widgets] invocation below.
  */
 html2lambda:x:/@load-file/*?value
 for-each:x:@"/@html2lambda/**/\@class/""=:regex:/icon-.{1,}/""?value"

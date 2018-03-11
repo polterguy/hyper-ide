@@ -1,4 +1,3 @@
-
 ## Creating custom views
 
 This is a fairly advanced concept, and requires you to understand Hyperlambda. However, it is also extremely
@@ -50,3 +49,18 @@ you can evaluate the Hyperlambda below.
 hyper-ide.help.display
   folder:@IDE/helpers/help-files/01 - Hyperlambda/
 ```
+
+Below is an example of such a custom view.
+
+https://phosphorusfive.files.wordpress.com/2017/12/screen-shot-2017-12-07-at-21-43-05.png
+
+The above is an example of a CRUD app I created, based upon QR codes, that allowed guests to create _"micro blogs"_
+about companies, and help market these companies on Facebook and other social media platforms. It was entirely
+based upon Camphora Five, with a handful of custom views as addons. The above is one such custom view, that
+allows the guest to read a _"micro blog"_. Below is an example of a _"create view"_ for the same app.
+
+https://phosphorusfive.files.wordpress.com/2017/11/screen-shot-2017-11-21-at-08-03-00.png
+
+If you combine Camphora Five with custom views, it can become a very powerful tool for you.
+
+
