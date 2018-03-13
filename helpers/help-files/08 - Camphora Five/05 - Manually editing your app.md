@@ -116,19 +116,18 @@ to _"re-generate"_ your app, and loose your manually edited changes.
 
 Your Camphora Five app though, is dependent upon some helper services, which is supplied by Camphora Five itself. So
 your app will not function, if you for some reasons uninstall Camphora Five. These helper services, provides
-functionality such as transforming Markdown to HTML, etc.
+functionality such as transforming Markdown to HTML, etc. So hence your app is created from a _"template"_, which
+you can edit as you see fit, after you have initially generated your app. This allows you to create a Camphora CRUD
+app, which you edit after having generated it, to your exact needs, as you see fit. Just remember a crucial
+detail - **If you re-generate your app, these changes will be overwritten!!**
 
 #### About Markdown and Multiline fields
 
 When Markdown for multiline text elements is created, Camphora Five will load your _"html-whitelist.hl"_ file, for your
 app, inside of your app's _"/configuration/"_ folder. This allows you to modify the legal HTML elements for your
-particular app. Since Markdown is explicitly created as a _"leaky format"_, this allows you to create HTML tags inside
-of your Markdown, which will be rendered _"as is"_ in your resulting HTML, parsed from your Markdown. However, your HTML
-whitelist file, declares which HTML elements and attributes of HTML elements are legal to render here, but only for your
+particular app. Markdown is created as a _"leaky format"_, which allows you to create HTML tags inside
+your Markdown. These tags will be rendered _"as is"_ in your resulting HTML. However, your HTML
+whitelist file, declares which HTML elements and attributes of HTML elements are legal to render here - But only for your
 specific app, and not all apps in general.
-
-So hence your app is created from a _"template"_, which you can edit as you see fit, after you have initially generated
-your app. This allows you to create a Camphora CRUD app, which you edit after having generated it, to your exact needs,
-as you see fit. Just remember a crucial detail - **If you re-generate your app, these changes will be overwritten!!**
 
 
