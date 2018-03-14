@@ -1,4 +1,4 @@
-/*
+﻿/*
  * This is our main "landing page" for our Hyper IDE help files.
  */
 h2
@@ -61,4 +61,4 @@ container
                */
               get-widget-property:x:/../*/_event?value
                 .file
-              hyper-ide.help.display-file:x:/@get-widget-property/*/*?value
+              desktop.help.display-file:x:/@get-widget-property/*/*?value

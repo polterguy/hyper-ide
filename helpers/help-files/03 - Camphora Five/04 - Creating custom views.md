@@ -46,8 +46,8 @@ you can evaluate the Hyperlambda below.
  * Click the "Flash" button in the bottom right corner to evaluate
  * this Hyperlambda, and open up the Hyperlambda help files.
  */
-hyper-ide.help.display
-  folder:@IDE/helpers/help-files/01 - Hyperlambda/
+desktop.help.display
+  folder:@IDE/helpers/help-files/05 - Hyperlambda/
 ```
 
 Below is an example of such a custom view.

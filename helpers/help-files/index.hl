@@ -1,4 +1,4 @@
-/*
+﻿/*
  * This is our main "landing page" for the help system in Hyper IDE.
  *
  * This file displays the general "index", and such serves as a starting ground
@@ -69,7 +69,7 @@ container
                */
               get-widget-property:x:/../*/_event?value
                 .file
-              hyper-ide.help.display-file:x:/@get-widget-property/*/*?value
+              desktop.help.display-file:x:/@get-widget-property/*/*?value
 
 literal
   element:h4
@@ -122,4 +122,4 @@ container
                */
               get-widget-property:x:/../*/_event?value
                 .folder
-              hyper-ide.help.display-folder:x:/@get-widget-property/*/*?value
+              desktop.help.display-folder:x:/@get-widget-property/*/*?value
