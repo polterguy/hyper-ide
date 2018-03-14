@@ -4,6 +4,10 @@
 h2
   innerValue:Micro
 
+p
+  innerValue:@"Micro is a general purpose CSS framework, and an Ajax Widget library for Phosphorus Five. These parts of the documentation
+explains how you can use Micro as you create your own applications."
+
 
 /*
  * All files at "root" of sub section.

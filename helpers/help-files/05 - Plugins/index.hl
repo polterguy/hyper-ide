@@ -4,6 +4,10 @@
 h2
   innerValue:Plugins
 
+p
+  innerValue:@"Here you can find the documentation for all the plugins in Phosphorus Five. These parts of the documentation
+explains the different Active Event assemblies, their Active Events, and how to consume these in your own Hyperlambda applications."
+
 
 /*
  * All files at "root" of sub section.

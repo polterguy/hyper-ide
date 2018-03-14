@@ -4,6 +4,10 @@
 h2
   innerValue:Hypereval
 
+p
+  innerValue:@"Hypereval is a module that allows you to evaluate Hyperlambda in <em>'immediate'</em> mode. These parts of the documentation
+expects you to understand at least some basic Hyperlambda."
+
 
 /*
  * All files at "root" of sub section.

@@ -7,6 +7,11 @@
 h2
   innerValue:Hyper IDE help files
 
+p
+  innerValue:@"Welcome to the help files for Phosphorus Five. These help files can be launched from within any module, and will guide you through
+both the standard usage of Phosphorus Five, and its modules, in addition to how to create your own apps. This allows you to have these
+help files open from within the module you want to learn about."
+
 literal
   element:h4
   innerValue:Main section

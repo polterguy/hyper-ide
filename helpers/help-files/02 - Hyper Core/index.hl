@@ -4,6 +4,10 @@
 h2
   innerValue:Hyper Core
 
+p
+  innerValue:@"Hyper Core is an HTTP REST based ORM library for MySQL and more. These parts of the documentation explains how you can
+use Hyper Core in your own applications. Parts of this documentation requires basic understanding of Hyperlambda."
+
 
 /*
  * All files at "root" of sub section.

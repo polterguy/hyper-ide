@@ -4,6 +4,10 @@
 h2
   innerValue:Hyper IDE
 
+p
+  innerValue:@"Hyper IDE is a web based integrated development environment, in addition to also doubling as a file manager. If you're
+interested in creating your own Hyperlambda applications, Hyper IDE should be your preferred starting point."
+
 
 /*
  * All files at "root" of sub section.
