@@ -89,7 +89,7 @@ container
     list-folders:@IDE/helpers/help-files/
 
     /*
-     * Looping through each Hyperlambda file (except of course "index.hl").
+     * Looping through each folders in "/help-files/" folder.
      */
     for-each:x:/@list-folders/*
 
@@ -111,6 +111,7 @@ container
         widgets
           a
             href:#
+            role:button
             innerValue:x:/@replace?value
             .folder:x:/@_dp/#?name
             onclick

@@ -79,7 +79,7 @@ For instance, what happens if you have a string that contains a colon (:)?
 Well, then we use the same syntax as we would use in C# and/or JavaScript. We put our string
 into double quotes, like this.
 
-```
+```hyperlambda
 foo:"Some string with a colon : in it"
 ```
 

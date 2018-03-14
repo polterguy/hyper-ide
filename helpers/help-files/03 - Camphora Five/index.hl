@@ -1,12 +1,13 @@
 /*
- * This is our main "landing page" for our Hyper IDE help files.
+ * This is our main "landing page" for our Camphora Five's help files.
  */
 h2
-  innerValue:Hyper IDE
+  innerValue:Camphora Five
 
 p
-  innerValue:@"Hyper IDE is a web based integrated development environment, in addition to also doubling as a file manager. If you're
-interested in creating your own Hyperlambda applications, Hyper IDE should be your preferred starting point."
+  innerValue:@"Camphora Five is a CRUD app generator, that allows you to create some fairly rich web apps, without requiring you to
+learn any programming. If all you need to do is to create a web app that allows you to collect, edit, and administrate single table
+database data, then Camphora Five should probably be your starting point."
 
 
 /*
@@ -19,7 +20,7 @@ container
     /*
      * Retrieving all other Hyperlambda files in the help folder.
      */
-    list-files:@IDE/helpers/help-files/07 - Hyper IDE/
+    list-files:@IDE/helpers/help-files/03 - Camphora Five/
       filter:.hl|.md
 
     /*

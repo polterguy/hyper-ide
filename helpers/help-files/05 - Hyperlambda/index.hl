@@ -1,17 +1,16 @@
 /*
- * This is our main "landing page" for our Camphora Five's help files.
+ * This is our main "landing page" for our Hyperlambda help files.
  */
 h2
-  innerValue:Camphora Five
+  innerValue:Hyperlambda
 
 p
-  innerValue:@"Camphora Five is a CRUD app generator, that allows you to create some fairly rich web apps, without requiring you to
-learn any programming. If all you need to do is to create a web app that allows you to collect, edit, and administrate single table
-database data, then Camphora Five should probably be your starting point."
-
+  innerValue:@"Welcome to <em>'The Guide'</em> to Hyperlambda. Hyperlambda is a programming language explicitly created for Phosphorus Five,
+that allows you to rapidly create your own applications. Unless you have some time to invest into learning a (new) programming language,
+you're probably not going to have much use of these parts of the documentation."
 
 /*
- * All files at "root" of sub section.
+ * All files at "root" of Hyperlambda help folder.
  */
 container
   element:ul
@@ -20,7 +19,7 @@ container
     /*
      * Retrieving all other Hyperlambda files in the help folder.
      */
-    list-files:@IDE/helpers/help-files/08 - Camphora Five/
+    list-files:@IDE/helpers/help-files/05 - Hyperlambda/
       filter:.hl|.md
 
     /*

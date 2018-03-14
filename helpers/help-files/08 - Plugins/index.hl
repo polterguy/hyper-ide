@@ -1,12 +1,12 @@
 /*
- * This is our main "landing page" for our Hyper Core help files.
+ * This is our main "landing page" for our Plugins help files.
  */
 h2
-  innerValue:Hyper Core
+  innerValue:Plugins
 
 p
-  innerValue:@"Hyper Core is an HTTP REST based ORM library for MySQL and more. These parts of the documentation explains how you can
-use Hyper Core in your own applications. Parts of this documentation requires basic understanding of Hyperlambda."
+  innerValue:@"Here you can find the documentation for all the plugins in Phosphorus Five. These parts of the documentation
+explains the different Active Event assemblies, their Active Events, and how to consume these in your own Hyperlambda applications."
 
 
 /*
@@ -19,7 +19,7 @@ container
     /*
      * Retrieving all other Hyperlambda files in the help folder.
      */
-    list-files:@IDE/helpers/help-files/02 - Hyper Core/
+    list-files:@IDE/helpers/help-files/08 - Plugins/
       filter:.hl|.md
 
     /*

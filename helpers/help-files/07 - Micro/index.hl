@@ -19,7 +19,7 @@ container
     /*
      * Retrieving all other Hyperlambda files in the help folder.
      */
-    list-files:@IDE/helpers/help-files/03 - Micro/
+    list-files:@IDE/helpers/help-files/07 - Micro/
       filter:.hl|.md
 
     /*
