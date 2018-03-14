@@ -2,13 +2,9 @@
 /*
  * Home button, launches desktop (or default app).
  */
-button
+a
+  href:/
+  role:button
+  class:button
   innerValue:@"<span class=""icon-home3""></span>"
   title:Close Hyper IDE
-  onclick
-
-    /*
-     * Relocating to main app.
-     */
-    p5.web.get-root-location
-    p5.web.set-location:x:/-?value
