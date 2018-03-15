@@ -1,12 +1,12 @@
 ﻿/*
- * This is our main "landing page" for our Micro help files.
+ * This is our main "landing page" for our Hyper IDE help files.
  */
 h2
-  innerValue:Micro
+  innerValue:Hyper IDE
 
 p
-  innerValue:@"Micro is a general purpose CSS framework, and an Ajax Widget library for Phosphorus Five. These parts of the documentation
-explains how you can use Micro as you create your own applications."
+  innerValue:@"Hyper IDE is a web based integrated development environment, in addition to also doubling as a file manager. If you're
+interested in creating your own Hyperlambda applications, Hyper IDE should be your preferred starting point."
 
 
 /*
@@ -19,7 +19,7 @@ container
     /*
      * Retrieving all other Hyperlambda files in the help folder.
      */
-    list-files:@IDE/helpers/help-files/07 - Micro/
+    list-files:@IDE/help-files/Hyper IDE/
       filter:.hl|.md
 
     /*
