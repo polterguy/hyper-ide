@@ -70,6 +70,13 @@ create-event:hyper-ide.widgets.ide
 
 
         /*
+         * Help context Active Event.
+         */
+        desktop.help.get-context
+          return:@IDE/help-files/Hyper IDE/index.hl
+
+
+        /*
          * General lambda events for Hyper IDE.
          */
 
