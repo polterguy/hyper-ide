@@ -123,7 +123,10 @@ create-widgets
 
 Although Hyper IDE is remarkably responsive, at least compared to Visual Studio, it is a web based IDE. This for obvious
 reasons have some benefits, and other disadvantages. One of the disadvantages is that if you expand a huge amount of
-folders in your file explorer, and also edits a lot of files at the same time - You might feel that Hyper IDE starts
+folders in your file explorer, and also edit a lot of files at the same time - You might feel that Hyper IDE starts
 acting sluggishly and slow. If Hyper IDE starts acting slow on you, then you might benefit from saving your work,
 and reloading your page, to make sure you have less active widgets on your page. Typically, you probably wouldn't want
 to edit more than a handful of files at the same time, since this would make it start being less responsive.
+
+However, the really cool part, is that Hyper IDE will work on any client you have, capable of displaying HTML,
+including your phone ... ;)
