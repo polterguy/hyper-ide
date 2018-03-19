@@ -5,7 +5,7 @@ create-event:hyper-ide.plugins.zip.unzip
   return
     button
       innerValue:@"<span class=""icon-share""></span>"
-      title:Unzips file
+      title:Unzips file in its current folder
       onclick
 
         /*
@@ -21,3 +21,9 @@ create-event:hyper-ide.plugins.zip.unzip
          */
         hyper-ide.folder-explorer.set-active-item:x:/@micro.path.get-folder?value
         hyper-ide.folder-explorer.refresh-active-folder
+
+        /*
+         * Notifying user.
+         */
+        micro.windows.info:File was successfully unzipped
+          class:micro-windows-info success

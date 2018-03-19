@@ -212,6 +212,19 @@ and close all editors that are editing files inside of your folder. I need you t
                           filter:x:/@get-widget-property/*/*?value
 
                         /*
+                         * Checking if folder toolbar exists, and deleting it if it does.
+                         */
+                        if
+                          fetch:x:/0/0?value
+                            widget-exists:hyper-ide-active-folder-toolbar
+                          delete-widget:hyper-ide-active-folder-toolbar
+
+                        /*
+                         * Raising changed event.
+                         */
+                        hyper-ide.folder-explorer.item-changed
+
+                        /*
                          * Deleting modal window.
                          */
                         delete-widget:hyper-ide-confirm-delete-folder

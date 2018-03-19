@@ -40,16 +40,53 @@ if
 
 /*
  * Checking if editor caller wants to activate is already the active editor, at
- * which point we simply return early, and do nothing.
+ * which point we don't go through the entire activation process, but only a part of it.
  */
 if
   hyper-ide.active-editor.get-filepath
   =:x:/../*/editor?value
 
   /*
-   * Nothing to do here.
+   * Notice, we still need to make sure the toolbar is the currently active toolbar.
    */
-  return
+  p5.web.widgets.find-first:hyper-ide-toolbar-wrapper
+    .toolbar:x:/../*/editor?value
+  get-widget-property:x:/@p5.web.widgets.find-first/*/*?value
+    class
+  if:x:/@get-widget-property/*/*?value
+    !~:visible
+
+    /*
+     * Need to activate editor's toolbar.
+     */
+    p5.web.widgets.find-first-like:hyper-ide-toolbar-wrapper
+      class:visible
+
+    /*
+     * finding any previously activated toolbars, and hiding them.
+     */
+    if:x:/@p5.web.widgets.find-first-like/*/*?value
+      micro.css.toggle:x:/@p5.web.widgets.find-first-like/*/*?value
+        class:visible hide
+
+    /*
+     * Displaying current file's toolbar.
+     */
+    micro.css.toggle:x:/@p5.web.widgets.find-first/*/*?value
+      class:visible hide
+
+    /*
+     * Checking if there's a folder toolbar open, and if so, deleting it.
+     */
+    if
+      fetch:x:/0/0?value
+        widget-exists:hyper-ide-active-folder-toolbar
+      delete-widget:hyper-ide-active-folder-toolbar
+
+  /*
+   * Returning early.
+   */
+  return:bool:true
 
 
 
