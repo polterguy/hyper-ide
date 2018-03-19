@@ -1,7 +1,7 @@
 /*
  * Create our execute in folder plugin button.
  */
-create-event:hyper-ide.folder-plugins.execute
+create-event:hyper-ide.folder-plugin.execute
   return
     button
       innerValue:@"<span class=""icon-terminal""></span>"

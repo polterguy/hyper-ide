@@ -1,4 +1,3 @@
-
 /*
  * Uninstall file.
  */
@@ -13,3 +12,4 @@
 delete-event:p5.io.unroll-path.@IDE
 vocabulary:~hypereval.
 delete-event:x:/-/*?name
+delete-event:desktop.help-files.hyper-ide

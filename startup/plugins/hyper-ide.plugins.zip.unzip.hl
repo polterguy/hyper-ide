@@ -1,0 +1,23 @@
+/*
+ * Creates the unzip file plugin.
+ */
+create-event:hyper-ide.plugins.zip.unzip
+  return
+    button
+      innerValue:@"<span class=""icon-share""></span>"
+      title:Unzips file
+      onclick
+
+        /*
+         * Retrieves current path for file, and unzips it in place.
+         */
+        hyper-ide.folder-explorer.get-active-item
+        micro.path.get-folder:x:/@hyper-ide.folder-explorer.get-active-item?value
+        unzip:x:/@hyper-ide.folder-explorer.get-active-item?value
+          dest:x:/@micro.path.get-folder?value
+
+        /*
+         * Refreshing current folder.
+         */
+        hyper-ide.folder-explorer.set-active-item:x:/@micro.path.get-folder?value
+        hyper-ide.folder-explorer.refresh-active-folder

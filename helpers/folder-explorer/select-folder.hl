@@ -49,7 +49,7 @@ micro.css.toggle:x:/-/*/*?value
  */
 add:x:/../*/create-widgets/*/micro.widgets.file/*/widgets
   micro.evaluate.file:@IDE/helpers/get-plugins.hl
-    type:hyper-ide.folder-plugins
+    type:hyper-ide.folder-plugin
 
 
 

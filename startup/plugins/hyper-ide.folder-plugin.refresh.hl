@@ -1,7 +1,7 @@
 /*
  * Create our refresh folder plugin button.
  */
-create-event:hyper-ide.folder-plugins.refresh
+create-event:hyper-ide.folder-plugin.refresh
   return
     button
       innerValue:@"<span class=""icon-spinner11""></span>"

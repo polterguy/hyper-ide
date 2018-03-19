@@ -1,9 +1,8 @@
-
 /*
  * Bookmark button.
  */
 button
-  innerValue:@"<span class=""icon-bookmark""></span>"
+  innerValue:@"<span class=""icon-link""></span>"
   title:Copy URL to current path
   disabled
   events

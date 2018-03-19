@@ -3,7 +3,7 @@
  *
  * This button is only visible if the currently selected folder is the "/modules/" folder.
  */
-create-event:hyper-ide.folder-plugins.create-module
+create-event:hyper-ide.folder-plugin.create-module
 
   /*
    * Verifying we're in our "/modules/" folder, and if not, returning early.

@@ -43,10 +43,80 @@ load-file:@IDE/configuration/extension2cm-instance.hl
  *
  * First figuring our file extension of file caller wants to edit.
  */
+.file-type
 split:x:/../*/file?value
   =:.
 if:x:/@load-file/*/*/{0}
   :x:/@split/0/-?name
+
+  /*
+   * There exists a CodeMirror mode for file type.
+   */
+  set:x:/@.file-type?value
+    src:x:/@load-file/*/*/{0}?value
+      :x:/@split/0/-?name
+
+  /*
+   * Checking if splash screen is open, and closing it if it is.
+   */
+  if
+    fetch:x:/0/0?value
+      widget-exists:hyper-ide-splash
+    delete-widget:hyper-ide-splash
+
+  /*
+   * Making sure our "tab control" exists.
+   *
+   * The "tab control" widget will "wrap" all of our editors.
+   */
+  if
+    fetch:x:/0/0?value
+      widget-exists:hyper-ide-editor-tab
+    not
+
+    /*
+     * Creating our "tab control" wrapper.
+     */
+    create-widget:hyper-ide-editor-tab
+      parent:hyper-ide-file-editor
+      class:hyper-ide-editor-tab
+      widgets
+        container:hyper-ide-editor-tab-buttons
+          class:hyper-ide-editor-tab-buttons
+        container:hyper-ide-editor-tab-editors
+          class:hyper-ide-editor-tab-content shaded rounded
+
+  /*
+   * Making sure we hide any previously created editors.
+   */
+  p5.web.widgets.find-first-like:hyper-ide-file-editor
+    .editor
+    class:visible
+  micro.css.delete:x:/@p5.web.widgets.find-first-like/*/*?value
+    class:visible
+  micro.css.add:x:/@p5.web.widgets.find-first-like/*/*?value
+    class:hide
+
+  /*
+   * Notice, to prevent non-active editors' content being serialised back from
+   * client upon consecutive Ajax requests, we disable all non-active editors'
+   * textarea.
+   *
+   * This will preserve a lot of bandwidth, and hence make Hyper IDE more responsive.
+   */
+  p5.web.widgets.find-first:x:/@p5.web.widgets.find-first-like/*/*?value
+    element:textarea
+  set-widget-property:x:/@p5.web.widgets.find-first/*/*?value
+    disabled
+
+  /*
+   * "Un-toggling" existing toggled tab button.
+   */
+  p5.web.widgets.find-first-like:hyper-ide-editor-tab-buttons
+    .activate
+    class:toggled
+  micro.css.delete:x:/@p5.web.widgets.find-first-like/*/*?value
+    class:toggled
 
   /*
    * Loading file, such that we can pass its content into our editor instance.
@@ -79,47 +149,17 @@ if:x:/@load-file/*/*/{0}
 else
 
   /*
-   * No editor exists, returning early.
+   * No CodeMirror editor exists for file type.
    */
-  return
-
-
-
-
-
-/*
- * Checking if splash screen is open, and closing it if it is.
- */
-if
-  fetch:x:/0/0?value
-    widget-exists:hyper-ide-splash
-  delete-widget:hyper-ide-splash
-
-
-
-
-
-/*
- * Making sure our "tab control" exists.
- *
- * The "tab control" widget will "wrap" all of our editors.
- */
-if
-  fetch:x:/0/0?value
-    widget-exists:hyper-ide-editor-tab
-  not
+  split:x:/../*/file?value
+    =:.
+  set:x:/@.file-type?value
+    src:x:/@split/0/-?name
 
   /*
-   * Creating our "tab control" wrapper.
+   * Removing instantiation of actual editor.
    */
-  create-widget:hyper-ide-editor-tab
-    parent:hyper-ide-file-editor
-    class:hyper-ide-editor-tab
-    widgets
-      container:hyper-ide-editor-tab-buttons
-        class:hyper-ide-editor-tab-buttons
-      container:hyper-ide-editor-tab-editors
-        class:hyper-ide-editor-tab-content shaded rounded
+  set:x:/../*/create-widgets(/2|/1)|/../*/hyper-ide.on-file-edited|/../*/create-widgets/*/micro.widgets.file/*/folder
 
 
 
@@ -141,58 +181,13 @@ micro.css.add:x:/@p5.web.widgets.find-first-like/*/*?value
 
 
 /*
- * Making sure we hide any previously created editors.
- */
-p5.web.widgets.find-first-like:hyper-ide-file-editor
-  .editor
-  class:visible
-micro.css.delete:x:/@p5.web.widgets.find-first-like/*/*?value
-  class:visible
-micro.css.add:x:/@p5.web.widgets.find-first-like/*/*?value
-  class:hide
-
-
-
-
-
-/*
- * Notice, to prevent non-active editors' content being serialised back from
- * client upon consecutive Ajax requests, we disable all non-active editors'
- * textarea.
- *
- * This will preserve a lot of bandwidth, and hence make Hyper IDE more responsive.
- */
-p5.web.widgets.find-first:x:/@p5.web.widgets.find-first-like/*/*?value
-  element:textarea
-set-widget-property:x:/@p5.web.widgets.find-first/*/*?value
-  disabled
-
-
-
-
-
-/*
- * "Un-toggling" existing toggled tab button.
- */
-p5.web.widgets.find-first-like:hyper-ide-editor-tab-buttons
-  .activate
-  class:toggled
-micro.css.delete:x:/@p5.web.widgets.find-first-like/*/*?value
-  class:toggled
-
-
-
-
-
-/*
  * Adding all file specific plugins.
  */
 eval-x:x:/+/*/*
 add:x:/../*/create-widgets/**/micro.widgets.file/*/widgets
   micro.evaluate.file:@IDE/helpers/get-plugins.hl
     type:hyper-ide.plugins.{0}
-      :x:/@load-file/*/*/{0}?value
-        :x:/@split/0/-?name
+      :x:/@.file-type?value
 
 
 

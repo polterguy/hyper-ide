@@ -99,12 +99,27 @@ button
                         micro.widgets.tree.delete-items:hyper-ide-folder-tree-browser
 
                         /*
-                         * Making sure we close editor for file.
+                         * Making sure we close editor for file, if there exists
+                         * at least one editor that is open.
                          */
-                        eval-x:x:/+/*
-                        hyper-ide.editors.close
-                          filter:x:/@.filename?value
-                          exact:bool:true
+                        hyper-ide.editors.get-open-editors
+                        if:x:/@hyper-ide.editors.get-open-editors/*?count
+                          >:int:0
+                          eval-x:x:/+/*
+                          hyper-ide.editors.close
+                            filter:x:/@.filename?value
+                            exact:bool:true
+
+                        /*
+                         * Notice, in case file that was deleted didn't have a CodeMirror
+                         * editor for its file extension, there might still exist
+                         * a toolbar for it. Hence, checking if it does, and deleting
+                         * the toolbar, if it exists.
+                         */
+                        p5.web.widgets.find-first:hyper-ide-toolbar-wrapper
+                          .toolbar:x:/@.filename?value
+                        if:x:/@p5.web.widgets.find-first/*/*?value
+                          delete-widget:x:/@p5.web.widgets.find-first/*/*?value
 
                         /*
                          * Deleting modal window.

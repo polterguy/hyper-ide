@@ -1,0 +1,38 @@
+/*
+ * Allows the user to download an entire folder as a zip file.
+ */
+create-event:hyper-ide.folder-plugin.download-as-zip-file
+  return
+    button
+      innerValue:@"<span class=""icon-file-zip""></span>"
+      title:Downloads the entire folder as a zip file
+      onclick
+
+        /*
+         * Retrieving current folder.
+         */
+        p5.web.widgets.find-first-ancestor:x:/../*/_event?value
+          .folder
+        get-widget-property:x:/-/*/*?value
+          .folder
+
+        /*
+         * Checking if destination file name exists, and if so,deleting it.
+         */
+        split:x:/@get-widget-property/*/*?value
+          =:/
+        if
+          fetch:x:/0/0?value
+            file-exists:~/temp/{0}.zip
+              :x:/@split/0/-?name
+          delete-file:~/temp/{0}.zip
+            :x:/@split/0/-?name
+
+        /*
+         * Creating our zip file, and downloading it to client.
+         */
+        zip:~/temp/{0}.zip
+          :x:/@split/0/-?name
+          src:x:/@get-widget-property/*/*?value
+        micro.download.file:~/temp/{0}.zip
+          :x:/@split/0/-?name
