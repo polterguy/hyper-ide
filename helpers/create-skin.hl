@@ -1,0 +1,201 @@
+/*
+ * Guides user through process of creating a new skin.
+ *
+ * Uses a "wizard" form to help user through the process.
+ * First loading main Micro CSS file, to determine all CSS variables in file.
+ */
+load-file:@MICRO/media/micro.css
+
+
+
+
+
+/*
+ * Finding all CSS variables that are available to us.
+ */
+split:x:/@load-file/*?value
+  =:"/* VARIABLES_BEGIN */"
+  =:"/* VARIABLES_END */"
+split:x:/@split/1?name
+  =:"\r\n"
+.vars
+for-each:x:/@split/*?name
+  trim:x:/@_dp?value
+    chars:"\t -;"
+  split:x:/@trim?value
+    =:":"
+  trim:x:/@split/1?name
+    chars:"; \t\r\n"
+  add:x:/@.vars
+    src:"{0}:{1}"
+      :x:/@split/0?name
+      :x:/@trim?value
+set:x:/@.vars/*/=
+
+
+
+
+/*
+ * Applying all CSS variables into our tab widget.
+ */
+.no:int:1
+while:x:/@.vars/*
+  eval-x:x:/+/*/*/*/name
+  add:x:/../*/create-widgets/*/*/*/micro.widgets.tab
+    src
+      view
+        name:Settings {0}
+          :x:/@.no?value
+        widgets
+  apply:x:/../*/create-widgets/*/*/widgets/*/micro.widgets.tab/0/-/*/widgets
+    src:x:/@.vars/*/[0,7]
+    template
+      div
+        class:strip fill
+        widgets
+          label
+            class:description-9
+            {innerValue}:x:?name
+          input
+            type:text
+            {value}:x:?value
+            {.data-field}:x:?name
+  set:x:/@.no?value
+    +:x:/@.no?value
+      _:1
+  set:x:/@.vars/*/[0,7]
+
+
+
+
+
+/*
+ * Creating a modal widget, with one textbox for each variable.
+ */
+create-widgets
+  micro.widgets.modal:hyper-ide-create-skin-wizard-modal
+    widgets
+      h3
+        innerValue:Skin wizard
+      micro.widgets.tab
+      div
+        class:strip right air-top
+        widgets
+          button
+            innerValue:Generate
+            onclick
+
+              /*
+               * Serializing form and asking user for a name for his skin.
+               */
+              micro.form.serialize:hyper-ide-create-skin-wizard-modal
+              add:x:/+/**/.vars
+                src:x:/@micro.form.serialize/*
+
+              /*
+               * Creating (another) modal widget to ask user for a name for his new skin.
+               */
+              create-widgets
+                micro.widgets.modal:hyper-ide-create-skin-wizard-modal-name
+                  widgets
+                    h3
+                      innerValue:Provide a name for your skin
+                    div
+                      class:fill strip
+                      widgets
+                        label
+                          innerValue:Name
+                        input:hyper-ide-new-skin-name
+                          type:text
+                          placeholder:Name for your skin ...
+                          onkeydown:@"if (event.keyCode == 13) {p5.$('hyper-ide-save-new-skin').raise('onclick');return false;} else if (event.keyCode == 27) {p5.$('hyper-ide-save-new-skin-cancel').raise('onclick');return false;}"
+                          oninit
+
+                            /*
+                             * Setting initial focus to textbox.
+                             */
+                            micro.page.set-focus:x:/../*/_event?value
+
+                    div
+                      class:right strip
+                      widgets
+                        button:hyper-ide-save-new-skin
+                          innerValue:Save
+                          onclick
+
+                            /*
+                             * Building CSS.
+                             */
+                            .vars
+                            .css:@"/* CSS variables */
+:root {"
+                            for-each:x:/@.vars/*
+                              set:x:/@.css?value
+                                src:"{0}--{1}:{2};"
+                                  :x:/@.css?value
+                                  :x:/@_dp/#?name
+                                  :x:/@_dp/#?value
+                            set:x:/@.css?value
+                              src:"{0}}}"
+                                :x:/@.css?value
+
+                            /*
+                             * Retrieving and sanity checking filename.
+                             */
+                            get-widget-property:hyper-ide-new-skin-name
+                              value
+                            match:x:/@get-widget-property/*/*?value
+                              src:regex:/^[-_a-z0-9]+$/i
+                            if:x:/@match/*?count
+                              =:int:0
+                              or:x:/@match/0?name
+                                =:
+
+                              /*
+                               * Not a legal name for a file.
+                               */
+                              micro.windows.info:Not a legal name for your skin
+                                class:micro-windows-info warning
+                              return
+
+                            /*
+                             * Saving skin file.
+                             */
+                            save-file:@MICRO/media/skins/{0}.css
+                              :x:/@get-widget-property/*/*?value
+                              src:x:/@.css?value
+
+                            /*
+                             * Deleting both modal widgets.
+                             */
+                            delete-widget:hyper-ide-create-skin-wizard-modal-name
+                            delete-widget:hyper-ide-create-skin-wizard-modal
+
+                            /*
+                             * Refreshing tree view's active folder, which should be the skin folder.
+                             */
+                            hyper-ide.folder-explorer.refresh-active-folder
+
+                            /*
+                             * Opening up our CSS file for editing.
+                             */
+                            hyper-ide.folder-explorer.select-path:/modules/micro/media/skins/{0}.css
+                              :x:/@get-widget-property/*/*?value
+
+                        button:hyper-ide-save-new-skin-cancel
+                          innerValue:Cancel
+                          onclick
+
+                            /*
+                             * Simply deleting modal widget.
+                             */
+                            delete-widget:hyper-ide-create-skin-wizard-modal-name
+
+          button
+            innerValue:Cancel
+            onclick
+
+              /*
+               * Simply deleting modal widget.
+               */
+              delete-widget:hyper-ide-create-skin-wizard-modal

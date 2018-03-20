@@ -1,4 +1,4 @@
-.hyper-ide-container {
+﻿.hyper-ide-container {
     padding-top: 0;
 }
 
@@ -24,7 +24,7 @@
 }
 @media screen and (min-width:800px) {
 .hyper-ide-content {
-    height: calc(100vh - 2rem - var(--form-element-padding) * 2 - .5rem);
+    height: calc(100vh - 2rem - var(--form-el-pad) * 2 - .5rem);
     margin-bottom: -.5rem;
 }
 }
@@ -35,14 +35,14 @@
 }
 .hyper-ide-page-scroll .hyper-ide-content {
     height: auto;
-    min-height: calc(100vh - 2rem - var(--form-element-padding) * 2 - .5rem);
+    min-height: calc(100vh - 2rem - var(--form-el-pad) * 2 - .5rem);
     margin-bottom: .5rem;
     overflow: auto;
 }
 
 /* TreeView wrapper for browsing files (column wrapper) */
 .hyper-ide-solution-explorer-col {
-    min-height: calc(100% - var(--form-element-padding) * 2);
+    min-height: calc(100% - var(--form-el-pad) * 2);
     margin-bottom: 0;
     margin-top: .5rem;
 }
@@ -67,7 +67,7 @@
 
 /* Wrapper column around editors (and splash screen) */
 .hyper-ide-editor-col {
-    min-height: calc(100% - var(--form-element-padding) * 2);
+    min-height: calc(100% - var(--form-el-pad) * 2);
     margin-top: .5rem;
 }
 
@@ -114,7 +114,7 @@
     padding-right: 2rem;
     cursor: pointer;
     border-bottom: none;
-    background-image: var(--button-toggled-background);
+    background-image: var(--button-toggled-bg);
 }
 .hyper-ide-editor-tab-buttons > button:first-child {
     margin-left: var(--border-radius);
@@ -124,7 +124,7 @@
     z-index: 1;
     font-weight: bold;
     font-style: normal;
-    background-image: var(--button-background);
+    background-image: var(--button-bg);
 }
 
 .hyper-ide-editor-tab-buttons > button > span.hyper-ide-close {

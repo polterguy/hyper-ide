@@ -1,0 +1,33 @@
+
+/*
+ * Create our create new skin plugin.
+ *
+ * This button is only visible if the currently selected folder is
+ * the "/modules/micro/media/skins/" folder.
+ */
+create-event:hyper-ide.folder-plugin.create-micro-skin
+
+  /*
+   * Verifying we're in our "/modules/" folder, and if not, returning early.
+   *
+   * This is to prevent this plugin to be visible in any other folders than our "/modules/" folder.
+   */
+  hyper-ide.folder-explorer.get-active-item
+  if:x:/@hyper-ide.folder-explorer.get-active-item?value
+    !=:/modules/micro/media/skins/
+    return
+
+  /*
+   * Returning plugin button to caller.
+   */
+  return
+    button
+      innerValue:@"<span class=""icon-star-full""></span>"
+      title:Create new skin
+      onclick
+
+        /*
+         * Evaluates the file that is reponsible for guiding user through the process
+         * of creating a new skin from a wizard.
+         */
+        micro.evaluate.file:@IDE/helpers/create-skin.hl
