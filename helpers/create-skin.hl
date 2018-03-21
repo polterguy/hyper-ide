@@ -70,6 +70,133 @@ while:x:/@.vars/*
 
 
 /*
+ * Adding the "preview" view.
+ */
+add:x:/../*/create-widgets/**/micro.widgets.tab
+  src
+    view
+      name:Preview
+      widgets
+        div
+          oninit
+
+            /*
+             * Injecting a style tag overriding the default skin
+             * with whatever settings user supplied.
+             *
+             * First creating our skin's CSS.
+             */
+            micro.form.serialize:hyper-ide-create-skin-wizard-modal
+            .css:@"<style>
+.hyper-ide-preview-skin {"
+            for-each:x:/@micro.form.serialize/*
+              set:x:/@.css?value
+                src:"{0}--{1}:{2};"
+                  :x:/@.css?value
+                  :x:/@_dp/#?name
+                  :x:/@_dp/#?value
+            set:x:/@.css?value
+              src:"{0}}}</style>"
+                :x:/@.css?value
+            create-widgets
+              text:x:/@.css?value
+                parent:x:/../*/_event?value
+
+
+          widgets
+
+            /*
+             * Then illustrating samples of most of our widgets, to
+             * simply show off how the skin will look like.
+             */
+            div:hyper-ide-preview-widget
+              class:hyper-ide-preview-skin background air-left air-right air-bottom air-inner
+              widgets
+                h2
+                  innerValue:Header H2
+                p
+                  innerValue:@"Some paragraph with <code>inline code</code> and
+a <a href='https://gaiasoul.com'>hyperlink</a> and a <strong>strong</strong> and <em>emphasized</em> string."
+                pre
+                  innerValue:@"Some pre formatted
+  piece of text"
+                div
+                  class:strip fill
+                  widgets
+                    label
+                      innerValue:Label
+                    input
+                      type:text
+                      placeholder:Some piece of input ...
+                    label
+                      widgets
+                        span
+                          innerValue:Check
+                        input
+                          type:checkbox
+                div
+                  class:strip fill
+                  widgets
+                    label
+                      innerValue:Disabled
+                    input
+                      type:text
+                      disabled
+                      value:Some piece of input
+                    label
+                      widgets
+                        span
+                          innerValue:Check
+                        input
+                          disabled
+                          checked
+                          type:checkbox
+                label
+                  widgets
+                    span
+                      innerValue:Radio button 1
+                    input
+                      type:radio
+                      name:hyper-ide-preview-rdo
+                label
+                  widgets
+                    span
+                      innerValue:Radio button 2
+                    input
+                      type:radio
+                      name:hyper-ide-preview-rdo
+                label
+                  widgets
+                    span
+                      innerValue:Disabled radio button
+                    input
+                      type:radio
+                      disabled
+                      name:hyper-ide-preview-rdo
+                div
+                  class:shaded rounded air-inner bg
+                  innerValue:<p>Shaded and rounded div with bg</p>
+                div
+                  class:air-inner success
+                  innerValue:<p>Success div</p>
+                div
+                  class:warning air-inner
+                  innerValue:<p>Warning div</p>
+                button
+                  class:air-right
+                  innerValue:Some button
+                button
+                  class:toggled air-right
+                  innerValue:Toggled button
+                button
+                  disabled
+                  innerValue:Disabled button
+
+
+
+
+
+/*
  * Creating a modal widget, with one textbox for each variable.
  */
 create-widgets
@@ -84,13 +211,6 @@ create-widgets
           button
             innerValue:Generate
             onclick
-
-              /*
-               * Serializing form and asking user for a name for his skin.
-               */
-              micro.form.serialize:hyper-ide-create-skin-wizard-modal
-              add:x:/+/**/.vars
-                src:x:/@micro.form.serialize/*
 
               /*
                * Creating (another) modal widget to ask user for a name for his new skin.
@@ -124,12 +244,20 @@ create-widgets
                           onclick
 
                             /*
+                             * Serializing form and saving to a skin file.
+                             *
+                             * Notice, to avoid serializing preview widgets, we delete them first.
+                             *
+                             */
+                            delete-widget:hyper-ide-preview-widget
+                            micro.form.serialize:hyper-ide-create-skin-wizard-modal
+
+                            /*
                              * Building CSS.
                              */
-                            .vars
                             .css:@"/* CSS variables */
 :root {"
-                            for-each:x:/@.vars/*
+                            for-each:x:/@micro.form.serialize/*
                               set:x:/@.css?value
                                 src:"{0}--{1}:{2};"
                                   :x:/@.css?value
