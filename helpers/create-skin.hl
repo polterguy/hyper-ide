@@ -201,6 +201,7 @@ a <a href='https://gaiasoul.com'>hyperlink</a> and a <strong>strong</strong> and
  */
 create-widgets
   micro.widgets.modal:hyper-ide-create-skin-wizard-modal
+    class:micro-widgets-modal large
     widgets
       h3
         innerValue:Skin wizard
