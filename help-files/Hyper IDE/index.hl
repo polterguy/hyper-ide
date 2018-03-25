@@ -1,12 +1,23 @@
-﻿/*
+/*
  * This is our main "landing page" for our Hyper IDE help files.
  */
 h2
   innerValue:Hyper IDE
 
+img
+  style:"margin-left:1rem; float:right;max-width: 25%;"
+  src:"https://phosphorusfive.files.wordpress.com/2017/12/ufo.png"
+
 p
   innerValue:@"Hyper IDE is a web based integrated development environment, in addition to also doubling as a file manager. If you're
-interested in creating your own Hyperlambda applications, Hyper IDE should be your preferred starting point."
+interested in creating your own Hyperlambda applications, or editing your files on your server - Hyper IDE should be your preferred starting point."
+
+p
+  innerValue:@"Although Hyper IDE is very strong when creating Hyperlambda and Phosphorus Five apps and modules,
+it supports more than 100 programming languages out of the box, in addition to integration plugins, allowing
+you to create compiler services, integrate towards GIT, and many additional features. It arguably is a complete
+alternative to Visual Studio or Eclipse. Hyper IDE is extremely easily extended, allowing you to create your
+own plugins, and extend Hyper IDE in any ways you see fit."
 
 
 /*
