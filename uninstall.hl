@@ -10,6 +10,6 @@
  * Deleting all relevant Active Events, and that's it.
  */
 delete-event:p5.io.unroll-path.@IDE
-vocabulary:~hypereval.
+vocabulary:~hyper-ide.
 delete-event:x:/-/*?name
 delete-event:desktop.help-files.hyper-ide
