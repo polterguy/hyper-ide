@@ -44,4 +44,4 @@ create-event:hyper-ide.global-plugin.launch-hypereval
           /*
            * Srolling Hypereval into view.
            */
-          p5.web.send-javascript:@"p5.$('hypereval-hyper-ide-plugin').el.scrollIntoView ({behavior:'smooth'});"
+          micro.page.scroll-into-view:hypereval-hyper-ide-plugin

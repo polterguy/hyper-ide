@@ -123,8 +123,7 @@ if:x:/@p5.web.widgets.find-first/*/*?value
    */
   p5.web.widgets.find-first-like:hyper-ide-folder-tree-browser
     class:tree-selected
-  p5.web.send-javascript:@"p5.$('{0}').el.scrollIntoView ({{behavior:'smooth'}});"
-    :x:/@p5.web.widgets.find-first-like/*/*?value
+  micro.page.scroll-into-view:x:/@p5.web.widgets.find-first-like/*/*?value
 
   /*
    * Raising our folder changed event.
