@@ -109,14 +109,3 @@ for-each:x:/@split/@split/*?name
  * Making sure we select our final resulting item
  */
 hyper-ide.folder-explorer.set-active-item:x:/../*/path?value
-
-
-
-
-
-/*
- * Scrolling item into view.
- */
-p5.web.widgets.find-first-like:hyper-ide-folder-tree-browser
-  class:tree-selected
-micro.page.scroll-into-view:x:/@p5.web.widgets.find-first-like/*/*?value

@@ -119,13 +119,6 @@ if:x:/@p5.web.widgets.find-first/*/*?value
     items
 
   /*
-   * Making sure we scroll our selected tree view item into view.
-   */
-  p5.web.widgets.find-first-like:hyper-ide-folder-tree-browser
-    class:tree-selected
-  micro.page.scroll-into-view:x:/@p5.web.widgets.find-first-like/*/*?value
-
-  /*
    * Raising our folder changed event.
    */
   hyper-ide.folder-explorer.item-changed:x:/../*/editor?value
