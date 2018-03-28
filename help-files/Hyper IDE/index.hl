@@ -5,7 +5,7 @@ h2
   innerValue:Hyper IDE
 
 img
-  style:"margin-left:1rem; float:right;max-width: 25%;"
+  class:desktop-help-icon-image
   src:"https://phosphorusfive.files.wordpress.com/2017/12/ufo.png"
 
 p
