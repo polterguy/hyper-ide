@@ -56,20 +56,17 @@ create-widget
           class:col-100
           widgets
             div
-              class:right
+              class:right strip toolbar
               widgets
-                div
-                  class:strip toolbar
-                  widgets
-                    button
-                      innerValue:@""<span class=""""icon-home3""""></span>""
-                      onclick
+                button
+                  innerValue:@""<span class=""""icon-home3""""></span>""
+                  onclick
 
-                        /*
-                         * Redirecting user to server's root URL.
-                         */
-                        p5.web.get-root-location
-                        p5.web.set-location:x:/-?value
+                    /*
+                     * Redirecting user to server's root URL.
+                     */
+                    p5.web.get-root-location
+                    p5.web.set-location:x:/-?value
 
         div
           class:col-100
