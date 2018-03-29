@@ -8,8 +8,6 @@ extendible, and also allows you to easily customise it. Hyper IDE is entirely bu
 Hyperlambda, which probably serves as a testimonial to Hyperlambda's _"powers"_. Hyper IDE is using
 CodeMirror as its front end code editor. Hyper IDE also doubles as a file manager.
 
-https://www.youtube.com/watch?v=mWFitx9py80
-
 ### The file explorer
 
 To the left at the top of Hyper IDE, you can find a tree view widget. We will refer to this widget as your

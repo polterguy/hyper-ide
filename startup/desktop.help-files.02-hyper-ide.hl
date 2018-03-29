@@ -1,7 +1,6 @@
-
 /*
  * Help file Active Event sink.
  */
-create-event:desktop.help-files.hyper-ide
+create-event:desktop.help-files.02-hyper-ide
 
   return:@IDE/help-files/Hyper IDE/
