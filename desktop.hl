@@ -3,12 +3,11 @@
  */
 container
   element:a
-  class:desktop-app button shaded
+  class:jumbo-button
   title:An integrated development environment
   widgets
+    span
+      innerValue:Hyper IDE
     literal
       element:span
-      class:icon-rocket desktop-app-icon
-    span
-      class:desktop-app-text
-      innerValue:Hyper IDE
+      class:icon-rocket
