@@ -4,8 +4,6 @@ Hyper IDE is a web based IDE (Integrated Development Environment) that supports 
 languages out of the box. You can use it on localhost, through e.g. Visual Studio, Mono Develop or Xamarin -
 Or install it on a web server, having easily access to your code, from anywhere in the world.
 
-![screenshot](https://phosphorusfive.files.wordpress.com/2018/03/hyper-ide-screenshot.png)
-
 ## Installation
 
 Hyper IDE is automatically installed when you install Phosphorus Five.

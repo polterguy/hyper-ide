@@ -115,18 +115,14 @@ save-file:/modules/{0}/desktop.hl
  */
 container
   element:a
-  class:desktop-app button shaded
+  class:jumbo-button
   title:This module says Hello World!
   widgets
     span
-      class:desktop-app-name
-      widgets
-        literal
-          element:span
-          class:icon-happy desktop-app-icon
-        span
-          class:desktop-app-text
-          innerValue:Hello
+      innerValue:Hello
+    literal
+      element:span
+      class:icon-happy
 "
 
 
