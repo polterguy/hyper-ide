@@ -46,7 +46,7 @@ button
       /*
        * Renaming folder.
        */
-      eval-x:x:/+/**/.folder-name
+      eval-x:x:/+/**(/.folder-name|/.value)
       create-widgets
         micro.widgets.modal:hyper-ide-confirm-rename-folder
           widgets
@@ -86,7 +86,15 @@ button
                         /*
                          * Forward evaluated above.
                          */
-                        .value:x:/../*/folder?value
+                        .value:x:/../*/hyper-ide.folder-explorer.get-active-item?value
+
+                        /*
+                         * Closing all files matching filter, with [force] argument.
+                         */
+                        eval-x:x:/+/*
+                        hyper-ide.editors.close
+                          filter:x:/@.value?value
+                          force:bool:true
 
                         /*
                          * Serializing form, figuring out new name for folder,
@@ -111,9 +119,22 @@ button
                         /*
                          * Refreshing tree, and de-selecting folder.
                          */
+                        split:x:/@.value?value
+                          =:/
+                        set:x:/@split/0/-
+                        join:x:/@split/*?name
+                          sep:/
+                        hyper-ide.folder-explorer.set-active-item:/{0}/
+                          :x:/@join?value
                         hyper-ide.folder-explorer.refresh-active-folder
                         hyper-ide.folder-explorer.set-active-item:/{0}/
                           :x:/@trim?value
+                        eval-x:x:/+/*
+                        add:x:/+/*
+                          src:/{0}/
+                            :x:/@trim?value
+                        micro.widgets.tree.toggle-items:hyper-ide-folder-tree-browser
+                          items
 
                         /*
                          * Deleting modal widget, and giving user some feedback.

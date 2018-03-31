@@ -109,6 +109,7 @@ button
                           hyper-ide.editors.close
                             filter:x:/@.filename?value
                             exact:bool:true
+                            force:bool:true
 
                         /*
                          * Notice, in case file that was deleted didn't have a CodeMirror
@@ -210,6 +211,7 @@ and close all editors that are editing files inside of your folder. I need you t
                         eval-x:x:/+/*
                         hyper-ide.editors.close
                           filter:x:/@get-widget-property/*/*?value
+                          force:bool:true
 
                         /*
                          * Checking if folder toolbar exists, and deleting it if it does.
