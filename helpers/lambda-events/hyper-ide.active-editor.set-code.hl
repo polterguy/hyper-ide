@@ -29,7 +29,7 @@ if:x:/@hyper-ide.active-editor.get-id?value
    */
   eval-x:x:/+/*
   micro.widgets.codemirror.set-value:x:/@hyper-ide.active-editor.get-id?value
-    content:x:/../*/code?value
+    value:x:/../*/code?value
 
   /*
    * Returning success to caller.
