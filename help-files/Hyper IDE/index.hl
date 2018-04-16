@@ -25,3 +25,14 @@ own plugins, and extend Hyper IDE in any ways you see fit."
  */
 desktop.help.widgets.help-index
   folder:@IDE/help-files/Hyper IDE/
+
+
+h3
+  innerValue:Files meta information
+
+
+/*
+ * Meta information for all files in module.
+ */
+desktop.help.widgets.file-meta
+  folder:@IDE/
