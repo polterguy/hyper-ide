@@ -186,42 +186,16 @@ if:x:/@.dirty/*
    */
   add:x:/+/**/hyper-ide.editors.close
     src:x:/@.signal/--/<-
-  create-widgets
-    micro.widgets.modal:hyper-ide-dirty-editors-modal
-      widgets
-        h3
-          innerValue:You have unsaved changes
-        p
-          innerValue:Some of your editors have unsaved changes, are you sure you want to close these? If you do, your changes will not be saved.
-        div
-          class:right strip
-          widgets
-            button
-              innerValue:Close
-              oninit
+  micro.windows.confirm
+    header:You have unsaved changes
+    body:Some of your editors have unsaved changes, are you sure you want to close these? If you do, your changes will not be saved.
+    onok
 
-                /*
-                 * Setting initial focus to "Yes" button.
-                 */
-                micro.page.set-focus:x:/../*/_event?value
-
-              onclick
-
-                /*
-                 * Invoking "self" with [force] argument, deleting modal widget first.
-                 */
-                delete-widget:hyper-ide-dirty-editors-modal
-                hyper-ide.editors.close
-                  force:bool:true
-
-            button
-              innerValue:No
-              onclick
-
-                /*
-                 * Simply deleting modal widget.
-                 */
-                delete-widget:hyper-ide-dirty-editors-modal
+      /*
+       * Invoking "self" with [force] argument, deleting modal widget first.
+       */
+      hyper-ide.editors.close
+        force:bool:true
 
   /*
    * Checking if we need to activate our last dirty editor.
