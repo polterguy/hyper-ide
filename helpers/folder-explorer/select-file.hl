@@ -1,6 +1,9 @@
-
 /*
- * Invoked when user clicks a file in folder explorer.
+ * Invoked when user clicks a file in folder explorer. Expects a __[file]__
+ * argument being the fully qualified path of the file user clicked, or selected
+ * somehow.
+ *
+ * Will edit the file, using its associated CodeMirror editor, if possible.
  */
 
 

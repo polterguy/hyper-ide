@@ -1,7 +1,11 @@
-
 /*
- * Returns all existing plugins that is enabled in installation.
- * Expects [type] being type of plugins to retrieve.
+ * Returns all existing plugins that is enabled in installation
+ * for specified file extension.
+ * Expects __[type]__ being type of plugins to retrieve. Notice, the
+ * __[type]__ argument is expected to be the fully qualified namespace
+ * of which types of plugins to retrieve, such as e.g. __[hyper-ide.plugins.css]__ -
+ * At which point all plugins starting with `hyper-ide.plugins.css` will be returned
+ * to caller.
  */
 
 

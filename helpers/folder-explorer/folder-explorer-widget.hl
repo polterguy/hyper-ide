@@ -1,7 +1,6 @@
-
 /*
- * Our TreeView that actually allows the user to browse 
- * files on his server.
+ * Hyper IDE's TreeView, or _"folder explorer"_, that allows the user to browse
+ * his or her files on his server, and select a file for editing its content.
  */
 micro.widgets.tree:hyper-ide-folder-tree-browser
   class:micro-widgets-tree hyper-ide-tree-view

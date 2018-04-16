@@ -1,7 +1,6 @@
 /*
- * Startup file.
- *
- * Creates "path" event and evaluates all files in "/startup/" folder for module.
+ * Startup file for Hyper IDE.
+ * Creates _"path"_ event and evaluates all files in _"/startup/"_ folder for Hyper IDE.
  */
 
 

@@ -1,6 +1,6 @@
-﻿
 /*
- * Retrieves all files and folders beneath the specified [folder].
+ * Retrieves all files and folders beneath the specified __[folder]__,
+ * and returns these to caller.
  */
 
 

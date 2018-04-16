@@ -1,6 +1,8 @@
-
 /*
- * Responsible for handling upload requests.
+ * Responsible for handling upload requests initiated by user.
+ * Expects __[files]__ being a bunch of files that is being uploaded.
+ * Will save all specified files to the currently selected folder in
+ * the _"folder explorer"_ of Hyper IDE.
  */
 
 

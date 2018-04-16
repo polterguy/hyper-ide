@@ -1,6 +1,6 @@
-
 /*
- * Edits the specified [file], using some sort of CodeMirror editor.
+ * Edits the specified __[file]__, using some sort of CodeMirror editor,
+ * according to which mappings exists in Hyper IDE for the file's extension.
  */
 
 

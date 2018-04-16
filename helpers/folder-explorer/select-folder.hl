@@ -1,8 +1,8 @@
-
 /*
  * Invoked when a folder is selected.
  *
- * Expects [folder] being path to the selected folder.
+ * Expects __[folder]__ being path to the selected folder. Will create a toolbar
+ * allowing the user to edit the folder's properties, such as renaming it, deleting it, etc.
  */
 
 

@@ -1,7 +1,6 @@
-
 /*
- * Activating editor for specified [file], assuming it's already open in a
- * non-active editor.
+ * Activating editor for specified **[file]** in Hyper IDE, assuming
+ * it's already open in a non-active editor.
  */
 
 

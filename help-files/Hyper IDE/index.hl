@@ -1,5 +1,5 @@
 /*
- * This is our main "landing page" for our Hyper IDE help files.
+ * Hyper IDE's main help index landing page.
  */
 h2
   innerValue:Hyper IDE
@@ -25,10 +25,6 @@ own plugins, and extend Hyper IDE in any ways you see fit."
  */
 desktop.help.widgets.help-index
   folder:@IDE/help-files/Hyper IDE/
-
-
-h3
-  innerValue:Files meta information
 
 
 /*

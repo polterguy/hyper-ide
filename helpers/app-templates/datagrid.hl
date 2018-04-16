@@ -1,8 +1,9 @@
 /*
- * Template for "new module plugin" button.
+ * Template for new _"datagrid module"_ plugin button.
  *
- * Creates a simple "Hello World" application.
- * Requires [name] as name of new module to create.
+ * Creates a simple _"datagrid"_ type of application.
+ * Requires __[name]__ as the name of the new module to create,
+ * the __[database]__ to use, and the __[table]__ to wrap.
  */
 
 

@@ -1,7 +1,6 @@
 /*
- * Initial "splash" screen.
- *
- * Welcomes user, and gives him some general feedback.
+ * Initial _"splash"_ screen for Hyper IDE. Welcomes the user,
+ * and gives some general information about the system.
  */
 container:hyper-ide-splash
   class:air-inner shaded rounded hyper-ide-splash

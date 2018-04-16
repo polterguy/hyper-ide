@@ -1,8 +1,8 @@
 /*
- * Template for "new Angular module plugin" button.
+ * Template for new _"Angular module plugin"_ button.
  *
- * Creates a simple "TODO" AngularJS application.
- * Requires [name] as name of new module to create.
+ * Creates a simple _"TODO"_ type of AngularJS application.
+ * Requires __[name]__ as name of new module to create.
  */
 
 

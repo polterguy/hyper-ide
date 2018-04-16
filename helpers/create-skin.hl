@@ -1,8 +1,10 @@
 /*
- * Guides user through process of creating a new skin.
+ * Guides the user through the process of creating a new skin.
  *
- * Uses a "wizard" form to help user through the process.
- * First loading main Micro CSS file, to determine all CSS variables in file.
+ * Uses a _"wizard"_ modal widget to help user through the process of creting
+ * a new _"skin"_ CSS file for Micro. It does this by extracting all CSS variables
+ * in the main _"micro.css"_ file between the comments _"/* VARIABLES_BEGIN *\/"_
+ * and _"/* VARIABLES_END *\/"_", and allows the user to fill in these values himself.
  */
 load-file:@MICRO/media/micro.css
 
