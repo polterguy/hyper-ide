@@ -1,5 +1,6 @@
 /*
- * Launches Hyper IDE.
+ * Launches Hyper IDE by including Hyper IDE's CSS file, creating
+ * a wire frame, and instantiating __[hyper-ide.widgets.ide]__.
  */
 
 
