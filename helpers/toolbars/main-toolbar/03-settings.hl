@@ -1,6 +1,5 @@
-
 /*
- * Settings button.
+ * Settings toolbar button.
  */
 button
   innerValue:@"<span class=""icon-cog""></span>"

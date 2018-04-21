@@ -1,9 +1,8 @@
-
 /*
- * Create our create new skin plugin.
+ * Creates the _"create new skin"_ folder toolbar button.
  *
  * This button is only visible if the currently selected folder is
- * the "/modules/micro/media/skins/" folder.
+ * the _"/modules/micro/media/skins/"_ folder.
  */
 create-event:hyper-ide.folder-plugin.create-micro-skin
 

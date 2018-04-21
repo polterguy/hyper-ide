@@ -1,7 +1,8 @@
-
 /*
  * Refreshing folder explorer's currently activated folder.
- *
+ */
+
+/*
  * First retrieving selected treeview item.
  */
 hyper-ide.folder-explorer.get-active-item

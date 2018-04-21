@@ -1,3 +1,6 @@
+/*
+ * Returns path of active editor.
+ */
 
 /*
  * Finding visible editor.

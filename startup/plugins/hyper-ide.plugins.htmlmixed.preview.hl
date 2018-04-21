@@ -1,5 +1,7 @@
 /*
- * Create our preview HTML page plugin.
+ * Create our preview HTML page plugin button.
+ *
+ * This button is only visible if the active file is an HTML file.
  */
 create-event:hyper-ide.plugins.htmlmixed.preview
   return

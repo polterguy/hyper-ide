@@ -1,6 +1,5 @@
-
 /*
- * Create new folder button.
+ * Create new folder toolbar button.
  */
 button
   innerValue:@"<span class=""icon-folder""></span>"

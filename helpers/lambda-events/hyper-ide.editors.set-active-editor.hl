@@ -1,3 +1,8 @@
+/*
+ * Sets the active editor to the given **[editor]** value, which can either
+ * be the path to an already open editor, or a widget CodeMirror ID for an editor
+ * that is already open.
+ */
 
 /*
  * Sanity checking arguments.

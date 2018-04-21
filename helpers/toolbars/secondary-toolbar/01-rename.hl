@@ -1,5 +1,5 @@
 /*
- * Renaming file or folder button.
+ * Renaming file or folder toolbar button.
  */
 button
   innerValue:@"<span class=""icon-pencil""></span>"

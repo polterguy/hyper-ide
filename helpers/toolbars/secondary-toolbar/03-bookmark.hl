@@ -1,5 +1,6 @@
 /*
- * Bookmark button.
+ * Bookmark toolbar button. Creates a textbox containing the URL to open up
+ * currently active file.
  */
 button
   innerValue:@"<span class=""icon-link""></span>"

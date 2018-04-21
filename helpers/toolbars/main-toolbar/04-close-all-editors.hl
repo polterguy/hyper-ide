@@ -1,6 +1,5 @@
-
 /*
- * Close all editors button.
+ * Close all editors toolbar button.
  */
 button
   innerValue:@"<span class=""icon-cross""></span>"

@@ -1,6 +1,5 @@
-
 /*
- * Downloads file.
+ * Downloads active file toolbar button.
  */
 button
   innerValue:@"<span class=""icon-download2""></span>"

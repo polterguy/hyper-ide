@@ -1,3 +1,6 @@
+/*
+ * Returns the widget ID of the active editor.
+ */
 
 /*
  * Finding visible editor.

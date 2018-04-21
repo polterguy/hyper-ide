@@ -1,5 +1,5 @@
 /*
- * Save button.
+ * Save editor toolbar button.
  */
 button
   innerValue:@"<span class=""icon-floppy-disk""></span>"

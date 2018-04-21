@@ -1,5 +1,7 @@
 /*
- * Create our execute shell command plugin button for editor.
+ * Creates our execute shell command plugin button.
+ *
+ * This button is only visible if the active file is a shell file.
  */
 create-event:hyper-ide.plugins.shell.execute
   return

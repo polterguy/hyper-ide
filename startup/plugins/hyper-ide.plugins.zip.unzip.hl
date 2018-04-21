@@ -1,5 +1,7 @@
 /*
- * Creates the unzip file plugin.
+ * Creates the unzip file plugin button.
+ *
+ * This button is only visible if the active file is a zip file.
  */
 create-event:hyper-ide.plugins.zip.unzip
   return

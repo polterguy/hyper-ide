@@ -1,6 +1,5 @@
-
 /*
- * Toggling visibility of folder explorer.
+ * Toggling visibility of folder explorer toolbar button.
  */
 button
   innerValue:@"<span class=""icon-tree""></span>"

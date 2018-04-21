@@ -1,6 +1,5 @@
-
 /*
- * Home button, launches desktop (or default app).
+ * Home toolbar button, launches desktop (or default app).
  */
 a
   href:/

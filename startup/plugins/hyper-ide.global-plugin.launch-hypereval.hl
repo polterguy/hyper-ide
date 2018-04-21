@@ -1,5 +1,5 @@
 /*
- * Create our "launch Hypereval" plugin.
+ * Create our _"launch Hypereval"_ plugin button.
  */
 create-event:hyper-ide.global-plugin.launch-hypereval
   if

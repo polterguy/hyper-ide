@@ -1,5 +1,7 @@
 /*
- * Create our execute JavaScript file plugin button for editor.
+ * Create our execute JavaScript file plugin toolbar button.
+ *
+ * This button is only visible if the active file is a JavaScript file.
  */
 create-event:hyper-ide.plugins.javascript.evaluate
   return

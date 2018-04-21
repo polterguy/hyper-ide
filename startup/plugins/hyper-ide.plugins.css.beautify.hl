@@ -1,5 +1,7 @@
-﻿/*
- * Create our beautify CSS plugin for editor.
+/*
+ * Create our beautify CSS file plugin button.
+ *
+ * This button is only visible if the active file is a CSS file.
  */
 create-event:hyper-ide.plugins.css.beautify
   return

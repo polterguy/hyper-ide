@@ -1,3 +1,6 @@
+/*
+ * Sets the code for the active editor to the value of **[code]**.
+ */
 
 /*
  * Sanity checking arguments.

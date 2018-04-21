@@ -1,3 +1,6 @@
+/*
+ * Activates the _"next"_ available editor taht is already open.
+ */
 
 /*
  * Finding all "activate buttons".

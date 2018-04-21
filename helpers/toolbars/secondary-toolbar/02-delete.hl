@@ -1,6 +1,5 @@
-
 /*
- * Deletes active file or folder button.
+ * Deletes active file or folder toolbar button.
  */
 button
   innerValue:@"<span class=""icon-bin""></span>"

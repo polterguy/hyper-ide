@@ -1,5 +1,5 @@
 /*
- * Create our execute in folder plugin button.
+ * Create our execute shell script in folder plugin button.
  */
 create-event:hyper-ide.folder-plugin.execute
   return

@@ -1,5 +1,7 @@
-﻿/*
- * Create our Markdown preview plugin button for editor.
+/*
+ * Create our Markdown preview plugin button.
+ *
+ * This button is only visible if the active file is a Markdown file.
  */
 create-event:hyper-ide.plugins.markdown.preview
   return

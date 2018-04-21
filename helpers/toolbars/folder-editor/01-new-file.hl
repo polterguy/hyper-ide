@@ -1,6 +1,5 @@
-
 /*
- * Create new file button.
+ * Create new file toolbar button.
  */
 button
   innerValue:@"<span class=""icon-file-empty""></span>"

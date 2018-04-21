@@ -1,5 +1,7 @@
 /*
- * Create our execute Hyperlambda file plugin button for editor.
+ * Create our evaluate active editor's Hyperlambda file plugin button for editor.
+ *
+ * This button is only visible if the active file is a Hyperlambda file.
  */
 create-event:hyper-ide.plugins.hyperlambda.execute
   return

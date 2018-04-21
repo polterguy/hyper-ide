@@ -1,3 +1,6 @@
+/*
+ * Returns the paths to all open editors.
+ */
 
 /*
  * Finding all editors, and retrieving their filenames.

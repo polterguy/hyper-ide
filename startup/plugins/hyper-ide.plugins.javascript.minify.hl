@@ -1,6 +1,7 @@
-﻿
 /*
- * Create our minify JavaScript plugin for editor.
+ * Create our minify JavaScript plugin button.
+ *
+ * This button is only visible if the active file is a JavaScript file.
  */
 create-event:hyper-ide.plugins.javascript.minify
   return

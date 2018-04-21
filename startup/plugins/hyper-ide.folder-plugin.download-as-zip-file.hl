@@ -1,5 +1,5 @@
 /*
- * Allows the user to download an entire folder as a zip file.
+ * Creates the _"download an entire folder as a zip file"_ folder toolbar button.
  */
 create-event:hyper-ide.folder-plugin.download-as-zip-file
   return

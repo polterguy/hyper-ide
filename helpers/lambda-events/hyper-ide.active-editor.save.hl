@@ -1,7 +1,8 @@
+/*
+ * Saves the active editor.
+ */
 
 /*
- * Saving active editor.
- *
  * First retrieving active editor, of any.
  */
 hyper-ide.active-editor.get-filepath

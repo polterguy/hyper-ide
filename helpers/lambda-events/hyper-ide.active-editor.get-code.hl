@@ -1,3 +1,6 @@
+/*
+ * Returns the code of the active editor.
+ */
 
 /*
  * Finding CodeMirror editor and returning its code.

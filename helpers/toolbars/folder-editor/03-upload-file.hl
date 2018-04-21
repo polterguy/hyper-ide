@@ -1,6 +1,5 @@
-
 /*
- * Upload file button.
+ * Upload file toolbar button.
  */
 micro.widgets.upload-button
   title:Upload a file
