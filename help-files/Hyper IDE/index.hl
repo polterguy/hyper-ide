@@ -4,9 +4,11 @@
 h2
   innerValue:Hyper IDE
 
-img
-  class:desktop-help-icon-image
-  src:"https://phosphorusfive.files.wordpress.com/2018/03/light-bulb-hyper-ide.png"
+micro.widgets.file
+  style:"float:right; margin-left: 1rem; margin-bottom: 1rem;"
+  files
+    /modules/hyper-ide/desktop.hl
+      href:/hyper-ide/
 
 p
   innerValue:@"Hyper IDE is a web based integrated development environment, in addition to also doubling as a file manager. If you're
