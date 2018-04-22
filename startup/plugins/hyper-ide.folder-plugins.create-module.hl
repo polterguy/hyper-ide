@@ -1,7 +1,7 @@
 /*
- * Create our create new module plugin.
+ * Creates our create new module plugin.
  *
- * This button is only visible if the currently selected folder is the "/modules/" folder.
+ * This button is only visible if the currently selected folder is the _"/modules/"_ folder.
  */
 create-event:hyper-ide.folder-plugin.create-module
 

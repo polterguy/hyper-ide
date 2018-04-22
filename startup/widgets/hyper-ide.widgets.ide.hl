@@ -2,7 +2,7 @@
  * Creates our **[hyper-ide.widgets.ide]** extension widget, which allows
  * you to instantiate Hyper IDE as a widget.
  *
- * Will instantiate Hyper IDE in its entirety, inclusing the file explorer, editor
+ * Will instantiate Hyper IDE in its entirety, including the file explorer, editor
  * surface, and its associated toolbars.
  */
 create-event:hyper-ide.widgets.ide

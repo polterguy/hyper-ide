@@ -1,5 +1,5 @@
 /*
- * Returns path of active editor.
+ * Returns path of file that's edited in the active editor.
  */
 
 /*

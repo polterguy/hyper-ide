@@ -1,6 +1,6 @@
 /*
  * Maps file extensions to CodeMirror modes. Edit this file to add support for
- * additional file extensions. The file extension is the name od the node, and
+ * additional file extensions. The file extension is the name of the node, and
  * the associated CodeMirror editor _"mode"_ is the value.
  */
 hl:hyperlambda
