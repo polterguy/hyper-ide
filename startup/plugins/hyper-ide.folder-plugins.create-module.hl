@@ -1,7 +1,14 @@
 /*
- * Creates our create new module plugin.
+ * Creates the __[hyper-ide.folder-plugin.create-module]__ Active Event.
+ */
+
+/*
+ * Creates our _"create new module plugin"_ button. This button is only visible
+ * if the currently selected object in your folder explorer is the _"/modules/"_ folder.
  *
- * This button is only visible if the currently selected folder is the _"/modules/"_ folder.
+ * When this button is clicked, it will guide the user through a wizard, allowing
+ * him to create a new module, from a list of _"template modules"_, which you
+ * can find in the _"/modules/hyper-ide/helpers/app-templates/"_ folder.
  */
 create-event:hyper-ide.folder-plugin.create-module
 

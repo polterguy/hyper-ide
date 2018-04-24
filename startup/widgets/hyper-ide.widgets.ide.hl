@@ -1,9 +1,15 @@
 /*
- * Creates our **[hyper-ide.widgets.ide]** extension widget, which allows
- * you to instantiate Hyper IDE as a widget.
+ * Creates the __[hyper-ide.widgets.ide]__ extension widget.
+ */
+
+/*
+ * This event creates our **[hyper-ide.widgets.ide]** extension widget, which allows
+ * you to instantiate Hyper IDE as a widget, inside of any other (container) widget.
  *
- * Will instantiate Hyper IDE in its entirety, including the file explorer, editor
- * surface, and its associated toolbars.
+ * This event will instantiate Hyper IDE in its entirety, including the file explorer,
+ * editor surface, and its associated toolbars.
+ *
+ * **Notice**, you are responsible for including the CSS files for Hyper IDE yourself.
  */
 create-event:hyper-ide.widgets.ide
 

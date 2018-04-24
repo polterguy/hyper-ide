@@ -1,5 +1,11 @@
+
 /*
- * Help file Active Event sink. Returns the root path folder for Hyper IDE's help files.
+ * Creates the __[desktop.help-files.03-hyper-ide]__ Active Event.
+ */
+
+/*
+ * This event serves as a _"sink"_ event for the help system, returning the
+ * root folder path to all help files related to Hyper IDE.
  */
 create-event:desktop.help-files.03-hyper-ide
 

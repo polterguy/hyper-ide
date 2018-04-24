@@ -1,5 +1,20 @@
 /*
- * Create our refresh folder plugin button.
+ * Creates our __[hyper-ide.folder-plugin.refresh]__ Active Event.
+ */
+
+/*
+ * This event creates our refresh folder plugin button. This button will only
+ * be visible if the currently selected object in your folder explorer is a
+ * folder, and not a file.
+ *
+ * When the button is clicked, it will _"refresh"_ the current active folder in
+ * your folder explorer, which implies refetching all files and folders beneath
+ * the active folder, and re-build the children widgets for that folder in your
+ * folder explorer.
+ *
+ * This is useful if you have for instance evaluated some shell script, which
+ * for some reasons creates new files, such as compiler services, etc - And you
+ * need to see these files, or interact with them somehow.
  */
 create-event:hyper-ide.folder-plugin.refresh
   return

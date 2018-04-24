@@ -1,7 +1,13 @@
 /*
- * Create our beautify CSS file plugin button.
+ * Creates the __[hyper-ide.plugins.css.beautify]__ Active Event.
+ */
+
+/*
+ * This event creates our _"beautify CSS file plugin"_ button. This button is
+ * only visible if the active object in your folder explorer is a CSS file.
  *
- * This button is only visible if the active file is a CSS file.
+ * When clicked, the button will _"beautify"_ the CSS contents of the
+ * currently Active Editor.
  */
 create-event:hyper-ide.plugins.css.beautify
   return

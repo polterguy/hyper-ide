@@ -1,5 +1,13 @@
+
 /*
- * Creates the _"download an entire folder as a zip file"_ folder toolbar button.
+ * Creates the __[hyper-ide.folder-plugin.download-as-zip-file]__ Active Event.
+ */
+
+/*
+ * This event creates the _"download an entire folder as a zip file"_ folder toolbar button.
+ *
+ * The button is only visible if the currently selected object in your file explorer is
+ * a folder, and not a file.
  */
 create-event:hyper-ide.folder-plugin.download-as-zip-file
   return

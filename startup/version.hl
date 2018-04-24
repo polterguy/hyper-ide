@@ -1,5 +1,10 @@
+
 /*
- * Creates version Active Event.
+ * Creates the __[hyper-ide.version]__ Active Event.
+ */
+
+/*
+ * This event will return the version of Hyper IDE back to caller.
  */
 create-event:hyper-ide.version
 

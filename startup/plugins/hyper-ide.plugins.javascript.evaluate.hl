@@ -1,11 +1,16 @@
+
 /*
- * Creates our execute JavaScript file plugin toolbar button.
- *
- * This button is only visible if the active file is a JavaScript file.
+ * Creates our __[hyper-ide.plugins.javascript.evaluate]__ Active Event.
+ */
+
+/*
+ * This event creates our _"execute JavaScript file plugin"_ toolbar button.
+ * This button is only visible if the active object in your folder explorer
+ * is a JavaScript file.
  *
  * __Notice__, this is a pretty useful plugin, since the CodeMirror's autocomplete object
  * is populated according to the context of the page. So if you need to use JavaScript AutoComplete
- * features, according to the file you're editing, you would probably want to evaluate its JavaScript
+ * features, according to the file you're editing - You would probably want to evaluate its JavaScript
  * as you're editing your file. This plugin allows you to do just that.
  */
 create-event:hyper-ide.plugins.javascript.evaluate

@@ -1,7 +1,13 @@
 /*
- * Create our preview HTML page plugin button.
+ * Creates the __[hyper-ide.plugins.htmlmixed.preview]__ Active Event.
+ */
+
+/*
+ * This event creates our _"preview HTML page plugin"_ button. This button is
+ * only visible if the active object in your folder explorer is an HTML file.
  *
- * This button is only visible if the active file is an HTML file.
+ * When clicked, the button will open up a new browser tab, leading to the HTML
+ * file's path, from your current active editor.
  */
 create-event:hyper-ide.plugins.htmlmixed.preview
   return

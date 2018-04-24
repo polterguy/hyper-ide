@@ -1,7 +1,13 @@
 /*
- * Create our minify CSS plugin button.
+ * Creates the __[hyper-ide.plugins.css.minify]__ Active Event.
+ */
+
+/*
+ * This event creates our _"minify CSS plugin"_ button. This button is only
+ * visible if the active object in your folder explorer is a CSS file.
  *
- * This button is only visible if the active file is a CSS file.
+ * When clicked, the button will _"minify"_ the CSS contents of the
+ * currently Active Editor.
  */
 create-event:hyper-ide.plugins.css.minify
   return

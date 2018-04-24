@@ -1,5 +1,21 @@
 /*
- * Create our execute shell script in folder plugin button.
+ * Creates the __[hyper-ide.folder-plugin.execute]__ Active Event.
+ */
+
+/*
+ * This event creates our execute shell script in folder plugin button. This
+ * button is only visible if the currently selected object in your folder
+ * explorer is a folder, and not a file.
+ *
+ * When the button is clicked, it will create a modal window, allowing the
+ * user to type in some bash script, or select a template script taken from
+ * the _"/modules/hyper-ide/helpers/shell-snippets/"_ folder, and execute
+ * that shell script with the current path being the selected folder from
+ * the folder explorer.
+ *
+ * **Notice**, whether or not the user has permissions to actually execute
+ * shell scripts, depends upon how the authorization objects in your system
+ * have been setup.
  */
 create-event:hyper-ide.folder-plugin.execute
   return

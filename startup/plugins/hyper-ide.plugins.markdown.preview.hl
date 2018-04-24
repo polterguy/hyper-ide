@@ -1,7 +1,13 @@
 /*
- * Create our Markdown preview plugin button.
+ * Creates the __[hyper-ide.plugins.markdown.preview]__ Active Event.
+ */
+
+/*
+ * This event creates the _"Markdown preview plugin"_ button. This button is
+ * only visible if the active object in your folder explorer is a Markdown file.
  *
- * This button is only visible if the active file is a Markdown file.
+ * When clicked, the button will open up a modal widget, displaying the Markdown
+ * transformed into HTML in _"preview mode"_.
  */
 create-event:hyper-ide.plugins.markdown.preview
   return

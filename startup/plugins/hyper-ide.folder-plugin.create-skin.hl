@@ -1,5 +1,12 @@
+
 /*
- * Creates the _"create new skin"_ folder toolbar button.
+ * Creates the __[hyper-ide.folder-plugin.create-micro-skin]__ Active Event.
+ */
+
+/*
+ * This event creates the _"create new skin"_ folder toolbar button, which allows
+ * the user to create a new Micro CSS skin, by following a simple wizard, which
+ * extracts all CSS variables from the _"micro.css"_ file, that can be overridden.
  *
  * This button is only visible if the currently selected folder is
  * the _"/modules/micro/media/skins/"_ folder.

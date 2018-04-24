@@ -1,5 +1,11 @@
+
 /*
- * Create our _"launch Hypereval"_ plugin button.
+ * Creates the __[hyper-ide.global-plugin.launch-hypereval]__ Active Event.
+ */
+
+/*
+ * This event creates our _"launch Hypereval"_ plugin button. When clicked,
+ * Hypereval will be launched, and injected at the bottom of your page.
  */
 create-event:hyper-ide.global-plugin.launch-hypereval
   if
