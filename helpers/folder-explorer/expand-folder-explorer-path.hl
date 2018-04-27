@@ -1,6 +1,7 @@
 /*
- * Opens up the specified __[path]__ in Hyper IDE, by expanding the tree view (if possible),
- * and opening the file, if the path points to a file.
+ * This file opens up the specified __[path]__ in Hyper IDE, by expanding
+ * the tree view (if possible), and opening the file, if the specified
+ * __[path]__ points to a file.
  */
 micro.lambda.contract.min:x:/..
   path:string

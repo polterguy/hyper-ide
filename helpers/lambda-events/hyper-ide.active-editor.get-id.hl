@@ -1,5 +1,5 @@
 /*
- * Returns the widget ID of the active editor's CodeMirror wrapper widget.
+ * This file returns the widget ID of the active editor's CodeMirror wrapper widget.
  */
 
 /*

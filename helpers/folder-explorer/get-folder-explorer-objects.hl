@@ -1,6 +1,7 @@
 /*
- * Retrieves all files and folders beneath the specified __[folder]__,
- * and returns these to caller.
+ * This file retrieves all files and folders beneath the specified __[folder]__,
+ * and returns these to caller. It is used by Hyper IDE's folder explorer when
+ * it needs to retrieve items for some specific folder node.
  */
 
 

@@ -1,5 +1,5 @@
 /*
- * Returns the code of the active editor.
+ * This file returns the code of the current active editor.
  */
 
 /*

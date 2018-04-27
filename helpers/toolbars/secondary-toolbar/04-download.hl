@@ -1,5 +1,6 @@
 /*
- * Downloads active file toolbar button.
+ * Downloads active file toolbar button. **Notice**, this button is only
+ * visible if the current active object in your folder explorer is a _file_.
  */
 button
   innerValue:@"<span class=""icon-download2""></span>"

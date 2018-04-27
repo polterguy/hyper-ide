@@ -1,8 +1,11 @@
 /*
- * Template for new _"Hello World module"_ plugin button.
+ * Template for a new _"Hello World module"_.
  *
- * Creates a simple _"Hello World"_ type of application.
- * Requires __[name]__ as the name of new module to create.
+ * This file creates a simple _"Hello World"_ type of application.
+ * The file requires a __[name]__ argument as the name of new module to create.
+ *
+ * This file is used by the __[hyper-ide.folder-plugin.create-module]__
+ * plugin when the user creates a new module by following a wizard.
  */
 
 

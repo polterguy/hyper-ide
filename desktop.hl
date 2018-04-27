@@ -1,5 +1,5 @@
 /*
- * Displays the desktop widget for Hyper IDE.
+ * The desktop widget for Hyper IDE.
  */
 container
   element:a

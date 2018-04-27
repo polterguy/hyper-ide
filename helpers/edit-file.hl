@@ -1,6 +1,9 @@
 /*
  * Edits the specified __[file]__, using some sort of CodeMirror editor,
  * according to which mappings exists in Hyper IDE for the file's extension.
+ * This file is being evaluated when the user selects a file node in
+ * his folder explorer, and the file is not open from before in a (non-active)
+ * editor.
  */
 
 

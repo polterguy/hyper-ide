@@ -1,11 +1,19 @@
 /*
- * Returns all existing plugins that is enabled in installation
- * for specified file extension.
- * Expects __[type]__ being type of plugins to retrieve. Notice, the
+ * Returns all existing Hyper IDE plugins that are enabled in installation for the specified
+ * __[type]__.
+ *
+ * The file expects __[type]__ being the type of plugins to retrieve. **Notice**, the
  * __[type]__ argument is expected to be the fully qualified namespace
  * of which types of plugins to retrieve, such as e.g. __[hyper-ide.plugins.css]__ -
  * At which point all plugins starting with `hyper-ide.plugins.css` will be returned
  * to caller.
+ *
+ * In general there exists three main different categories of plugins you can create
+ * for Hyper IDE, which are as follows.
+ *
+ * - __[hyper-ide.folder-plugin.xxx]__ - Plugins loaded only if a folder is selected in your folder explorer
+ * - __[hyper-ide.global-plugin.xxx]__ - Global plugins, always available, regardless of what object you have selected in your folder explorer
+ * - __[hyper-ide.plugins.yyy.xxx]__ - File _"mode"_ type of plugin, where the _"yyy"_ parts are your CodeMirror _"mode"_
  */
 
 

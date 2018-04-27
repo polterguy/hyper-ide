@@ -1,8 +1,10 @@
 /*
- * Invoked when a folder is selected.
+ * This file is invoked when a folder is selected in your folder explorer.
  *
- * Expects __[folder]__ being path to the selected folder. Will create a toolbar
- * allowing the user to edit the folder's properties, such as renaming it, deleting it, etc.
+ * The file expects a __[folder]__ argument being the path to the selected folder.
+ * This file will create a toolbar allowing the user to edit the folder's properties,
+ * such as renaming it, deleting it, etc - In addition to loading up all folder plugins,
+ * and injecting these into your _"folder object toolbar"_.
  */
 
 

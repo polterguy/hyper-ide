@@ -1,5 +1,5 @@
 /*
- * Guides the user through the process of creating a new skin.
+ * Guides the user through the process of creating a new Micro skin CSS file.
  *
  * Uses a _"wizard"_ modal widget to help user through the process of creting
  * a new _"skin"_ CSS file for Micro. It does this by extracting all CSS variables

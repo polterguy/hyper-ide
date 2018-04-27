@@ -1,5 +1,6 @@
 /*
- * Returns path of file that's edited in the active editor.
+ * This file returns the path of the file that's edited in the current
+ * active editor.
  */
 
 /*

@@ -1,5 +1,5 @@
 /*
- * Settings toolbar button.
+ * Hyper IDE settings toolbar button.
  */
 button
   innerValue:@"<span class=""icon-cog""></span>"

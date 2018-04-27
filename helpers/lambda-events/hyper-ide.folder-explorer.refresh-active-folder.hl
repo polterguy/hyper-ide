@@ -1,5 +1,7 @@
 /*
- * Refreshing folder explorer's currently activated folder.
+ * This file will refresh the folder explorer's currently activated folder.
+ * **Notice**, this file assumes that your currently selected object in your
+ * folder explorer actually is a folder.
  */
 
 /*

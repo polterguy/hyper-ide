@@ -1,6 +1,7 @@
 /*
- * Returns boolean _"true"_ if active editor is clean, implying
- * it does not have unsaved changes.
+ * This file returns a boolean _"true"_ if the active editor is clean, implying
+ * it does not have unsaved changes. If the current active editor has unsaved
+ * changes, this file will return _"false"_.
  */
 
 /*

@@ -1,5 +1,6 @@
 /*
- * Sets the code for the active editor to the value of **[code]**.
+ * This file sets the code for the active editor to the value of
+ * the specified **[code]** argument.
  */
 
 /*

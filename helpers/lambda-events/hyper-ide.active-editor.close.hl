@@ -1,7 +1,8 @@
 /*
- * Closes the active editor, unless editor has unsaved changes.
+ * This file closes the active editor, unless the editor has unsaved changes.
  * If you want to force closing of the editor, even if it has
- * changes, you can supply a **[force]** argument, and set its value to boolean _"true"_.
+ * unsaved changes, you can supply a **[force]** argument, and
+ * set its value to boolean _"true"_.
  */
 
 /*

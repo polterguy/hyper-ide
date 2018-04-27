@@ -1,8 +1,12 @@
 /*
- * Template for new _"Angular module plugin"_ button.
+ * Template for a new _"AngularJS module"_.
  *
- * Creates a simple _"TODO"_ type of AngularJS application.
- * Requires __[name]__ as name of new module to create.
+ * This file creates a simple _"TODO"_ type of AngularJS application.
+ * The file requires a __[name]__ argument being the name of new module to create, which
+ * will become your module's URL.
+ *
+ * This file is used by the __[hyper-ide.folder-plugin.create-module]__
+ * plugin when the user creates a new module by following a wizard.
  */
 
 

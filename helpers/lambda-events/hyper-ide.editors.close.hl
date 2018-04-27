@@ -1,10 +1,10 @@
 /*
- * Closes all editors who's paths starts with the given **[filter]**, unless they
- * have unsaved changes. If you want to force closing also editors with changes,
+ * This file closes all editors who's paths starts with the given **[filter]**, unless they
+ * have unsaved changes. If you want to force closing also editors with unsaved changes,
  * you can supply a **[force]** argument, and set its value to boolean _"true"_.
  *
- * If you provide a boolean true value for **[exact]**, only the editor being
- * an exact match will be closed.
+ * If you provide a boolean _"true"_ value for **[exact]**, only the editor being
+ * an exact match for the specified **[filter]** argument will be closed.
  */
 
 /*

@@ -1,6 +1,7 @@
 /*
- * Sets the active editor to clean or dirty, depending upon the boolean value
- * of the specified **[clean]** argument.
+ * This file sets the current active editor to clean or dirty,
+ * depending upon the boolean value of the specified **[clean]**
+ * argument.
  */
 
 /*
