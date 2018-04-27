@@ -5,7 +5,7 @@
 
 /*
  * This event creates our _"execute JavaScript file plugin"_ toolbar button.
- * This button is only visible if the active object in your folder explorer
+ * This button is only visible if the active object in your file explorer
  * is a JavaScript file.
  *
  * __Notice__, this is a pretty useful plugin, since the CodeMirror's autocomplete object

@@ -5,7 +5,7 @@
 
 /*
  * This event creates our _"minify JavaScript plugin"_ button. This button is
- * only visible if the active object in your folder explorer is a JavaScript file.
+ * only visible if the active object in your file explorer is a JavaScript file.
  */
 create-event:hyper-ide.plugins.javascript.minify
   return

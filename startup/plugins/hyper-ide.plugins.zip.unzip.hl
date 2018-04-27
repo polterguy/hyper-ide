@@ -1,4 +1,4 @@
-
+﻿
 /*
  * Creates the __[hyper-ide.plugins.zip.unzip]__ Active Event.
  */
@@ -6,7 +6,7 @@
 /*
  * This event creates the _"unzip file plugin"_ button, which will unzip a zip
  * file in the folder where the zip file exists. This button is only visible if
- * the active object in your folder explorer is a zip file.
+ * the active object in your file explorer is a zip file.
  */
 create-event:hyper-ide.plugins.zip.unzip
   return
@@ -18,16 +18,16 @@ create-event:hyper-ide.plugins.zip.unzip
         /*
          * Retrieves current path for file, and unzips it in place.
          */
-        hyper-ide.folder-explorer.get-active-item
-        micro.path.get-folder:x:/@hyper-ide.folder-explorer.get-active-item?value
-        unzip:x:/@hyper-ide.folder-explorer.get-active-item?value
+        hyper-ide.file-explorer.get-active-item
+        micro.path.get-folder:x:/@hyper-ide.file-explorer.get-active-item?value
+        unzip:x:/@hyper-ide.file-explorer.get-active-item?value
           dest:x:/@micro.path.get-folder?value
 
         /*
          * Refreshing current folder.
          */
-        hyper-ide.folder-explorer.set-active-item:x:/@micro.path.get-folder?value
-        hyper-ide.folder-explorer.refresh-active-folder
+        hyper-ide.file-explorer.set-active-item:x:/@micro.path.get-folder?value
+        hyper-ide.file-explorer.refresh-active-folder
 
         /*
          * Notifying user.

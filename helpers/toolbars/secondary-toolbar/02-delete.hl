@@ -8,9 +8,9 @@ button
   events
 
     /*
-     * Sink invoked when active item in folder explorer has been changed.
+     * Sink invoked when active item in file explorer has been changed.
      */
-    hyper-ide.folder-explorer.item-changed
+    hyper-ide.file-explorer.item-changed
 
       /*
        * Checking if there is a selected item.
@@ -26,7 +26,7 @@ button
       else
 
         /*
-         * Disabling button since there is no active item in folder explorer.
+         * Disabling button since there is no active item in file explorer.
          */
         set-widget-property:x:/../*/_event?value
           disabled
@@ -39,7 +39,7 @@ button
       /*
        * Retrieving file name.
        */
-      hyper-ide.folder-explorer.get-active-item
+      hyper-ide.file-explorer.get-active-item
 
       /*
        * Then passing filename into modal widget.
@@ -56,7 +56,7 @@ button
               class:icon-bin
             p
               innerValue:@"Are you sure you want to delete the <code>{0}</code> file? I need you to confirm this action before I allow you to do this."
-                :x:/@hyper-ide.folder-explorer.get-active-item?value
+                :x:/@hyper-ide.file-explorer.get-active-item?value
             p
               innerValue:@"<strong>Warning, this action is permanent!</strong>"
             div
@@ -79,7 +79,7 @@ button
                         /*
                          * Forward evaluated above.
                          */
-                        .filename:x:/../*/hyper-ide.folder-explorer.get-active-item?value
+                        .filename:x:/../*/hyper-ide.file-explorer.get-active-item?value
 
                         /*
                          * Deleting actual file.
@@ -143,7 +143,7 @@ button
       /*
        * Retrieving folder name.
        */
-      hyper-ide.folder-explorer.get-active-item
+      hyper-ide.file-explorer.get-active-item
 
       /*
        * Deleting folder, asking user to confirm the action.
@@ -160,7 +160,7 @@ button
             p
               innerValue:@"Are you sure you want to delete the <code>{0}</code> folder? This will delete all files and sub-folders, 
 and close all editors that are editing files inside of your folder. I need you to confirm this action before I allow you to do this."
-                :x:/@hyper-ide.folder-explorer.get-active-item?value
+                :x:/@hyper-ide.file-explorer.get-active-item?value
             p
               innerValue:@"<strong>Warning, this action is permanent!</strong>"
             div
@@ -223,7 +223,7 @@ and close all editors that are editing files inside of your folder. I need you t
                         /*
                          * Raising changed event.
                          */
-                        hyper-ide.folder-explorer.item-changed
+                        hyper-ide.file-explorer.item-changed
 
                         /*
                          * Deleting modal window.
@@ -244,9 +244,9 @@ and close all editors that are editing files inside of your folder. I need you t
     /*
      * Checking if user is trying to delete a file, or a folder.
      */
-    hyper-ide.folder-explorer.get-active-item
+    hyper-ide.file-explorer.get-active-item
     if
-      ends-with:x:/@hyper-ide.folder-explorer.get-active-item?value
+      ends-with:x:/@hyper-ide.file-explorer.get-active-item?value
         src:/
 
       /*

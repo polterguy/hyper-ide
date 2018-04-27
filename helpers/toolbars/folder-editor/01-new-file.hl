@@ -73,7 +73,7 @@ button
                       /*
                        * Making sure we refresh our tree view.
                        */
-                      hyper-ide.folder-explorer.refresh-active-folder
+                      hyper-ide.file-explorer.refresh-active-folder
 
                       /*
                        * Making sure we select our newly created file, and open
@@ -81,7 +81,7 @@ button
                        *
                        * Notice, this is done by selecting the same tree node twice.
                        */
-                      hyper-ide.folder-explorer.set-active-item:{0}{1}
+                      hyper-ide.file-explorer.set-active-item:{0}{1}
                         :x:/@get-widget-property/*/*?value
                         :x:/@micro.form.serialize/*/name?value
 

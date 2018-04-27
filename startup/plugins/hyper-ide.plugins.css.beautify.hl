@@ -4,7 +4,7 @@
 
 /*
  * This event creates our _"beautify CSS file plugin"_ button. This button is
- * only visible if the active object in your folder explorer is a CSS file.
+ * only visible if the active object in your file explorer is a CSS file.
  *
  * When clicked, the button will _"beautify"_ the CSS contents of the
  * currently Active Editor.

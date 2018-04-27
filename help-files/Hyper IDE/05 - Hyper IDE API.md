@@ -4,10 +4,10 @@ Hyper IDE has a rich API, which allows you to automate tasks, and extend it as y
 of all Active Events that are available when Hyper IDE is open.
 
 * __[hyper-ide.is-open]__ - Return true if Hyper IDE is open
-* __[hyper-ide.folder-explorer.select-path]__ - Expands the specified **[\_arg]** path in your folder explorer, and starts the correct editor, if you are giving it a path to a file
-* __[hyper-ide.folder-explorer.set-active-item]__ - Sets the active folder explorer item. Notice, will not expand folders as the above event will, but expects the specified **[\_arg]** folder/file to already have been loaded in your folder explorer
-* __[hyper-ide.folder-explorer.get-active-item]__ - Returns the active folder explorer item to caller
-* __[hyper-ide.folder-explorer.refresh-active-folder]__ - Reloads the currently active item in your file explorer
+* __[hyper-ide.file-explorer.select-path]__ - Expands the specified __[\_arg]__ path in your file explorer, and starts the correct editor, if you are giving it a path to a file
+* __[hyper-ide.file-explorer.set-active-item]__ - Sets the active file explorer item. Notice, will not expand folders as the above event will, but expects the specified __[\_arg]__ folder/file to already have been loaded in your file explorer
+* __[hyper-ide.file-explorer.get-active-item]__ - Returns the active file explorer item to caller
+* __[hyper-ide.file-explorer.refresh-active-folder]__ - Reloads the currently active item in your file explorer
 * __[hyper-ide.active-editor.get-filepath]__ - Returns the path of the currently edited file, if any
 * __[hyper-ide.active-editor.get-id]__ - Returns the ID of the currently active editor, if any
 * __[hyper-ide.active-editor.get-code]__ - Returns the code for the currently active editor, if any
@@ -23,7 +23,7 @@ of all Active Events that are available when Hyper IDE is open.
 * __[hyper-ide.editors.close]__ - Closes one or more editors. Pass in __[filter]__ being a file/folder path which will declare which editors it will close, and __[exact]__ being boolean true, if you only want to close the editor with the exact matching __[filter]__ path
 * __[desktop.help.display]__ - Displays the help files for Hyper IDE. Optionally pass in __[file]__ to open a specific help file.
 
-Notice that Hyper IDE will also raise the **[hyper-ide.folder-explorer.item-changed]** Active Event when the file
+Notice that Hyper IDE will also raise the **[hyper-ide.file-explorer.item-changed]** Active Event when the file
 explorer's active item has been changed. The new item selected in the file explorer, will be available as **[\_arg]**
 from within your lambda event.
 
@@ -79,7 +79,7 @@ create-event:hyper-ide.plugins.css.is-css-file
 
 If you want to create a plugin which is only available when a folder is selected in your file explorer, you
 can change the above `.plugins.` to `.folder-plugin.`. If you want to create a plugin which is only available
-when some specific folder is activated, you'll need to use the **[hyper-ide.folder-explorer.get-active-item]**
+when some specific folder is activated, you'll need to use the **[hyper-ide.file-explorer.get-active-item]**
 lambda event to determine which folder has been activated, before returning your plugin to caller. The
 **[hyper-ide.folder-plugins.create-module]** plugin illustrates this, since it's only available when the _"/modules/"_
 folder is activated.

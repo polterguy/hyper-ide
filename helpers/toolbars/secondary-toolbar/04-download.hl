@@ -1,6 +1,6 @@
 /*
  * Downloads active file toolbar button. **Notice**, this button is only
- * visible if the current active object in your folder explorer is a _file_.
+ * visible if the current active object in your file explorer is a _file_.
  */
 button
   innerValue:@"<span class=""icon-download2""></span>"
@@ -9,9 +9,9 @@ button
   events
 
     /*
-     * Sink invoked when active item in folder explorer has been changed.
+     * Sink invoked when active item in file explorer has been changed.
      */
-    hyper-ide.folder-explorer.item-changed
+    hyper-ide.file-explorer.item-changed
 
       /*
        * Checking if there is a selected item.
@@ -31,7 +31,7 @@ button
       else
 
         /*
-         * Disabling button since there is no active item in folder explorer.
+         * Disabling button since there is no active item in file explorer.
          */
         set-widget-property:x:/../*/_event?value
           disabled
@@ -41,5 +41,5 @@ button
     /*
      * Downloading file.
      */
-    hyper-ide.folder-explorer.get-active-item
-    micro.download.file:x:/@hyper-ide.folder-explorer.get-active-item?value
+    hyper-ide.file-explorer.get-active-item
+    micro.download.file:x:/@hyper-ide.file-explorer.get-active-item?value

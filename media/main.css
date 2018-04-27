@@ -60,7 +60,7 @@
     overflow: auto;
 }
 
-/* Actual TreeView (solution explorer) CSS class */
+/* Actual TreeView (file explorer) CSS class */
 .hyper-ide-tree-view {
     overflow: scroll;
     height: 100%;

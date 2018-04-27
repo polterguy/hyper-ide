@@ -1,13 +1,13 @@
-/*
- * This file will refresh the folder explorer's currently activated folder.
+﻿/*
+ * This file will refresh the file explorer's currently activated folder.
  * **Notice**, this file assumes that your currently selected object in your
- * folder explorer actually is a folder.
+ * file explorer actually is a folder.
  */
 
 /*
  * First retrieving selected treeview item.
  */
-hyper-ide.folder-explorer.get-active-item
+hyper-ide.file-explorer.get-active-item
 
 
 
@@ -17,14 +17,14 @@ hyper-ide.folder-explorer.get-active-item
  * Then verifying that currently selected treeview item actually is a folder.
  */
 if
-  ends-with:x:/@hyper-ide.folder-explorer.get-active-item?value
+  ends-with:x:/@hyper-ide.file-explorer.get-active-item?value
     src:/
 
   /*
    * There's a folder currently selected.
    */
   add:x:/+/*/items
-    src:x:/@hyper-ide.folder-explorer.get-active-item?value
+    src:x:/@hyper-ide.file-explorer.get-active-item?value
   micro.widgets.tree.refresh-items:hyper-ide-folder-tree-browser
     items
 

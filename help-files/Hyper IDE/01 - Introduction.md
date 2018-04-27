@@ -10,9 +10,9 @@ CodeMirror as its front end code editor. Hyper IDE also doubles as a file manage
 
 ### The file explorer
 
-To the left at the top of Hyper IDE, you can find a tree view widget. We will refer to this widget as your
-_"solution explorer"_, or the _"file/folder explorer"_ sometimes. It displays all the files on your server,
-and allows you to select and open files for editing. The first time you click a folder in the tree view,
+To the left in Hyper IDE, you can find a _"tree view widget"_. We will refer to this widget as your
+_"file explorer"_. It displays all the files on your server, and allows you to select and open files
+for editing, in addition to modify and edit your folders. The first time you click a folder in the tree view,
 it will automatically expand the folder, and display its sub-folders and files. If you choose to explicitly
 close the folder later, by clicking the folder icon, you will have to click the folder icon again to
 expand it.

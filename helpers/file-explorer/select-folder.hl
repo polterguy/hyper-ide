@@ -1,5 +1,5 @@
 /*
- * This file is invoked when a folder is selected in your folder explorer.
+ * This file is invoked when a folder is selected in your file explorer.
  *
  * The file expects a __[folder]__ argument being the path to the selected folder.
  * This file will create a toolbar allowing the user to edit the folder's properties,

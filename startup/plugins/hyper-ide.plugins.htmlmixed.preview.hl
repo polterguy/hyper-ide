@@ -4,7 +4,7 @@
 
 /*
  * This event creates our _"preview HTML page plugin"_ button. This button is
- * only visible if the active object in your folder explorer is an HTML file.
+ * only visible if the active object in your file explorer is an HTML file.
  *
  * When clicked, the button will open up a new browser tab, leading to the HTML
  * file's path, from your current active editor.

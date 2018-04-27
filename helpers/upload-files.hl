@@ -1,8 +1,8 @@
-/*
+﻿/*
  * Responsible for handling upload requests initiated by user.
  * Expects __[files]__ being a bunch of files that is being uploaded.
  * Will save all specified files to the currently selected folder in
- * the _"folder explorer"_ of Hyper IDE.
+ * the _"file explorer"_ of Hyper IDE.
  */
 
 
@@ -22,9 +22,9 @@ micro.lambda.contract.min:x:/..
 /*
  * Retrieving selected folder, and making sure user has selected a folder.
  */
-hyper-ide.folder-explorer.get-active-item
+hyper-ide.file-explorer.get-active-item
 if
-  ends-with:x:/@hyper-ide.folder-explorer.get-active-item?value
+  ends-with:x:/@hyper-ide.file-explorer.get-active-item?value
     src:/
   not
 
@@ -54,14 +54,14 @@ for-each:x:/../*/files/*
   if
     fetch:x:/0/0?value
       file-exists:{0}{1}
-        :x:/@hyper-ide.folder-explorer.get-active-item?value
+        :x:/@hyper-ide.file-explorer.get-active-item?value
         :x:/@_dp/#/*/original-filename?value
 
     /*
      * Destination file already exists, making sure we delete it.
      */
     delete-file:{0}{1}
-      :x:/@hyper-ide.folder-explorer.get-active-item?value
+      :x:/@hyper-ide.file-explorer.get-active-item?value
       :x:/@_dp/#/*/original-filename?value
 
   /*
@@ -69,7 +69,7 @@ for-each:x:/../*/files/*
    */
   move-file:x:/@_dp/#?value
     dest:{0}{1}
-      :x:/@hyper-ide.folder-explorer.get-active-item?value
+      :x:/@hyper-ide.file-explorer.get-active-item?value
       :x:/@_dp/#/*/original-filename?value
 
 
@@ -79,7 +79,7 @@ for-each:x:/../*/files/*
 /*
  * Refresh our destination folder.
  */
-hyper-ide.folder-explorer.refresh-active-folder
+hyper-ide.file-explorer.refresh-active-folder
 
 
 

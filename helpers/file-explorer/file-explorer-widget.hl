@@ -1,9 +1,9 @@
-/*
- * This file wraps Hyper IDE's _"folder explorer"_, that allows the user to browse
+﻿/*
+ * This file wraps Hyper IDE's _"file explorer"_, that allows the user to browse
  * his or her folders/files on his server, and select files for editing its content,
  * and/or manipulate his or hers folders somehow.
  *
- * The folder explorer for Hyper IDE is implemented using the __[micro.widgets.tree]__
+ * The file explorer for Hyper IDE is implemented using the __[micro.widgets.tree]__
  * extension widget.
  */
 micro.widgets.tree:hyper-ide-folder-tree-browser
@@ -55,7 +55,7 @@ micro.widgets.tree:hyper-ide-folder-tree-browser
          * and folders structure, and returning items to caller.
          */
         eval-x:x:/+/*
-        micro.evaluate.file:@IDE/helpers/folder-explorer/get-folder-explorer-objects.hl
+        micro.evaluate.file:@IDE/helpers/file-explorer/get-file-explorer-objects.hl
           folder:x:/../*/_item-id?value
         add:x:/..if/*/return/*/items
           src:x:/@micro.evaluate.file/*
@@ -132,7 +132,7 @@ micro.widgets.tree:hyper-ide-folder-tree-browser
          * Invoking file responsible for selecting the folder.
          */
         eval-x:x:/+/*
-        micro.evaluate.file:@IDE/helpers/folder-explorer/select-folder.hl
+        micro.evaluate.file:@IDE/helpers/file-explorer/select-folder.hl
           folder:x:/../*/items/0?name
 
       else
@@ -143,13 +143,13 @@ micro.widgets.tree:hyper-ide-folder-tree-browser
          * Invoking file responsible for selecting the file.
          */
         eval-x:x:/+/*
-        micro.evaluate.file:@IDE/helpers/folder-explorer/select-file.hl
+        micro.evaluate.file:@IDE/helpers/file-explorer/select-file.hl
           file:x:/../*/items/0?name
 
       /*
-       * Raising the folder explorer "active event changed" event.
+       * Raising the file explorer "active event changed" event.
        */
-      hyper-ide.folder-explorer.item-changed:x:/../*/items/0?name
+      hyper-ide.file-explorer.item-changed:x:/../*/items/0?name
 
     catch
 

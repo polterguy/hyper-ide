@@ -11,8 +11,8 @@
  * In general there exists three main different categories of plugins you can create
  * for Hyper IDE, which are as follows.
  *
- * - __[hyper-ide.folder-plugin.xxx]__ - Plugins loaded only if a folder is selected in your folder explorer
- * - __[hyper-ide.global-plugin.xxx]__ - Global plugins, always available, regardless of what object you have selected in your folder explorer
+ * - __[hyper-ide.folder-plugin.xxx]__ - Plugins loaded only if a folder is selected in your file explorer
+ * - __[hyper-ide.global-plugin.xxx]__ - Global plugins, always available, regardless of what object you have selected in your file explorer
  * - __[hyper-ide.plugins.yyy.xxx]__ - File _"mode"_ type of plugin, where the _"yyy"_ parts are your CodeMirror _"mode"_
  */
 

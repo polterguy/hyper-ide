@@ -1,4 +1,4 @@
-/*
+﻿/*
  * This file sets the active editor to the given **[editor]** value, which can either
  * be the path to an already open editor, or a CodeMirror widget wrapper ID for an editor
  * that is already open.
@@ -126,7 +126,7 @@ if:x:/@p5.web.widgets.find-first/*/*?value
   /*
    * Raising our folder changed event.
    */
-  hyper-ide.folder-explorer.item-changed:x:/../*/editor?value
+  hyper-ide.file-explorer.item-changed:x:/../*/editor?value
 
   /*
    * Returning success to caller.

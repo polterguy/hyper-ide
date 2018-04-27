@@ -9,9 +9,9 @@ button
   events
 
     /*
-     * Sink invoked when active item in folder explorer has been changed.
+     * Sink invoked when active item in file explorer has been changed.
      */
-    hyper-ide.folder-explorer.item-changed
+    hyper-ide.file-explorer.item-changed
 
       /*
        * Checking if there is a selected item.
@@ -27,7 +27,7 @@ button
       else
 
         /*
-         * Disabling button since there is no active item in folder explorer.
+         * Disabling button since there is no active item in file explorer.
          */
         set-widget-property:x:/../*/_event?value
           disabled
@@ -62,10 +62,10 @@ button
         /*
          * Figuring out the URL for current path, and selecting all text.
          */
-        hyper-ide.folder-explorer.get-active-item
+        hyper-ide.file-explorer.get-active-item
         p5.web.get-location-url
         set-widget-property:x:/../*/_event?value
           value:{0}?path={1}
             :x:/@p5.web.get-location-url?value
-            :x:/@hyper-ide.folder-explorer.get-active-item?value
+            :x:/@hyper-ide.file-explorer.get-active-item?value
         micro.page.set-focus:x:/../*/_event?value

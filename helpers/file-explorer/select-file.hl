@@ -1,5 +1,5 @@
 /*
- * This file is invoked when the user clicks a file in the folder explorer.
+ * This file is invoked when the user clicks a file in the file explorer.
  * The file expects a __[file]__ argument being the fully qualified path
  * of the file user clicked, or selected somehow.
  *

@@ -5,7 +5,7 @@
 
 /*
  * This event creates our _"evaluate active editor's Hyperlambda file"_ plugin button.
- * This button is only visible if the active object in your folder explorer is a
+ * This button is only visible if the active object in your file explorer is a
  * Hyperlambda file.
  */
 create-event:hyper-ide.plugins.hyperlambda.execute

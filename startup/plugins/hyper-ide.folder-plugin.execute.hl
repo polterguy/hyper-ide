@@ -11,7 +11,7 @@
  * user to type in some bash script, or select a template script taken from
  * the _"/modules/hyper-ide/helpers/shell-snippets/"_ folder, and execute
  * that shell script with the current path being the selected folder from
- * the folder explorer.
+ * the file explorer.
  *
  * **Notice**, whether or not the user has permissions to actually execute
  * shell scripts, depends upon how the authorization objects in your system

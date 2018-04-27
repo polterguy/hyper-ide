@@ -54,4 +54,4 @@ create-widgets
 p5.web.query.get:path
 if:x:/@p5.web.query.get/*?value
   eval-x:x:/+/*
-  hyper-ide.folder-explorer.select-path:x:/@p5.web.query.get/*?value
+  hyper-ide.file-explorer.select-path:x:/@p5.web.query.get/*?value

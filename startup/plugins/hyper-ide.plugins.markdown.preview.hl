@@ -4,7 +4,7 @@
 
 /*
  * This event creates the _"Markdown preview plugin"_ button. This button is
- * only visible if the active object in your folder explorer is a Markdown file.
+ * only visible if the active object in your file explorer is a Markdown file.
  *
  * When clicked, the button will open up a modal widget, displaying the Markdown
  * transformed into HTML in _"preview mode"_.

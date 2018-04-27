@@ -1,4 +1,4 @@
-/*
+﻿/*
  * This file opens up the specified __[path]__ in Hyper IDE, by expanding
  * the tree view (if possible), and opening the file, if the specified
  * __[path]__ points to a file.
@@ -24,7 +24,7 @@ if:x:/@p5.web.widgets.find-first/*/*?value
    */
   get-widget-property:x:/@p5.web.widgets.find-first/*/*?value
     .activate
-  hyper-ide.folder-explorer.set-active-item:x:/@get-widget-property/*/*?value
+  hyper-ide.file-explorer.set-active-item:x:/@get-widget-property/*/*?value
   return
 
 
@@ -106,4 +106,4 @@ for-each:x:/@split/@split/*?name
 /*
  * Making sure we select our final resulting item
  */
-hyper-ide.folder-explorer.set-active-item:x:/../*/path?value
+hyper-ide.file-explorer.set-active-item:x:/../*/path?value

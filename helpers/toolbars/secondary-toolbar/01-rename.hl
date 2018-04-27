@@ -8,9 +8,9 @@ button
   events
 
     /*
-     * Sink invoked when active item in folder explorer has been changed.
+     * Sink invoked when active item in file explorer has been changed.
      */
-    hyper-ide.folder-explorer.item-changed
+    hyper-ide.file-explorer.item-changed
 
       /*
        * Checking if there is a selected item.
@@ -26,7 +26,7 @@ button
       else
 
         /*
-         * Disabling button since there is no active item in folder explorer.
+         * Disabling button since there is no active item in file explorer.
          */
         set-widget-property:x:/../*/_event?value
           disabled
@@ -39,8 +39,8 @@ button
       /*
        * Retrieving folder name.
        */
-      hyper-ide.folder-explorer.get-active-item
-      split:x:/@hyper-ide.folder-explorer.get-active-item?value
+      hyper-ide.file-explorer.get-active-item
+      split:x:/@hyper-ide.file-explorer.get-active-item?value
         =:/
 
       /*
@@ -86,7 +86,7 @@ button
                         /*
                          * Forward evaluated above.
                          */
-                        .value:x:/../*/hyper-ide.folder-explorer.get-active-item?value
+                        .value:x:/../*/hyper-ide.file-explorer.get-active-item?value
 
                         /*
                          * Closing all files matching filter, with [force] argument.
@@ -124,10 +124,10 @@ button
                         set:x:/@split/0/-
                         join:x:/@split/*?name
                           sep:/
-                        hyper-ide.folder-explorer.set-active-item:/{0}/
+                        hyper-ide.file-explorer.set-active-item:/{0}/
                           :x:/@join?value
-                        hyper-ide.folder-explorer.refresh-active-folder
-                        hyper-ide.folder-explorer.set-active-item:/{0}/
+                        hyper-ide.file-explorer.refresh-active-folder
+                        hyper-ide.file-explorer.set-active-item:/{0}/
                           :x:/@trim?value
                         eval-x:x:/+/*
                         add:x:/+/*
@@ -158,7 +158,7 @@ button
       /*
        * Retrieving file name.
        */
-      hyper-ide.folder-explorer.get-active-item
+      hyper-ide.file-explorer.get-active-item
 
       /*
        * Then passing filename into modal widget.
@@ -180,7 +180,7 @@ button
                   /*
                    * Forward evaluated above.
                    */
-                  .filename:x:/../*/hyper-ide.folder-explorer.get-active-item?value
+                  .filename:x:/../*/hyper-ide.file-explorer.get-active-item?value
                   split:x:/-?value
                     =:/
 
@@ -205,7 +205,7 @@ button
                         /*
                          * Forward evaluated above.
                          */
-                        .filename:x:/../*/hyper-ide.folder-explorer.get-active-item?value
+                        .filename:x:/../*/hyper-ide.file-explorer.get-active-item?value
 
                         /*
                          * Finding file's folder name.
@@ -243,8 +243,8 @@ button
                         /*
                          * Refreshing tree, since folder's content now has changed.
                          */
-                        hyper-ide.folder-explorer.set-active-item:x:/@.folder?value
-                        hyper-ide.folder-explorer.refresh-active-folder
+                        hyper-ide.file-explorer.set-active-item:x:/@.folder?value
+                        hyper-ide.file-explorer.refresh-active-folder
 
                         /*
                          * Updating item in editor.
@@ -259,7 +259,7 @@ button
                         hyper-ide.editors.set-active-editor:{0}{1}
                           :x:/@.folder?value
                           :x:/@micro.form.serialize/*/name?value
-                        hyper-ide.folder-explorer.set-active-item:{0}{1}
+                        hyper-ide.file-explorer.set-active-item:{0}{1}
                           :x:/@.folder?value
                           :x:/@micro.form.serialize/*/name?value
 
@@ -282,9 +282,9 @@ button
     /*
      * Checking if user is trying to rename a file, or a folder.
      */
-    hyper-ide.folder-explorer.get-active-item
+    hyper-ide.file-explorer.get-active-item
     if
-      ends-with:x:/@hyper-ide.folder-explorer.get-active-item?value
+      ends-with:x:/@hyper-ide.file-explorer.get-active-item?value
         src:/
 
       /*

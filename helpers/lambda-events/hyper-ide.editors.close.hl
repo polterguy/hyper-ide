@@ -1,4 +1,4 @@
-/*
+﻿/*
  * This file closes all editors who's paths starts with the given **[filter]**, unless they
  * have unsaved changes. If you want to force closing also editors with unsaved changes,
  * you can supply a **[force]** argument, and set its value to boolean _"true"_.
@@ -259,19 +259,19 @@ if:x:/@_active-deleted?value
     hyper-ide.on-all-editors-closed
 
     /*
-     * Checking if active item in folder explorer is a file, and if it is, we make
+     * Checking if active item in file explorer is a file, and if it is, we make
      * sure we de-select it.
      */
-    hyper-ide.folder-explorer.get-active-item
+    hyper-ide.file-explorer.get-active-item
     if
-      ends-with:x:/@hyper-ide.folder-explorer.get-active-item?value
+      ends-with:x:/@hyper-ide.file-explorer.get-active-item?value
         src:/
       not
 
       /*
-       * Active folder explorer item is a file, hence we de-select it.
+       * Active file explorer item is a file, hence we de-select it.
        */
-      hyper-ide.folder-explorer.set-active-item
+      hyper-ide.file-explorer.set-active-item
 
 
 

@@ -1,4 +1,4 @@
-/*
+﻿/*
  * Guides the user through the process of creating a new Micro skin CSS file.
  *
  * Uses a _"wizard"_ modal widget to help user through the process of creting
@@ -305,12 +305,12 @@ create-widgets
                             /*
                              * Refreshing tree view's active folder, which should be the skin folder.
                              */
-                            hyper-ide.folder-explorer.refresh-active-folder
+                            hyper-ide.file-explorer.refresh-active-folder
 
                             /*
                              * Opening up our CSS file for editing.
                              */
-                            hyper-ide.folder-explorer.select-path:/modules/micro/media/skins/{0}.css
+                            hyper-ide.file-explorer.select-path:/modules/micro/media/skins/{0}.css
                               :x:/@get-widget-property/*/*?value
 
                         button:hyper-ide-save-new-skin-cancel

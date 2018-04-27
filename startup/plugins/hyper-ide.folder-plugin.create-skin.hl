@@ -1,4 +1,4 @@
-
+﻿
 /*
  * Creates the __[hyper-ide.folder-plugin.create-micro-skin]__ Active Event.
  */
@@ -18,8 +18,8 @@ create-event:hyper-ide.folder-plugin.create-micro-skin
    *
    * This is to prevent this plugin to be visible in any other folders than our "/modules/" folder.
    */
-  hyper-ide.folder-explorer.get-active-item
-  if:x:/@hyper-ide.folder-explorer.get-active-item?value
+  hyper-ide.file-explorer.get-active-item
+  if:x:/@hyper-ide.file-explorer.get-active-item?value
     !=:/modules/micro/media/skins/
     return
 

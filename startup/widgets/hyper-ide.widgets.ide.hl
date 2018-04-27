@@ -1,4 +1,4 @@
-/*
+﻿/*
  * Creates the __[hyper-ide.widgets.ide]__ extension widget.
  */
 
@@ -102,30 +102,30 @@ create-event:hyper-ide.widgets.ide
 
 
         /*
-         * Expands folder explorer to the specified [path] and selects item.
+         * Expands file explorer to the specified [path] and selects item.
          *
          * Will edit the item if it is a file.
          */
-        hyper-ide.folder-explorer.select-path
+        hyper-ide.file-explorer.select-path
 
           /*
            * Evaluating file implementing event.
            */
           eval-x:x:/+/*
-          micro.evaluate.file:@IDE/helpers/folder-explorer/expand-folder-explorer-path.hl
+          micro.evaluate.file:@IDE/helpers/file-explorer/expand-file-explorer-path.hl
             path:x:/../*/_arg?value
 
 
         /*
-         * Folder explorer lambda events.
+         * File explorer lambda events.
          */
 
 
         /*
-         * Returns the ID for the currently selected folder explorer widget, if any.
+         * Returns the ID for the currently selected file explorer widget, if any.
          * Notice, this ID is also the path of the item that is selected.
          */
-        hyper-ide.folder-explorer.get-active-item
+        hyper-ide.file-explorer.get-active-item
 
           /*
            * Returning treeview's selected item' filepath.
@@ -135,9 +135,9 @@ create-event:hyper-ide.widgets.ide
 
 
         /*
-         * Sets the active folder explorer item to the [_arg] argument.
+         * Sets the active file explorer item to the [_arg] argument.
          */
-        hyper-ide.folder-explorer.set-active-item
+        hyper-ide.file-explorer.set-active-item
 
           /*
            * Returning treeview's selected item' filepath.
@@ -161,17 +161,17 @@ create-event:hyper-ide.widgets.ide
             micro.page.scroll-into-view:x:/@p5.web.widgets.find-first-like/*/*?value
 
           /*
-           * Raising our folder explorer item changed event.
+           * Raising our file explorer item changed event.
            */
-          hyper-ide.folder-explorer.item-changed:x:/../*/_arg?value
+          hyper-ide.file-explorer.item-changed:x:/../*/_arg?value
 
 
         /*
          * Refreshes the currently active folder, if a folder is active in our
-         * folder explorer.
+         * file explorer.
          */
-        hyper-ide.folder-explorer.refresh-active-folder
-          micro.evaluate.file:@IDE/helpers/lambda-events/hyper-ide.folder-explorer.refresh-active-folder.hl
+        hyper-ide.file-explorer.refresh-active-folder
+          micro.evaluate.file:@IDE/helpers/lambda-events/hyper-ide.file-explorer.refresh-active-folder.hl
           return:x:/-?value
 
 
@@ -364,26 +364,26 @@ create-event:hyper-ide.widgets.ide
         /*
          * Wrapper for actual content.
          *
-         * This is where our editors and our folder explorer tree view can be found.
+         * This is where our editors and our file explorer tree view can be found.
          */
         div:hyper-ide-content-wrapper
           class:row hyper-ide-content
           widgets
 
             /*
-             * Wrapper for our folder explorer.
+             * Wrapper for our file explorer.
              */
             div:hyper-ide-file-browser-wrapper
               class:col-30 hyper-ide-solution-explorer-col
               widgets
 
                 /*
-                 * Our actual folder explorer
+                 * Our actual file explorer
                  */
                 micro.widgets.file
                   class:air-inner shaded rounded hyper-ide-solution-explorer
                   files
-                    @IDE/helpers/folder-explorer/folder-explorer-widget.hl
+                    @IDE/helpers/file-explorer/file-explorer-widget.hl
 
             /*
              * Wrapper for our file editor.
