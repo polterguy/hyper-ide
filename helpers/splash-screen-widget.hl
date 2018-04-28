@@ -10,7 +10,7 @@ container:hyper-ide-splash
     p
       widgets
         span
-          innerValue:@"An ultra slick, super responsive, and highly modularised web based Integrated Development Environment, supporting 100+ programming languages out of the box.
+          innerValue:@"A web based Integrated Development Environment, supporting 100+ programming languages out of the box.
 Hyper IDE contains strong plugin support, in addition to several different types of template projects,
 allowing you to literally start out your projects <em>'running'</em>."
     p
