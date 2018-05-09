@@ -221,11 +221,6 @@ and close all editors that are editing files inside of your folder. I need you t
                           delete-widget:hyper-ide-active-folder-toolbar
 
                         /*
-                         * Raising changed event.
-                         */
-                        hyper-ide.file-explorer.item-changed
-
-                        /*
                          * Deleting modal window.
                          */
                         delete-widget:hyper-ide-confirm-delete-folder

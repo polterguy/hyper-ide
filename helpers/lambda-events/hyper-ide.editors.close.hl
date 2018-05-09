@@ -245,6 +245,11 @@ if:x:/@_active-deleted?value
      */
     hyper-ide.editors.set-active-editor:x:/@hyper-ide.editors.get-open-editors/0/-?name
 
+    /*
+     * Raising changed event.
+     */
+    hyper-ide.file-explorer.item-changed:x:/@hyper-ide.editors.get-open-editors/0/-?name
+
   else
 
     /*
