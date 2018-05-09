@@ -1,4 +1,4 @@
-﻿/*
+/*
  * Guides the user through the process of creating a new Micro skin CSS file.
  *
  * Uses a _"wizard"_ modal widget to help user through the process of creting
@@ -16,8 +16,12 @@ load-file:@MICRO/media/micro.css
  * Finding all CSS variables that are available to us.
  */
 split:x:/@load-file/*?value
-  =:"/* VARIABLES_BEGIN */"
-  =:"/* VARIABLES_END */"
+  =:":root"
+split:x:/@split/2?name
+  =:{
+  =:}
+split:x:/@split/1?name
+  =:*/
 split:x:/@split/1?name
   =:"\r\n"
 .vars
