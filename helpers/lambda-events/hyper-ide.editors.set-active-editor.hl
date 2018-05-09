@@ -15,8 +15,8 @@ micro.lambda.contract.min:x:/..
 
 
 /*
- * Checking if specified [editor] argument is a filepath, and if not, making
- * sure we turn it into a filepath.
+ * Checking if specified [editor] argument is a filepath, and if not, assuming
+ * it's the ID to its CodeMirror editor, and making sure we turn it into a filepath.
  */
 if
   starts-with:x:/../*/editor?value
@@ -68,7 +68,7 @@ if
       class:visible
 
     /*
-     * finding any previously activated toolbars, and hiding them.
+     * Finding any previously activated toolbars, and hiding them.
      */
     if:x:/@p5.web.widgets.find-first-like/*/*?value
       micro.css.toggle:x:/@p5.web.widgets.find-first-like/*/*?value

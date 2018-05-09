@@ -1,0 +1,53 @@
+﻿/*
+ * This file will refresh the file explorer's currently activated folder.
+ * **Notice**, this file assumes that your currently selected object in your
+ * file explorer actually is a folder.
+ */
+
+/*
+ * Sanity checking invocation.
+ */
+micro.lambda.contract.min:x:/..
+  folder:string
+
+
+
+
+
+/*
+ * Then verifying that specified [_arg] is a folder.
+ */
+if
+  ends-with:x:/../*/folder?value
+    src:/
+  =:bool:true
+  and
+    fetch:x:/0/0?value
+      folder-exists:x:/../*/folder?value
+    =:bool:true
+
+  /*
+   * Caller supplied the path to an existing folder.
+   */
+  add:x:/+/*/items
+    src:x:/../*/folder?value
+  micro.widgets.tree.refresh-items:hyper-ide-folder-tree-browser
+    items
+
+  /*
+   * Returning success to caller.
+   */
+  return:bool:true
+
+else
+
+  /*
+   * No folder currently selected, warning user.
+   */
+  micro.windows.info:No folder was given
+    class:micro-windows-info warning
+
+  /*
+   * Returning failure to caller.
+   */
+  return:bool:false

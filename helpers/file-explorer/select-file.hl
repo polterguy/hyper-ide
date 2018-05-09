@@ -57,7 +57,7 @@ p5.web.widgets.find:hyper-ide-editor-tab-buttons
 if:x:/@p5.web.widgets.find/*/*?value
 
   /*
-   * Editor for file is already open, activating editor, and returning early.
+   * Editor for file is already open, activating existing editor only.
    */
   eval-x:x:/+/*
   micro.evaluate.file:@IDE/helpers/activate-editor.hl

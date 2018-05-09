@@ -243,8 +243,7 @@ button
                         /*
                          * Refreshing tree, since folder's content now has changed.
                          */
-                        hyper-ide.file-explorer.set-active-item:x:/@.folder?value
-                        hyper-ide.file-explorer.refresh-active-folder
+                        hyper-ide.file-explorer.refresh-folder:x:/@.folder?value
 
                         /*
                          * Updating item in editor.
@@ -254,11 +253,9 @@ button
                           :x:/@micro.form.serialize/*/name?value
 
                         /*
-                         * Changes name of active file.
+                         * Since refreshing the folder changes the active item
+                         * in our tree view, we set it again here.
                          */
-                        hyper-ide.editors.set-active-editor:{0}{1}
-                          :x:/@.folder?value
-                          :x:/@micro.form.serialize/*/name?value
                         hyper-ide.file-explorer.set-active-item:{0}{1}
                           :x:/@.folder?value
                           :x:/@micro.form.serialize/*/name?value

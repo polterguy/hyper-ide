@@ -45,8 +45,10 @@ if:x:/@get-widget-property/*/*?value
      */
     p5.web.widgets.find-first-like:hyper-ide-toolbar-wrapper
       .toolbar:x:/../*/file?value
-    micro.css.toggle:x:/@p5.web.widgets.find-first-like/*/*?value
-      class:hide visible
+    micro.css.add:x:/@p5.web.widgets.find-first-like/*/*?value
+      class:visible
+    micro.css.delete:x:/@p5.web.widgets.find-first-like/*/*?value
+      class:hide
 
     /*
      * Returning success to caller.

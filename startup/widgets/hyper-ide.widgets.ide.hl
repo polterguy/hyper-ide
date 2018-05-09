@@ -176,6 +176,16 @@ create-event:hyper-ide.widgets.ide
 
 
         /*
+         * Refreshes the given [_arg] folder.
+         */
+        hyper-ide.file-explorer.refresh-folder
+          eval-x:x:/+/*
+          micro.evaluate.file:@IDE/helpers/lambda-events/hyper-ide.file-explorer.refresh-folder.hl
+            folder:x:/../*/_arg?value
+          return:x:/-?value
+
+
+        /*
          * Lambda events for currently active editor in Hyper IDE.
          */
 
