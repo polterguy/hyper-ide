@@ -1,4 +1,4 @@
-﻿.hyper-ide-container {
+.hyper-ide-container {
     padding-top: 0;
 }
 
@@ -94,6 +94,9 @@
 /* "Tab control" wrapping editor (both tab buttons, and editor surface) */
 .hyper-ide-editor-tab {
     height: 100%;
+}
+.hyper-ide-page-scroll .hyper-ide-editor-tab {
+    overflow: hidden;
 }
 
 /* "Tab control buttons" wrapper */
