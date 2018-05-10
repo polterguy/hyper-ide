@@ -1,4 +1,3 @@
-
 /*
  * Creates the __[hyper-ide.version]__ Active Event.
  */
@@ -8,4 +7,4 @@
  */
 create-event:hyper-ide.version
 
-  return:decimal:8.0
+  return:decimal:8.1
