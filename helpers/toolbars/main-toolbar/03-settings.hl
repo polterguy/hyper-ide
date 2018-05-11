@@ -27,4 +27,5 @@ button
             set-widget-property:x:/../*/_event?value
               checked
       p
-        innerValue:Notice, for Safari, tablets and phones, it is advisable to turn on browser scroll.
+        innerValue:@"Notice, for Safari, tablets and phones, it is advisable to turn on browser scroll.
+In fact, in general terms, Hyper IDE works best with Google Chrome, on a computer, simply because it's faster."
