@@ -254,9 +254,10 @@ create-widgets
   /*
    * Activate tab/editor button.
    */
-  button
+  span
     parent:hyper-ide-editor-tab-buttons
-    class:hyper-ide-activate-tab-button toggled
+    class:hyper-ide-activate-tab-button toggled button
+    role:button
     .activate:x:/../*/file?value
     title:x:/../*/file?value
     events

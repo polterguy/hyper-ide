@@ -43,7 +43,7 @@
     height: auto;
     min-height: calc(100vh - 2rem - var(--form-el-pad) * 2 - .5rem);
     margin-bottom: .5rem;
-    overflow: auto;
+    overflow: visible;
 }
 
 /* TreeView wrapper for browsing files (column wrapper) */
@@ -106,10 +106,10 @@
 }
 
 /* "Tab control buttons", inside of editor "tab control" */
-.hyper-ide-editor-tab-buttons > button {
+.hyper-ide-editor-tab-buttons > span {
     border-bottom-left-radius: 0;
     border-bottom-right-radius: 0;
-    border-bottom: none;
+    border: none;
     width: 10rem;
     text-align: left;
     overflow: hidden;
@@ -123,10 +123,9 @@
     font-size: .7rem;
     padding-right: 2rem;
     cursor: pointer;
-    border-bottom: none;
     background-image: var(--button-toggled-bg);
 }
-.hyper-ide-editor-tab-buttons > button:first-child {
+.hyper-ide-editor-tab-buttons > span:first-child {
     margin-left: var(--border-radius);
 }
 
@@ -137,7 +136,7 @@
     background-image: var(--button-bg);
 }
 
-.hyper-ide-editor-tab-buttons > button > span.hyper-ide-close {
+.hyper-ide-editor-tab-buttons > span > span.hyper-ide-close {
     position: absolute;
     font-size: .5rem;
     top: calc(var(--border-radius) / 2);
@@ -162,8 +161,12 @@
 
 /* Wraps CodeMirror instance(s) */
 .hyper-ide-codemirror-wrapper {
-    height: 100%;
+    height: calc(100vh - 5.5rem);
     box-sizing: content-box;
+}
+.hyper-ide-page-scroll .hyper-ide-codemirror-wrapper {
+    height: auto;
+    min-height: calc(100vh - 5.5rem);
 }
 
 /* CodeMirror instance, inside of editors */

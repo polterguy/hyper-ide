@@ -26,3 +26,5 @@ button
             =:bool:true
             set-widget-property:x:/../*/_event?value
               checked
+      p
+        innerValue:Notice, for Safari, tablets and phones, it is advisable to turn on browser scroll.
