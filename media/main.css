@@ -118,7 +118,8 @@
     position: relative;
     font-style: italic;
     margin-left: .2rem;
-    margin-bottom: 0;
+    margin-top: 1px;
+    margin-bottom: -1px;
     font-size: .7rem;
     padding-right: 2rem;
     cursor: pointer;
