@@ -3,7 +3,7 @@
  * a wire frame, and instantiating __[hyper-ide.widgets.ide]__.
  *
  * **Notice**, almost the entirety of Hyper IDE is actually encapsulated
- in the __[hyper-ide.widgets.ide]__ extension widget.
+ * in the __[hyper-ide.widgets.ide]__ extension widget.
  */
 
 
@@ -11,7 +11,7 @@
 
 
 /*
- * Setting title of our page, making sure we display version number of Hyper IDE.
+ * Setting title of our page.
  */
 p5.web.page.set-title:Hyper IDE
 
@@ -20,12 +20,7 @@ p5.web.page.set-title:Hyper IDE
 
 
 /*
- * Including main Micro CSS files, and Hyper IDE's CSS file, making sure we can refresh cache on client,
- * every time we create a new release, to avoid having "old CSS files" 'hanging'
- * in browser cache.
- *
- * We do this by applying an HTTP query parameter to our CSS inclusion element on
- * the client, which changes every time we create a new version of Hyper IDE.
+ * Including main Micro CSS files.
  */
 micro.css.include
 hyper-ide.version

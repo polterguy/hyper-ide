@@ -2,6 +2,10 @@
     padding-top: 0;
 }
 
+.hyper-ide-container .micro-codemirror-wrapper {
+    margin-bottom: 0;
+}
+
 /* All Hyper IDE toolbars */
 .hyper-ide-toolbar {
     margin-bottom: 0;
