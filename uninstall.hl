@@ -11,5 +11,5 @@
  */
 delete-event:p5.io.unroll-path.@IDE
 vocabulary:~hyper-ide.
-delete-event:x:/-/*?name
+delete-event:x:/-/*?value
 delete-event:desktop.help-files.hyper-ide
