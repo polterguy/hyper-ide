@@ -11,6 +11,24 @@
 
 
 /*
+ * Making sure user has access to file.
+ */
+if
+  p5.io.authorize.read-file:x:/../*/file?value
+  =:bool:false
+
+  /*
+   * User doesn't have access to read this file.
+   */
+  micro.windows.info:You don't have access to read this file
+    class:micro-windows-info warning
+  return
+
+
+
+
+
+/*
  * Hiding any previously shown edit file toolbars.
  */
 p5.web.widgets.find-first-like:hyper-ide-toolbar-wrapper
