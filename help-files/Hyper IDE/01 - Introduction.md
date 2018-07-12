@@ -129,5 +129,4 @@ benefit from saving your work, and reloading your page, to make sure you have le
 page. Typically, you probably wouldn't want to edit more than a handful of files at the same time,
 since this would result in that Hyper IDE becomes less responsive.
 
-However, the really cool part, is that Hyper IDE will work on any client you have, capable of displaying HTML,
-including your phone ... ;)
+Hyper IDE's purpose also is to mainly be an IDE for web application development.
